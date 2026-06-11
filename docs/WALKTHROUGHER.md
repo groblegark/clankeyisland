@@ -31,11 +31,17 @@ Implementation notes vs. the original design below:
 - A transcript extractor was added (`tools/transcript.py`): the dialog
   is parsed straight from the .scc sources, so the timeline logs every
   observed talk segment with its *exact line text* — no OCR needed.
-- **Audio/dub stays in the planning stage** per project direction: the
-  perform take emits a `dubsheet.md` (timestamped lines + empty cue
-  column) to arrange a Suno-generated music/foley/VO dub by hand. See
-  docs/research/NARRATION.md (deadpan KQ6-style narration research) and
-  docs/research/AUDIO.md (in-game audio + mixing pipeline research).
+- **The dub is implemented** (`walkthrough/post/dub.py`): the music/SFX
+  bed is the take's own `game-audio.webm` — the driver tees everything
+  the game sends to the speakers into a MediaRecorder, so the film
+  carries the REAL browser audio (OPL theme + SFX), sample-aligned with
+  the footage. Voice acting is piper-tts (en_US-lessac-medium, flat by
+  nature — see docs/research/NARRATION.md) through the robot-FX chain
+  from docs/research/AUDIO.md; each line lands at its timeline
+  timestamp, time-compressed up to 1.3x to fit its slot, with the bed
+  sidechain-ducked under the voice. Output: `production.mp4`.
+  The `dubsheet.md` is still emitted for the optional Suno arrangement
+  pass (hand-arranged music/foley cues can replace or layer the bed).
 - Boot hardening: no screenshots while the wasm runtime spins up (races
   SDL's WebGL context creation in headless chromium), one reload retry,
   and the game rect is detected from the x-extent of non-black columns

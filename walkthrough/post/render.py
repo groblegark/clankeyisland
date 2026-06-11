@@ -154,6 +154,12 @@ def main():
                      "split[a][b];[a]palettegen[p];[b][p]paletteuse"),
              gif])
 
+    # edit parameters for the dub stage (post/dub.py)
+    with open(os.path.join(take, "render.json"), "w") as f:
+        json.dump({"trim_start": start, "trim_end": end,
+                   "card_sec": CARD_SEC, "fps": FPS, "rect": rect}, f,
+                  indent=1)
+
     dur = end - start + 2 * CARD_SEC
     print(f"{final}  ({dur:.0f}s)")
     print(srt)

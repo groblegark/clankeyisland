@@ -56,6 +56,54 @@ VERB_CASE = {
     "Move": "Move",
 }
 
+# Tee everything the game sends to the speakers into a MediaRecorder, so
+# perform takes capture the REAL soundtrack (OPL music + SFX) for the dub.
+AUDIO_TAP_JS = """
+window.__audio = {started: false, parts: [], events: []};
+const OC = AudioNode.prototype.connect;
+AudioNode.prototype.connect = function(target, ...rest) {
+  try {
+    if (target instanceof AudioDestinationNode && !this.context.__dest) {
+      const ctx = this.context;
+      ctx.__dest = ctx.createMediaStreamDestination();
+      if (!window.__audio.started) {
+        window.__audio.started = true;
+        const rec = new MediaRecorder(ctx.__dest.stream,
+                                      {mimeType: 'audio/webm'});
+        window.__audio.rec = rec;
+        rec.onerror = (e) => window.__audio.events.push('error:' + e.error);
+        rec.onstop = () => { window.__audio.events.push('stop');
+                             window.__audio.stopped = true; };
+        rec.ondataavailable = (e) => {
+          if (e.data && e.data.size) window.__audio.parts.push(e.data);
+        };
+        rec.start(1000);
+        if (window.__audioStart) window.__audioStart();
+      }
+    }
+    if (this.context.__dest && target instanceof AudioDestinationNode)
+      OC.call(this, this.context.__dest);
+  } catch (e) {
+    window.__audio.events.push('tap-error:' + e.message);
+  }
+  return OC.call(this, target, ...rest);
+};
+window.__audioCollect = async () => {
+  const a = window.__audio;
+  if (a.rec && a.rec.state === 'recording') {
+    a.rec.stop();
+    await new Promise(res => { const t = setInterval(() => {
+      if (a.stopped) { clearInterval(t); res(); } }, 50); });
+  }
+  const blob = new Blob(a.parts, {type: 'audio/webm'});
+  const buf = new Uint8Array(await blob.arrayBuffer());
+  let bin = '';
+  for (let i = 0; i < buf.length; i += 0x8000)
+    bin += String.fromCharCode.apply(null, buf.subarray(i, i + 0x8000));
+  return btoa(bin);
+};
+"""
+
 
 def near(px, target):
     return (abs(px[0] - target[0]) <= TOL and abs(px[1] - target[1]) <= TOL
@@ -420,17 +468,27 @@ def main():
     take = Take(out_dir)
 
     print(f"{args.mode} take -> {out_dir}")
+    audio_chunks = []
     with sync_playwright() as pw:
-        browser = pw.chromium.launch()
+        # audio starts suspended without a gesture otherwise — the arrival
+        # cutscene would lose its music
+        browser = pw.chromium.launch(
+            args=["--autoplay-policy=no-user-gesture-required"])
         ctx_kw = {"viewport": VIEWPORT}
         if args.mode == "perform":
             ctx_kw.update(record_video_dir=out_dir,
                           record_video_size=VIEWPORT)
         ctx = browser.new_context(**ctx_kw)
+        if args.mode == "perform":
+            ctx.add_init_script(AUDIO_TAP_JS)
         page = ctx.new_page()
         take.t0 = time.monotonic()   # video recording starts with the page;
         page.on("console", lambda m: take.console.append(  # align clocks
             {"type": m.type, "text": m.text}))
+        if args.mode == "perform":
+            import base64
+            page.expose_function("__audioStart",
+                                 lambda: take.log("audio_start"))
 
         perf = Performer(page, stage, transcript, take, args.mode)
         ok = perf.boot(target)
@@ -438,8 +496,20 @@ def main():
             for shot in screenplay["shots"]:
                 if not perf.run_shot(shot) and args.mode == "validate":
                     pass  # keep going: report all failures in one run
+        if args.mode == "perform":
+            try:
+                b64 = page.evaluate("window.__audioCollect()")
+                audio_chunks.append(base64.b64decode(b64))
+                take.log("audio_collected", bytes=len(audio_chunks[0]),
+                         events=page.evaluate("window.__audio.events"))
+            except Exception as e:
+                take.log("audio_collect_error", error=str(e))
         ctx.close()   # flushes the video file
         browser.close()
+
+    if audio_chunks:
+        with open(os.path.join(out_dir, "game-audio.webm"), "wb") as f:
+            f.write(b"".join(audio_chunks))
 
     # console errors beyond the allowlist are failures
     for c in take.console:
@@ -450,7 +520,8 @@ def main():
     take.save()
     if args.mode == "perform":
         for f in os.listdir(out_dir):
-            if f.endswith(".webm"):
+            if f.endswith(".webm") and f not in ("take.webm",
+                                                 "game-audio.webm"):
                 os.rename(os.path.join(out_dir, f),
                           os.path.join(out_dir, "take.webm"))
         write_dub_sheet(take, screenplay)

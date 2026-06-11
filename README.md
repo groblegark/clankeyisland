@@ -8,7 +8,9 @@ on Clankey Island — built to run in [ScummVM](https://www.scummvm.org/).
 ![The walk-through-er performing Scene 01](docs/media/docks.gif)
 
 *(recorded automatically by the [walk-through-er](docs/WALKTHROUGHER.md),
-which also gates deploys: if it can't finish the game, we don't ship)*
+which also gates deploys: if it can't finish the game, we don't ship.
+**[Watch the full Scene 01 production with voice acting and music
+→](docs/media/walkthrough-s01.mp4)**)*
 
 > *Deep in the Rust Belt Sea lies Clankey Island, home to Clanker City: a
 > sprawling metropolis of robots, where steam hisses from manhole covers,
