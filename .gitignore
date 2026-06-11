@@ -1,0 +1,12 @@
+# OS junk
+.DS_Store
+
+# AGS compiled output
+Compiled/
+*.ags
+*.dta
+_Debug/
+
+# Editor backups
+*.bak
+backup_*

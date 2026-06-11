@@ -1,0 +1,64 @@
+# Clankey Island — Game Design Document
+
+## Logline
+
+A rookie maintenance-bot named **Sprocket** arrives in Clanker City with one
+oil can and a dream, only to discover the **Great Dynamo** — the machine heart
+that powers every robot on the island — is winding down. Sprocket has three
+days (of in-game story, not real time) to find the three lost **Keys of
+Clankey Island** and rewind the city before everyone grinds to a halt.
+
+Tone: Monkey Island-style comedy. Verb-based or two-click point-and-click.
+Nothing can kill you; every failure is a joke.
+
+## Setting: Clanker City
+
+A robot metropolis stacked in three tiers:
+
+1. **The Docks** — rusty harbor district where Sprocket arrives. Cargo cranes,
+   the Scrap & Barrel tavern, ferry to the mainland (broken, naturally).
+2. **Midtown Gearworks** — neon main street. Shops: Lefty's Spare Parts,
+   the Oil Bar, City Hall (run by Mayor Piston), the Grand Cog Theater.
+3. **The Dynamo District** — uptown, fenced off, humming. Home of the Great
+   Dynamo and the mysterious Order of the Wind-Up Key.
+
+## Main Characters
+
+| Character | Role |
+|---|---|
+| **Sprocket** | Player character. Eager rookie maintenance-bot, too small for his wrench. |
+| **Mayor Piston** | Blustery steam-powered mayor. Denies the Dynamo is failing. |
+| **Rivet** | Dockside scrap-dealer. Knows everything, sells hints for bolts (currency). |
+| **Madame Voltina** | Fortune-telling tesla-coil bot at the Grand Cog Theater. |
+| **The Rustlers** | Gang of corroded pirate-bots who stole the first Key. |
+| **Old Crank** | Hermit wind-up bot who remembers when the Dynamo was built. |
+
+## Act Structure
+
+- **Act 1 — The Docks:** Arrive, learn the Dynamo is failing, earn 10 bolts,
+  out-riddle Rivet, recover **Key #1** from the Rustlers' hideout.
+- **Act 2 — Midtown:** Win the Grand Cog talent show to get backstage, where
+  Madame Voltina guards **Key #2**. Expose Mayor Piston's cover-up.
+- **Act 3 — Dynamo District:** Old Crank reveals he *is* **Key #3** (his
+  wind-up key fits the Dynamo). Final sequence: rewind the Dynamo while the
+  city powers down around you, room by room.
+
+## Core Mechanics
+
+- Two-click interface (left = interact/walk, right = examine) — AGS default.
+- Inventory combination puzzles (oil can + everything, ideally).
+- **Bolts** as currency for a small economy in Act 1.
+- Dialog trees with insult-fencing-style riddle duel vs. Rivet.
+
+## Art Direction
+
+- 320x200, chunky pixel art, big readable silhouettes.
+- Palette: rust oranges + teal neon + sodium-lamp yellow.
+- Every background needs at least one animating element (steam, neon flicker,
+  rotating gear) to keep the city feeling alive.
+
+## Audio
+
+- Jazzy mechanical swing ("the Clanker City Shuffle") for Midtown.
+- Foghorns and creaking metal for the Docks.
+- The Dynamo's hum is a musical drone that detunes as the game progresses.
