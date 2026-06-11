@@ -1,7 +1,7 @@
-# Clankey Island 🤖🏝️
+# Clanker City Chronicles 🤖🏝️
 
-A point-and-click adventure game set in **Clanker City**, the robot metropolis —
-built to run in [ScummVM](https://www.scummvm.org/).
+A point-and-click adventure game set in **Clanker City**, the robot metropolis
+on Clankey Island — built to run in [ScummVM](https://www.scummvm.org/).
 
 > *Deep in the Rust Belt Sea lies Clankey Island, home to Clanker City: a
 > sprawling metropolis of robots, where steam hisses from manhole covers,

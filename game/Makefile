@@ -1,0 +1,91 @@
+# Clankey Island — builds a SCUMM v6 game with the ScummC toolchain.
+# Run tools/setup-scummc.sh and tools/genassets.py first.
+#
+# Targets:
+#   make            -> build/chronicles.000/.001 (+ .sou)
+#   make tentacle   -> build/tentacle.* (DOTT-keyed, what ScummVM runs)
+
+GAME_NAME = chronicles
+
+SRCS = common.scc \
+       verbs.scc \
+       dialog.scc \
+       actors.scc \
+       inventoryitems.scc \
+       docks.scc \
+
+REPO_ROOT  := $(abspath ..)
+SCUMMC_DIR := $(REPO_ROOT)/vendor/scummc
+BIN_DIR    := $(firstword $(wildcard $(SCUMMC_DIR)/build.*/*))
+INC_DIR    := $(SCUMMC_DIR)/include
+
+GAME_DIR  := .
+ASSET_DIR := $(REPO_ROOT)/assets/generated
+FONT_DIR  := $(REPO_ROOT)/assets/fonts
+COST_DIR  := costumes
+BUILD     := build
+
+SCC  := $(BIN_DIR)/scc
+SLD  := $(BIN_DIR)/sld
+COST := $(BIN_DIR)/cost
+CHAR := $(BIN_DIR)/char
+
+TARGET_VERSION = 6
+
+SCC_FLAGS = -V $(TARGET_VERSION) \
+            -I $(INC_DIR) \
+            -I $(GAME_DIR) \
+            -I $(BUILD) \
+            -R $(ASSET_DIR) \
+            -R $(BUILD) \
+
+OBJS = $(SRCS:%.scc=$(BUILD)/%.roobj)
+
+all: $(BUILD)/$(GAME_NAME).000
+
+$(BUILD):
+	mkdir -p $(BUILD)
+
+# costumes (generates the *_anim.sch header as a side effect)
+COSTUME_FRAMES = $(wildcard $(ASSET_DIR)/sprocket/frames/*.bmp)
+
+$(BUILD)/%.cost: $(COST_DIR)/%.scost $(COSTUME_FRAMES) | $(BUILD)
+	$(COST) -o $@ -I $(COST_DIR) \
+	        -header $(BUILD)/$*_anim.sch -prefix $*_anim_ $<
+
+$(BUILD)/%_anim.sch: $(BUILD)/%.cost ;
+
+# charsets
+$(BUILD)/%.char: $(FONT_DIR)/%.bmp | $(BUILD)
+	$(CHAR) -ochar $@ -ibmp $<
+
+CHARSETS = $(BUILD)/vera.char $(BUILD)/vera-small.char $(BUILD)/vera-gui.char
+
+# rooms
+$(BUILD)/%.roobj: $(GAME_DIR)/%.scc | $(BUILD)
+	$(SCC) -o $@ $(SCC_FLAGS) $<
+
+# extra dependencies
+$(BUILD)/actors.roobj: $(BUILD)/sprocket_anim.sch $(BUILD)/sprocket.cost
+$(BUILD)/common.roobj: $(CHARSETS)
+$(BUILD)/verbs.roobj:  $(CHARSETS)
+
+$(BUILD)/$(GAME_NAME).000: $(OBJS)
+	cd $(BUILD) && $(SLD) -o $(GAME_NAME) $(SLD_FLAGS) $(notdir $^)
+
+# DOTT-compatible build: XOR key 0x69 + monster.sou, runs under
+# ScummVM gameid scumm:tentacle (no detection entry for homebrew).
+$(BUILD)/tentacle.000: SLD_FLAGS += -key 0x69
+$(BUILD)/tentacle.000: $(OBJS)
+	cd $(BUILD) && $(SLD) -o tentacle $(SLD_FLAGS) $(notdir $^)
+	cp $(BUILD)/tentacle.sou $(BUILD)/monster.sou 2>/dev/null || true
+
+tentacle: $(BUILD)/tentacle.000
+
+run: tentacle
+	scummvm -p $(BUILD) scumm:tentacle
+
+clean:
+	rm -rf $(BUILD)
+
+.PHONY: all tentacle run clean

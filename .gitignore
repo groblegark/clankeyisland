@@ -13,3 +13,6 @@ backup_*
 
 # Vendored toolchain (rebuilt by tools/setup-scummc.sh)
 vendor/
+
+# game build output
+game/build/

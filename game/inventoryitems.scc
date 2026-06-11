@@ -1,0 +1,54 @@
+/* Clanker City Chronicles — inventory items. */
+
+#include <scummVars6.s>
+#include "common.sch"
+#include "inventoryitems.sch"
+
+room InventoryItems {
+
+    object bolt {
+        w = 40;
+        h = 16;
+        x = 0;
+        name = "shiny bolt";
+        states = {
+            { 0, 0, "inventory/inv_bolt.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("One genuine Clanker City bolt. Legal tender, light snack, structural member.");
+            return;
+        case Smell:
+            egoSay("Mmm. Zinc-plated.");
+            return;
+        case Use:
+            egoSay("I'm saving it. It's one ninth of a fortune.");
+            return;
+        }
+    }
+
+    object poster {
+        w = 40;
+        h = 16;
+        x = 0;
+        name = "official notice";
+        states = {
+            { 0, 0, "inventory/inv_poster.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("\"DYNAMO MAINTENANCE: NOTHING IS WRONG. - Mayor Piston.\"");
+            waitForMessage();
+            egoSay("Nothing says 'something is wrong' like an official notice that nothing is wrong.");
+            return;
+        case Smell:
+            egoSay("Fresh ink. Suspiciously fresh.");
+            return;
+        }
+    }
+
+}

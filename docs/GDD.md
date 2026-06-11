@@ -1,4 +1,4 @@
-# Clankey Island — Game Design Document
+# Clanker City Chronicles — Game Design Document
 
 ## Logline
 

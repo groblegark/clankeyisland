@@ -1,0 +1,36 @@
+/* Clanker City Chronicles — actors. */
+
+#include <scummVars6.s>
+#include "common.sch"
+#include "actors.sch"
+
+#include "sprocket_anim.sch"
+
+room Actors {
+
+    // the costumes for our actors
+    cost sprocketCost = "sprocket.cost";
+
+    // set the actor costumes, etc
+    script setupActors() {
+
+        // initialize Sprocket
+        setCurrentActor(sprocket);
+        initActor();
+        setActorCostume(sprocketCost);
+        setActorName("Sprocket");
+        setActorWalkSpeed(2,1);
+        setActorTalkColor(SPROCKET_COLOR);
+        setActorWidth(20);
+        setActorAnimSpeed(4);
+        setObjectClass(sprocket, [ 0x80 + Person ]);
+
+        // set VAR_EGO so we can use the *Ego* functions
+        VAR_EGO = sprocket;
+
+        invOffset = 0;
+
+        setCurrentActor(VAR_EGO);
+    }
+
+}

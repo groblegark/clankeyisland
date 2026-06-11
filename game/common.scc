@@ -1,0 +1,582 @@
+/* Clanker City Chronicles — engine boilerplate (ResRoom).
+ *
+ * Derived from ScummC's openquest example,
+ * Copyright (C) 2007 Alban Bedel (GPL v2+).
+ * Clankey Island adaptations (C) 2026, same license.
+ */
+
+// include all the vars used by the engine itself
+#include <scummVars6.s>
+#include "common.sch"
+#include "inventoryitems.sch"
+#include "dialog.sch"
+#include "verbs.sch"
+#include "actors.sch"
+#include "docks.sch"
+
+
+room ResRoom {
+
+    // the gui uses the first charset, so force its address
+    chset chset1 @ 1 = "vera-gui.char";
+    // our standard charset
+    chset chtest = "vera.char";
+    // dialog charset
+    chset dialogCharset = "vera-small.char";
+
+    int selVerb,altVerb;
+    int tryPick;
+
+    // this script runs in the background checking where the mouse is,
+    // updating the sentence and setting the alt verb
+    script mouseWatch() {
+        int vrb,obj,target,alt,desc;
+
+        while(1) {
+            unless(cursorOn) {
+                if(altVerb) {
+                    setCurrentVerb(altVerb);
+                    setVerbOn();
+                    redrawVerb();
+                    altVerb = 0;
+                }
+                do breakScript() until(cursorOn);
+            }
+            if(isScriptRunning(VAR_SENTENCE_SCRIPT)) {
+                 breakScript();
+                continue;
+            }
+
+            // find what verb should be displayed and the
+            // object under the pointer
+            vrb = 0;
+            desc = 0;
+
+            obj = getObjectAt(VAR_VIRT_MOUSE_X,VAR_VIRT_MOUSE_Y);
+
+            unless(obj) {
+                obj = getActorAt(VAR_VIRT_MOUSE_X,VAR_VIRT_MOUSE_Y);
+                if(obj == VAR_EGO)
+                    obj = 0;
+                else if (actorObject[obj])
+                    desc = actorObject[obj];
+            }
+
+            unless(obj) {
+                obj = getVerbAt(VAR_MOUSE_X,VAR_MOUSE_Y);
+                if(obj >= invSlot0 && obj <= invSlot7) {
+                    obj = findInventory(VAR_EGO,obj-invSlot0+1+invOffset);
+                    if(!selVerb || selVerb == PickUp)
+                        vrb = Use;
+                    else
+                        vrb = selVerb;
+                } else
+                    obj = 0;
+            }
+            unless(vrb)
+                vrb = selVerb ? selVerb : WalkTo;
+
+            // Set description object
+            unless(desc)
+            	desc = obj;
+
+            if(sntcPrepo) {
+                target = sntcObjB;
+                if(obj == sntcObjA) {
+                	obj = 0;
+                	desc = 0;
+                }
+            } else target = sntcObjA;
+
+            unless(vrb == sntcVerb && obj == target) {
+                sntcVerb = vrb;
+
+                // Set sentence line
+                if(sntcPrepo) {
+                	sntcObjB = obj;
+                	sntcObjBDesc = desc;
+                }
+                else {
+                	sntcObjA = obj;
+                	sntcObjADesc = desc;
+                }
+
+                setCurrentVerb(SntcLine);
+                redrawVerb();
+            }
+
+
+            if(obj) {
+                if(obj is Person)
+                    alt = TalkTo;
+                else if(obj is Openable)
+                    alt = Open;
+                else
+                    alt = LookAt;
+            } else
+                alt = 0;
+
+            if(alt != altVerb) {
+                if(altVerb) {
+                    setCurrentVerb(altVerb);
+                    setVerbOn();
+                    redrawVerb();
+                }
+                if(alt) {
+                    setCurrentVerb(alt);
+                    verbDim();
+                    redrawVerb();
+                }
+                altVerb = alt;
+            }
+
+            breakScript();
+        }
+    }
+
+
+    // setup the cursor
+    script showCursor() {
+        if(cursorOn) return;
+        cursorOn();
+        userPutOn();
+        cursorOn = 1;
+    }
+
+    script hideCursor() {
+        unless(cursorOn) return;
+        cursorOff();
+        userPutOff();
+        cursorOn = 0;
+    }
+
+    script cutsceneStart(int type) {
+        hideCursor();
+        if(type > 0) {
+            // We need to break here to make sure the mouse watch script
+            // stops. Otherwise it might turn on the alt verb again.
+            breakScript();
+            Verbs::showVerbs(0);
+        }
+    }
+
+    script cutsceneEnd(int type) {
+        showCursor();
+        if(type > 1)
+            Verbs::showVerbs(1);
+    }
+
+    script resetSntc(int vrb) {
+        sntcObjA = 0;
+        sntcObjADesc = 0;
+        if(sntcPrepo) {
+            undim(sntcPrepo);
+            sntcObjB = 0;
+            sntcObjBDesc = 0;
+        }
+        selVerb = vrb;
+        setCurrentVerb(SntcLine);
+        redrawVerb();
+    }
+
+    script defaultAction(int vrb, int objA, int objB) {
+        switch(vrb) {
+        case WalkTo:
+            return;
+
+        case PickUp:
+            // If the object is pickable and uses an object from the
+            // inventory room
+            if(objA is Pickable && getObjectVerbEntrypoint(objA,InventoryObject)) {
+                startObject2(objA,InventoryObject, [ InventoryObject, objA ]);
+                if(VAR_RETURN) {
+                    pickupObject(VAR_RETURN, InventoryItems);
+                    setObjectClass(objA,[ 0x80 + ClassUntouchable ]);
+                    setObjectState(objA, 0);
+                    return;
+                }
+            }
+            if(objA is Person)
+                egoSay("Picking up citizens is how you get decommissioned.");
+            else
+                egoSay("My warranty specifically excludes that.");
+            break;
+
+        case Use:
+        case UsedWith:
+           if(objA is Person) {
+               egoSay("I can't just *use* a fellow robot. We have a union.");
+               break;
+           }
+           if(objB) {
+               if(vrb == Use) if(getObjectVerbEntrypoint(objB,UsedWith)) {
+                   startObject2(objB,UsedWith,[ UsedWith, objB, objA ]);
+                   break;
+               }
+               if(objB is Person)
+                   egoSay("They look fully assembled already.");
+               else
+                   egoSay("Those parts are not compatible.");
+           } else
+               egoSay("My manual has no chapter on that.");
+           break;
+
+       case Give:
+           if(objB && objB is Person) {
+               egoSay("Maybe later. It might be a collector's item.");
+               break;
+           }
+           else
+               egoSay("I can't do that!");
+           break;
+
+        case LookAt:
+            if(objA is Person)
+                egoSay("A fellow mechanical citizen.");
+            else
+                egoSay("Standard-issue municipal hardware.");
+            break;
+
+        case Move:
+            if(objA is Person)
+                egoSay("Moving them would accomplish nothing.");
+            else
+                egoSay("It's bolted down. Everything here is bolted down. Except the bolts.");
+            break;
+
+        case Open:
+            if(objA is Person) {
+                egoSay("My screwdriver attachment is for personal use only.");
+                break;
+            }
+            if(objA is !Openable) {
+                egoSay("That doesn't seem to open.");
+                break;
+            }
+            setObjectState(objA,!getObjectState(objA));
+            if(getObjectVerbEntrypoint(objA,SetBoxes))
+                startObject2(objA,SetBoxes, [ vrb, objA ]);
+            break;
+
+        case Smell:
+            if(objA is Person)
+                egoSay("Smells like hard work and WD-40.");
+            else
+                egoSay("My olfactory sensor only detects rust. It is very happy here.");
+            break;
+
+        case TalkTo:
+            if(objA is Person)
+                egoSay("I don't know how to communicate with them.");
+            else
+                egoSay("It has nothing to say. Story of this whole town.");
+            break;
+
+        default:
+            egoSay("Hmm. No.");
+            break;
+        }
+        waitForMessage();
+    }
+
+    // the sentence script, doSentence calls it
+    script sentenceHandler(int vrb, int objA, int objB) {
+        int owner,tmp,act;
+
+        // click on the sentence line, make it as if the user
+        // clicked the currently selected objects
+        if(vrb == SntcLine) {
+            vrb = sntcVerb;
+            objA = sntcObjA;
+            objB = sntcObjB;
+        }
+
+        // look who owns the object
+        owner = getObjectOwner(objA);
+
+        // with use and give we must own it first
+        while(isAnyOf(vrb, [ Use, Give ])) {
+            unless(objB) {
+                if(getObjectVerbEntrypoint(objA,Preposition)) {
+                    startObject2(objA,Preposition,[ vrb, objA ]);
+                    if(sntcPrepo) {
+                        setCurrentVerb(SntcLine);
+                        redrawVerb();
+                        return;
+                    }
+                }
+                break;
+            }
+
+            // we must pick it up first
+            if(owner != VAR_EGO) {
+                if(tryPick == objA) { // pickup failed
+                    tryPick = 0;
+                    return;
+                }
+                // if a different object is used once it is in the inventory
+                // use this one when resending the sentence
+                if(getObjectVerbEntrypoint(objA,InventoryObject)) {
+                    startObject2(objA,InventoryObject,[ InventoryObject, objA ]);
+                    tryPick = VAR_RETURN;
+                } else
+                    tryPick = objA;
+                // try to pickup then do our action again
+                doSentence(vrb,tryPick,0,objB);
+                doSentence(PickUp,objA,0,0);
+                return;
+            } else
+                tryPick = 0;
+            break;
+        }
+
+        // if the object is in the room walk there
+        if(objA <= 0xF || owner == 0xF) {
+            walkActorToObj(VAR_EGO,objA,0);
+            waitForActor(VAR_EGO);
+            // This is needed when walking to an actor
+            if(objA <= 0xF)
+                actorFace(VAR_EGO,objA);
+        } else if(objB) if(objB <= 0xF || getObjectOwner(objB) == 0xF) {
+            walkActorToObj(VAR_EGO,objB,0);
+            waitForActor(VAR_EGO);
+            if(objB <= 0xF)
+                actorFace(VAR_EGO,objB);
+        }
+
+        // Take the actorObject if it exists
+        if(objA <= 0xF) if(actorObject[objA]) {
+            act = objA;
+            objA = actorObject[objA];
+        }
+
+        // if the object implements the verb call that
+        if(getObjectVerbEntrypoint(objA,vrb)) {
+            startObject(2,objA,vrb,[ vrb, objA, objB ]);
+            // if the verb locked the cursor wait until it's unlocked
+            do breakScript() until(cursorOn);
+        } else {
+            // otherwise use our default
+            defaultAction(vrb, act ? act : objA, objB);
+        }
+        // if the verb needs objB we are done for now
+        if(sntcPrepo && !objB) return;
+
+        // all done, reset the sentence
+        resetSntc(0);
+    }
+
+    script keyboardHandler(int key) {
+        switch(key) {
+        case 'b':
+            egoSay("Beep.");
+            break;
+        case 'q':
+            shutdown();
+            break;
+        }
+    }
+
+    // This script receives the keyboard and mouse events
+    script inputHandler(int area,int cmd, int btn) {
+        int vrb,obj,objB,x;
+        int invCount,invOffsetMax;
+
+        egoPrintBegin();
+        egoPrintOverhead();
+        actorPrintEnd();
+
+        if(area == 4) { // area 4 is the keyboard
+            keyboardHandler(cmd);
+            return;
+        }
+
+        // A verb was clicked
+        if(isAnyOf(cmd, [ Give,  PickUp, Use,
+                          Open,  LookAt, Smell,
+                          TalkTo,Move ])) {
+            resetSntc(cmd);
+            return;
+        }
+
+
+        if(cmd == invUp || cmd == invDown) {
+            invCount = getInventoryCount(VAR_EGO);
+            invOffset += (cmd == invUp ? -1 : 1)*INVENTORY_COL;
+            invOffsetMax = ((invCount+INVENTORY_COL-1)/INVENTORY_COL -
+                            INVENTORY_LINE)*INVENTORY_COL;
+            if(invOffset > invOffsetMax)
+                invOffset = invOffsetMax;
+            if(invOffset < 0) invOffset = 0;
+            Verbs::showVerbs(1);
+            inventoryHandler( 0 );
+            return;
+        }
+
+
+        // now are left: room click and inventory
+        // stop any currently running sentence
+        stopSentence();
+        // (re)start the mouse script, giving it a chance to update
+        // the sentence.
+        mouseWatch();
+
+        // button 2 was clicked but not on an object: cancel
+        if(btn == 2) unless(sntcPrepo ? sntcObjB : sntcObjA) {
+            // stop walking
+            setCurrentActor(VAR_EGO);
+            setActorStanding();
+            resetSntc(0);
+            return;
+        }
+
+        // an object was clicked
+        if(sntcPrepo ? sntcObjB : sntcObjA) {
+            // select the verb that is displayed
+            if(cmd) selVerb = sntcVerb;
+            // button 2: select the alternate verb
+            if(btn == 2 && altVerb) {
+                selVerb = altVerb;
+                mouseWatch();
+            }
+            // queue the sentence
+            doSentence(sntcVerb,sntcObjA,0,sntcObjB);
+            return;
+        }
+        // click on nothing, ignore non room clicks
+        if(area != 2) return;
+
+        // reset the sentence so we get WalkTo again
+        if(selVerb) resetSntc(0);
+
+        // then go there
+        walkActorTo(VAR_EGO,VAR_VIRT_MOUSE_X,VAR_VIRT_MOUSE_Y);
+    }
+
+    script setInventoryIcon(int icon, int slot) {
+        setCurrentVerb(slot);
+        setVerbObject(icon,InventoryItems);
+        redrawVerb();
+    }
+
+    script inventoryHandler(int obj) {
+        int i, count;
+
+        count = getInventoryCount(VAR_EGO);
+
+        for(i = 0 ; i < INVENTORY_SLOTS ; i++) {
+            if(i+invOffset < count) {
+                obj = findInventory(VAR_EGO,i+1+invOffset);
+                setInventoryIcon(obj,invSlot0+i);
+            } else {
+                setCurrentVerb(invSlot0+i);
+                setVerbNameString(0);
+                redrawVerb();
+            }
+        }
+
+    }
+
+    script quit() {
+        shutdown();
+    }
+
+    // The main script is the first thing started by the engine.
+    // At that point no room is loaded yet.
+    script main (int bootParam) {
+        int i,j;
+
+        // set the F5 key for the main menu
+        VAR_MAINMENU_KEY = 319;
+        // set the . key to skip text
+        VAR_TALKSTOP_KEY = 46;
+        // set F8 as the restart key
+        VAR_RESTART_KEY = 322;
+        VAR_PAUSE_KEY = ' ';
+        // skip a cutscene
+        VAR_CUTSCENEEXIT_KEY = 27;
+
+        VAR_GAME_VERSION = 0;
+        VAR_GUI_COLORS[0] = [ 0x00, 0x00, 0x06, 0x00, 0x22, 0x1E, 0x08, 0x0A, 0x00, 0x09,
+                              0x03, 0x07, 0x22, 0x68, 0x0C, 0x68, 0x0C, 0x68, 0x0C, 0x68,
+                              0x0C, 0x00, 0x00, 0x00, 0x00, 0x05, 0x22, 0x68, 0x0C, 0x68,
+                              0x0C, 0x21, 0x06, 0x68, 0x0C, 0x68, 0x0C, 0x05, 0x22, 0x68,
+                              0x0C, 0x68, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 ];
+
+        VAR_DEBUG_PASSWORD[0] = "";
+
+        // setup the GUI
+        VAR_PAUSE_MSG[0] = "Clanker City Chronicles: paused for maintenance.";
+        VAR_QUIT_MSG[0] = "Power down? (Y/N)Y";
+        VAR_RESTART_MSG[0] = "Reboot from factory settings? (Y/N)Y";
+
+        VAR_SAVE_BTN[0] = "Save it";
+        VAR_LOAD_BTN[0] = "Load it";
+        VAR_PLAY_BTN[0] = "Continue";
+        VAR_CANCEL_BTN[0] = "Cancel";
+        VAR_QUIT_BTN[0] = "Quit";
+        VAR_OK_BTN[0] = "Ok";
+
+        VAR_SAVE_MSG[0] = "Saving '%%s'";
+        VAR_LOAD_MSG[0] = "Loading '%%s'";
+
+        VAR_MAIN_MENU_TITLE[0] = "Clanker City Chronicles";
+        VAR_SAVE_MENU_TITLE[0] = "Save game";
+        VAR_LOAD_MENU_TITLE[0] = "Load game";
+
+        VAR_NOT_SAVED_MSG[0] = "Game NOT saved";
+        VAR_NOT_LOADED_MSG[0] = "Game NOT loaded";
+
+        VAR_GAME_DISK_MSG[0] = "Insert disk %%c";
+        VAR_ENTER_NAME_MSG[0] = "You must enter a name";
+        VAR_SAVE_DISK_MSG[0] = "Insert your save disk";
+
+        VAR_OPEN_FAILED_MSG[0] = "Failed to open %%s (%%c%%d)";
+        VAR_READ_ERROR_MSG[0] = "Read error on disk %%c (%%c%%d)";
+
+        // set the main loop speed
+        VAR_TIMER_NEXT = 2;
+
+        // set the input handler
+        VAR_VERB_SCRIPT = inputHandler;
+        VAR_SENTENCE_SCRIPT = sentenceHandler;
+        VAR_INVENTORY_SCRIPT = inventoryHandler;
+        VAR_CUTSCENE_START_SCRIPT = cutsceneStart;
+        VAR_CUTSCENE_END_SCRIPT = cutsceneEnd;
+
+        // keep this room in memory even if we leave it,
+        // as it contains the charset, costume, etc
+        loadRoom(ResRoom);
+        lockRoom(ResRoom);
+
+        loadRoom(DockRoom);
+        lockRoom(DockRoom);
+
+        // Initialize the graphic mode.
+        // It needs to match the room image height otherwise
+        // the graphics go wacky.
+        setScreen(0,144);
+
+        // Create the actor -> obj link
+        dimInt(actorObject,0x10);
+
+        // init the charset
+        initCharset(chtest);
+
+        showCursor();
+
+        mouseWatch();
+
+        // init the print slot for actor talking
+        printBegin();
+        printCenter();
+        printOverhead();
+        printEnd();
+
+        // do the box effect
+        screenEffect(0x0005);
+        // start the room
+        startRoom(DockRoom);
+    }
+
+}

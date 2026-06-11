@@ -1,0 +1,403 @@
+/* Clanker City Chronicles — Scene 01: The Docks of Clanker City.
+ *
+ * Sprocket arrives in the robot metropolis. The ferry dies behind him,
+ * the neon sign is losing punctuation, and the Great Dynamo is
+ * officially Not Failing At All.
+ */
+
+#include <scummVars6.s>
+#include "common.sch"
+#include "docks.sch"
+#include "inventoryitems.sch"
+#include "verbs.sch"
+#include "actors.sch"
+
+
+room DockRoom {
+
+    image = "rooms/docks.bmp";
+    boxd = "rooms/docks.box";
+    trans = 0;
+
+    // -------------------------------------------------- ambient scripts
+
+    local script signFlicker() {
+        while(1) {
+            delay(getRandomNumberRange(80,300));
+            setObjectState(neonSign, 2);
+            delay(getRandomNumberRange(2,6));
+            setObjectState(neonSign, 1);
+            if(getRandomNumber(1)) {
+                delay(4);
+                setObjectState(neonSign, 2);
+                delay(2);
+                setObjectState(neonSign, 1);
+            }
+        }
+    }
+
+    // ------------------------------------------------------- room entry
+
+    local script entry() {
+        int firstInit;
+
+        firstInit = !doneArrival;
+
+        if(firstInit) {
+            Verbs::setupVerbs();
+            Actors::setupActors();
+        } else {
+            putActorAt(VAR_EGO,40,116,DockRoom);
+            startScript(1,signFlicker,[]);
+            return;
+        }
+
+        startScript(1,signFlicker,[]);
+
+        cutscene(2) {
+            doneArrival = 1;
+            try {
+                putActorAt(sprocket,12,114,DockRoom);
+                delay(60);
+                walkActorTo(sprocket,70,122);
+                waitForActor(sprocket);
+                egoSay("Clanker City! The big smoke! The city of ten thousand gears!");
+                waitForMessage();
+                egoSay("One small maintenance-bot, one oil can, one dream.");
+                waitForMessage();
+                actorFace(sprocket,ferry);
+                egoSay("Thanks for the ride! I'll catch the return ferry once I'm rich and famous.");
+                waitForMessage();
+                // the ferry dies on cue
+                setCurrentActor(sprocket);
+                setActorStanding();
+                egoSay("...");
+                waitForMessage();
+                egoSay("That clunk sounded expensive.");
+                waitForMessage();
+                egoSay("That clunk sounded PERMANENT.");
+                waitForMessage();
+                walkActorTo(sprocket,110,124);
+                waitForActor(sprocket);
+                egoSay("Well. Guess I live here now.");
+                waitForMessage();
+            }
+            override {
+                if(VAR_OVERRIDE) {
+                    actorSay(0xFF, "");
+                    putActorAt(sprocket,110,124,DockRoom);
+                    setCurrentActor(sprocket);
+                    setActorStanding();
+                }
+            }
+        }
+        if(firstInit)
+            Verbs::showVerbs(1);
+    }
+
+    // ---------------------------------------------------------- objects
+
+    object neonSign {
+        x = 96;
+        y = 6;
+        w = 128;
+        h = 32;
+        dir = NORTH;
+        name = "neon sign";
+        states = {
+            { 0, 0, "rooms/sign_on.bmp" },
+            { 0, 0, "rooms/sign_off.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("WELCOME TO CLANKER CITY. POP. 8,01,1.");
+            waitForMessage();
+            egoSay("Population eight-oh-one-comma-one. The punctuation died first.");
+            return;
+        case Use:
+        case Move:
+            unless(signShookBolt) {
+                cutscene(0) {
+                    egoSay("Maybe a good honest whack will fix the display.");
+                    waitForMessage();
+                    setObjectState(neonSign, 2);
+                    delay(6);
+                    setObjectState(neonSign, 1);
+                    delay(6);
+                    setObjectState(neonSign, 2);
+                    delay(6);
+                    setObjectState(neonSign, 1);
+                    signShookBolt = 1;
+                    setObjectState(dockBolt, 1);
+                    setObjectClass(dockBolt, [ ClassUntouchable ]);
+                    egoSay("It rained a bolt. In this town that's basically a tip.");
+                    waitForMessage();
+                }
+                return;
+            }
+            egoSay("It already gave me everything it had.");
+            return;
+        case Smell:
+            egoSay("Ozone and civic neglect.");
+            return;
+        }
+    }
+
+    object dockBolt {
+        x = 112;
+        y = 116;
+        w = 16;
+        h = 8;
+        dir = NORTH;
+        name = "shiny bolt";
+        class = { Pickable, ClassUntouchable };
+        states = {
+            { 0, 0, "rooms/bolt_obj.bmp" }
+        };
+        state = 0;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A bolt! Genuine legal tender of Clanker City.");
+            return;
+        case PickUp:
+        case Use:
+            pickupObject(InventoryItems::bolt, InventoryItems);
+            setObjectState(dockBolt, 0);
+            setObjectClass(dockBolt, [ 0x80 + ClassUntouchable ]);
+            egoSay("One bolt. Only eight thousand and ten more and I can afford a personality upgrade.");
+            return;
+        }
+    }
+
+    object ferry {
+        x = 0;
+        y = 42;
+        w = 45;
+        h = 33;
+        dir = WEST;
+        name = "ferry";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The S.S. Eventually. My ride here, and apparently nothing's ride anywhere ever again.");
+            return;
+        case Use:
+        case Open:
+            egoSay("The engine made a noise like a dying accordion and is now doing modern art.");
+            return;
+        case TalkTo:
+            egoSay("Hang in there, buddy.");
+            waitForMessage();
+            egoSay("The foghorn wheezed. I'm choosing to hear that as optimism.");
+            return;
+        case Smell:
+            egoSay("Salt water and burnt transmission fluid. The smell of adventure!");
+            return;
+        }
+    }
+
+    object crane {
+        x = 48;
+        y = 18;
+        w = 53;
+        h = 73;
+        dir = WEST;
+        name = "Boom-Arm Betty";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A cargo crane, frozen mid-lift. Or mid-yawn. Hard to tell.");
+            waitForMessage();
+            egoSay("The operator plate says 'BOOM-ARM BETTY'. Her eye-light is blinking in morse.");
+            waitForMessage();
+            egoSay("O... I... L. Yeah, Betty, we've all been there.");
+            return;
+        case TalkTo:
+            egoSay("Hello up there! Lovely evening!");
+            waitForMessage();
+            egoSay("...");
+            waitForMessage();
+            egoSay("She'd wave back if she could. She's out of oil, not out of manners.");
+            return;
+        case Use:
+            egoSay("Her joints are dry as a tax form. She needs oil before she'll move that crate.");
+            return;
+        case Smell:
+            egoSay("Burnt servo grease. A working robot's perfume.");
+            return;
+        }
+    }
+
+    object crate {
+        x = 124;
+        y = 50;
+        w = 21;
+        h = 17;
+        dir = NORTH;
+        name = "dangling crate";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Stenciled on the side: PROPERTY OF THE ORDER OF THE WIND-UP KEY.");
+            waitForMessage();
+            egoSay("Ominous AND conveniently plot-relevant.");
+            return;
+        case PickUp:
+        case Use:
+        case Move:
+            egoSay("It's twenty feet up. My arms are stock parts.");
+            waitForMessage();
+            egoSay("Betty could set it down, if anyone gave her a drink of oil.");
+            return;
+        }
+    }
+
+    object stall {
+        x = 150;
+        y = 56;
+        w = 51;
+        h = 47;
+        dir = NORTH;
+        name = "scrap stall";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Rivet's Scrap Emporium: 'One bot's trash is this bot's entire business model.'");
+            waitForMessage();
+            egoSay("The shutter sign says: BACK IN FIVE OIL CHANGES.");
+            return;
+        case Open:
+            egoSay("Shuttered tighter than the city budget.");
+            return;
+        case TalkTo:
+            egoSay("HELLO? ANYONE IN THERE?");
+            waitForMessage();
+            egoSay("The echo has rust in it.");
+            return;
+        }
+    }
+
+    object board {
+        x = 196;
+        y = 66;
+        w = 37;
+        h = 39;
+        dir = NORTH;
+        name = "notice board";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            unless(knowsAboutDynamo) {
+                cutscene(0) {
+                    egoSay("Official city notice, hot off the press:");
+                    waitForMessage();
+                    egoSay("'DYNAMO MAINTENANCE: NOTHING IS WRONG. NOTHING HAS EVER BEEN WRONG.'");
+                    waitForMessage();
+                    egoSay("'DO NOT STOCKPILE OIL. SIGNED, MAYOR PISTON.'");
+                    waitForMessage();
+                    knowsAboutDynamo = 1;
+                    egoSay("The Great Dynamo powers every bot on this island. Including me, as of today.");
+                    waitForMessage();
+                    egoSay("So that notice is the scariest thing I've ever read.");
+                    waitForMessage();
+                }
+                return;
+            }
+            egoSay("Still nothing wrong. Officially.");
+            return;
+        }
+    }
+
+    object poster {
+        x = 200;
+        y = 72;
+        w = 24;
+        h = 24;
+        dir = NORTH;
+        name = "official notice";
+        class = { Pickable };
+        states = {
+            { 0, 0, "rooms/poster_obj.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            // same gag as the board until you've read it
+            startObject2(board, LookAt, [ LookAt, board ]);
+            return;
+        case PickUp:
+        case Use:
+            unless(knowsAboutDynamo) {
+                egoSay("Let me read it first. I'm a maintenance-bot, not a barbarian.");
+                return;
+            }
+            pickupObject(InventoryItems::poster, InventoryItems);
+            setObjectState(poster, 0);
+            setObjectClass(poster, [ 0x80 + ClassUntouchable ]);
+            egoSay("Evidence. Or wall art. Possibly both.");
+            return;
+        }
+    }
+
+    object tavernDoor {
+        x = 268;
+        y = 62;
+        w = 29;
+        h = 43;
+        dir = NORTH;
+        name = "tavern door";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The Scrap & Barrel. I can hear a player piano in there, missing several keys.");
+            waitForMessage();
+            egoSay("...That feels thematically significant.");
+            return;
+        case Open:
+            egoSay("Bolted from the inside. The GOOD kind of bolted. I respect the craftsmanship.");
+            return;
+        case Use:
+            cutscene(0) {
+                egoSay("Knock knock.");
+                waitForMessage();
+                egoSay("A voice inside: 'WE OPEN IN ACT TWO.'");
+                waitForMessage();
+                egoSay("This town has a very literal relationship with dramatic structure.");
+                waitForMessage();
+            }
+            return;
+        case Smell:
+            egoSay("Spilled 10W-40 and broken dreams. So... a tavern.");
+            return;
+        }
+    }
+
+    object drain {
+        x = 148;
+        y = 120;
+        w = 25;
+        h = 11;
+        dir = NORTH;
+        name = "storm drain";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Something glints down there. Several somethings.");
+            waitForMessage();
+            egoSay("The city's loose change goes to the sea. Poetic. Infuriating.");
+            return;
+        case PickUp:
+        case Use:
+        case Open:
+            egoSay("My fingers are factory-standard. I'd need something magnetic. On a string.");
+            return;
+        }
+    }
+
+}
