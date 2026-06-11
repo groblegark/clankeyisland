@@ -18,3 +18,4 @@ vendor/
 game/build/
 web/dist/
 walkthrough/out/
+__pycache__/
