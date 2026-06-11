@@ -10,3 +10,6 @@ _Debug/
 # Editor backups
 *.bak
 backup_*
+
+# Vendored toolchain (rebuilt by tools/setup-scummc.sh)
+vendor/

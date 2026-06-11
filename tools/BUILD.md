@@ -1,31 +1,54 @@
-# Build pipeline notes
+# Build pipeline — ScummC (no editor, no GUI, text all the way down)
 
-Target: an AGS game package that ScummVM (installed via `brew install scummvm`)
-runs natively.
+We build a **real SCUMM v6 game** (the Day of the Tentacle engine) from plain
+text using [ScummC](https://github.com/AlbanBedel/scummc), and play it in
+ScummVM's core SCUMM engine. Every part of the game is a diffable file:
 
-## The honest state of AGS authoring on macOS
+| Game part | Source format | Tool |
+|---|---|---|
+| Rooms, objects, logic, dialog | `.scc` C-like scripts | `scc` (compiler) |
+| Costumes (actor sprites/anims) | `.scost` text + BMP/GIF frames | `cost` |
+| Fonts | BMP charset sheets | `char` |
+| Sounds | VOC samples | `soun` |
+| Music | MIDI | `midi` |
+| Final game | `.roobj` objects → `<name>.000/.001` | `sld` (linker) |
 
-- The **AGS Editor** (scene wiring, script compiling, packaging) is
-  Windows-only (.NET/WinForms). Realistic options from a Mac:
-  1. Run the editor under CrossOver/Wine or a Windows VM (UTM/Parallels).
-  2. Use the editor's command-line compile (`AGSEditor.exe /compile`) in that
-     same VM/Wine, driven from a script here, so the repo stays source-of-truth.
-- The **AGS runtime** is cross-platform, but we don't need it — ScummVM *is*
-  our runtime.
-
-## Asset specs
-
-| Asset | Spec |
-|---|---|
-| Backgrounds | 320x200 PNG (Midtown: 640x200 scrolling), indexed color OK |
-| Sprites | PNG with magenta (#FF00FF) or alpha transparency |
-| Walk cycles | 4 directions minimum, 6–8 frames each |
-| Music | MIDI or OGG (OGG preferred for the jazz tracks) |
-| SFX | OGG/WAV, mono, 22 kHz is plenty |
-
-## Smoke test
+## Setup (one-time)
 
 ```bash
-scummvm --detect /path/to/compiled-game/   # should report engine: AGS
-scummvm -p /path/to/compiled-game/ ags     # play
+tools/setup-scummc.sh
 ```
+
+Clones ScummC into `vendor/scummc` (gitignored), applies our patches from
+`tools/patches/` (arm64 endianness in `configure`; `man/` → `man/tools/`
+path fix in `Makefile.target`), and builds with Homebrew bison 3.x
+(system bison 2.3 is too old).
+
+GTK+/SDL are optional — they only gate the GUI tools (`boxedit`, `costview`),
+which we deliberately don't use. Walkboxes get declared in `.scc` text.
+
+## Build & run
+
+```bash
+make            # in game/ — compiles .scc → .roobj, links → clankey.000/.001
+scummvm --detect --path=game/build
+scummvm -p game/build scumm:tentacle
+```
+
+ScummVM has no detection entry for homebrew SCUMM games, so the linked files
+are named `tentacle.000/.001` and run under the Day of the Tentacle gameid —
+the standard ScummC trick, verified working with ScummVM 2026.2.0.
+
+## Reference
+
+- `vendor/scummc/examples/openquest/` — complete worked example game
+  (rooms, costumes, verbs, dialogs); our Makefile derives from it.
+- `vendor/scummc/man/` — tool man pages; the ScummC wiki has the `.scc`
+  language tour.
+
+## Asset specs (SCUMM v6)
+
+- Backgrounds: 320x200 BMP, 256-color indexed palette
+- Costume frames: BMP/GIF, palette index 0 = transparent
+- Sounds: 8-bit unsigned VOC (`raw2voc` converts raw PCM)
+- Music: standard MIDI files

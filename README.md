@@ -10,16 +10,16 @@ built to run in [ScummVM](https://www.scummvm.org/).
 
 ## How this works
 
-ScummVM doesn't author games — it *runs* them. The supported path for making a
-**new** game that ScummVM plays natively is to build it as an
-**AGS (Adventure Game Studio)** game; ScummVM ships a full AGS engine
-(AGS 2.5+ games are supported since ScummVM 2.5).
-
-So the pipeline is:
+ScummVM doesn't author games — it *runs* them. We author everything as plain
+text and compile to a **real SCUMM v6 game** (the Day of the Tentacle engine)
+using [ScummC](https://github.com/AlbanBedel/scummc). No editor, no GUI:
+rooms, dialog, and logic are C-like `.scc` scripts; costumes are `.scost`
+text files pointing at image frames. See `tools/BUILD.md` for the pipeline,
+and `tools/setup-scummc.sh` to bootstrap the toolchain.
 
 1. Author scenes, scripts, and assets here (this repo is the source of truth).
-2. Compile to an AGS game file (`.ags` / `game28.dta`).
-3. Drop the compiled game into ScummVM → play.
+2. `make` → `scc` compiles, `sld` links → `tentacle.000/.001`.
+3. `scummvm -p game/build scumm:tentacle` → play.
 
 ```
 assets/      Art, music, sound — source files (PNG, etc.)
@@ -49,6 +49,7 @@ scummvm                # launcher; add the compiled game directory
 - [x] Repo + project skeleton
 - [x] Game design doc (docs/GDD.md)
 - [x] First scene designs (game/scenes/)
+- [x] ScummC toolchain building on macOS/arm64 (tools/setup-scummc.sh)
+- [x] Demo game (openquest) compiled + detected by ScummVM 2026.2.0
+- [ ] First playable Clankey Island room (.scc) — derive from openquest
 - [ ] Concept art for Docks of Clanker City
-- [ ] AGS project + first playable room
-- [ ] Compiled build running in ScummVM
