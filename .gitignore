@@ -16,3 +16,4 @@ vendor/
 
 # game build output
 game/build/
+web/dist/

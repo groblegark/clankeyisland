@@ -1,0 +1,15 @@
+diff --git a/configure b/configure
+index b91d60bd..d34bc30f 100755
+--- a/configure
++++ b/configure
+@@ -1996,7 +1996,9 @@ wasm32-*)
+ 	_endian=little # the endian check below fails, but emscripten is always little endian anyway
+ 	_host_os=emscripten
+ 	_host_cpu=wasm32
+-	datadir='/data'
++	# Respect a user-supplied --datadir (needed when the site is hosted under
++	# a URL subpath, e.g. GitHub project pages); default to /data otherwise.
++	test "x$datadir" = 'x${datarootdir}/scummvm' && datadir='/data'
+ 	CXX="em++"
+ 	;;
+ wii)
