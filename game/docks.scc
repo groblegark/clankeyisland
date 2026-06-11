@@ -19,6 +19,17 @@ room DockRoom {
     boxd = "rooms/docks.box";
     trans = 0;
 
+    // ------------------------------------------------------------ sounds
+    // .soun resources are built by game/Makefile from tools/genaudio.py
+    // (VOC sfx) and tools/genmusic.py (GM MIDI theme).
+
+    sound themeSnd    = "dockside.soun";
+    sound whackSnd    = "whack.soun";
+    sound boltDropSnd = "bolt_drop.soun";
+    sound pickupSnd   = "pickup.soun";
+    sound knockSnd    = "knock.soun";
+    sound foghornSnd  = "foghorn.soun";
+
     // -------------------------------------------------- ambient scripts
 
     local script signFlicker() {
@@ -36,6 +47,21 @@ room DockRoom {
         }
     }
 
+    local script musicLoop() {
+        // 'Dockside' loops from the end of bar 16 back to beat 1
+        // (LOOP_BEATS in tools/genmusic.py). The watchdog below restarts
+        // it if the iMUSE loop ever falls off the end instead.
+        startMusic(themeSnd);
+        imPlayerSetLoop(themeSnd, 999, 1, 0, 65, 0);
+        while(1) {
+            delay(120);
+            unless(isSoundRunning(themeSnd)) {
+                startMusic(themeSnd);
+                imPlayerSetLoop(themeSnd, 999, 1, 0, 65, 0);
+            }
+        }
+    }
+
     // ------------------------------------------------------- room entry
 
     local script entry() {
@@ -49,10 +75,12 @@ room DockRoom {
         } else {
             putActorAt(VAR_EGO,40,116,DockRoom);
             startScript(1,signFlicker,[]);
+            startScript(1,musicLoop,[]);
             return;
         }
 
         startScript(1,signFlicker,[]);
+        startScript(1,musicLoop,[]);
 
         cutscene(2) {
             doneArrival = 1;
@@ -122,6 +150,7 @@ room DockRoom {
                 cutscene(0) {
                     egoSay("Maybe a good honest whack will fix the display.");
                     waitForMessage();
+                    startSound(whackSnd);
                     setObjectState(neonSign, 2);
                     delay(6);
                     setObjectState(neonSign, 1);
@@ -130,6 +159,7 @@ room DockRoom {
                     delay(6);
                     setObjectState(neonSign, 1);
                     signShookBolt = 1;
+                    startSound(boltDropSnd);
                     setObjectState(dockBolt, 1);
                     setObjectClass(dockBolt, [ ClassUntouchable ]);
                     egoSay("It rained a bolt. In this town that's basically a tip.");
@@ -164,6 +194,7 @@ room DockRoom {
             return;
         case PickUp:
         case Use:
+            startSound(pickupSnd);
             pickupObject(InventoryItems::bolt, InventoryItems);
             setObjectState(dockBolt, 0);
             setObjectClass(dockBolt, [ 0x80 + ClassUntouchable ]);
@@ -191,6 +222,7 @@ room DockRoom {
         case TalkTo:
             egoSay("Hang in there, buddy.");
             waitForMessage();
+            startSound(foghornSnd);
             egoSay("The foghorn wheezed. I'm choosing to hear that as optimism.");
             return;
         case Smell:
@@ -336,6 +368,7 @@ room DockRoom {
                 egoSay("Let me read it first. I'm a maintenance-bot, not a barbarian.");
                 return;
             }
+            startSound(pickupSnd);
             pickupObject(InventoryItems::poster, InventoryItems);
             setObjectState(poster, 0);
             setObjectClass(poster, [ 0x80 + ClassUntouchable ]);
@@ -364,6 +397,7 @@ room DockRoom {
             return;
         case Use:
             cutscene(0) {
+                startSound(knockSnd);
                 egoSay("Knock knock.");
                 waitForMessage();
                 egoSay("A voice inside: 'WE OPEN IN ACT TWO.'");

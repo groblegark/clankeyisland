@@ -16,3 +16,7 @@ path=@SITE_PATH@/data/games/chronicles
 # The data files masquerade as Day of the Tentacle (homebrew has no
 # detection entry), so skip the unknown-MD5 game data warning.
 check_gamedata=false
+# Pin the music path the wasm build actually has: the AdLib OPL
+# emulator (no soundfont/WebMIDI in the browser). See docs/research/AUDIO.md.
+music_driver=adlib
+opl_driver=db
