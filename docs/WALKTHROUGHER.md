@@ -1,4 +1,4 @@
-# The Walk-through-er — design
+# The Walk-through-er — design & implementation
 
 A tool that *performs* Clanker City Chronicles — plays it the way a human
 would, on camera, with timing and taste — and in doing so proves the game
@@ -9,6 +9,39 @@ is playable. One screenplay, two outputs:
 
 The core idea: **a performance that asserts**. We never record a broken
 take, and we never ship a build the performer can't get through.
+
+## Status: IMPLEMENTED (phases 1-3)
+
+```bash
+# validate (fast, strict, exit 0/1 — run before deploying):
+python3 walkthrough/driver/walkthrough.py --serve \
+    walkthrough/screenplay/01-docks.play.yaml
+
+# perform (cinematic, records video + timeline + dub sheet):
+python3 walkthrough/driver/walkthrough.py --mode perform --serve \
+    walkthrough/screenplay/01-docks.play.yaml
+
+# render the take into walkthrough.mp4 + .srt + README gif:
+python3 walkthrough/post/render.py walkthrough/out/<take>
+```
+
+Implementation notes vs. the original design below:
+- The post-processor is `walkthrough/post/render.py` (Python, not
+  render.sh — it shares the game's FONT3 pixel font for title cards).
+- A transcript extractor was added (`tools/transcript.py`): the dialog
+  is parsed straight from the .scc sources, so the timeline logs every
+  observed talk segment with its *exact line text* — no OCR needed.
+- **Audio/dub stays in the planning stage** per project direction: the
+  perform take emits a `dubsheet.md` (timestamped lines + empty cue
+  column) to arrange a Suno-generated music/foley/VO dub by hand. See
+  docs/research/NARRATION.md (deadpan KQ6-style narration research) and
+  docs/research/AUDIO.md (in-game audio + mixing pipeline research).
+- Boot hardening: no screenshots while the wasm runtime spins up (races
+  SDL's WebGL context creation in headless chromium), one reload retry,
+  and the game rect is detected from the x-extent of non-black columns
+  only (the visible y-extent shrinks when cutscenes hide the verb
+  panel — aspect-based detection goes blind exactly when the arrival
+  cutscene plays).
 
 ## Why this is easier for us than for normal games
 

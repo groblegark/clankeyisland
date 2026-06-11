@@ -5,6 +5,11 @@ on Clankey Island — built to run in [ScummVM](https://www.scummvm.org/).
 
 **▶ Play it in your browser: <https://groblegark.github.io/clankeyisland/>**
 
+![The walk-through-er performing Scene 01](docs/media/docks.gif)
+
+*(recorded automatically by the [walk-through-er](docs/WALKTHROUGHER.md),
+which also gates deploys: if it can't finish the game, we don't ship)*
+
 > *Deep in the Rust Belt Sea lies Clankey Island, home to Clanker City: a
 > sprawling metropolis of robots, where steam hisses from manhole covers,
 > neon gears spin above every storefront, and somewhere downtown the Great

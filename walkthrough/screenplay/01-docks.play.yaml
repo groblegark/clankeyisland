@@ -1,0 +1,56 @@
+# Clanker City Chronicles — Scene 01 screenplay for the walk-through-er.
+# Object/verb names resolve against the stage map; dialog pairs against
+# the transcript. See docs/WALKTHROUGHER.md.
+
+title: "Clanker City Chronicles — Scene 01: The Docks"
+game: chronicles
+stage: docks.stage.json
+transcript: docks.transcript.json
+
+shots:
+  - name: arrival
+    cutscene: entry           # auto-plays on boot; validate skips after a taste
+    expect: [talking]
+    timeout: 60
+
+  - name: the-sign
+    do: {verb: Examine, object: neon sign}
+    expect: [talking]
+
+  - name: percussive-maintenance
+    do: {verb: Use, object: neon sign}
+    expect:
+      - talking
+      - pixel: {at: shiny bolt, is: steel}
+
+  - name: legal-tender
+    do: {verb: Pick up, object: shiny bolt}
+    expect:
+      - talking
+      - pixel: {at: inventory.slot0, is: steel}
+
+  - name: smell-of-adventure
+    only: perform
+    do: {verb: Smell, object: ferry}
+    expect: [talking]
+    hold: 1.5
+
+  - name: civic-duty
+    do: {verb: Examine, object: notice board}
+    expect: [talking]
+
+  - name: take-the-evidence
+    do: {verb: Pick up, object: official notice}
+    expect:
+      - pixel: {at: inventory.slot1, is: steel}
+
+  - name: meet-betty
+    do: {verb: Talk to, object: Boom-Arm Betty}
+    expect: [talking]
+    hold: 1.5
+
+  - name: act-two-when
+    only: perform
+    do: {verb: Open, object: tavern door}
+    expect: [talking]
+    hold: 2.0

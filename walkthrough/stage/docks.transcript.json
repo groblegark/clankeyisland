@@ -1,0 +1,174 @@
+{
+ "cutscenes": {
+  "entry": [
+   "Clanker City! The big smoke! The city of ten thousand gears!",
+   "One small maintenance-bot, one dream, and not so much as an oil can to my name.",
+   "Thanks for the ride! I'll catch the return ferry once I'm rich and famous.",
+   "...",
+   "That clunk sounded expensive.",
+   "That clunk sounded PERMANENT.",
+   "Well. Guess I live here now."
+  ]
+ },
+ "objects": {
+  "neon sign": {
+   "LookAt": [
+    "WELCOME TO CLANKER CITY. POP. 8,01,1.",
+    "Population eight-oh-one-comma-one. The punctuation died first."
+   ],
+   "Use": [
+    "Maybe a good honest whack will fix the display.",
+    "It rained a bolt. In this town that's basically a tip.",
+    "It already gave me everything it had."
+   ],
+   "Move": [
+    "Maybe a good honest whack will fix the display.",
+    "It rained a bolt. In this town that's basically a tip.",
+    "It already gave me everything it had."
+   ],
+   "Smell": [
+    "Ozone and civic neglect."
+   ]
+  },
+  "shiny bolt": {
+   "LookAt": [
+    "One genuine Clanker City bolt. Legal tender, light snack, structural member."
+   ],
+   "PickUp": [
+    "One bolt. Only eight thousand and ten more and I can afford a personality upgrade."
+   ],
+   "Use": [
+    "I'm saving it. It's one ninth of a fortune."
+   ],
+   "Smell": [
+    "Mmm. Zinc-plated."
+   ]
+  },
+  "ferry": {
+   "LookAt": [
+    "The S.S. Eventually. My ride here, and apparently nothing's ride anywhere ever again."
+   ],
+   "Use": [
+    "The engine made a noise like a dying accordion and is now doing modern art."
+   ],
+   "Open": [
+    "The engine made a noise like a dying accordion and is now doing modern art."
+   ],
+   "TalkTo": [
+    "Hang in there, buddy.",
+    "The foghorn wheezed. I'm choosing to hear that as optimism."
+   ],
+   "Smell": [
+    "Salt water and burnt transmission fluid. The smell of adventure!"
+   ]
+  },
+  "Boom-Arm Betty": {
+   "LookAt": [
+    "A cargo crane, frozen mid-lift. Or mid-yawn. Hard to tell.",
+    "The operator plate says 'BOOM-ARM BETTY'. Her eye-light is blinking in morse.",
+    "O... I... L. Yeah, Betty, we've all been there."
+   ],
+   "TalkTo": [
+    "Hello up there! Lovely evening!",
+    "...",
+    "She'd wave back if she could. She's out of oil, not out of manners."
+   ],
+   "Use": [
+    "Her joints are dry as a tax form. She needs oil before she'll move that crate."
+   ],
+   "Smell": [
+    "Burnt servo grease. A working robot's perfume."
+   ]
+  },
+  "dangling crate": {
+   "LookAt": [
+    "Stenciled on the side: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
+    "Ominous AND conveniently plot-relevant."
+   ],
+   "PickUp": [
+    "It's twenty feet up. My arms are stock parts.",
+    "Betty could set it down, if anyone gave her a drink of oil."
+   ],
+   "Use": [
+    "It's twenty feet up. My arms are stock parts.",
+    "Betty could set it down, if anyone gave her a drink of oil."
+   ],
+   "Move": [
+    "It's twenty feet up. My arms are stock parts.",
+    "Betty could set it down, if anyone gave her a drink of oil."
+   ]
+  },
+  "scrap stall": {
+   "LookAt": [
+    "Rivet's Scrap Emporium: 'One bot's trash is this bot's entire business model.'",
+    "The shutter sign says: BACK IN FIVE OIL CHANGES."
+   ],
+   "Open": [
+    "Shuttered tighter than the city budget."
+   ],
+   "TalkTo": [
+    "HELLO? ANYONE IN THERE?",
+    "The echo has rust in it."
+   ]
+  },
+  "notice board": {
+   "LookAt": [
+    "Official city notice, hot off the press:",
+    "'DYNAMO MAINTENANCE: NOTHING IS WRONG. NOTHING HAS EVER BEEN WRONG.'",
+    "'DO NOT STOCKPILE OIL. SIGNED, MAYOR PISTON.'",
+    "The Great Dynamo powers every bot on this island. Including me, as of today.",
+    "So that notice is the scariest thing I've ever read.",
+    "Still nothing wrong. Officially."
+   ]
+  },
+  "official notice": {
+   "PickUp": [
+    "Let me read it first. I'm a maintenance-bot, not a barbarian.",
+    "Evidence. Or wall art. Possibly both."
+   ],
+   "Use": [
+    "Let me read it first. I'm a maintenance-bot, not a barbarian.",
+    "Evidence. Or wall art. Possibly both."
+   ],
+   "LookAt": [
+    "\\\"DYNAMO MAINTENANCE: NOTHING IS WRONG. - Mayor Piston.\\\"",
+    "Nothing says 'something is wrong' like an official notice that nothing is wrong."
+   ],
+   "Smell": [
+    "Fresh ink. Suspiciously fresh."
+   ]
+  },
+  "tavern door": {
+   "LookAt": [
+    "The Scrap & Barrel. I can hear a player piano in there, missing several keys.",
+    "...That feels thematically significant."
+   ],
+   "Open": [
+    "Bolted from the inside. The GOOD kind of bolted. I respect the craftsmanship."
+   ],
+   "Use": [
+    "Knock knock.",
+    "A voice inside: 'WE OPEN IN ACT TWO.'",
+    "This town has a very literal relationship with dramatic structure."
+   ],
+   "Smell": [
+    "Spilled 10W-40 and broken dreams. So... a tavern."
+   ]
+  },
+  "storm drain": {
+   "LookAt": [
+    "Something glints down there. Several somethings.",
+    "The city's loose change goes to the sea. Poetic. Infuriating."
+   ],
+   "PickUp": [
+    "My fingers are factory-standard. I'd need something magnetic. On a string."
+   ],
+   "Use": [
+    "My fingers are factory-standard. I'd need something magnetic. On a string."
+   ],
+   "Open": [
+    "My fingers are factory-standard. I'd need something magnetic. On a string."
+   ]
+  }
+ }
+}
