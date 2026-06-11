@@ -63,7 +63,7 @@ room DockRoom {
                 waitForActor(sprocket);
                 egoSay("Clanker City! The big smoke! The city of ten thousand gears!");
                 waitForMessage();
-                egoSay("One small maintenance-bot, one oil can, one dream.");
+                egoSay("One small maintenance-bot, one dream, and not so much as an oil can to my name.");
                 waitForMessage();
                 actorFace(sprocket,ferry);
                 egoSay("Thanks for the ride! I'll catch the return ferry once I'm rich and famous.");
