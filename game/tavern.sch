@@ -6,7 +6,7 @@ room TavernRoom {
     bit visitedTavern;
     bit servoFixed;
     bit dartsDone;
-    bit heardKnockCode;
+    // heardKnockCode moved to common.sch (Scene 06 reads/writes it)
 
     object doorOut;
     object barSign;

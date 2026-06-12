@@ -24,6 +24,11 @@ int* invObj;
 // how hard the player wound the act (talent night, 3/5/8); Voltina's
 // reading quotes it in Scene 06, so it lives here, cross-room
 int windTurns;
+// the Rustlers' knock-code (2-1-2): overheard at the tavern card
+// table, force-echoed by Voltina's FUTURE card (Scene 06), spent on
+// the hideout door in Act 3. Read AND written cross-room, so it lives
+// here — room bits are room-local (docs/NOTES.md).
+bit heardKnockCode;
 
 // The sentence line
 verb SntcLine @ 14;

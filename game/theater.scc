@@ -12,6 +12,7 @@
 #include "dialog.sch"
 #include "midtown.sch"
 #include "theater.sch"
+#include "backstage.sch"
 
 room TheaterRoom {
 
@@ -411,8 +412,17 @@ room TheaterRoom {
             return;
         case Open:
         case Use:
+            // post-greeting: the door just opens — SILENTLY (room
+            // transitions say nothing, docs/NOTES.md; the arrival
+            // flavor lives in BackstageRoom.entry)
+            if(voltinaGreeted) {
+                putActorAt(VAR_EGO, 30, 120, BackstageRoom);
+                startRoom(BackstageRoom);
+                return;
+            }
             // walkthrough-path branch first in source (dub pairing)
             if(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
+                voltinaGreeted = 1;             // flag before speech
                 cutscene(0) {
                     egoSay("I flash the pass. The stagehand reads it twice. Nothing in his build explains how he steps aside, but he does.");
                     waitForMessage();
