@@ -8,4 +8,7 @@ room InventoryItems {
     object token;
     object oilcan;
     object windupKey;
+    object magnet;
+    object boltStash;
+    object tenthBolt;
 }

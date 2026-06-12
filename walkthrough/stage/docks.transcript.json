@@ -13,6 +13,11 @@
    "The Scrap & Barrel. Where the floor is sticky and nothing is explained.",
    "The bartender says to mind the everything.",
    "The piano is playing itself. Badly. With confidence."
+  ],
+  "AlleyRoom.entry": [
+   "The alley behind the Scrap & Barrel. Where the city keeps its rough drafts.",
+   "There's a gate at the end marked MIDTOWN, going up. Uptown. The future.",
+   "Coin-operated. Of course it's coin-operated."
   ]
  },
  "objects": {
@@ -43,6 +48,7 @@
     "One bolt. Only eight thousand and ten more and I can afford a personality upgrade."
    ],
    "Use": [
+    "Those two things politely decline each other.",
     "I'm saving it. It's one ninth of a fortune."
    ],
    "Smell": [
@@ -191,7 +197,8 @@
   "storm drain": {
    "LookAt": [
     "Something glints down there. Several somethings.",
-    "The city's loose change goes to the sea. Poetic. Infuriating."
+    "The city's loose change goes to the sea. Poetic. Infuriating.",
+    "Nothing glints down there anymore. You're welcome, drain."
    ],
    "PickUp": [
     "My fingers are factory-standard. I'd need something magnetic. On a string."
@@ -201,6 +208,21 @@
    ],
    "Open": [
     "My fingers are factory-standard. I'd need something magnetic. On a string."
+   ],
+   "UsedWith": [
+    "Magnet on a string. The harbor's least regulated financial instrument.",
+    "Something bites. Several somethings.",
+    "Nine bolts. This city has been tipping the ocean for years.",
+    "The drain has been fished to commercial extinction.",
+    "The drain only wants what everyone wants. Something magnetic."
+   ]
+  },
+  "alley mouth": {
+   "LookAt": [
+    "A gap between the tavern and the cliff. The sign says ALLEY, in case the dark didn't read as one."
+   ],
+   "Smell": [
+    "Trouble, marinating."
    ]
   },
   "door to the docks": {
@@ -357,11 +379,157 @@
     "Rust, secrets, and back-alley grease."
    ]
   },
+  "way to the docks": {
+   "LookAt": [
+    "Back through the gap, the docks. My ferry's still out there, doing modern art."
+   ]
+  },
+  "steel door": {
+   "LookAt": [
+    "A steel door with no handle, no sign, and a brand-new red lamp.",
+    "The kind of door that's also a policy."
+   ],
+   "Open": [
+    "Knock knock.",
+    "The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'",
+    "This organization has remarkable message discipline."
+   ],
+   "Use": [
+    "Knock knock.",
+    "The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'",
+    "This organization has remarkable message discipline."
+   ],
+   "Move": [
+    "Knock knock.",
+    "The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'",
+    "This organization has remarkable message discipline."
+   ],
+   "Smell": [
+    "Rust and secrets. The house blend."
+   ]
+  },
+  "graffiti": {
+   "LookAt": [
+    "Someone sprayed DYNAMO IS FINE. Crossed out. Under it, smaller: IT IS NOT.",
+    "Under that, very small: NO REFUNDS. The whole town, one wall."
+   ],
+   "Smell": [
+    "Fresh paint over old paint over older paint. Sediment, with opinions."
+   ]
+  },
+  "dumpster": {
+   "LookAt": [
+    "A municipal dumpster. The graffiti above appraises it at three stars."
+   ],
+   "Open": [
+    "Inside: one rubber duck, seized. One manual for a better game. And a magnet on a string.",
+    "In a town held together by bolts, a magnet on a string is a license to print money.",
+    "The duck has seniority now. I'm not fighting the duck."
+   ],
+   "Use": [
+    "Inside: one rubber duck, seized. One manual for a better game. And a magnet on a string.",
+    "In a town held together by bolts, a magnet on a string is a license to print money.",
+    "The duck has seniority now. I'm not fighting the duck."
+   ],
+   "Smell": [
+    "Banana oil and municipal despair."
+   ]
+  },
+  "fire escape": {
+   "LookAt": [
+    "A fire escape, and on it a Rustler with a spyglass, pointed at the docks.",
+    "He's taking notes. I'm in the notes."
+   ],
+   "TalkTo": [
+    "I wave up at him. He writes that down too."
+   ],
+   "PickUp": [
+    "The ladder's rusted shut. The Rustler shakes his head, slowly. Professional courtesy."
+   ],
+   "Use": [
+    "The ladder's rusted shut. The Rustler shakes his head, slowly. Professional courtesy."
+   ]
+  },
+  "Rivet": {
+   "LookAt": [
+    "A round little bot built entirely out of other bots, sorting screws by mood.",
+    "The stall out front says BACK IN FIVE OIL CHANGES. This is where he goes when he's back."
+   ],
+   "TalkTo": [
+    "Rivet's the name, he says. Knows everything. First fact's free:",
+    "The funicular to Midtown takes ten bolts. Exact change. Gates can count \u2014 it's all they do.",
+    "Second fact costs a bolt. He can see I don't have one. He mentions that for free too.",
+    "Third freebie, out of pity: the harbor keeps everything this town drops, and that dumpster is \u2014 legally \u2014 his.",
+    "Nine bolts, I tell him. He appraises my pockets from four feet away. Correctly.",
+    "He proposes a riddle duel. His bolt against my official city notice. The alley has rules, apparently.",
+    "Rivet goes first: 'What has a hundred teeth and never bites?' A gear. In this town it's always a gear.",
+    "My turn. 'What winds down... but never winds up?'",
+    "He opens his mouth. He closes it. He looks uptown, at the Dynamo District.",
+    "He pays the bolt without a word. The best riddles aren't funny.",
+    "He says everything a bot needs is in that dumpster, and he says it as the dumpster's legal owner.",
+    "He eyes the magnet. He says the docks have a drain, the drain has a glint, and the glint has my name on it.",
+    "He waves. He's already sorting the bolts I fed the gate. I'm not asking how.",
+    "He nods at the gate. 'Ten bolts, exact change. It's all they do.'"
+   ],
+   "Give": [
+    "He appraises it, names a price, and the price is an insult. We're both happier keeping it."
+   ],
+   "UsedWith": [
+    "He appraises it, names a price, and the price is an insult. We're both happier keeping it."
+   ],
+   "Smell": [
+    "WD-40 and good information."
+   ]
+  },
+  "junk heap": {
+   "LookAt": [
+    "Rivet's stock: pipes, springs, and a wheel from something that regrets losing it."
+   ],
+   "PickUp": [
+    "Rivet clears his throat without having one. Inventory is sacred."
+   ],
+   "Use": [
+    "Rivet clears his throat without having one. Inventory is sacred."
+   ],
+   "Smell": [
+    "Rust. Vintage rust. Estate rust."
+   ]
+  },
+  "funicular gate": {
+   "LookAt": [
+    "Gate's open, car's lit. Midtown keeps glittering like it doesn't know I'm coming.",
+    "Act Two will still be uptown tomorrow. Probably. If the Dynamo holds.",
+    "A wrought-iron gate, a rail going up the cliff, and a sign: MIDTOWN. FARE, 10 BOLTS.",
+    "Uptown. Act Two. The future. It has a coin slot."
+   ],
+   "Open": [
+    "Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.",
+    "The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.",
+    "Act Two. I can hear the neon from here.",
+    "The fare box wants ten bolts. I have pockets, and ambition.",
+    "I feed it nine bolts. It counts them, blinks NINE at me, and gives them all back.",
+    "Smug, for a gate. Rivet would know where a tenth bolt grows.",
+    "The car says it's boarding 'momentarily'. It's been a long momentarily."
+   ],
+   "Use": [
+    "Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.",
+    "The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.",
+    "Act Two. I can hear the neon from here.",
+    "The fare box wants ten bolts. I have pockets, and ambition.",
+    "I feed it nine bolts. It counts them, blinks NINE at me, and gives them all back.",
+    "Smug, for a gate. Rivet would know where a tenth bolt grows.",
+    "The car says it's boarding 'momentarily'. It's been a long momentarily."
+   ],
+   "Smell": [
+    "Ozone and altitude. The future smells expensive."
+   ]
+  },
   "drink token": {
    "LookAt": [
     "One genuine Scrap & Barrel drink token. Redeemable for one drink, zero refunds, unlimited regret."
    ],
    "Use": [
+    "Those two things politely decline each other.",
     "Gusket said Flange takes these as table stakes. At the dartboard."
    ],
    "Smell": [
@@ -373,6 +541,7 @@
     "Small-batch, dock-aged 10W-40. The good stuff."
    ],
    "Use": [
+    "Those two things politely decline each other.",
     "I'm not drinking it. It's medicine. For someone with a boom arm."
    ],
    "Smell": [
@@ -385,10 +554,48 @@
     "The legends say so. The legends are a stencil on a crate. Still counts."
    ],
    "Use": [
+    "Those two things politely decline each other.",
     "It wants a keyhole the size of a manhole. I'll know it when I see it."
    ],
    "Smell": [
     "Brass and consequence."
+   ]
+  },
+  "magnet on a string": {
+   "LookAt": [
+    "A magnet on a string. The harbor's least regulated financial instrument."
+   ],
+   "Use": [
+    "Those two things politely decline each other.",
+    "It wants something ferrous. The storm drain on the docks was full of glint."
+   ],
+   "Smell": [
+    "It smells of attraction. Strictly professional."
+   ]
+  },
+  "fistful of bolts": {
+   "LookAt": [
+    "Nine bolts, fresh from the harbor. The fare to Midtown is ten.",
+    "Nine is the loneliest number that isn't a fare."
+   ],
+   "Use": [
+    "Those two things politely decline each other.",
+    "I count them again. Still nine. Counting is not the bottleneck."
+   ],
+   "Smell": [
+    "Brine and compound interest."
+   ]
+  },
+  "the tenth bolt": {
+   "LookAt": [
+    "The bolt Rivet paid out on the riddle. It looks exactly like a bolt that used to be his."
+   ],
+   "Use": [
+    "Those two things politely decline each other.",
+    "With the other nine, that's a fare. The gate does the math. It's all gates do."
+   ],
+   "Smell": [
+    "Faintly of riddles."
    ]
   }
  }

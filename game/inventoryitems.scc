@@ -193,4 +193,126 @@ room InventoryItems {
         }
     }
 
+    object magnet {
+        w = 40;
+        h = 16;
+        x = 0;
+        name = "magnet on a string";
+        states = {
+            { 0, 0, "inventory/inv_magnet.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case Preposition:
+            if(vrb == Give)
+                sntcPrepo[0] = "to";
+            else
+                sntcPrepo[0] = "with";
+            return;
+        case LookAt:
+            egoSay("A magnet on a string. The harbor's least regulated financial instrument.");
+            return;
+        case Use:
+            if(objB) {
+                // route "Use me with/on X" to X's UsedWith — the engine
+                // dispatches to OUR script (objA), so a bare Use gag
+                // here would swallow every two-object sentence
+                if(getObjectVerbEntrypoint(objB, UsedWith)) {
+                    startObject2(objB, UsedWith, [ UsedWith, objB, objA ]);
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
+            egoSay("It wants something ferrous. The storm drain on the docks was full of glint.");
+            return;
+        case Smell:
+            egoSay("It smells of attraction. Strictly professional.");
+            return;
+        }
+    }
+
+    object boltStash {
+        w = 40;
+        h = 16;
+        x = 0;
+        name = "fistful of bolts";
+        states = {
+            { 0, 0, "inventory/inv_boltstash.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case Preposition:
+            if(vrb == Give)
+                sntcPrepo[0] = "to";
+            else
+                sntcPrepo[0] = "with";
+            return;
+        case LookAt:
+            egoSay("Nine bolts, fresh from the harbor. The fare to Midtown is ten.");
+            waitForMessage();
+            egoSay("Nine is the loneliest number that isn't a fare.");
+            return;
+        case Use:
+            if(objB) {
+                // route "Use me with/on X" to X's UsedWith — the engine
+                // dispatches to OUR script (objA), so a bare Use gag
+                // here would swallow every two-object sentence
+                if(getObjectVerbEntrypoint(objB, UsedWith)) {
+                    startObject2(objB, UsedWith, [ UsedWith, objB, objA ]);
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
+            egoSay("I count them again. Still nine. Counting is not the bottleneck.");
+            return;
+        case Smell:
+            egoSay("Brine and compound interest.");
+            return;
+        }
+    }
+
+    object tenthBolt {
+        w = 40;
+        h = 16;
+        x = 0;
+        name = "the tenth bolt";
+        states = {
+            { 0, 0, "inventory/inv_bolt.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case Preposition:
+            if(vrb == Give)
+                sntcPrepo[0] = "to";
+            else
+                sntcPrepo[0] = "with";
+            return;
+        case LookAt:
+            egoSay("The bolt Rivet paid out on the riddle. It looks exactly like a bolt that used to be his.");
+            return;
+        case Use:
+            if(objB) {
+                // route "Use me with/on X" to X's UsedWith — the engine
+                // dispatches to OUR script (objA), so a bare Use gag
+                // here would swallow every two-object sentence
+                if(getObjectVerbEntrypoint(objB, UsedWith)) {
+                    startObject2(objB, UsedWith, [ UsedWith, objB, objA ]);
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
+            egoSay("With the other nine, that's a fare. The gate does the math. It's all gates do.");
+            return;
+        case Smell:
+            egoSay("Faintly of riddles.");
+            return;
+        }
+    }
+
 }

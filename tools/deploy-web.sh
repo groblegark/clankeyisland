@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 # Deploy Clanker City Chronicles to GitHub Pages — gated by the
-# walk-through-er: if the performer can't finish Act One, we don't ship.
+# walk-through-er: if the performer can't finish the full run (boot to
+# the Act Two threshold), we don't ship.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 ./tools/build-web.sh
 
-echo "== validate gate: Act One must pass =="
+echo "== validate gate: the full run must pass =="
 python3 walkthrough/driver/walkthrough.py --serve \
-    walkthrough/screenplay/act-one.play.yaml
+    walkthrough/screenplay/full-run.play.yaml
 
 echo "== deploying gh-pages =="
 TMP=$(mktemp -d)
