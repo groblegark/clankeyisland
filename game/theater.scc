@@ -1,7 +1,7 @@
-/* Clanker City Chronicles — Scene 05: talent night at the Grand Cog.
+/* Clanker City Chronicles -- Scene 05: talent night at the Grand Cog.
  * Inside the theater: a tough house, a sleeping spotlight operator
  * (the brownout reaches everywhere), and the performance that opens
- * the way backstage. NPC dialog is reported secondhand by Sprocket —
+ * the way backstage. NPC dialog is reported secondhand by Sprocket --
  * one voice, deadpan. Walkthrough-path lines go FIRST in source.
  */
 
@@ -35,7 +35,7 @@ room TheaterRoom {
     // ------------------------------------------------------------ music
 
     local script musicLoop() {
-        // the Grand Cog Vamp — house music that could loop all night,
+        // the Grand Cog Vamp -- house music that could loop all night,
         // and intends to (loop = VAMP_LOOP_BEATS in tools/genmusic.py)
         stopMusic();
         startMusic(vampSnd);
@@ -264,7 +264,7 @@ room TheaterRoom {
             if(objB == InventoryItems::windupKey) {
                 if(spotAwake) {
                     unless(wonShow) {
-                        // THE ACT — playable (editorial B8): the player
+                        // THE ACT -- playable (editorial B8): the player
                         // picks the wind count. Under-winds flop funny
                         // and retry free; the bold red number wins.
                         unless(curtainUp) {
@@ -333,14 +333,14 @@ room TheaterRoom {
                             // the heist (editorial B3): the spyglass on
                             // the docks finally cashes its check
                             setObjectOwner(InventoryItems::windupKey, 0);
-                            egoSay("The spring spat the key to the boards at launch. I go to collect it for the bow — my hand closes on applause.");
+                            egoSay("The spring spat the key to the boards at launch. I go to collect it for the bow -- my hand closes on applause.");
                             waitForMessage();
                             egoSay("A hook on a line whips up past the proscenium. Fishing tackle. Somebody else's magnet-on-a-string.");
                             waitForMessage();
                             startSound(knockSnd);
                             egoSay("Up on the catwalk, a hatch clicks shut. Two clangs. One. Two.");
                             waitForMessage();
-                            egoSay("The hats from the card table. The spyglass from the catwalk. I hand-delivered the thing — lit stage, my name in bulbs.");
+                            egoSay("The hats from the card table. The spyglass from the catwalk. I hand-delivered the thing -- lit stage, my name in bulbs.");
                             waitForMessage();
                             egoSay("Everyone in this house saw a triumph. I saw a hatch.");
                             waitForMessage();

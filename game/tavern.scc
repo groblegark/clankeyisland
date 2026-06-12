@@ -1,7 +1,7 @@
-/* Clanker City Chronicles — Scene 02: the Scrap & Barrel.
+/* Clanker City Chronicles -- Scene 02: the Scrap & Barrel.
  * Dockside tavern. The player piano is missing three keys
  * (foreshadowing: keys). NPC dialog is reported secondhand by
- * Sprocket — one voice, maximum deadpan.
+ * Sprocket -- one voice, maximum deadpan.
  */
 
 #include <scummVars6.s>
@@ -79,7 +79,7 @@ room TavernRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
-            egoSay("The way back to the docks. The night air smells of opportunity and brine.");
+            egoSay("The way back to the docks. The night air is free, which in this town reads as a misprint.");
             return;
         case Open:
         case Use:
@@ -125,7 +125,7 @@ room TavernRoom {
             egoSay("Because it is one. There's a little red light.");
             return;
         case Smell:
-            egoSay("Esters, additives, and a 2% hint of regret. A good year.");
+            egoSay("Esters and additives, forty proof. The dust is the vintage.");
             return;
         }
     }
@@ -418,7 +418,7 @@ room TavernRoom {
             egoSay("Somebody knocks here in code. Somebody with standing.");
             return;
         case Smell:
-            egoSay("Rust, secrets, and back-alley grease.");
+            egoSay("Hinge oil, fresh. Somebody keeps this door quiet on purpose.");
             return;
         }
     }

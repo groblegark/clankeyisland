@@ -1,4 +1,4 @@
-/* Clanker City Chronicles — actors. */
+/* Clanker City Chronicles -- actors. */
 
 #include <scummVars6.s>
 #include "common.sch"

@@ -1,8 +1,8 @@
-/* Clanker City Chronicles — Scene 04: Midtown Gearworks.
+/* Clanker City Chronicles -- Scene 04: Midtown Gearworks.
  * Top of the funicular: neon main street, the Grand Cog Theater
  * (talent night, tonight), City Hall (nothing is wrong), and the
  * Great Dynamo humming flat behind its fence. Act Two opens here.
- * NPC dialog is reported secondhand by Sprocket — one voice, deadpan.
+ * NPC dialog is reported secondhand by Sprocket -- one voice, deadpan.
  */
 
 #include <scummVars6.s>
@@ -31,7 +31,7 @@ room MidtownRoom {
     // ------------------------------------------------------------ music
 
     local script musicLoop() {
-        // the Clanker City Shuffle — the GDD called this one by name
+        // the Clanker City Shuffle -- the GDD called this one by name
         // (loop point = SHUF_LOOP_BEATS in tools/genmusic.py)
         stopMusic();
         startMusic(shuffleSnd);
@@ -197,7 +197,7 @@ room MidtownRoom {
                 egoSay("The doors open for performers. I'm a spectator with a forearm-sized key. The doors can tell.");
                 return;
             }
-            // performers' entrance — silently (room transitions say
+            // performers' entrance -- silently (room transitions say
             // nothing: arrival flavor lives in TheaterRoom.entry)
             putActorAt(VAR_EGO, 24, 120, TheaterRoom);
             startRoom(TheaterRoom);
@@ -311,7 +311,7 @@ room MidtownRoom {
                 waitForMessage();
                 egoSay("Then he closes the door eight of the nine degrees.");
                 waitForMessage();
-                egoSay("Somebody in there is afraid of this piece of paper. Good. So am I, a little.");
+                egoSay("A whole government, one degree of open. The paper goes back in my pocket, loaded.");
                 return;
             }
             egoSay("The aide's eye appears in the gap, evaluates it, and declines on the city's behalf.");

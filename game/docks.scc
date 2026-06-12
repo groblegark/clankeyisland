@@ -1,4 +1,4 @@
-/* Clanker City Chronicles — Scene 01: The Docks of Clanker City.
+/* Clanker City Chronicles -- Scene 01: The Docks of Clanker City.
  *
  * Sprocket arrives in the robot metropolis. The ferry dies behind him,
  * the neon sign is losing punctuation, and the Great Dynamo is
@@ -116,7 +116,7 @@ room DockRoom {
                 waitForActor(sprocket);
                 egoSay("Well. Guess I live here now.");
                 waitForMessage();
-                // the premise, unskippably (editorial B4) — and the
+                // the premise, unskippably (editorial B4) -- and the
                 // screen dims with the line (embodiment sweep)
                 setObjectState(neonSign, 2);
                 egoSay("The neon sign dips. The tavern window. The lit windows across the water. All together, like the city skipped a heartbeat.");
@@ -160,7 +160,7 @@ room DockRoom {
                 waitForMessage();
                 egoSay("Population eight-oh-one-comma-one. The punctuation died first.");
                 waitForMessage();
-                egoSay("Something inside it rattles on every flicker. Loose hardware. Practically an invoice.");
+                egoSay("Something inside it rattles on every flicker. Loose hardware. That's not a noise, that's a work order.");
                 return;
             }
             egoSay("Still POP. 8,01,1. The bolt wasn't load-bearing for the comma. Maintenance is iterative.");
@@ -211,7 +211,7 @@ room DockRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
-            egoSay("A bolt! Genuine legal tender of Clanker City.");
+            egoSay("A bolt. On the ground it's litter. In my pocket it's capital.");
             return;
         case PickUp:
         case Use:
@@ -234,7 +234,7 @@ room DockRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
-            egoSay("The S.S. Eventually. My ride here, and apparently nothing's ride anywhere ever again.");
+            egoSay("The S.S. Eventually. Turns out the name was the schedule.");
             return;
         case Use:
         case Open:
@@ -419,7 +419,7 @@ room DockRoom {
                     waitForMessage();
                     egoSay("The Great Dynamo powers every bot on this island. Including me, as of today.");
                     waitForMessage();
-                    egoSay("Not wires — the hum. It keeps every mainspring on the island wound. Remotely. Steam bot, clockwork bot, engine bot: all spring-banked.");
+                    egoSay("Not wires -- the hum. It keeps every mainspring on the island wound. Remotely. Steam bot, clockwork bot, engine bot: all spring-banked.");
                     waitForMessage();
                     egoSay("Hand-winding is the backup. Crude, short-burst, off-warranty.");
                     waitForMessage();
@@ -433,7 +433,7 @@ room DockRoom {
         case PickUp:
         case Use:
             // the poster sits ON the board and the board wins the hit
-            // test — forward so "pick up" works wherever you click
+            // test -- forward so "pick up" works wherever you click
             startObject2(poster, vrb, [ vrb, poster ]);
             return;
         }

@@ -1,4 +1,4 @@
-/* Clanker City Chronicles — engine boilerplate (ResRoom).
+/* Clanker City Chronicles -- engine boilerplate (ResRoom).
  *
  * Derived from ScummC's openquest example,
  * Copyright (C) 2007 Alban Bedel (GPL v2+).
@@ -223,7 +223,7 @@ room ResRoom {
 
        case Give:
            if(objB) {
-               // route to the recipient's Give handler if it has one —
+               // route to the recipient's Give handler if it has one --
                // ANY object, not just Persons: gates take fares, slots
                // take tokens (the old `is Person` guard silently ate
                // "Give bolts to funicular gate")
@@ -236,7 +236,7 @@ room ResRoom {
                    break;
                }
            }
-           egoSay("I can't do that!");
+           egoSay("Physics says yes. Etiquette says no.");
            break;
 
         case LookAt:
@@ -308,7 +308,7 @@ room ResRoom {
             unless(objB) {
                 if(getObjectVerbEntrypoint(objA,Preposition)) {
                     startObject2(objA,Preposition,[ vrb, objA ]);
-                    // give the Preposition script its tick — under the
+                    // give the Preposition script its tick -- under the
                     // wasm build's timing it doesn't always run nested,
                     // and checking sntcPrepo too early degrades
                     // "Use X with Y" into a plain Use

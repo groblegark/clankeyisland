@@ -1,4 +1,4 @@
-/* Clanker City Chronicles — inventory items. */
+/* Clanker City Chronicles -- inventory items. */
 
 #include <scummVars6.s>
 #include "common.sch"
@@ -31,7 +31,7 @@ room InventoryItems {
             return;
         case Use:
             if(objB) {
-                // route "Use me with/on X" to X's UsedWith — the engine
+                // route "Use me with/on X" to X's UsedWith -- the engine
                 // dispatches to OUR script (objA), so a bare Use gag
                 // here would swallow every two-object sentence
                 if(getObjectVerbEntrypoint(objB, UsedWith)) {
@@ -89,11 +89,11 @@ room InventoryItems {
                 sntcPrepo[0] = "with";
             return;
         case LookAt:
-            egoSay("One genuine Scrap & Barrel drink token. Redeemable for one drink, zero refunds, unlimited regret.");
+            egoSay("One genuine Scrap & Barrel drink token. Redeemable for one drink, zero refunds, no appeals.");
             return;
         case Use:
             if(objB) {
-                // route "Use me with/on X" to X's UsedWith — the engine
+                // route "Use me with/on X" to X's UsedWith -- the engine
                 // dispatches to OUR script (objA), so a bare Use gag
                 // here would swallow every two-object sentence
                 if(getObjectVerbEntrypoint(objB, UsedWith)) {
@@ -133,7 +133,7 @@ room InventoryItems {
             return;
         case Use:
             if(objB) {
-                // route "Use me with/on X" to X's UsedWith — the engine
+                // route "Use me with/on X" to X's UsedWith -- the engine
                 // dispatches to OUR script (objA), so a bare Use gag
                 // here would swallow every two-object sentence
                 if(getObjectVerbEntrypoint(objB, UsedWith)) {
@@ -173,7 +173,7 @@ room InventoryItems {
             return;
         case Use:
             if(objB) {
-                // route "Use me with/on X" to X's UsedWith — the engine
+                // route "Use me with/on X" to X's UsedWith -- the engine
                 // dispatches to OUR script (objA), so a bare Use gag
                 // here would swallow every two-object sentence
                 if(getObjectVerbEntrypoint(objB, UsedWith)) {
@@ -186,7 +186,7 @@ room InventoryItems {
             egoSay("Big key, seeking big lock. Open, in the meantime, to showbiz.");
             return;
         case Smell:
-            egoSay("Brass polish. Somebody maintained this thing its whole life.");
+            egoSay("Brass polish, and recent. Whoever the Order left behind still keeps a schedule.");
             return;
         }
     }
@@ -213,7 +213,7 @@ room InventoryItems {
             return;
         case Use:
             if(objB) {
-                // route "Use me with/on X" to X's UsedWith — the engine
+                // route "Use me with/on X" to X's UsedWith -- the engine
                 // dispatches to OUR script (objA), so a bare Use gag
                 // here would swallow every two-object sentence
                 if(getObjectVerbEntrypoint(objB, UsedWith)) {
@@ -255,7 +255,7 @@ room InventoryItems {
             return;
         case Use:
             if(objB) {
-                // route "Use me with/on X" to X's UsedWith — the engine
+                // route "Use me with/on X" to X's UsedWith -- the engine
                 // dispatches to OUR script (objA), so a bare Use gag
                 // here would swallow every two-object sentence
                 if(getObjectVerbEntrypoint(objB, UsedWith)) {
@@ -295,7 +295,7 @@ room InventoryItems {
             return;
         case Use:
             if(objB) {
-                // route "Use me with/on X" to X's UsedWith — the engine
+                // route "Use me with/on X" to X's UsedWith -- the engine
                 // dispatches to OUR script (objA), so a bare Use gag
                 // here would swallow every two-object sentence
                 if(getObjectVerbEntrypoint(objB, UsedWith)) {
@@ -337,7 +337,7 @@ room InventoryItems {
             return;
         case Use:
             if(objB) {
-                // route "Use me with/on X" to X's UsedWith — the engine
+                // route "Use me with/on X" to X's UsedWith -- the engine
                 // dispatches to OUR script (objA), so a bare Use gag
                 // here would swallow every two-object sentence
                 if(getObjectVerbEntrypoint(objB, UsedWith)) {
@@ -377,7 +377,7 @@ room InventoryItems {
             return;
         case Use:
             if(objB) {
-                // route "Use me with/on X" to X's UsedWith — the engine
+                // route "Use me with/on X" to X's UsedWith -- the engine
                 // dispatches to OUR script (objA), so a bare Use gag
                 // here would swallow every two-object sentence
                 if(getObjectVerbEntrypoint(objB, UsedWith)) {
