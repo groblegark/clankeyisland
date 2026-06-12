@@ -108,13 +108,24 @@ room AlleyRoom {
         case Open:
         case Use:
         case Move:
+            unless(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
+                cutscene(0) {
+                    startSound(knockSnd);
+                    egoSay("Knock knock.");
+                    waitForMessage();
+                    egoSay("The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'");
+                    waitForMessage();
+                    egoSay("This organization has remarkable message discipline.");
+                    waitForMessage();
+                }
+                return;
+            }
+            // post-heist: the grievance is personal now
             cutscene(0) {
                 startSound(knockSnd);
-                egoSay("Knock knock.");
+                egoSay("I knock. The slot opens. The eye pauses — it knows what I'm here about now.");
                 waitForMessage();
-                egoSay("The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'");
-                waitForMessage();
-                egoSay("This organization has remarkable message discipline.");
+                egoSay("'STILL Act Three, buddy.' The slot closes. Slower this time. Almost respectful.");
                 waitForMessage();
             }
             return;
@@ -139,7 +150,7 @@ room AlleyRoom {
             egoSay("Under that, very small: NO REFUNDS.");
             return;
         case Smell:
-            egoSay("Fresh paint over old paint over older paint. Sediment, with opinions.");
+            egoSay("Fresh paint over old paint over older paint. Sediment. Three administrations deep.");
             return;
         }
     }
@@ -238,7 +249,7 @@ room AlleyRoom {
             unless(metRivet) {
                 metRivet = 1;
                 cutscene(0) {
-                    egoSay("Rivet's the name, he says. Knows everything. First fact's free:");
+                    egoSay("Rivet's the name, he says. Knows everything, sells most of it. Today only: the welcome bundle, three facts, free.");
                     waitForMessage();
                     egoSay("The funicular to Midtown takes ten bolts. Exact change. Gates can count — it's all they do.");
                     waitForMessage();
@@ -279,13 +290,13 @@ room AlleyRoom {
                     return;
                    }
                    // bolts in hand but the gate hasn't said NINE yet
-                   egoSay("Ten's the fare, he says. I have nine. He suggests I let the gate break the news. Tradition.");
+                   egoSay("He won't say how many I'm short. Alley rules: the gate breaks its own news.");
                    return;
                   }
                   egoSay("He duels for stakes, and the stake he wants is paper: that official notice pinned up on the docks.");
                   return;
                  }
-                 egoSay("He duels somebodies only, alley rules. A somebody, here, owns something with destiny on it.");
+                 egoSay("He duels somebodies only, alley rules. A somebody, here, owns something with an Order's stencil on it.");
                  return;
                 }
                 unless(getObjectOwner(InventoryItems::magnet) == VAR_EGO) {
@@ -303,26 +314,54 @@ room AlleyRoom {
             return;
         case Give:
         case UsedWith:
-            // a bolt really does buy a hint (the advertised economy)
+            // a bolt really does buy a hint (the advertised economy) —
+            // and the fact tracks the first thing still undone
             if(objB == InventoryItems::bolt) {
                 cutscene(0) {
                     egoSay("He takes the bolt, bites it, appraises my entire financial posture, and hands it back with a fact:");
                     waitForMessage();
                     unless(getObjectOwner(InventoryItems::magnet) == VAR_EGO) {
-                        egoSay("'The dumpster. Everything a bot needs. Deposit refunded.'");
+                        egoSay("'The dumpster. Mine, legally. Help yourself before the duck does. Deposit refunded.'");
                         waitForMessage();
                     }
                     if(getObjectOwner(InventoryItems::magnet) == VAR_EGO) {
-                        egoSay("'The storm drain on the docks. Bring the string. Deposit refunded.'");
+                        unless(getObjectOwner(InventoryItems::boltStash) == VAR_EGO) {
+                            egoSay("'The storm drain on the docks. Bring the string. Deposit refunded.'");
+                            waitForMessage();
+                        }
+                        if(getObjectOwner(InventoryItems::boltStash) == VAR_EGO) {
+                            egoSay("'You've already withdrawn. The bank is closed. Deposit refunded.'");
+                            waitForMessage();
+                        }
+                    }
+                }
+                return;
+            }
+            if(objB == InventoryItems::boltStash) {
+                cutscene(0) {
+                    egoSay("He bites one of the nine and hands the fistful straight back, with a fact:");
+                    waitForMessage();
+                    unless(gateNined) {
+                        egoSay("'The gate. Let it count. It lives for this.'");
+                        waitForMessage();
+                    }
+                    if(gateNined) {
+                        egoSay("'Stakes, riddle, notary. Talk to me when you're holding paper worth wanting.'");
                         waitForMessage();
                     }
                 }
                 return;
             }
+            if(objB == InventoryItems::poster) {
+                egoSay("He won't take it as a gift. Stakes or nothing — collection ethics.");
+                waitForMessage();
+                egoSay("Riddles, he says, are the alley's notary.");
+                return;
+            }
             egoSay("He appraises it, names a price, and the price is an insult. We're both happier keeping it.");
             return;
         case Smell:
-            egoSay("WD-40 and good information.");
+            egoSay("WD-40. He maintains himself. Nobody else is qualified.");
             return;
         }
     }
@@ -406,9 +445,15 @@ room AlleyRoom {
                     return;
                 }
                 gateNined = 1;
-                egoSay("I feed it the lot. It counts, returns everything it doesn't honor, and blinks NINE.");
+                unless(getObjectOwner(InventoryItems::bolt) == VAR_EGO) {
+                    egoSay("I feed it the lot. It counts, returns everything it doesn't honor, and blinks NINE.");
+                    waitForMessage();
+                    egoSay("The hopper has no pity. Rivet might.");
+                    return;
+                }
+                egoSay("I feed it ten. It counts ten, blinks NINE, and spits the dry one back stamped UNCIRCULATED.");
                 waitForMessage();
-                egoSay("The hopper has no pity. Rivet might.");
+                egoSay("The fare wants money that's suffered. The dry one has another appointment anyway.");
                 return;
             }
             // all aboard — silently (room transitions say nothing: a
@@ -445,7 +490,7 @@ room AlleyRoom {
             egoSay("The slot wants bolts, plural, all at once.");
             return;
         case Smell:
-            egoSay("Ozone and altitude. The future smells expensive.");
+            egoSay("Cold rail grease, all the way up.");
             return;
         }
     }

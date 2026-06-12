@@ -69,10 +69,12 @@ shots:
       - pixel: {at: inventory.slot1, is: greens}
     timeout: 60
 
+  # on the validate path since editorial B9: the knock-code and the
+  # Rustlers' name must be in every player's head before the heist
   - name: extremely-casual
-    only: perform
     do: {verb: Talk to, object: "rustlers' table"}
     expect: [talking]
+    timeout: 60
     hold: 1.5
 
   - name: the-dart-hustle

@@ -61,6 +61,8 @@ room TheaterRoom {
                 waitForMessage();
                 egoSay("The house is packed. Forty bots, and not one of them came here to be impressed.");
                 waitForMessage();
+                egoSay("And up on the catwalk: one more, with a spyglass. No ticket. No hurry.");
+                waitForMessage();
                 egoSay("Somewhere past that curtain is backstage. And backstage, if the clerk is right, is Madame Voltina.");
                 waitForMessage();
             }
@@ -103,7 +105,7 @@ room TheaterRoom {
             unless(spotAwake) {
                 egoSay("The spotlight booth. The operator inside is in low-power mode, eye dimmed to a polite ember.");
                 waitForMessage();
-                egoSay("The brownouts reach everywhere. Even showbiz runs on the Dynamo.");
+                egoSay("The brownouts reach everywhere.");
                 return;
             }
             egoSay("The operator's awake and tracking the stage like it owes him money.");
@@ -143,7 +145,7 @@ room TheaterRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
-            egoSay("A chandelier built from the chandeliers of lesser theaters. Trophies, basically.");
+            egoSay("Forty-one sockets, thirty-eight working. The rigging predates the building it hangs in.");
             return;
         case Use:
         case PickUp:
@@ -175,13 +177,13 @@ room TheaterRoom {
             unless(wonShow) {
                 egoSay("I try some crowd work. How's everybody doing tonight?");
                 waitForMessage();
-                egoSay("A voice from the dark: 'WORSE NOW.' Tough room.");
+                egoSay("A voice from the dark: 'WORSE NOW.'");
                 return;
             }
             egoSay("Somebody yells ENCORE. Somebody else yells at him. The arts.");
             return;
         case Smell:
-            egoSay("Forty brands of machine oil and one of expectation.");
+            egoSay("Idling engines. The whole room is holding its breath with fans.");
             return;
         }
     }
@@ -209,7 +211,7 @@ room TheaterRoom {
                     waitForMessage();
                     egoSay("House rule: no spot, no act. He says it like the rule has a plaque somewhere.");
                     waitForMessage();
-                    egoSay("Wake the booth, get on stage, and win. Prize is an oil voucher and a backstage pass.");
+                    egoSay("He looks from my key to the dark booth and back. He likes my chances, he says. Conditionally.");
                     waitForMessage();
                 }
                 return;
@@ -247,7 +249,7 @@ room TheaterRoom {
         case LookAt:
             // walkthrough-path branch first in source (dub pairing)
             if(wonShow) {
-                egoSay("Confetti on the boards and a spotlight with nothing left to prove. My stage now. Legally, for one night.");
+                egoSay("Confetti on the boards and a spotlight with nothing left to prove.");
                 return;
             }
             egoSay("The stage. Behind that curtain, forty years of acts have died and three have lived.");
@@ -304,7 +306,9 @@ room TheaterRoom {
                             startSound(knockSnd);
                             egoSay("Up on the catwalk, a hatch clicks shut. Two clangs. One. Two.");
                             waitForMessage();
-                            egoSay("The Rustlers. They watched me hand-deliver it to a lit stage, under my own name, in bulbs.");
+                            egoSay("The hats from the card table. The spyglass from the catwalk. I hand-delivered the thing — lit stage, my name in bulbs.");
+                            waitForMessage();
+                            egoSay("Everyone in this house saw a triumph. I saw a hatch.");
                             waitForMessage();
                             putActorAt(VAR_EGO, 240, 120, TheaterRoom);
                             setCurrentActor(VAR_EGO);
@@ -315,7 +319,9 @@ room TheaterRoom {
                     egoSay("One act per night. The house couldn't take a second one. Neither could the proscenium.");
                     return;
                 }
-                egoSay("No spot, no act. The rule has a plaque. The plaque has a lawyer.");
+                egoSay("No spot, no act. The rule has a plaque, the plaque has a lawyer.");
+                waitForMessage();
+                egoSay("The spot has an operator. The operator is asleep.");
                 return;
             }
             egoSay("The stage considers it and finds it insufficiently theatrical.");
@@ -326,7 +332,7 @@ room TheaterRoom {
                 egoSay("Climbing up empty-handed is called loitering. With the key, it's called an act.");
                 return;
             }
-            egoSay("One night only. The proscenium and I have an agreement.");
+            egoSay("The proscenium and I have an agreement.");
             return;
         case Smell:
             egoSay("Sawdust, grease paint, and the fear of four hundred opening nights.");
@@ -345,18 +351,18 @@ room TheaterRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
-            egoSay("STAGE DOOR. Behind it: dressing rooms, rope, and a fortune-teller who guards more than fortunes.");
+            egoSay("STAGE DOOR. Behind it: dressing rooms, rope, and a fortune-teller.");
             return;
         case Open:
         case Use:
             // walkthrough-path branch first in source (dub pairing)
             if(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
                 cutscene(0) {
-                    egoSay("I flash the pass. A stagehand the shape of a filing cabinet reads it twice and steps aside.");
+                    egoSay("I flash the pass. The stagehand reads it twice. Nothing in his build explains how he steps aside, but he does.");
                     waitForMessage();
                     egoSay("The dark behind him smells like ozone and incense. A voice from it says: 'I have been expecting you, key-bearer.'");
                     waitForMessage();
-                    egoSay("I start to explain about the key. 'I know,' says the voice. 'That is why you are expected. Mind the cables.'");
+                    egoSay("I start to explain about the key. 'I know,' says the voice. 'Ask me sometime about the key that winds itself. Mind the cables.'");
                     waitForMessage();
                     egoSay("Madame Voltina. I'm going to need a minute, and possibly a will.");
                     waitForMessage();

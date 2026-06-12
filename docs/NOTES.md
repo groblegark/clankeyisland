@@ -114,10 +114,14 @@ the Rustlers now stealing Key #1 mid-ovation), B2 deferred.
 
 ## Next steps (in rough order)
 
-1. B2 from the editorial desk: make the riddle duel interactive — wire
-   the dialog-tree UI (game/dialog.scc, unused) into Rivet's duel with
-   3 pickable riddles, and teach the walkthrougher to click dialog
-   options. Fold in N-A1 (magnet + string as separate finds).
+1. B2+B8 from the editorial desk, combined: THE CONTESTS MUST BE
+   PLAYABLE. Wire the dialog-tree UI (game/dialog.scc, unused) into
+   Rivet's duel (3 pickable riddles, two flop funny) and make the
+   talent-show performance a player choice (wind-count 1-8; the
+   "regulation maximum is five" line retro-justifies over-winding as
+   the winner). Teach the walkthrougher to click dialog options. Fold
+   in N-A1 (magnet + string as separate finds). The desk's ruling:
+   no Scene 06 content until this lands.
 2. Scene 06: backstage — Madame Voltina (Key #2), with Key #1 freshly
    stolen by the Rustlers (recovery is Act 3, knock-code).
 3. The detuning hum (editorial N-A5): act-flag-driven pitch drift in

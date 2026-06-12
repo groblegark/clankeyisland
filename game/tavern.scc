@@ -143,7 +143,7 @@ room TavernRoom {
             egoSay("Polished to a mirror finish in one specific spot. Wonder why.");
             return;
         case Use:
-            egoSay("I'd order something, but my warranty has opinions about additives.");
+            egoSay("I'd order something, but my warranty names additives by statute number.");
             return;
         case Smell:
             egoSay("Spilled 10W-40, wiped with a rag that has seen things.");
@@ -213,17 +213,21 @@ room TavernRoom {
             if(objB == InventoryItems::boltStash) {
                 egoSay("Harbor bolts. Brined stiff. The shim wants one dry and dock-fresh, he says.");
                 waitForMessage();
-                egoSay("The WELCOME sign sheds those, if a bot asks it firmly enough.");
+                unless(getObjectOwner(InventoryItems::bolt) == VAR_EGO) {
+                    egoSay("The WELCOME sign sheds those, if a bot asks it firmly enough.");
+                    return;
+                }
+                egoSay("He nods at my pocket. The dry one the sign already tipped me will do fine.");
                 return;
             }
             if(objB == InventoryItems::tenthBolt) {
-                egoSay("He bites it, tastes alley, and hands it back. Dry and dock-fresh, he repeats. The sign knows the kind.");
+                egoSay("He bites it, tastes alley, and waves it off. The servo's fixed; the bolt's mine. Rivet sells facts for these.");
                 return;
             }
             egoSay("He polishes it politely and hands it back.");
             return;
         case Smell:
-            egoSay("Bartender oil and quiet patience.");
+            egoSay("Nothing. He's the cleanest thing in the building. It's a statement.");
             return;
         }
     }
@@ -244,13 +248,13 @@ room TavernRoom {
             return;
         case Use:
             startSound(plinkSnd);
-            egoSay("Two notes work. The third key isn't missing a note. It's missing entirely.");
+            egoSay("The roll plays on through the gaps. Two of the missing keys still sound their notes.");
             waitForMessage();
-            egoSay("I requested a song. It played most of one.");
+            egoSay("The third doesn't. That one isn't missing a note. It's missing entirely.");
             return;
         case UsedWith:
             if(objB == InventoryItems::windupKey) {
-                egoSay("Wrong kind of key. The piano needs three the size of fingernails. Mine winds cities.");
+                egoSay("Wrong kind of key, wrong kind of missing.");
                 return;
             }
             egoSay("The piano plays itself. It does not accessorize.");
@@ -382,7 +386,7 @@ room TavernRoom {
             egoSay("He squints at it, then at me. We agree it isn't a drink token.");
             return;
         case Smell:
-            egoSay("Hot bearings and confidence.");
+            egoSay("Hot bearings. He's been warming up the throwing arm since lunch.");
             return;
         }
     }

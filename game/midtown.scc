@@ -116,7 +116,7 @@ room MidtownRoom {
             egoSay("Recounting.");
             return;
         case Smell:
-            egoSay("Degreaser and optimism, in that order.");
+            egoSay("Degreaser. The whole block smells like starting over.");
             return;
         }
     }
@@ -140,6 +140,16 @@ room MidtownRoom {
             egoSay("A bouncer the size of a vending machine looks at my dock rust and invents a dress code.");
             waitForMessage();
             egoSay("I'm on the list, I tell him. He shows me the list. It's a picture of the door.");
+            return;
+        case Give:
+        case UsedWith:
+            if(objB == InventoryItems::oilVoucher) {
+                egoSay("The bouncer reads it. Valid, he admits. The rope, he explains, is a separate financial instrument.");
+                waitForMessage();
+                egoSay("Tonight it's at capacity. The rope. Is at capacity.");
+                return;
+            }
+            egoSay("He doesn't hold things. Holding things is a different department.");
             return;
         case Smell:
             egoSay("Single-origin crude. The good stuff. The unaffordable stuff.");
@@ -166,11 +176,15 @@ room MidtownRoom {
             // shot examines the lit marquee (transcript pairing
             // reads egoSay lines in source order)
             if(signedUp) {
-                egoSay("There it is. SPROCKET. On a marquee. In lights.");
-                waitForMessage();
-                egoSay("Two of the bulbs are out. It still feels like destiny.");
-                waitForMessage();
-                egoSay("Talent night. Tonight. No pressure. The marquee is the pressure.");
+                unless(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
+                    egoSay("There it is. SPROCKET. On a marquee. In lights.");
+                    waitForMessage();
+                    egoSay("Two of the bulbs are out. Forty-one of them aren't.");
+                    waitForMessage();
+                    egoSay("Talent night. Tonight. No pressure. The marquee is the pressure.");
+                    return;
+                }
+                egoSay("SPROCKET, still in lights. Winner, robbed mid-bow. The marquee doesn't mention that part.");
                 return;
             }
             egoSay("The Grand Cog Theater. TALENT NITE, says the marquee, with a line left blank underneath.");
@@ -180,7 +194,7 @@ room MidtownRoom {
         case Open:
         case Use:
             unless(signedUp) {
-                egoSay("The doors open for performers and ticket holders. I'm neither. The doors can tell.");
+                egoSay("The doors open for performers. I'm a spectator with a forearm-sized key. The doors can tell.");
                 return;
             }
             // performers' entrance — silently (room transitions say
@@ -228,12 +242,17 @@ room MidtownRoom {
                 egoSay("He taps the sign-up slot and looks at my key. The slot is key-shaped, conceptually.");
                 return;
             }
-            egoSay("He says doors at eight, performers at seven, panicking at six. I'm ahead of schedule.");
+            unless(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
+                egoSay("He says doors at eight, performers at seven, panicking at six. I'm ahead of schedule.");
+                return;
+            }
+            egoSay("He says I'm the first winner in Grand Cog history to get robbed mid-bow and take it professionally.");
             return;
         case Give:
         case UsedWith:
             if(objB == InventoryItems::windupKey) {
                 unless(signedUp) {
+                 if(metClerk) {
                     signedUp = 1;
                     cutscene(0) {
                         egoSay("I pitch the act: THE AMAZING SPROCKET WINDS HIMSELF UP. With a real key. On stage.");
@@ -249,6 +268,11 @@ room MidtownRoom {
                         waitForMessage();
                     }
                     return;
+                 }
+                 // pitches come after terms (and after the cutscene in
+                 // source: dub pairing reads this list from the front)
+                 egoSay("He slides the key back. Pitches come after terms, he says. Talk first.");
+                 return;
                 }
                 egoSay("Already registered. One act per bot. House rules, and the house is a cog.");
                 return;
@@ -256,7 +280,7 @@ room MidtownRoom {
             egoSay("He slides it back. The slot only takes talent.");
             return;
         case Smell:
-            egoSay("Ticket stubs and stage fright.");
+            egoSay("Stage fright. Not his. It soaks into the booth from the queue.");
             return;
         }
     }
@@ -293,7 +317,7 @@ room MidtownRoom {
             egoSay("The aide's eye appears in the gap, evaluates it, and declines on the city's behalf.");
             return;
         case Smell:
-            egoSay("Fresh paint and old decisions.");
+            egoSay("Fresh paint. Several coats. What's underneath is none of my business.");
             return;
         }
     }
@@ -316,6 +340,16 @@ room MidtownRoom {
             return;
         case TalkTo:
             egoSay("Hang in there, big fella. Help is coming. Help is small and walks funny, but it's coming.");
+            return;
+        case Give:
+        case UsedWith:
+            if(objB == InventoryItems::windupKey) {
+                egoSay("It fits nothing from down here. One key, three slots, a fence in between.");
+                waitForMessage();
+                egoSay("Even the fence can do that math.");
+                return;
+            }
+            egoSay("The Dynamo has staff for that. Had. The fence implies staff.");
             return;
         case Smell:
             egoSay("Ozone. The whole sky tastes like a battery up here.");

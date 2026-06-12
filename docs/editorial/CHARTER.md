@@ -34,6 +34,18 @@ the burden of proof is on the material.
    would they stall, which gags read as hints (and aren't), which
    hints read as gags. Reads: the screenplay + transcript, NOT the
    GDD.
+5. **The Embodiment Critic** — attacks the physics of the fiction.
+   Lenses: sensory claims with no sensory basis (you cannot *look* at
+   a door and perceive a knock-code; what does "from the sound of it"
+   mean about a silent lock?), characters knowing things their bodies
+   can't know, the robot-physiology ledger (Sprocket winds himself up
+   with a spring — yet every bot "runs on" the Dynamo's hum; pick a
+   power model and keep it), prop continuity (mass, size, count,
+   consumption), spatial coherence (room geography, where doors
+   actually lead, what's visible from where), and anthropomorphism
+   drift (robots smelling, breathing, drinking — fine if the world
+   establishes its rules, fatal if each line invents new ones).
+   Reads: `game/*.scc`, `tools/genassets.py` geometry, `docs/GDD.md`.
 
 ## Rules of engagement
 

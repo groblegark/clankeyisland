@@ -493,7 +493,7 @@ room DockRoom {
             }
             return;
         case Smell:
-            egoSay("Spilled 10W-40 and broken dreams. So... a tavern.");
+            egoSay("10W-40, spilled and re-spilled. The cornerstone of hospitality.");
             return;
         }
     }

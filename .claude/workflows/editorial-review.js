@@ -115,6 +115,29 @@ Sprocket's goal structure. Read the GDD, ${REPO}/game/*.scc room
 files, and ${REPO}/docs/NOTES.md. Return your notes.`,
   },
   {
+    key: 'embodiment',
+    prompt: `${COMMON}
+You are THE EMBODIMENT CRITIC. Attack the physics of the fiction:
+sensory claims with no sensory basis (you cannot LOOK at a door and
+perceive a knock-code; "from the sound of it" about a silent lock means
+nothing), characters knowing things their bodies cannot know, the
+robot-physiology ledger (every bot "runs on" the Dynamo's hum, yet
+Sprocket winds himself up with a mainspring and his act is a key —
+pick a power model and audit every line against it: oil, drinking,
+smelling, breathing, ears popping, sleep mode), prop continuity (mass,
+size, count, consumption — a forearm-sized brass key in a pocket; nine
+bolts in a fist), spatial coherence (check room geometry in
+${REPO}/tools/genassets.py GEOM tables against the dialog: where doors
+lead, what is visible from where, the funicular's geography, where the
+catwalk hatch goes), and anthropomorphism drift (each line inventing
+new biology). The world MAY have rules a human world doesn't — your
+job is to force it to have THE SAME rules twice. Read
+${REPO}/game/docks.scc, tavern.scc, alley.scc, midtown.scc,
+theater.scc, inventoryitems.scc, common.scc, ${REPO}/docs/GDD.md, and
+the geometry in tools/genassets.py. Quote offending lines exactly.
+Return your notes.`,
+  },
+  {
     key: 'player',
     prompt: `${COMMON}
 You are THE PLAYER ADVOCATE. You know NOTHING the screen does not say.

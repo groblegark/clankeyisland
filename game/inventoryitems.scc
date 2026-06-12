@@ -169,7 +169,7 @@ room InventoryItems {
                 sntcPrepo[0] = "on";
             return;
         case LookAt:
-            egoSay("A brass wind-up key the size of my forearm. Heavier than it looks. Most destiny is.");
+            egoSay("A brass wind-up key the size of my forearm. Somebody polished it for years. Somebody is going to want it back.");
             return;
         case Use:
             if(objB) {
@@ -186,7 +186,7 @@ room InventoryItems {
             egoSay("Big key, seeking big lock. Open, in the meantime, to showbiz.");
             return;
         case Smell:
-            egoSay("Brass and consequence.");
+            egoSay("Brass polish. Somebody maintained this thing its whole life.");
             return;
         }
     }
@@ -350,7 +350,7 @@ room InventoryItems {
             egoSay("I'm saving it for somewhere with a rope to get past.");
             return;
         case Smell:
-            egoSay("Fresh thermal paper. The smell of winning.");
+            egoSay("Thermal paper. It's already fading. Spend it.");
             return;
         }
     }
@@ -387,10 +387,10 @@ room InventoryItems {
                 egoSay("Those two things politely decline each other.");
                 return;
             }
-            egoSay("It opens exactly one door, and that door has a filing cabinet in front of it.");
+            egoSay("It opens exactly one door, and the door comes with staff.");
             return;
         case Smell:
-            egoSay("Laminate and chain grease. Showbiz, from the working side.");
+            egoSay("Chain grease. The lanyard has a past.");
             return;
         }
     }

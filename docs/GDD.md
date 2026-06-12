@@ -31,7 +31,7 @@ A robot metropolis stacked in three tiers:
 | **Mayor Piston** | Blustery steam-powered mayor. Denies the Dynamo is failing. |
 | **Rivet** | Dockside scrap-dealer. Knows everything, sells hints for bolts (currency). |
 | **Madame Voltina** | Fortune-telling tesla-coil bot at the Grand Cog Theater. |
-| **The Rustlers** | Gang of corroded pirate-bots who steal the first Key — mid-ovation, at the Grand Cog. |
+| **The Rustlers** | Gang of corroded pirate-bots who steal the first Key — mid-ovation, at the Grand Cog. Their game: a city that can be wound down can be billed for winding back up. They mean to ransom the rewind. (Voltina says this out loud in Act 2.) |
 | **Old Crank** | Hermit wind-up bot who remembers when the Dynamo was built. |
 
 ## Act Structure

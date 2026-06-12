@@ -30,6 +30,7 @@
   "TheaterRoom.entry": [
    "The Grand Cog, inside. Red velvet, brass rails, and a chandelier assembled from smaller, defeated chandeliers.",
    "The house is packed. Forty bots, and not one of them came here to be impressed.",
+   "And up on the catwalk: one more, with a spyglass. No ticket. No hurry.",
    "Somewhere past that curtain is backstage. And backstage, if the clerk is right, is Madame Voltina."
   ]
  },
@@ -210,7 +211,7 @@
     "A voice inside: 'IT'S OPEN. THE KNOCKING IS DECORATIVE.'"
    ],
    "Smell": [
-    "Spilled 10W-40 and broken dreams. So... a tavern."
+    "10W-40, spilled and re-spilled. The cornerstone of hospitality."
    ]
   },
   "storm drain": {
@@ -274,7 +275,7 @@
     "Polished to a mirror finish in one specific spot. Wonder why."
    ],
    "Use": [
-    "I'd order something, but my warranty has opinions about additives."
+    "I'd order something, but my warranty names additives by statute number."
    ],
    "Smell": [
     "Spilled 10W-40, wiped with a rag that has seen things."
@@ -302,7 +303,8 @@
     "He flips me a drink token. Says Flange takes those as table stakes at the dartboard.",
     "Harbor bolts. Brined stiff. The shim wants one dry and dock-fresh, he says.",
     "The WELCOME sign sheds those, if a bot asks it firmly enough.",
-    "He bites it, tastes alley, and hands it back. Dry and dock-fresh, he repeats. The sign knows the kind.",
+    "He nods at my pocket. The dry one the sign already tipped me will do fine.",
+    "He bites it, tastes alley, and waves it off. The servo's fixed; the bolt's mine. Rivet sells facts for these.",
     "He polishes it politely and hands it back."
    ],
    "UsedWith": [
@@ -312,11 +314,12 @@
     "He flips me a drink token. Says Flange takes those as table stakes at the dartboard.",
     "Harbor bolts. Brined stiff. The shim wants one dry and dock-fresh, he says.",
     "The WELCOME sign sheds those, if a bot asks it firmly enough.",
-    "He bites it, tastes alley, and hands it back. Dry and dock-fresh, he repeats. The sign knows the kind.",
+    "He nods at my pocket. The dry one the sign already tipped me will do fine.",
+    "He bites it, tastes alley, and waves it off. The servo's fixed; the bolt's mine. Rivet sells facts for these.",
     "He polishes it politely and hands it back."
    ],
    "Smell": [
-    "Bartender oil and quiet patience."
+    "Nothing. He's the cleanest thing in the building. It's a statement."
    ]
   },
   "player piano": {
@@ -325,11 +328,11 @@
     "...That feels thematically significant."
    ],
    "Use": [
-    "Two notes work. The third key isn't missing a note. It's missing entirely.",
-    "I requested a song. It played most of one."
+    "The roll plays on through the gaps. Two of the missing keys still sound their notes.",
+    "The third doesn't. That one isn't missing a note. It's missing entirely."
    ],
    "UsedWith": [
-    "Wrong kind of key. The piano needs three the size of fingernails. Mine winds cities.",
+    "Wrong kind of key, wrong kind of missing.",
     "The piano plays itself. It does not accessorize."
    ],
    "Smell": [
@@ -392,7 +395,7 @@
     "He squints at it, then at me. We agree it isn't a drink token."
    ],
    "Smell": [
-    "Hot bearings and confidence."
+    "Hot bearings. He's been warming up the throwing arm since lunch."
    ]
   },
   "back door": {
@@ -426,17 +429,23 @@
    "Open": [
     "Knock knock.",
     "The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'",
-    "This organization has remarkable message discipline."
+    "This organization has remarkable message discipline.",
+    "I knock. The slot opens. The eye pauses \u2014 it knows what I'm here about now.",
+    "'STILL Act Three, buddy.' The slot closes. Slower this time. Almost respectful."
    ],
    "Use": [
     "Knock knock.",
     "The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'",
-    "This organization has remarkable message discipline."
+    "This organization has remarkable message discipline.",
+    "I knock. The slot opens. The eye pauses \u2014 it knows what I'm here about now.",
+    "'STILL Act Three, buddy.' The slot closes. Slower this time. Almost respectful."
    ],
    "Move": [
     "Knock knock.",
     "The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'",
-    "This organization has remarkable message discipline."
+    "This organization has remarkable message discipline.",
+    "I knock. The slot opens. The eye pauses \u2014 it knows what I'm here about now.",
+    "'STILL Act Three, buddy.' The slot closes. Slower this time. Almost respectful."
    ],
    "Smell": [
     "Nothing. The door is airtight. That's its own kind of information."
@@ -448,7 +457,7 @@
     "Under that, very small: NO REFUNDS."
    ],
    "Smell": [
-    "Fresh paint over old paint over older paint. Sediment, with opinions."
+    "Fresh paint over old paint over older paint. Sediment. Three administrations deep."
    ]
   },
   "dumpster": {
@@ -494,7 +503,7 @@
     "The stall out front says BACK IN FIVE OIL CHANGES. This is where he goes when he's back."
    ],
    "TalkTo": [
-    "Rivet's the name, he says. Knows everything. First fact's free:",
+    "Rivet's the name, he says. Knows everything, sells most of it. Today only: the welcome bundle, three facts, free.",
     "The funicular to Midtown takes ten bolts. Exact change. Gates can count \u2014 it's all they do.",
     "Fact two, on the house, because I look like rain: the Dynamo is winding down, whatever the posters say.",
     "The Order that built it left three wind-up keys behind. All three together could wind the city back up. Or down.",
@@ -505,9 +514,9 @@
     "My turn. 'What winds down... but never winds up?'",
     "He opens his mouth. He closes it. He looks uptown, at the Dynamo District.",
     "He pays the bolt without a word.",
-    "Ten's the fare, he says. I have nine. He suggests I let the gate break the news. Tradition.",
+    "He won't say how many I'm short. Alley rules: the gate breaks its own news.",
     "He duels for stakes, and the stake he wants is paper: that official notice pinned up on the docks.",
-    "He duels somebodies only, alley rules. A somebody, here, owns something with destiny on it.",
+    "He duels somebodies only, alley rules. A somebody, here, owns something with an Order's stencil on it.",
     "He says everything a bot needs is in that dumpster, and he says it as the dumpster's legal owner.",
     "He eyes the magnet. He says the docks have a drain, the drain has a glint, and the glint has my name on it.",
     "He waves. He's already sorting the bolts I fed the gate. I'm not asking how.",
@@ -515,18 +524,30 @@
    ],
    "Give": [
     "He takes the bolt, bites it, appraises my entire financial posture, and hands it back with a fact:",
-    "'The dumpster. Everything a bot needs. Deposit refunded.'",
+    "'The dumpster. Mine, legally. Help yourself before the duck does. Deposit refunded.'",
     "'The storm drain on the docks. Bring the string. Deposit refunded.'",
+    "'You've already withdrawn. The bank is closed. Deposit refunded.'",
+    "He bites one of the nine and hands the fistful straight back, with a fact:",
+    "'The gate. Let it count. It lives for this.'",
+    "'Stakes, riddle, notary. Talk to me when you're holding paper worth wanting.'",
+    "He won't take it as a gift. Stakes or nothing \u2014 collection ethics.",
+    "Riddles, he says, are the alley's notary.",
     "He appraises it, names a price, and the price is an insult. We're both happier keeping it."
    ],
    "UsedWith": [
     "He takes the bolt, bites it, appraises my entire financial posture, and hands it back with a fact:",
-    "'The dumpster. Everything a bot needs. Deposit refunded.'",
+    "'The dumpster. Mine, legally. Help yourself before the duck does. Deposit refunded.'",
     "'The storm drain on the docks. Bring the string. Deposit refunded.'",
+    "'You've already withdrawn. The bank is closed. Deposit refunded.'",
+    "He bites one of the nine and hands the fistful straight back, with a fact:",
+    "'The gate. Let it count. It lives for this.'",
+    "'Stakes, riddle, notary. Talk to me when you're holding paper worth wanting.'",
+    "He won't take it as a gift. Stakes or nothing \u2014 collection ethics.",
+    "Riddles, he says, are the alley's notary.",
     "He appraises it, names a price, and the price is an insult. We're both happier keeping it."
    ],
    "Smell": [
-    "WD-40 and good information."
+    "WD-40. He maintains himself. Nobody else is qualified."
    ]
   },
   "junk heap": {
@@ -556,7 +577,9 @@
     "Uptown. I can hear the neon from here.",
     "The fare box wants ten bolts. I have pockets, and ambition.",
     "I feed it the lot. It counts, returns everything it doesn't honor, and blinks NINE.",
-    "The hopper has no pity. Rivet might."
+    "The hopper has no pity. Rivet might.",
+    "I feed it ten. It counts ten, blinks NINE, and spits the dry one back stamped UNCIRCULATED.",
+    "The fare wants money that's suffered. The dry one has another appointment anyway."
    ],
    "Use": [
     "Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.",
@@ -564,7 +587,9 @@
     "Uptown. I can hear the neon from here.",
     "The fare box wants ten bolts. I have pockets, and ambition.",
     "I feed it the lot. It counts, returns everything it doesn't honor, and blinks NINE.",
-    "The hopper has no pity. Rivet might."
+    "The hopper has no pity. Rivet might.",
+    "I feed it ten. It counts ten, blinks NINE, and spits the dry one back stamped UNCIRCULATED.",
+    "The fare wants money that's suffered. The dry one has another appointment anyway."
    ],
    "Give": [
     "I feed it the fistful. It counts, blinks NINE, and returns the lot.",
@@ -581,7 +606,7 @@
     "The slot wants bolts, plural, all at once."
    ],
    "Smell": [
-    "Ozone and altitude. The future smells expensive."
+    "Cold rail grease, all the way up."
    ]
   },
   "funicular station": {
@@ -603,7 +628,7 @@
     "Recounting."
    ],
    "Smell": [
-    "Degreaser and optimism, in that order."
+    "Degreaser. The whole block smells like starting over."
    ]
   },
   "the Oil Bar": {
@@ -619,6 +644,16 @@
     "A bouncer the size of a vending machine looks at my dock rust and invents a dress code.",
     "I'm on the list, I tell him. He shows me the list. It's a picture of the door."
    ],
+   "Give": [
+    "The bouncer reads it. Valid, he admits. The rope, he explains, is a separate financial instrument.",
+    "Tonight it's at capacity. The rope. Is at capacity.",
+    "He doesn't hold things. Holding things is a different department."
+   ],
+   "UsedWith": [
+    "The bouncer reads it. Valid, he admits. The rope, he explains, is a separate financial instrument.",
+    "Tonight it's at capacity. The rope. Is at capacity.",
+    "He doesn't hold things. Holding things is a different department."
+   ],
    "Smell": [
     "Single-origin crude. The good stuff. The unaffordable stuff."
    ]
@@ -626,16 +661,17 @@
   "Grand Cog Theater": {
    "LookAt": [
     "There it is. SPROCKET. On a marquee. In lights.",
-    "Two of the bulbs are out. It still feels like destiny.",
+    "Two of the bulbs are out. Forty-one of them aren't.",
     "Talent night. Tonight. No pressure. The marquee is the pressure.",
+    "SPROCKET, still in lights. Winner, robbed mid-bow. The marquee doesn't mention that part.",
     "The Grand Cog Theater. TALENT NITE, says the marquee, with a line left blank underneath.",
     "A blank line on a marquee is the most dangerous sentence in show business."
    ],
    "Open": [
-    "The doors open for performers and ticket holders. I'm neither. The doors can tell."
+    "The doors open for performers. I'm a spectator with a forearm-sized key. The doors can tell."
    ],
    "Use": [
-    "The doors open for performers and ticket holders. I'm neither. The doors can tell."
+    "The doors open for performers. I'm a spectator with a forearm-sized key. The doors can tell."
    ],
    "Smell": [
     "Velvet, valve oil, and flop sweat. Showbiz."
@@ -652,13 +688,15 @@
     "He says, quote, that's more act than most.",
     "You keep your props, he adds, before I can ask. House insurance won't survive a second Houdini.",
     "He taps the sign-up slot and looks at my key. The slot is key-shaped, conceptually.",
-    "He says doors at eight, performers at seven, panicking at six. I'm ahead of schedule."
+    "He says doors at eight, performers at seven, panicking at six. I'm ahead of schedule.",
+    "He says I'm the first winner in Grand Cog history to get robbed mid-bow and take it professionally."
    ],
    "Give": [
     "I pitch the act: THE AMAZING SPROCKET WINDS HIMSELF UP. With a real key. On stage.",
     "The clerk has seen everything twice, and he still blinks.",
     "My name goes up on the marquee while I'm still holding the pen.",
     "I keep the key. It's the act.",
+    "He slides the key back. Pitches come after terms, he says. Talk first.",
     "Already registered. One act per bot. House rules, and the house is a cog.",
     "He slides it back. The slot only takes talent."
    ],
@@ -667,11 +705,12 @@
     "The clerk has seen everything twice, and he still blinks.",
     "My name goes up on the marquee while I'm still holding the pen.",
     "I keep the key. It's the act.",
+    "He slides the key back. Pitches come after terms, he says. Talk first.",
     "Already registered. One act per bot. House rules, and the house is a cog.",
     "He slides it back. The slot only takes talent."
    ],
    "Smell": [
-    "Ticket stubs and stage fright."
+    "Stage fright. Not his. It soaks into the booth from the queue."
    ]
   },
   "City Hall": {
@@ -694,7 +733,7 @@
     "The aide's eye appears in the gap, evaluates it, and declines on the city's behalf."
    ],
    "Smell": [
-    "Fresh paint and old decisions."
+    "Fresh paint. Several coats. What's underneath is none of my business."
    ]
   },
   "the Great Dynamo": {
@@ -705,6 +744,16 @@
    ],
    "TalkTo": [
     "Hang in there, big fella. Help is coming. Help is small and walks funny, but it's coming."
+   ],
+   "Give": [
+    "It fits nothing from down here. One key, three slots, a fence in between.",
+    "Even the fence can do that math.",
+    "The Dynamo has staff for that. Had. The fence implies staff."
+   ],
+   "UsedWith": [
+    "It fits nothing from down here. One key, three slots, a fence in between.",
+    "Even the fence can do that math.",
+    "The Dynamo has staff for that. Had. The fence implies staff."
    ],
    "Smell": [
     "Ozone. The whole sky tastes like a battery up here."
@@ -718,7 +767,7 @@
   "spotlight booth": {
    "LookAt": [
     "The spotlight booth. The operator inside is in low-power mode, eye dimmed to a polite ember.",
-    "The brownouts reach everywhere. Even showbiz runs on the Dynamo.",
+    "The brownouts reach everywhere.",
     "The operator's awake and tracking the stage like it owes him money."
    ],
    "Use": [
@@ -745,7 +794,7 @@
   },
   "chandelier": {
    "LookAt": [
-    "A chandelier built from the chandeliers of lesser theaters. Trophies, basically."
+    "Forty-one sockets, thirty-eight working. The rigging predates the building it hangs in."
    ],
    "Use": [
     "Whatever swinging from it would prove, the insurance exclusions prove harder."
@@ -762,11 +811,11 @@
    ],
    "TalkTo": [
     "I try some crowd work. How's everybody doing tonight?",
-    "A voice from the dark: 'WORSE NOW.' Tough room.",
+    "A voice from the dark: 'WORSE NOW.'",
     "Somebody yells ENCORE. Somebody else yells at him. The arts."
    ],
    "Smell": [
-    "Forty brands of machine oil and one of expectation."
+    "Idling engines. The whole room is holding its breath with fans."
    ]
   },
   "the emcee": {
@@ -777,7 +826,7 @@
     "Sprocket, he says, reading the marquee off my face. The wind-up act. You're on next.",
     "One problem: the spotlight operator went into low-power mode during the juggler. The juggler had that effect.",
     "House rule: no spot, no act. He says it like the rule has a plaque somewhere.",
-    "Wake the booth, get on stage, and win. Prize is an oil voucher and a backstage pass.",
+    "He looks from my key to the dark booth and back. He likes my chances, he says. Conditionally.",
     "He points his mic arm at the booth. No spot, no act. The plaque is implied.",
     "He sweeps an arm at the stage. The stage is all mine, he says, the way doctors say 'this won't hurt'.",
     "He keeps calling me 'the discovery of the season'. The season is one night long."
@@ -788,7 +837,7 @@
   },
   "the stage": {
    "LookAt": [
-    "Confetti on the boards and a spotlight with nothing left to prove. My stage now. Legally, for one night.",
+    "Confetti on the boards and a spotlight with nothing left to prove.",
     "The stage. Behind that curtain, forty years of acts have died and three have lived.",
     "Tonight it gets a maintenance-bot and a very large key."
    ],
@@ -804,9 +853,11 @@
     "First prize: one oil voucher, and a backstage pass on a lanyard of bicycle chain.",
     "I reach for the key, to take the bow with it. My hand closes on lanyard and applause.",
     "Up on the catwalk, a hatch clicks shut. Two clangs. One. Two.",
-    "The Rustlers. They watched me hand-deliver it to a lit stage, under my own name, in bulbs.",
+    "The hats from the card table. The spyglass from the catwalk. I hand-delivered the thing \u2014 lit stage, my name in bulbs.",
+    "Everyone in this house saw a triumph. I saw a hatch.",
     "One act per night. The house couldn't take a second one. Neither could the proscenium.",
-    "No spot, no act. The rule has a plaque. The plaque has a lawyer.",
+    "No spot, no act. The rule has a plaque, the plaque has a lawyer.",
+    "The spot has an operator. The operator is asleep.",
     "The stage considers it and finds it insufficiently theatrical."
    ],
    "UsedWith": [
@@ -821,18 +872,20 @@
     "First prize: one oil voucher, and a backstage pass on a lanyard of bicycle chain.",
     "I reach for the key, to take the bow with it. My hand closes on lanyard and applause.",
     "Up on the catwalk, a hatch clicks shut. Two clangs. One. Two.",
-    "The Rustlers. They watched me hand-deliver it to a lit stage, under my own name, in bulbs.",
+    "The hats from the card table. The spyglass from the catwalk. I hand-delivered the thing \u2014 lit stage, my name in bulbs.",
+    "Everyone in this house saw a triumph. I saw a hatch.",
     "One act per night. The house couldn't take a second one. Neither could the proscenium.",
-    "No spot, no act. The rule has a plaque. The plaque has a lawyer.",
+    "No spot, no act. The rule has a plaque, the plaque has a lawyer.",
+    "The spot has an operator. The operator is asleep.",
     "The stage considers it and finds it insufficiently theatrical."
    ],
    "Use": [
     "Climbing up empty-handed is called loitering. With the key, it's called an act.",
-    "One night only. The proscenium and I have an agreement."
+    "The proscenium and I have an agreement."
    ],
    "Open": [
     "Climbing up empty-handed is called loitering. With the key, it's called an act.",
-    "One night only. The proscenium and I have an agreement."
+    "The proscenium and I have an agreement."
    ],
    "Smell": [
     "Sawdust, grease paint, and the fear of four hundred opening nights."
@@ -840,19 +893,19 @@
   },
   "stage door": {
    "LookAt": [
-    "STAGE DOOR. Behind it: dressing rooms, rope, and a fortune-teller who guards more than fortunes."
+    "STAGE DOOR. Behind it: dressing rooms, rope, and a fortune-teller."
    ],
    "Open": [
-    "I flash the pass. A stagehand the shape of a filing cabinet reads it twice and steps aside.",
+    "I flash the pass. The stagehand reads it twice. Nothing in his build explains how he steps aside, but he does.",
     "The dark behind him smells like ozone and incense. A voice from it says: 'I have been expecting you, key-bearer.'",
-    "I start to explain about the key. 'I know,' says the voice. 'That is why you are expected. Mind the cables.'",
+    "I start to explain about the key. 'I know,' says the voice. 'Ask me sometime about the key that winds itself. Mind the cables.'",
     "Madame Voltina. I'm going to need a minute, and possibly a will.",
     "A stagehand the shape of a filing cabinet fills the doorway. Pass-holders only."
    ],
    "Use": [
-    "I flash the pass. A stagehand the shape of a filing cabinet reads it twice and steps aside.",
+    "I flash the pass. The stagehand reads it twice. Nothing in his build explains how he steps aside, but he does.",
     "The dark behind him smells like ozone and incense. A voice from it says: 'I have been expecting you, key-bearer.'",
-    "I start to explain about the key. 'I know,' says the voice. 'That is why you are expected. Mind the cables.'",
+    "I start to explain about the key. 'I know,' says the voice. 'Ask me sometime about the key that winds itself. Mind the cables.'",
     "Madame Voltina. I'm going to need a minute, and possibly a will.",
     "A stagehand the shape of a filing cabinet fills the doorway. Pass-holders only."
    ],
@@ -886,14 +939,14 @@
   },
   "wind-up key": {
    "LookAt": [
-    "A brass wind-up key the size of my forearm. Heavier than it looks. Most destiny is."
+    "A brass wind-up key the size of my forearm. Somebody polished it for years. Somebody is going to want it back."
    ],
    "Use": [
     "Those two things politely decline each other.",
     "Big key, seeking big lock. Open, in the meantime, to showbiz."
    ],
    "Smell": [
-    "Brass and consequence."
+    "Brass polish. Somebody maintained this thing its whole life."
    ]
   },
   "magnet on a string": {
@@ -943,7 +996,7 @@
     "I'm saving it for somewhere with a rope to get past."
    ],
    "Smell": [
-    "Fresh thermal paper. The smell of winning."
+    "Thermal paper. It's already fading. Spend it."
    ]
   },
   "backstage pass": {
@@ -952,10 +1005,10 @@
    ],
    "Use": [
     "Those two things politely decline each other.",
-    "It opens exactly one door, and that door has a filing cabinet in front of it."
+    "It opens exactly one door, and the door comes with staff."
    ],
    "Smell": [
-    "Laminate and chain grease. Showbiz, from the working side."
+    "Chain grease. The lanyard has a past."
    ]
   }
  }
