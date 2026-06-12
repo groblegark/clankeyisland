@@ -10,6 +10,7 @@
 #include "verbs.sch"
 #include "inventoryitems.sch"
 #include "alley.sch"
+#include "theater.sch"
 #include "midtown.sch"
 
 room MidtownRoom {
@@ -182,7 +183,10 @@ room MidtownRoom {
                 egoSay("The doors open for performers and ticket holders. I'm neither. The doors can tell.");
                 return;
             }
-            egoSay("Doors open at showtime. The clerk said to go rehearse. The clerk has a point.");
+            // performers' entrance — silently (room transitions say
+            // nothing: arrival flavor lives in TheaterRoom.entry)
+            putActorAt(VAR_EGO, 24, 120, TheaterRoom);
+            startRoom(TheaterRoom);
             return;
         case Smell:
             egoSay("Velvet, valve oil, and flop sweat. Showbiz.");
@@ -215,6 +219,8 @@ room MidtownRoom {
                     waitForMessage();
                     egoSay("He says, quote, that's more act than most.");
                     waitForMessage();
+                    egoSay("You keep your props, he adds, before I can ask. House insurance won't survive a second Houdini.");
+                    waitForMessage();
                 }
                 return;
             }
@@ -239,7 +245,7 @@ room MidtownRoom {
                         egoSay("My name goes up on the marquee while I'm still holding the pen.");
                         waitForMessage();
                         startSound(pickupSnd);
-                        egoSay("I keep the key. It's the act. It's also a legendary artifact, but mostly it's the act.");
+                        egoSay("I keep the key. It's the act.");
                         waitForMessage();
                     }
                     return;
@@ -281,7 +287,7 @@ room MidtownRoom {
                 waitForMessage();
                 egoSay("Then he closes the door eight of the nine degrees.");
                 waitForMessage();
-                egoSay("Somebody in there is afraid of this piece of paper. Noted. Filed. Act Two material.");
+                egoSay("Somebody in there is afraid of this piece of paper. Good. So am I, a little.");
                 return;
             }
             egoSay("The aide's eye appears in the gap, evaluates it, and declines on the city's behalf.");
@@ -306,10 +312,10 @@ room MidtownRoom {
             waitForMessage();
             egoSay("Every bot on this island runs on that hum. Including me. The hum is flat by half a step.");
             waitForMessage();
-            egoSay("Half a step doesn't sound like much. Neither does a clunk, until it's PERMANENT.");
+            egoSay("Half a step doesn't sound like much. Neither did the clunk.");
             return;
         case TalkTo:
-            egoSay("Hang in there, big fella. I've got one key and a lead on two more.");
+            egoSay("Hang in there, big fella. Help is coming. Help is small and walks funny, but it's coming.");
             return;
         case Smell:
             egoSay("Ozone. The whole sky tastes like a battery up here.");

@@ -841,6 +841,148 @@ def draw_midtown(marquee="blank"):
     return im
 
 
+# ------------------------------------------- inside the Grand Cog
+
+# Scene 05 geometry. The stage rect is big so the curtain state change
+# (closed -> open mid-performance) stays inside the object rect.
+GRAND_GEOM = {
+    "G_DOOR_OUT":   (0, 56, 24, 48),
+    "G_SPOT":       (32, 8, 32, 32),
+    "G_CHANDELIER": (88, 0, 48, 24),
+    "G_AUDIENCE":   (24, 88, 96, 32),
+    "G_EMCEE":      (128, 56, 24, 48),
+    "G_STAGE":      (160, 16, 120, 96),
+    "G_BACKSTAGE":  (288, 56, 24, 48),
+}
+
+
+def draw_theater(curtain="closed"):
+    im = new_img(W, H)
+    d = ImageDraw.Draw(im)
+    g = GRAND_GEOM
+
+    # --- house walls: red-velvet rust, brass trim
+    d.rectangle([0, 0, W, 108], fill=17)
+    for y in range(8, 108, 12):
+        d.line([(0, y), (W, y)], fill=16)
+    d.line([(0, 108), (W, 108)], fill=46)             # brass rail
+    # carpet
+    d.rectangle([0, 109, W, H], fill=18)
+    for y in range(113, H, 6):
+        d.line([(0, y), (W, y)], fill=16)
+    for x in range(0, W, 22):                         # carpet diamonds
+        im.putpixel((x + 11, 116), 24)
+        im.putpixel((x, 122), 24)
+
+    # --- the chandelier: made of actual chandeliers
+    cx, cy, cw, ch = g["G_CHANDELIER"]
+    d.line([(cx + cw // 2, 0), (cx + cw // 2, cy + 8)], fill=46)
+    d.polygon([(cx + 6, cy + 16), (cx + cw - 6, cy + 16),
+               (cx + cw - 14, cy + 8), (cx + 14, cy + 8)], fill=46)
+    for lx in range(cx + 8, cx + cw - 4, 8):
+        im.putpixel((lx, cy + 18), 47)
+        im.putpixel((lx, cy + 19), 44)
+    for lx in (cx + 16, cx + cw - 16):                # the sub-chandeliers
+        d.line([(lx, cy + 16), (lx, cy + 21)], fill=46)
+        im.putpixel((lx, cy + 22), 47)
+
+    # --- lobby doors (back out to the street)
+    dx, dy, dw, dh = g["G_DOOR_OUT"]
+    d.rectangle([dx - 3, dy - 3, dx + dw + 3, dy + dh], fill=19)
+    d.rectangle([dx, dy, dx + dw, dy + dh], fill=64)
+    d.line([(dx + dw // 2, dy), (dx + dw // 2, dy + dh)], fill=66)
+    d.rectangle([dx + 4, dy + 8, dx + 10, dy + 16], fill=44)   # lobby glow
+    d.ellipse([dx + dw - 9, dy + 22, dx + dw - 5, dy + 26], outline=46)
+
+    # --- spotlight booth, operator included
+    sx, sy, sw, sh = g["G_SPOT"]
+    d.rectangle([sx, sy + 8, sx + sw, sy + sh], fill=6)
+    d.rectangle([sx + 4, sy + 12, sx + sw - 4, sy + 24], fill=1)  # window
+    d.rectangle([sx + 10, sy + 14, sx + 18, sy + 22], fill=5)     # operator
+    d.rectangle([sx + 12, sy + 16, sx + 14, sy + 18], fill=2)     # dim eye
+    d.ellipse([sx + 20, sy + 14, sx + 28, sy + 22], outline=11)   # the lamp
+    im.putpixel((sx + 24, sy + 18), 8)
+
+    # --- the audience: rows of bots, professionally unimpressed
+    ax, ay, aw, ah = g["G_AUDIENCE"]
+    for row in (0, 1):
+        ry = ay + row * 14
+        d.rectangle([ax, ry + 10, ax + aw, ry + 13], fill=64)     # seat backs
+        for i, hx in enumerate(range(ax + 4 + row * 6, ax + aw - 6, 13)):
+            d.rectangle([hx, ry, hx + 8, ry + 10], fill=1)        # heads
+            eye = [44, 31, 107, 94, 45][(i + row) % 5]
+            d.rectangle([hx + 2, ry + 3, hx + 3, ry + 4], fill=eye)
+            if (i + row) % 4 == 2:
+                d.rectangle([hx + 5, ry + 3, hx + 6, ry + 4], fill=eye)
+    # the rivals in the front row: a juggler mid-drop, a foghorn singer
+    d.rectangle([ax + 8, ay - 10, ax + 16, ay], fill=5)           # juggler
+    for jx, jy in [(ax + 4, ay - 16), (ax + 12, ay - 20), (ax + 19, ay - 13)]:
+        d.ellipse([jx, jy, jx + 3, jy + 3], outline=11)
+    im.putpixel((ax + 6, ay - 2), 107)                            # one dropped
+    d.rectangle([ax + 70, ay - 12, ax + 78, ay], fill=18)         # the singer
+    d.ellipse([ax + 71, ay - 18, ax + 77, ay - 12], outline=18)   # horn mouth
+
+    # --- the emcee: tuxedo paint job, telescoping arm
+    ex, ey, ew, eh = g["G_EMCEE"]
+    d.rectangle([ex + 6, ey + 14, ex + 18, ey + 40], fill=1)      # tux body
+    d.polygon([(ex + 9, ey + 14), (ex + 15, ey + 14),
+               (ex + 12, ey + 24)], fill=104)                     # shirt vee
+    im.putpixel((ex + 12, ey + 18), 107)                          # bow tie
+    d.rectangle([ex + 8, ey + 4, ex + 16, ey + 14], fill=5)       # head
+    d.rectangle([ex + 9, ey + 2, ex + 15, ey + 4], fill=1)        # tiny hat
+    d.rectangle([ex + 10, ey + 7, ex + 11, ey + 9], fill=45)      # eyes
+    d.rectangle([ex + 13, ey + 7, ex + 14, ey + 9], fill=45)
+    d.line([(ex + 18, ey + 20), (ex + 26, ey + 10)], fill=6)      # mic arm
+    d.rectangle([ex + 25, ey + 7, ex + 28, ey + 10], fill=2)      # the mic
+    d.rectangle([ex + 8, ey + 40, ex + 11, ey + 48], fill=6)      # legs
+    d.rectangle([ex + 13, ey + 40, ex + 16, ey + 48], fill=6)
+
+    # --- the stage
+    tx, ty, tw, th = g["G_STAGE"]
+    d.rectangle([tx, ty + th - 16, tx + tw, ty + th], fill=66)    # apron
+    for x in range(tx + 4, tx + tw, 12):
+        d.line([(x, ty + th - 16), (x, ty + th)], fill=64)
+    d.rectangle([tx + 4, ty, tx + tw - 4, ty + 8], fill=46)       # arch top
+    d.rectangle([tx + 4, ty, tx + 10, ty + th - 16], fill=46)     # arch sides
+    d.rectangle([tx + tw - 10, ty, tx + tw - 4, ty + th - 16], fill=46)
+    for bx in range(tx + 8, tx + tw - 6, 8):                      # arch bulbs
+        im.putpixel((bx, ty + 4), 47)
+    if curtain == "closed":
+        # the curtain: heavy red folds, waiting
+        d.rectangle([tx + 10, ty + 8, tx + tw - 10, ty + th - 16], fill=20)
+        for x in range(tx + 14, tx + tw - 10, 8):
+            d.line([(x, ty + 8), (x, ty + th - 16)], fill=18)
+        d.polygon([(tx + 10, ty + 8), (tx + tw - 10, ty + 8),
+                   (tx + tw - 10, ty + 16), (tx + 10, ty + 16)], fill=24)
+    else:
+        # curtain open: teal backdrop, mic stand, and a spotlight pool
+        d.rectangle([tx + 10, ty + 8, tx + tw - 10, ty + th - 16], fill=29)
+        for y in range(ty + 12, ty + th - 16, 6):                 # backdrop
+            d.line([(tx + 10, y), (tx + tw - 10, y)], fill=30)
+        d.rectangle([tx + 10, ty + 8, tx + 16, ty + th - 16], fill=20)
+        d.rectangle([tx + tw - 16, ty + 8, tx + tw - 10, ty + th - 16],
+                    fill=20)                                      # tied back
+        d.ellipse([tx + 38, ty + th - 28, tx + 82, ty + th - 12],
+                  fill=44)                                        # the pool
+        d.line([(tx + 60, ty + th - 36), (tx + 60, ty + th - 18)], fill=2)
+        d.rectangle([tx + 58, ty + th - 39, tx + 62, ty + th - 36],
+                    fill=1)                                       # the mic
+        for gx2, gy2 in [(tx + 30, ty + 20), (tx + 70, ty + 14),
+                         (tx + 90, ty + 26), (tx + 50, ty + 30)]:
+            im.putpixel((gx2, gy2), 47)                           # confetti
+            im.putpixel((gx2 + 2, gy2 + 3), 94)
+
+    # --- the stage door
+    bx, by, bw, bh = g["G_BACKSTAGE"]
+    d.rectangle([bx - 3, by - 3, bx + bw + 3, by + bh], fill=19)
+    d.rectangle([bx, by, bx + bw, by + bh], fill=4)
+    d.rectangle([bx + 4, by + 12, bx + bw - 4, by + 20], fill=1)
+    _neon_text(im, "SD", bx + 8, by + 14, 45)                     # STAGE DOOR
+    im.putpixel((bx + bw // 2, by - 6), 94)                       # violet lamp
+
+    return im
+
+
 # ----------------------------------------------------------- verb panel
 
 def draw_verb_panel():
@@ -1021,6 +1163,28 @@ def gen_inventory_icons():
         im.putpixel((hx, hy - 2), 14)
     d.rectangle([28, 8, 33, 10], fill=10)                  # one escapee
     icons["inv_boltstash"] = im
+    # oil voucher: a ticket with a drop on it, redeemable uptown
+    im = new_img(40, 16)
+    d = ImageDraw.Draw(im)
+    d.rectangle([9, 4, 31, 12], fill=44)
+    for px in (9, 31):                                     # perforations
+        for py in range(5, 12, 2):
+            im.putpixel((px, py), 0)
+    d.polygon([(15, 6), (13, 9), (15, 11), (17, 9)], fill=18)   # the drop
+    d.line([(20, 7), (28, 7)], fill=1)
+    d.line([(20, 9), (26, 9)], fill=1)
+    icons["inv_voucher"] = im
+    # backstage pass: laminated card on a bicycle-chain lanyard
+    im = new_img(40, 16)
+    d = ImageDraw.Draw(im)
+    for lx in range(8, 32, 4):                             # the lanyard
+        im.putpixel((lx, 3), 11)
+        im.putpixel((lx + 2, 2), 6)
+    d.rectangle([13, 5, 27, 14], fill=94)                  # the card
+    d.rectangle([14, 6, 26, 13], outline=90)
+    d.line([(16, 8), (24, 8)], fill=104)
+    d.line([(16, 11), (22, 11)], fill=104)
+    icons["inv_pass"] = im
     return icons
 
 
@@ -1068,6 +1232,16 @@ ALLEY_OBJECT_NAMES = {
     "A_GATE":     "funicular gate",
 }
 
+GRAND_OBJECT_NAMES = {
+    "G_DOOR_OUT":   "lobby doors",
+    "G_SPOT":       "spotlight booth",
+    "G_CHANDELIER": "chandelier",
+    "G_AUDIENCE":   "the audience",
+    "G_EMCEE":      "the emcee",
+    "G_STAGE":      "the stage",
+    "G_BACKSTAGE":  "stage door",
+}
+
 MIDTOWN_OBJECT_NAMES = {
     "M_STATION":   "funicular station",
     "M_LEFTYS":    "Lefty's Spare Parts",
@@ -1098,6 +1272,11 @@ ALLEY_WALKBOXES = [
 MIDTOWN_WALKBOXES = [
     ("midwest", [(8, 112), (168, 112), (168, 140), (8, 140)]),
     ("mideast", [(168, 112), (312, 112), (312, 140), (168, 140)]),
+]
+
+GRAND_WALKBOXES = [
+    ("grwest", [(8, 112), (160, 112), (160, 140), (8, 140)]),
+    ("greast", [(160, 112), (304, 112), (304, 140), (160, 140)]),
 ]
 
 # Verb anchors from game/verbs.scc (verbCenter() -> x is the center;
@@ -1144,7 +1323,8 @@ def emit_stage(path):
     for names, geom in [(STAGE_OBJECT_NAMES, GEOM),
                         (TAVERN_OBJECT_NAMES, TAVERN_GEOM),
                         (ALLEY_OBJECT_NAMES, ALLEY_GEOM),
-                        (MIDTOWN_OBJECT_NAMES, MIDTOWN_GEOM)]:
+                        (MIDTOWN_OBJECT_NAMES, MIDTOWN_GEOM),
+                        (GRAND_OBJECT_NAMES, GRAND_GEOM)]:
         for key, name in names.items():
             x, y, w, h = geom[key]
             hs = STAGE_HOTSPOT_OVERRIDES.get(key, (x + w // 2, y + h // 2))
@@ -1160,11 +1340,13 @@ def emit_stage(path):
                    for name, idxs in STAGE_PROBES.items()},
         "walkboxes": [{"name": n, "points": [list(p) for p in pts]}
                       for n, pts in (WALKBOXES + TAVERN_WALKBOXES
-                                     + ALLEY_WALKBOXES + MIDTOWN_WALKBOXES)],
+                                     + ALLEY_WALKBOXES + MIDTOWN_WALKBOXES
+                                     + GRAND_WALKBOXES)],
         "walk_targets": {"center-west": [120, 126], "center-east": [250, 126],
                          "tavern-center": [150, 126],
                          "alley-center": [150, 126],
-                         "midtown-center": [150, 126]},
+                         "midtown-center": [150, 126],
+                         "grand-center": [140, 126]},
     }
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
@@ -1228,6 +1410,20 @@ def main():
     save_bmp(mcrop(midtown_lit, "M_THEATER"), "rooms/marquee_sprocket.bmp")
     write_box_file(os.path.join(OUT, "rooms", "midtown.box"),
                    [Box(pts, name=n) for n, pts in MIDTOWN_WALKBOXES])
+
+    # Scene 05: inside the Grand Cog
+    grand = draw_theater()
+    grand_open = draw_theater(curtain="open")
+
+    def gcrop(src, key):
+        x, y, w, h = GRAND_GEOM[key]
+        return src.crop((x, y, x + w, y + h))
+
+    save_bmp(grand, "rooms/theater.bmp")
+    save_bmp(gcrop(grand, "G_STAGE"), "rooms/curtain_closed.bmp")
+    save_bmp(gcrop(grand_open, "G_STAGE"), "rooms/curtain_open.bmp")
+    write_box_file(os.path.join(OUT, "rooms", "theater.box"),
+                   [Box(pts, name=n) for n, pts in GRAND_WALKBOXES])
 
     # bolt sprite on dock floor (background-colored patch + bolt)
     bx, by, bw, bh = GEOM["BOLT"]

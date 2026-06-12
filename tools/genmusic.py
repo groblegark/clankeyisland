@@ -500,6 +500,105 @@ def build_shuffle():
     return mid
 
 
+# ------------------------------------------------- the Grand Cog Vamp
+
+# Scene 05: house music inside the theater. An 8-bar showbiz vamp that
+# could loop all night and intends to: two-feel bass, charleston comp,
+# brushes, and a lead that only speaks when spoken to.
+VAMP_BPM = 118
+VAMP_BARS = 8
+VAMP_LOOP_BEATS = VAMP_BARS * 4 + 1
+
+VAMP_PROG = ["C6", "Am", "Dm7", "G13", "C6", "A7v", "Dm7", "G13"]
+VAMP_CHORDS = {
+    "C6":  [n("E", 3), n("G", 3), n("A", 3), n("C", 4)],
+    "Am":  [n("A", 3), n("C", 4), n("E", 4)],
+    "Dm7": [n("D", 3), n("F", 3), n("A", 3), n("C", 4)],
+    "G13": [n("G", 3), n("B", 3), n("F", 4), n("E", 4)],
+    "A7v": [n("A", 3), n("Db", 4), n("G", 4)],
+}
+VAMP_ROOTS = {"C6": n("C", 2), "Am": n("A", 1), "Dm7": n("D", 2),
+              "G13": n("G", 2), "A7v": n("A", 1)}
+VAMP_FIFTH = {"C6": n("G", 2), "Am": n("E", 2), "Dm7": n("A", 2),
+              "G13": n("D", 3), "A7v": n("E", 2)}
+
+VM = []
+def vamp_phrase(bar, notes):
+    for slot, pitch, ln in notes:
+        VM.append((bar, slot, pitch, ln))
+
+vamp_phrase(4, [(0, n("D", 5), 1), (1, n("E", 5), 1), (2, n("F", 5), 1),
+                (3, n("E", 5), 1), (4, n("D", 5), 2)])
+vamp_phrase(8, [(0, n("B", 4), 1), (2, n("D", 5), 1), (4, n("E", 5), 2),
+                (6, n("G", 4), 2)])
+
+
+def build_vamp():
+    ev = []
+
+    def add(tick, msg, order=1):
+        ev.append((tick, order, msg))
+
+    for ch, prg, vol in [(CH_LEAD, PRG_LEAD, 70), (CH_BASS, PRG_BASS, 96),
+                         (CH_EP, PRG_EP, 64), (CH_DRUM, 0, 78)]:
+        add(0, mido.Message("program_change", channel=ch, program=prg), 0)
+        add(0, mido.Message("control_change", channel=ch, control=7,
+                            value=vol), 0)
+
+    for bar in range(1, VAMP_BARS + 1):
+        chord = VAMP_PROG[bar - 1]
+        t0 = (bar - 1) * 4 * PPQ
+
+        # two-feel bass: root on 1, fifth on 3
+        for beat, pitch in [(0, VAMP_ROOTS[chord]), (2, VAMP_FIFTH[chord])]:
+            t = t0 + beat * PPQ
+            add(t, mido.Message("note_on", channel=CH_BASS,
+                                note=pitch, velocity=74))
+            add(t + PPQ * 4 // 5, mido.Message(
+                "note_off", channel=CH_BASS, note=pitch, velocity=0))
+
+        # charleston comp
+        for tick in (t0, t0 + PPQ + E_LONG):
+            for pitch in VAMP_CHORDS[chord]:
+                add(tick, mido.Message("note_on", channel=CH_EP,
+                                       note=pitch, velocity=50))
+                add(tick + E_SHORT, mido.Message(
+                    "note_off", channel=CH_EP, note=pitch, velocity=0))
+
+        # brushes: hats on the swung eighths, rimshot on 4
+        for slot in range(8):
+            t = t0 + slot_time(1, slot)
+            add(t, mido.Message("note_on", channel=CH_DRUM, note=HAT,
+                                velocity=38 if slot % 2 else 52))
+            add(t + 40, mido.Message("note_off", channel=CH_DRUM,
+                                     note=HAT, velocity=0))
+        t = t0 + 3 * PPQ
+        add(t, mido.Message("note_on", channel=CH_DRUM, note=SNARE,
+                            velocity=52))
+        add(t + 50, mido.Message("note_off", channel=CH_DRUM,
+                                 note=SNARE, velocity=0))
+
+    for bar, slot, pitch, ln in VM:
+        t = slot_time(bar, slot)
+        add(t, mido.Message("note_on", channel=CH_LEAD, note=pitch,
+                            velocity=62))
+        add(t + slot_len(slot, ln) - 30, mido.Message(
+            "note_off", channel=CH_LEAD, note=pitch, velocity=0))
+
+    mid = mido.MidiFile(type=0, ticks_per_beat=PPQ)
+    track = mido.MidiTrack()
+    track.append(mido.MetaMessage("set_tempo",
+                                  tempo=mido.bpm2tempo(VAMP_BPM), time=0))
+    last = 0
+    for tick, _, msg in sorted(ev, key=lambda e: (e[0], e[1])):
+        track.append(msg.copy(time=tick - last))
+        last = tick
+    track.append(mido.MetaMessage("end_of_track",
+                                  time=VAMP_BARS * 4 * PPQ - last))
+    mid.tracks.append(track)
+    return mid
+
+
 def main():
     os.makedirs(OUTDIR, exist_ok=True)
     for name, build, bars, bpm, loop in [
@@ -508,7 +607,8 @@ def main():
             ("backalley", build_backalley, ALLEY_BARS, ALLEY_BPM,
              ALLEY_LOOP_BEATS),
             ("shuffle", build_shuffle, SHUF_BARS, SHUF_BPM,
-             SHUF_LOOP_BEATS)]:
+             SHUF_LOOP_BEATS),
+            ("vamp", build_vamp, VAMP_BARS, VAMP_BPM, VAMP_LOOP_BEATS)]:
         path = os.path.join(OUTDIR, f"{name}.mid")
         build().save(path)
         print(f"{path}  ({bars} bars, {bars * 4 * 60 / bpm:.0f}s, "

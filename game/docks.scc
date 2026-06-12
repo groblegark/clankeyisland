@@ -116,6 +116,11 @@ room DockRoom {
                 waitForActor(sprocket);
                 egoSay("Well. Guess I live here now.");
                 waitForMessage();
+                // the premise, unskippably (editorial B4)
+                egoSay("The streetlights pick that moment to dim. All of them. Together. Like the city skipped a heartbeat.");
+                waitForMessage();
+                egoSay("Nobody on the dock looks up. That's the part I don't like.");
+                waitForMessage();
             }
             override {
                 if(VAR_OVERRIDE) {
@@ -147,9 +152,15 @@ room DockRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
-            egoSay("WELCOME TO CLANKER CITY. POP. 8,01,1.");
-            waitForMessage();
-            egoSay("Population eight-oh-one-comma-one. The punctuation died first.");
+            unless(signShookBolt) {
+                egoSay("WELCOME TO CLANKER CITY. POP. 8,01,1.");
+                waitForMessage();
+                egoSay("Population eight-oh-one-comma-one. The punctuation died first.");
+                waitForMessage();
+                egoSay("Something inside it rattles on every flicker. Loose hardware. Practically an invoice.");
+                return;
+            }
+            egoSay("POP. 8,011. The comma found its way home. You're welcome, city.");
             return;
         case Use:
         case Move:
@@ -233,7 +244,7 @@ room DockRoom {
             egoSay("The foghorn wheezed. I'm choosing to hear that as optimism.");
             return;
         case Smell:
-            egoSay("Salt water and burnt transmission fluid. The smell of adventure!");
+            egoSay("Salt water and burnt transmission fluid. Adventure, by the nose of it.");
             return;
         }
     }
@@ -273,8 +284,9 @@ room DockRoom {
             egoSay("She's billing by the letter. I respect it.");
             return;
         case Use:
-            egoSay("Her joints are dry as a tax form. She needs oil before she'll move that crate.");
+            egoSay("Her joints are dry as a tax form.");
             return;
+        case Give:
         case UsedWith:
             if(objB == InventoryItems::oilcan) {
                 bettyOiled = 1;
@@ -289,8 +301,6 @@ room DockRoom {
                     startSound(thudSnd);
                     setObjectState(crate, 2);
                     egoSay("Betty sets the crate down with the gentleness of a very large aunt.");
-                    waitForMessage();
-                    egoSay("Her eye-light blinks T-H-X. We're friends now. It's official.");
                     waitForMessage();
                 }
                 return;
@@ -348,9 +358,9 @@ room DockRoom {
                     waitForMessage();
                     startSound(pickupSnd);
                     pickupObject(InventoryItems::windupKey, InventoryItems);
-                    egoSay("A brass wind-up key the size of my forearm. One of three, if the stencil is honest.");
+                    egoSay("A brass wind-up key the size of my forearm. Stenciled: PROPERTY OF THE ORDER OF THE WIND-UP KEY.");
                     waitForMessage();
-                    egoSay("Act One: complete. Probably. Towns like this love a twist.");
+                    egoSay("Whoever ships a thing like this as deck cargo deserves to lose it.");
                     waitForMessage();
                 }
                 return;
@@ -467,8 +477,6 @@ room DockRoom {
         verb(int vrb,int objA,int objB) {
         case LookAt:
             egoSay("The Scrap & Barrel. I can hear a player piano in there, missing several keys.");
-            waitForMessage();
-            egoSay("...That feels thematically significant.");
             return;
         case Open:
         case Use:
@@ -518,7 +526,7 @@ room DockRoom {
                 unless(drainFished) {
                     drainFished = 1;
                     cutscene(0) {
-                        egoSay("Magnet on a string. The harbor's least regulated financial instrument.");
+                        egoSay("Down goes the magnet, on the city's last honest string.");
                         waitForMessage();
                         startSound(splashSnd);
                         delay(40);

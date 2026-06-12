@@ -59,7 +59,7 @@ room AlleyRoom {
                 waitForActor(VAR_EGO);
                 egoSay("The alley behind the Scrap & Barrel. Where the city keeps its rough drafts.");
                 waitForMessage();
-                egoSay("There's a gate at the end marked MIDTOWN, going up. Uptown. The future.");
+                egoSay("There's a gate at the end marked MIDTOWN, going up.");
                 waitForMessage();
                 egoSay("Coin-operated. Of course it's coin-operated.");
                 waitForMessage();
@@ -119,7 +119,7 @@ room AlleyRoom {
             }
             return;
         case Smell:
-            egoSay("Rust and secrets. The house blend.");
+            egoSay("Nothing. The door is airtight. That's its own kind of information.");
             return;
         }
     }
@@ -136,7 +136,7 @@ room AlleyRoom {
         case LookAt:
             egoSay("Someone sprayed DYNAMO IS FINE. Crossed out. Under it, smaller: IT IS NOT.");
             waitForMessage();
-            egoSay("Under that, very small: NO REFUNDS. The whole town, one wall.");
+            egoSay("Under that, very small: NO REFUNDS.");
             return;
         case Smell:
             egoSay("Fresh paint over old paint over older paint. Sediment, with opinions.");
@@ -171,7 +171,7 @@ room AlleyRoom {
                 cutscene(0) {
                     startSound(creakSnd);
                     setObjectState(dumpster, 2);
-                    egoSay("Inside: one rubber duck, seized. One manual for a better game. And a magnet on a string.");
+                    egoSay("Inside: one rubber duck, seized. One manual in a language of pure grease. And a magnet on a string.");
                     waitForMessage();
                     startSound(pickupSnd);
                     pickupObject(InventoryItems::magnet, InventoryItems);
@@ -209,6 +209,13 @@ room AlleyRoom {
         case Use:
             egoSay("The ladder's rusted shut. The Rustler shakes his head, slowly. Professional courtesy.");
             return;
+        case UsedWith:
+            if(objB == InventoryItems::oilcan) {
+                egoSay("I could oil it. The Rustler taps his spyglass twice: rusted shut on purpose. It's a security feature.");
+                return;
+            }
+            egoSay("The fire escape declines. It's seen what I do to infrastructure.");
+            return;
         }
     }
 
@@ -235,9 +242,11 @@ room AlleyRoom {
                     waitForMessage();
                     egoSay("The funicular to Midtown takes ten bolts. Exact change. Gates can count — it's all they do.");
                     waitForMessage();
-                    egoSay("Second fact costs a bolt. He can see I don't have one. He mentions that for free too.");
+                    egoSay("Fact two, on the house, because I look like rain: the Dynamo is winding down, whatever the posters say.");
                     waitForMessage();
-                    egoSay("Third freebie, out of pity: the harbor keeps everything this town drops, and that dumpster is — legally — his.");
+                    egoSay("The Order that built it left three wind-up keys behind. All three together could wind the city back up. Or down.");
+                    waitForMessage();
+                    egoSay("Fact three: the harbor keeps everything this town drops, and that dumpster is — legally — his.");
                     waitForMessage();
                 }
                 return;
@@ -247,11 +256,14 @@ room AlleyRoom {
             // ahead of the hint/repeat branches (see tools/transcript.py)
             unless(riddleDone) {
                 if(getObjectOwner(InventoryItems::boltStash) == VAR_EGO) {
+                 if(getObjectOwner(InventoryItems::windupKey) == VAR_EGO) {
+                  if(getObjectOwner(InventoryItems::poster) == VAR_EGO) {
+                   if(gateNined) {
                     riddleDone = 1;
                     cutscene(0) {
                         egoSay("Nine bolts, I tell him. He appraises my pockets from four feet away. Correctly.");
                         waitForMessage();
-                        egoSay("He proposes a riddle duel. His bolt against my official city notice. The alley has rules, apparently.");
+                        egoSay("He proposes a riddle duel. His bolt against my official city notice. He collects municipal lies. Complete sets matter.");
                         waitForMessage();
                         egoSay("Rivet goes first: 'What has a hundred teeth and never bites?' A gear. In this town it's always a gear.");
                         waitForMessage();
@@ -261,10 +273,20 @@ room AlleyRoom {
                         waitForMessage();
                         startSound(clinkSnd);
                         pickupObject(InventoryItems::tenthBolt, InventoryItems);
-                        egoSay("He pays the bolt without a word. The best riddles aren't funny.");
+                        egoSay("He pays the bolt without a word.");
                         waitForMessage();
                     }
                     return;
+                   }
+                   // bolts in hand but the gate hasn't said NINE yet
+                   egoSay("Ten's the fare, he says. I have nine. He suggests I let the gate break the news. Tradition.");
+                   return;
+                  }
+                  egoSay("He duels for stakes, and the stake he wants is paper: that official notice pinned up on the docks.");
+                  return;
+                 }
+                 egoSay("He duels somebodies only, alley rules. A somebody, here, owns something with destiny on it.");
+                 return;
                 }
                 unless(getObjectOwner(InventoryItems::magnet) == VAR_EGO) {
                     egoSay("He says everything a bot needs is in that dumpster, and he says it as the dumpster's legal owner.");
@@ -277,10 +299,26 @@ room AlleyRoom {
                 egoSay("He waves. He's already sorting the bolts I fed the gate. I'm not asking how.");
                 return;
             }
-            egoSay("He nods at the gate. 'Ten bolts, exact change. It's all they do.'");
+            egoSay("He nods at the gate. 'Ten bolts, exact change. The hopper has no pockets and no pity.'");
             return;
         case Give:
         case UsedWith:
+            // a bolt really does buy a hint (the advertised economy)
+            if(objB == InventoryItems::bolt) {
+                cutscene(0) {
+                    egoSay("He takes the bolt, bites it, appraises my entire financial posture, and hands it back with a fact:");
+                    waitForMessage();
+                    unless(getObjectOwner(InventoryItems::magnet) == VAR_EGO) {
+                        egoSay("'The dumpster. Everything a bot needs. Deposit refunded.'");
+                        waitForMessage();
+                    }
+                    if(getObjectOwner(InventoryItems::magnet) == VAR_EGO) {
+                        egoSay("'The storm drain on the docks. Bring the string. Deposit refunded.'");
+                        waitForMessage();
+                    }
+                }
+                return;
+            }
             egoSay("He appraises it, names a price, and the price is an insult. We're both happier keeping it.");
             return;
         case Smell:
@@ -332,12 +370,12 @@ room AlleyRoom {
             if(fareDone) {
                 egoSay("Gate's open, car's lit. Midtown keeps glittering like it doesn't know I'm coming.");
                 waitForMessage();
-                egoSay("Act Two will still be uptown tomorrow. Probably. If the Dynamo holds.");
+                egoSay("Midtown can wait. The Dynamo, I'm less sure about.");
                 return;
             }
             egoSay("A wrought-iron gate, a rail going up the cliff, and a sign: MIDTOWN. FARE, 10 BOLTS.");
             waitForMessage();
-            egoSay("Uptown. Act Two. The future. It has a coin slot.");
+            egoSay("Uptown. The future. It has a coin slot.");
             return;
         case Open:
         case Use:
@@ -358,7 +396,7 @@ room AlleyRoom {
                         startSound(thudSnd);
                         egoSay("The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.");
                         waitForMessage();
-                        egoSay("Act Two. I can hear the neon from here.");
+                        egoSay("Uptown. I can hear the neon from here.");
                         waitForMessage();
                     }
                     return;
@@ -367,9 +405,10 @@ room AlleyRoom {
                     egoSay("The fare box wants ten bolts. I have pockets, and ambition.");
                     return;
                 }
-                egoSay("I feed it nine bolts. It counts them, blinks NINE at me, and gives them all back.");
+                gateNined = 1;
+                egoSay("I feed it the lot. It counts, returns everything it doesn't honor, and blinks NINE.");
                 waitForMessage();
-                egoSay("Smug, for a gate. Rivet would know where a tenth bolt grows.");
+                egoSay("The hopper has no pity. Rivet might.");
                 return;
             }
             // all aboard — silently (room transitions say nothing: a
@@ -377,6 +416,33 @@ room AlleyRoom {
             startSound(ratchetSnd);
             putActorAt(VAR_EGO, 28, 120, MidtownRoom);
             startRoom(MidtownRoom);
+            return;
+        case Give:
+        case UsedWith:
+            // paying by hand: the NINE beat lives on its own verb key
+            // so its dub lines don't share a prefix with the fare
+            // cutscene (pairing reads each (object,verb) from the front)
+            if(objB == InventoryItems::boltStash) {
+                unless(fareDone) {
+                    unless(getObjectOwner(InventoryItems::tenthBolt) == VAR_EGO) {
+                        gateNined = 1;
+                        egoSay("I feed it the fistful. It counts, blinks NINE, and returns the lot.");
+                        waitForMessage();
+                        egoSay("Smug, for a gate. Rivet would know where a tenth grows.");
+                        return;
+                    }
+                    // both in hand: paying is paying
+                    startObject2(gate, Use, [ Use, gate, 0 ]);
+                    return;
+                }
+                egoSay("It kept the fare. It's not a tip jar.");
+                return;
+            }
+            if(objB == InventoryItems::tenthBolt) {
+                egoSay("It blinks ONE and waits. Bulk payments only.");
+                return;
+            }
+            egoSay("The slot wants bolts, plural, all at once.");
             return;
         case Smell:
             egoSay("Ozone and altitude. The future smells expensive.");

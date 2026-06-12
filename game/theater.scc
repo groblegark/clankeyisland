@@ -1,0 +1,374 @@
+/* Clanker City Chronicles — Scene 05: talent night at the Grand Cog.
+ * Inside the theater: a tough house, a sleeping spotlight operator
+ * (the brownout reaches everywhere), and the performance that opens
+ * the way backstage. NPC dialog is reported secondhand by Sprocket —
+ * one voice, deadpan. Walkthrough-path lines go FIRST in source.
+ */
+
+#include <scummVars6.s>
+#include "common.sch"
+#include "verbs.sch"
+#include "inventoryitems.sch"
+#include "midtown.sch"
+#include "theater.sch"
+
+room TheaterRoom {
+
+    image = "rooms/theater.bmp";
+    boxd = "rooms/theater.box";
+    trans = 0;
+
+    // ------------------------------------------------------------ sounds
+
+    sound vampSnd     = "vamp.soun";
+    sound boingSnd    = "boing.soun";
+    sound applauseSnd = "applause.soun";
+    sound knockSnd    = "knock.soun";
+    sound pickupSnd   = "pickup.soun";
+    sound clinkSnd    = "clink.soun";
+    sound ratchetSnd  = "ratchet.soun";
+    sound creakSnd    = "creak.soun";
+
+    // ------------------------------------------------------------ music
+
+    local script musicLoop() {
+        // the Grand Cog Vamp — house music that could loop all night,
+        // and intends to (loop = VAMP_LOOP_BEATS in tools/genmusic.py)
+        stopMusic();
+        startMusic(vampSnd);
+        imPlayerSetLoop(vampSnd, 999, 1, 0, 33, 0);
+        while(1) {
+            delay(120);
+            unless(isSoundRunning(vampSnd)) {
+                startMusic(vampSnd);
+                imPlayerSetLoop(vampSnd, 999, 1, 0, 33, 0);
+            }
+        }
+    }
+
+    // ------------------------------------------------------- room entry
+
+    local script entry() {
+        startScript(1, musicLoop, []);
+
+        unless(visitedTheater) {
+            visitedTheater = 1;
+            cutscene(2) {
+                putActorAt(VAR_EGO, 24, 120, TheaterRoom);
+                walkActorTo(VAR_EGO, 70, 126);
+                waitForActor(VAR_EGO);
+                egoSay("The Grand Cog, inside. Red velvet, brass rails, and a chandelier assembled from smaller, defeated chandeliers.");
+                waitForMessage();
+                egoSay("The house is packed. Forty bots, and not one of them came here to be impressed.");
+                waitForMessage();
+                egoSay("Somewhere past that curtain is backstage. And backstage, if the clerk is right, is Madame Voltina.");
+                waitForMessage();
+            }
+        }
+    }
+
+    // ---------------------------------------------------------- objects
+
+    object doorLobby {
+        x = 0;
+        y = 56;
+        w = 24;
+        h = 48;
+        dir = EAST;
+        name = "lobby doors";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Back out to the street. The street is where bots who didn't enter talent night get to live.");
+            return;
+        case Open:
+        case Use:
+            putActorAt(VAR_EGO, 200, 120, MidtownRoom);
+            startRoom(MidtownRoom);
+            return;
+        }
+    }
+
+    object spotBooth {
+        x = 32;
+        y = 8;
+        w = 32;
+        h = 32;
+        dir = NORTH;
+        name = "spotlight booth";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            unless(spotAwake) {
+                egoSay("The spotlight booth. The operator inside is in low-power mode, eye dimmed to a polite ember.");
+                waitForMessage();
+                egoSay("The brownouts reach everywhere. Even showbiz runs on the Dynamo.");
+                return;
+            }
+            egoSay("The operator's awake and tracking the stage like it owes him money.");
+            return;
+        case Use:
+        case TalkTo:
+        case Move:
+            unless(spotAwake) {
+                spotAwake = 1;
+                cutscene(0) {
+                    startSound(knockSnd);
+                    egoSay("I rap on the booth. HOUSE LIGHTS, BUDDY. SHOWTIME.");
+                    waitForMessage();
+                    startSound(pickupSnd);
+                    egoSay("His eye flickers up through three shades of amber. He checks the program, then checks me.");
+                    waitForMessage();
+                    egoSay("He mouths: 'the wind-up act?' I nod. He cracks every knuckle he has. Both of them.");
+                    waitForMessage();
+                }
+                return;
+            }
+            egoSay("He's ready. I'm the one stalling.");
+            return;
+        case Smell:
+            egoSay("Hot carbon and cold coffee.");
+            return;
+        }
+    }
+
+    object chandelier {
+        x = 88;
+        y = 0;
+        w = 48;
+        h = 24;
+        dir = NORTH;
+        name = "chandelier";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A chandelier built from the chandeliers of lesser theaters. Trophies, basically.");
+            return;
+        case Use:
+        case PickUp:
+            egoSay("Whatever swinging from it would prove, the insurance exclusions prove harder.");
+            return;
+        }
+    }
+
+    object audience {
+        x = 24;
+        y = 88;
+        w = 96;
+        h = 32;
+        dir = SOUTH;
+        name = "the audience";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            unless(wonShow) {
+                egoSay("Two rows of regulars with their arms crossed. Some of them welded that way.");
+                waitForMessage();
+                egoSay("Front row: a juggler rehearsing a drop, and a singer warming up a voice like a ferry in distress.");
+                return;
+            }
+            egoSay("My public. An hour ago they were a firing squad.");
+            return;
+        case TalkTo:
+            unless(wonShow) {
+                egoSay("I try some crowd work. How's everybody doing tonight?");
+                waitForMessage();
+                egoSay("A voice from the dark: 'WORSE NOW.' Tough room.");
+                return;
+            }
+            egoSay("Somebody yells ENCORE. Somebody else yells at him. The arts.");
+            return;
+        case Smell:
+            egoSay("Forty brands of machine oil and one of expectation.");
+            return;
+        }
+    }
+
+    object emcee {
+        x = 128;
+        y = 56;
+        w = 24;
+        h = 48;
+        dir = SOUTH;
+        name = "the emcee";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The emcee. Tuxedo paint job, telescoping mic arm, and the smile of a bot who has introduced ten thousand acts and survived nine.");
+            return;
+        case TalkTo:
+            unless(metEmcee) {
+                metEmcee = 1;
+                cutscene(0) {
+                    egoSay("Sprocket, he says, reading the marquee off my face. The wind-up act. You're on next.");
+                    waitForMessage();
+                    egoSay("One problem: the spotlight operator went into low-power mode during the juggler. The juggler had that effect.");
+                    waitForMessage();
+                    egoSay("House rule: no spot, no act. He says it like the rule has a plaque somewhere.");
+                    waitForMessage();
+                    egoSay("Wake the booth, get on stage, and win. Prize is an oil voucher and a backstage pass.");
+                    waitForMessage();
+                }
+                return;
+            }
+            unless(spotAwake) {
+                egoSay("He points his mic arm at the booth. No spot, no act. The plaque is implied.");
+                return;
+            }
+            unless(wonShow) {
+                egoSay("He sweeps an arm at the stage. The stage is all mine, he says, the way doctors say 'this won't hurt'.");
+                return;
+            }
+            egoSay("He keeps calling me 'the discovery of the season'. The season is one night long.");
+            return;
+        case Smell:
+            egoSay("Pomade. He's a robot. I have questions.");
+            return;
+        }
+    }
+
+    object stage {
+        x = 160;
+        y = 16;
+        w = 120;
+        h = 96;
+        dir = NORTH;
+        name = "the stage";
+        states = {
+            { 0, 0, "rooms/curtain_closed.bmp" },
+            { 0, 0, "rooms/curtain_open.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            // walkthrough-path branch first in source (dub pairing)
+            if(wonShow) {
+                egoSay("Confetti on the boards and a spotlight with nothing left to prove. My stage now. Legally, for one night.");
+                return;
+            }
+            egoSay("The stage. Behind that curtain, forty years of acts have died and three have lived.");
+            waitForMessage();
+            egoSay("Tonight it gets a maintenance-bot and a very large key.");
+            return;
+        case Give:
+        case UsedWith:
+            if(objB == InventoryItems::windupKey) {
+                if(spotAwake) {
+                    unless(wonShow) {
+                        wonShow = 1;
+                        cutscene(0) {
+                            startSound(creakSnd);
+                            setObjectState(stage, 2);
+                            egoSay("The curtain opens. The house goes quiet the way a dropped wrench goes quiet. Mid-air.");
+                            waitForMessage();
+                            startSound(ratchetSnd);
+                            egoSay("I wind myself. Eight full turns. Regulation maximum is five.");
+                            waitForMessage();
+                            startSound(boingSnd);
+                            putActorAt(VAR_EGO, 200, 60, TheaterRoom);
+                            egoSay("The spring lets go.");
+                            waitForMessage();
+                            startSound(boingSnd);
+                            putActorAt(VAR_EGO, 250, 40, TheaterRoom);
+                            egoSay("I am now performing unscheduled acrobatics.");
+                            waitForMessage();
+                            startSound(boingSnd);
+                            putActorAt(VAR_EGO, 180, 50, TheaterRoom);
+                            egoSay("The proscenium and I meet several times. It gives as good as it gets.");
+                            waitForMessage();
+                            putActorAt(VAR_EGO, 220, 100, TheaterRoom);
+                            setCurrentActor(VAR_EGO);
+                            setActorStanding();
+                            egoSay("I land in the spotlight. On my feet. Nobody is more surprised than the feet.");
+                            waitForMessage();
+                            startSound(applauseSnd);
+                            egoSay("Silence. Then the house comes apart. The bots who can't stand wave their wheels.");
+                            waitForMessage();
+                            egoSay("The emcee declares it the most honest act in Grand Cog history. I don't correct him.");
+                            waitForMessage();
+                            startSound(clinkSnd);
+                            pickupObject(InventoryItems::oilVoucher, InventoryItems);
+                            startSound(pickupSnd);
+                            pickupObject(InventoryItems::backstagePass, InventoryItems);
+                            egoSay("First prize: one oil voucher, and a backstage pass on a lanyard of bicycle chain.");
+                            waitForMessage();
+                            // the heist (editorial B3): the spyglass on
+                            // the docks finally cashes its check
+                            setObjectOwner(InventoryItems::windupKey, 0);
+                            egoSay("I reach for the key, to take the bow with it. My hand closes on lanyard and applause.");
+                            waitForMessage();
+                            startSound(knockSnd);
+                            egoSay("Up on the catwalk, a hatch clicks shut. Two clangs. One. Two.");
+                            waitForMessage();
+                            egoSay("The Rustlers. They watched me hand-deliver it to a lit stage, under my own name, in bulbs.");
+                            waitForMessage();
+                            putActorAt(VAR_EGO, 240, 120, TheaterRoom);
+                            setCurrentActor(VAR_EGO);
+                            setActorStanding();
+                        }
+                        return;
+                    }
+                    egoSay("One act per night. The house couldn't take a second one. Neither could the proscenium.");
+                    return;
+                }
+                egoSay("No spot, no act. The rule has a plaque. The plaque has a lawyer.");
+                return;
+            }
+            egoSay("The stage considers it and finds it insufficiently theatrical.");
+            return;
+        case Use:
+        case Open:
+            unless(wonShow) {
+                egoSay("Climbing up empty-handed is called loitering. With the key, it's called an act.");
+                return;
+            }
+            egoSay("One night only. The proscenium and I have an agreement.");
+            return;
+        case Smell:
+            egoSay("Sawdust, grease paint, and the fear of four hundred opening nights.");
+            return;
+        }
+    }
+
+    object backstageDoor {
+        x = 288;
+        y = 56;
+        w = 24;
+        h = 48;
+        dir = WEST;
+        name = "stage door";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("STAGE DOOR. Behind it: dressing rooms, rope, and a fortune-teller who guards more than fortunes.");
+            return;
+        case Open:
+        case Use:
+            // walkthrough-path branch first in source (dub pairing)
+            if(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
+                cutscene(0) {
+                    egoSay("I flash the pass. A stagehand the shape of a filing cabinet reads it twice and steps aside.");
+                    waitForMessage();
+                    egoSay("The dark behind him smells like ozone and incense. A voice from it says: 'I have been expecting you, key-bearer.'");
+                    waitForMessage();
+                    egoSay("I start to explain about the key. 'I know,' says the voice. 'That is why you are expected. Mind the cables.'");
+                    waitForMessage();
+                    egoSay("Madame Voltina. I'm going to need a minute, and possibly a will.");
+                    waitForMessage();
+                }
+                return;
+            }
+            egoSay("A stagehand the shape of a filing cabinet fills the doorway. Pass-holders only.");
+            return;
+        case Smell:
+            egoSay("Ozone and incense, from under the door. That combination has never once meant something normal.");
+            return;
+        }
+    }
+
+}

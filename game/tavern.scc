@@ -168,7 +168,7 @@ room TavernRoom {
                 egoSay("His arm servo is stuck in a loop. The glass, to be fair, is immaculate.");
                 return;
             }
-            egoSay("Gusket, finally polishing a DIFFERENT glass. Growth.");
+            egoSay("Gusket, polishing a second, completely novel glass. Growth.");
             return;
         case TalkTo:
             unless(servoFixed) {
@@ -178,7 +178,7 @@ room TavernRoom {
                 waitForMessage();
                 egoSay("He'd shake my hand, he says, but his arm's been polishing this glass since the Dynamo dimmed.");
                 waitForMessage();
-                egoSay("The servo's jammed. A little shim in the ratchet would free it. Something small. Something... bolt-shaped.");
+                egoSay("The servo's jammed. A little shim in the ratchet would free it.");
                 return;
             }
             unless(dartsDone) {
@@ -189,6 +189,7 @@ room TavernRoom {
             }
             egoSay("He says my drinks are free for life. Well. One drink. Per life.");
             return;
+        case Give:
         case UsedWith:
             if(objB == InventoryItems::bolt) {
                 servoFixed = 1;
@@ -207,6 +208,16 @@ room TavernRoom {
                     egoSay("He flips me a drink token. Says Flange takes those as table stakes at the dartboard.");
                     waitForMessage();
                 }
+                return;
+            }
+            if(objB == InventoryItems::boltStash) {
+                egoSay("Harbor bolts. Brined stiff. The shim wants one dry and dock-fresh, he says.");
+                waitForMessage();
+                egoSay("The WELCOME sign sheds those, if a bot asks it firmly enough.");
+                return;
+            }
+            if(objB == InventoryItems::tenthBolt) {
+                egoSay("He bites it, tastes alley, and hands it back. Dry and dock-fresh, he repeats. The sign knows the kind.");
                 return;
             }
             egoSay("He polishes it politely and hands it back.");
@@ -235,7 +246,14 @@ room TavernRoom {
             startSound(plinkSnd);
             egoSay("Two notes work. The third key isn't missing a note. It's missing entirely.");
             waitForMessage();
-            egoSay("I requested a song. It requested a tuner.");
+            egoSay("I requested a song. It played most of one.");
+            return;
+        case UsedWith:
+            if(objB == InventoryItems::windupKey) {
+                egoSay("Wrong kind of key. The piano needs three the size of fingernails. Mine winds cities.");
+                return;
+            }
+            egoSay("The piano plays itself. It does not accessorize.");
             return;
         case Smell:
             egoSay("Felt, brass, and the ghost of a B-flat.");
@@ -389,8 +407,6 @@ room TavernRoom {
                 egoSay("CLANG-CLANG. CLANG. CLANG-CLANG.");
                 waitForMessage();
                 egoSay("A slot opens. An eye looks at me. A voice says: 'Act Three, buddy.' The slot closes.");
-                waitForMessage();
-                egoSay("Everyone in this town has read the script except me.");
                 return;
             }
             egoSay("Locked. From the sound of it, there's a knock-code. From the smell of it, I don't want to know.");

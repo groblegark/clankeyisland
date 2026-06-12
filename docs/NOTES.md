@@ -102,19 +102,31 @@ https://groblegark.github.io/clankeyisland/ about a minute later.
 - Voice cache: `~/.cache/clankey-voices` (keyed by text+fx hash —
   rewriting a line re-renders only that line).
 
+## The editorial desk
+
+Every scene's text faces an adversarial critique before it ships:
+puzzle / comedy / story critics + a cold player advocate, a showrunner
+defense pass, one merged report. Charter: `docs/editorial/CHARTER.md`;
+run via `Workflow({scriptPath: ".claude/workflows/editorial-review.js"})`.
+Reports land in `docs/editorial/NOTES-<date>.md` with a disposition
+ledger. First pass (2026-06-12): 7 BLOCKERs — 6 fixed same day (incl.
+the Rustlers now stealing Key #1 mid-ovation), B2 deferred.
+
 ## Next steps (in rough order)
 
-1. Scene 05: talent night at the Grand Cog — win the show (the act is
-   registered: THE AMAZING SPROCKET WINDS HIMSELF UP), take the oil
-   voucher + backstage pass, meet Madame Voltina (Key #2). The City
-   Hall aide's fear of the official notice is planted for the Mayor
-   Piston expose.
-2. Optional dub upgrades: funded TTS for real deadpan direction; the
+1. B2 from the editorial desk: make the riddle duel interactive — wire
+   the dialog-tree UI (game/dialog.scc, unused) into Rivet's duel with
+   3 pickable riddles, and teach the walkthrougher to click dialog
+   options. Fold in N-A1 (magnet + string as separate finds).
+2. Scene 06: backstage — Madame Voltina (Key #2), with Key #1 freshly
+   stolen by the Rustlers (recovery is Act 3, knock-code).
+3. The detuning hum (editorial N-A5): act-flag-driven pitch drift in
+   genmusic.py — the GDD's designed clock.
+4. Optional dub upgrades: funded TTS for real deadpan direction; the
    Suno music/foley arrangement pass over the emitted dub sheet.
-3. In-game speech (monster.sou via ScummC `voice` decls) — parked.
-(Scene 04 — Midtown Gearworks, the funicular ride, and the talent-night
-sign-up — shipped 2026-06-12. Scene 03 and the full-run deploy gate
-shipped 2026-06-11.)
+5. In-game speech (monster.sou via ScummC `voice` decls) — parked.
+(Scene 05 — talent night, the heist, and the editorial pass — shipped
+2026-06-12, same day as Scene 04.)
 
 Room-transition verbs (doors, the funicular) say NOTHING: dub pairing
 consumes same-verb lines in order, so a spoken ride line desyncs the

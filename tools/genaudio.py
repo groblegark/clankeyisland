@@ -240,6 +240,49 @@ def sfx_creak():
     return concat(groan, silence(0.05), slam)
 
 
+def sfx_boing():
+    """A self-wound mainspring letting go: a deep twang dropping into
+    a wobble that takes its time accepting the situation."""
+    n = int(RATE * 0.85)
+    out = []
+    for i in range(n):
+        t = i / RATE
+        f = 340 * math.exp(-1.6 * t) + 70
+        wob = 1.0 + 0.5 * math.exp(-2.0 * t) * math.sin(2 * math.pi * 11 * t)
+        env = math.exp(-2.2 * t)
+        out.append(0.7 * env * math.sin(2 * math.pi * f * t * wob))
+    twang = noise_burst(0.02, 0.8, 200)
+    return mix(concat(twang, []), out)
+
+
+def sfx_applause():
+    """A full house coming apart: dense little claps with a swell,
+    deterministic like everything else in this town."""
+    dur = 2.2
+    n = int(RATE * dur)
+    seed, out = 0x77, [0.0] * n
+    i = 0
+    while i < n:
+        seed = (seed * 1103515245 + 12345) & 0x7FFFFFFF
+        gap = 90 + (seed >> 8) % 700           # next clap, in samples
+        seed = (seed * 1103515245 + 12345) & 0x7FFFFFFF
+        amp = 0.25 + ((seed >> 9) % 100) / 220.0
+        t = i / RATE
+        swell = min(1.0, t / 0.5) * (1.0 if t < 1.5 else
+                                     max(0.0, 1.0 - (t - 1.5) / 0.7))
+        clap_len = int(RATE * 0.025)
+        s2 = seed
+        for j in range(clap_len):
+            if i + j >= n:
+                break
+            s2 = (s2 * 1103515245 + 12345) & 0x7FFFFFFF
+            r = (s2 / 0x3FFFFFFF) - 1.0
+            out[i + j] += amp * swell * r * math.exp(-140 * j / RATE)
+        i += gap
+    peak = max(abs(s) for s in out)
+    return [s * 0.8 / peak for s in out]
+
+
 EFFECTS = {
     "whack": sfx_whack,
     "bolt_drop": sfx_bolt_drop,
@@ -254,6 +297,8 @@ EFFECTS = {
     "plink": sfx_plink,
     "splash": sfx_splash,
     "creak": sfx_creak,
+    "boing": sfx_boing,
+    "applause": sfx_applause,
 }
 
 
