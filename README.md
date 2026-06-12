@@ -86,4 +86,10 @@ one-line `tools/patches/0002-scummvm-configure-respect-datadir.patch`.
   economy (dumpster magnet → fish the storm drain → nine bolts → riddle
   duel for the tenth → pay the funicular fare), and the gate to Midtown
   opens on the Act Two threshold
-- [ ] Scene 04: Midtown Gearworks (ride the funicular for real)
+- [x] Scene 04: Midtown Gearworks — ride the funicular up to the neon
+  main street ('Clanker City Shuffle' playing), case Lefty's, the Oil
+  Bar and City Hall ("NOTHING IS WRONG"), and open Act Two by signing
+  up for Grand Cog talent night — Sprocket's act: winding himself up
+  with a legendary artifact. His name goes up on the marquee in lights.
+- [ ] Scene 05: talent night at the Grand Cog (win the show, get
+  backstage to Madame Voltina and Key #2)

@@ -1,0 +1,320 @@
+/* Clanker City Chronicles — Scene 04: Midtown Gearworks.
+ * Top of the funicular: neon main street, the Grand Cog Theater
+ * (talent night, tonight), City Hall (nothing is wrong), and the
+ * Great Dynamo humming flat behind its fence. Act Two opens here.
+ * NPC dialog is reported secondhand by Sprocket — one voice, deadpan.
+ */
+
+#include <scummVars6.s>
+#include "common.sch"
+#include "verbs.sch"
+#include "inventoryitems.sch"
+#include "alley.sch"
+#include "midtown.sch"
+
+room MidtownRoom {
+
+    image = "rooms/midtown.bmp";
+    boxd = "rooms/midtown.box";
+    trans = 0;
+
+    // ------------------------------------------------------------ sounds
+
+    sound shuffleSnd = "shuffle.soun";
+    sound ratchetSnd = "ratchet.soun";
+    sound pickupSnd  = "pickup.soun";
+    sound creakSnd   = "creak.soun";
+    sound plinkSnd   = "plink.soun";
+    sound clinkSnd   = "clink.soun";
+
+    // ------------------------------------------------------------ music
+
+    local script musicLoop() {
+        // the Clanker City Shuffle — the GDD called this one by name
+        // (loop point = SHUF_LOOP_BEATS in tools/genmusic.py)
+        stopMusic();
+        startMusic(shuffleSnd);
+        imPlayerSetLoop(shuffleSnd, 999, 1, 0, 65, 0);
+        while(1) {
+            delay(120);
+            unless(isSoundRunning(shuffleSnd)) {
+                startMusic(shuffleSnd);
+                imPlayerSetLoop(shuffleSnd, 999, 1, 0, 65, 0);
+            }
+        }
+    }
+
+    // ------------------------------------------------------- room entry
+
+    local script entry() {
+        startScript(1, musicLoop, []);
+
+        unless(visitedMidtown) {
+            visitedMidtown = 1;
+            cutscene(2) {
+                putActorAt(VAR_EGO, 28, 120, MidtownRoom);
+                walkActorTo(VAR_EGO, 80, 126);
+                waitForActor(VAR_EGO);
+                egoSay("Midtown Gearworks. The neon is louder, the streets are cleaner, and the manholes hiss in a higher register.");
+                waitForMessage();
+                egoSay("City Hall says NOTHING IS WRONG in letters you can read from the harbor.");
+                waitForMessage();
+                egoSay("And up the hill, behind the fence: the Great Dynamo. You can hear it from here.");
+                waitForMessage();
+                egoSay("It's flat. By half a step.");
+                waitForMessage();
+            }
+        }
+    }
+
+    // ---------------------------------------------------------- objects
+
+    object station {
+        x = 0;
+        y = 48;
+        w = 32;
+        h = 56;
+        dir = EAST;
+        name = "funicular station";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The funicular, catching its breath. The fare down is free. The city knows which direction people give up in.");
+            return;
+        case Open:
+        case Use:
+            // room transitions stay silent: dub pairing consumes
+            // same-verb lines in order, and a spoken ride line would
+            // desync the gate's fare cutscene (docs/NOTES.md)
+            startSound(ratchetSnd);
+            putActorAt(VAR_EGO, 286, 120, AlleyRoom);
+            startRoom(AlleyRoom);
+            return;
+        }
+    }
+
+    object leftys {
+        x = 40;
+        y = 40;
+        w = 56;
+        h = 64;
+        dir = NORTH;
+        name = "Lefty's Spare Parts";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("LEFTY'S SPARE PARTS. Everything slightly used, mostly left.");
+            waitForMessage();
+            egoSay("The window display is three gaskets and a dream.");
+            return;
+        case Open:
+        case Use:
+            egoSay("Closed for inventory. Through the glass I can see Lefty counting his own fingers.");
+            waitForMessage();
+            egoSay("Recounting.");
+            return;
+        case Smell:
+            egoSay("Degreaser and optimism, in that order.");
+            return;
+        }
+    }
+
+    object oilBar {
+        x = 104;
+        y = 48;
+        w = 48;
+        h = 56;
+        dir = NORTH;
+        name = "the Oil Bar";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The Oil Bar. Uptown filtered, triple distilled, quadruple priced.");
+            waitForMessage();
+            egoSay("There's a velvet rope. For robots. To stand behind. Voluntarily.");
+            return;
+        case Open:
+        case Use:
+            egoSay("A bouncer the size of a vending machine looks at my dock rust and invents a dress code.");
+            waitForMessage();
+            egoSay("I'm on the list, I tell him. He shows me the list. It's a picture of the door.");
+            return;
+        case Smell:
+            egoSay("Single-origin crude. The good stuff. The unaffordable stuff.");
+            return;
+        }
+    }
+
+    object theater {
+        x = 160;
+        y = 24;
+        w = 72;
+        h = 48;
+        dir = NORTH;
+        name = "Grand Cog Theater";
+        states = {
+            { 0, 0, "rooms/marquee_blank.bmp" },
+            { 0, 0, "rooms/marquee_sprocket.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            // walkthrough-path branch first in source: the closing
+            // shot examines the lit marquee (transcript pairing
+            // reads egoSay lines in source order)
+            if(signedUp) {
+                egoSay("There it is. SPROCKET. On a marquee. In lights.");
+                waitForMessage();
+                egoSay("Two of the bulbs are out. It still feels like destiny.");
+                waitForMessage();
+                egoSay("Talent night. Tonight. No pressure. The marquee is the pressure.");
+                return;
+            }
+            egoSay("The Grand Cog Theater. TALENT NITE, says the marquee, with a line left blank underneath.");
+            waitForMessage();
+            egoSay("A blank line on a marquee is the most dangerous sentence in show business.");
+            return;
+        case Open:
+        case Use:
+            unless(signedUp) {
+                egoSay("The doors open for performers and ticket holders. I'm neither. The doors can tell.");
+                return;
+            }
+            egoSay("Doors open at showtime. The clerk said to go rehearse. The clerk has a point.");
+            return;
+        case Smell:
+            egoSay("Velvet, valve oil, and flop sweat. Showbiz.");
+            return;
+        }
+    }
+
+    object boxOffice {
+        x = 184;
+        y = 72;
+        w = 24;
+        h = 32;
+        dir = NORTH;
+        name = "box office";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A box office with a clerk built into it. Literally. He IS the booth from the waist down.");
+            return;
+        case TalkTo:
+            unless(metClerk) {
+                metClerk = 1;
+                cutscene(0) {
+                    egoSay("Talent night, tonight, he says. Grand prize: an oil voucher and a backstage pass.");
+                    waitForMessage();
+                    egoSay("Backstage. Where Madame Voltina reads fortunes. And guards... things. He doesn't say what things.");
+                    waitForMessage();
+                    egoSay("Sign-up needs a stage name and an act. I have a name, and a key the size of my forearm.");
+                    waitForMessage();
+                    egoSay("He says, quote, that's more act than most.");
+                    waitForMessage();
+                }
+                return;
+            }
+            unless(signedUp) {
+                egoSay("He taps the sign-up slot and looks at my key. The slot is key-shaped, conceptually.");
+                return;
+            }
+            egoSay("He says doors at eight, performers at seven, panicking at six. I'm ahead of schedule.");
+            return;
+        case Give:
+        case UsedWith:
+            if(objB == InventoryItems::windupKey) {
+                unless(signedUp) {
+                    signedUp = 1;
+                    cutscene(0) {
+                        egoSay("I pitch the act: THE AMAZING SPROCKET WINDS HIMSELF UP. With a real key. On stage.");
+                        waitForMessage();
+                        egoSay("The clerk has seen everything twice, and he still blinks.");
+                        waitForMessage();
+                        startSound(plinkSnd);
+                        setObjectState(theater, 2);
+                        egoSay("My name goes up on the marquee while I'm still holding the pen.");
+                        waitForMessage();
+                        startSound(pickupSnd);
+                        egoSay("I keep the key. It's the act. It's also a legendary artifact, but mostly it's the act.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                egoSay("Already registered. One act per bot. House rules, and the house is a cog.");
+                return;
+            }
+            egoSay("He slides it back. The slot only takes talent.");
+            return;
+        case Smell:
+            egoSay("Ticket stubs and stage fright.");
+            return;
+        }
+    }
+
+    object cityHall {
+        x = 240;
+        y = 32;
+        w = 72;
+        h = 72;
+        dir = NORTH;
+        name = "City Hall";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("City Hall. The banner says NOTHING IS WRONG. It's brand new.");
+            waitForMessage();
+            egoSay("They replaced the old banner. The old one said the same thing, smaller.");
+            return;
+        case Open:
+        case Use:
+            egoSay("An aide opens the door exactly nine degrees. The Mayor is not seeing anyone.");
+            waitForMessage();
+            egoSay("Especially, he adds, anyone holding paper.");
+            return;
+        case UsedWith:
+            if(objB == InventoryItems::poster) {
+                egoSay("I show the official notice through the gap. The aide identifies it as 'official' and 'correct'.");
+                waitForMessage();
+                egoSay("Then he closes the door eight of the nine degrees.");
+                waitForMessage();
+                egoSay("Somebody in there is afraid of this piece of paper. Noted. Filed. Act Two material.");
+                return;
+            }
+            egoSay("The aide's eye appears in the gap, evaluates it, and declines on the city's behalf.");
+            return;
+        case Smell:
+            egoSay("Fresh paint and old decisions.");
+            return;
+        }
+    }
+
+    object dynamo {
+        x = 272;
+        y = 0;
+        w = 40;
+        h = 28;
+        dir = NORTH;
+        name = "the Great Dynamo";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The Great Dynamo, up the hill, behind a fence with opinions.");
+            waitForMessage();
+            egoSay("Every bot on this island runs on that hum. Including me. The hum is flat by half a step.");
+            waitForMessage();
+            egoSay("Half a step doesn't sound like much. Neither does a clunk, until it's PERMANENT.");
+            return;
+        case TalkTo:
+            egoSay("Hang in there, big fella. I've got one key and a lead on two more.");
+            return;
+        case Smell:
+            egoSay("Ozone. The whole sky tastes like a battery up here.");
+            return;
+        }
+    }
+
+}

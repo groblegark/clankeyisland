@@ -365,13 +365,150 @@ def build_backalley():
     return mid
 
 
+# ----------------------------------------- the Clanker City Shuffle
+
+# Scene 04: Midtown Gearworks. The GDD names this one: jazzy mechanical
+# swing. Uptempo, major key, walking bass that actually walks, and a
+# lead that's proud of itself. Everything the docks aren't.
+SHUF_BPM = 132
+SHUF_BARS = 16
+SHUF_LOOP_BEATS = SHUF_BARS * 4 + 1
+
+SHUF_PROG = ["C6", "C6", "F9", "C6", "Am", "D9", "G13", "G13",
+             "C6", "C6", "F9", "F9", "C6", "Am", "D9G", "C6"]
+SHUF_CHORDS = {
+    "C6":  [n("E", 3), n("G", 3), n("A", 3), n("C", 4)],
+    "F9":  [n("F", 3), n("A", 3), n("Eb", 4), n("G", 4)],
+    "Am":  [n("A", 3), n("C", 4), n("E", 4)],
+    "D9":  [n("D", 3), n("Gb", 3), n("C", 4), n("E", 4)],
+    "G13": [n("G", 3), n("B", 3), n("F", 4), n("E", 4)],
+    "D9G": [n("D", 3), n("Gb", 3), n("C", 4)],
+}
+SHUF_ROOTS = {"C6": n("C", 2), "F9": n("F", 2), "Am": n("A", 1),
+              "D9": n("D", 2), "G13": n("G", 2), "D9G": n("D", 2)}
+# walking bass: root, third-ish, fifth, approach
+SHUF_WALK = {
+    "C6":  [n("C", 2), n("E", 2), n("G", 2), n("A", 2)],
+    "F9":  [n("F", 2), n("A", 2), n("C", 3), n("Eb", 3)],
+    "Am":  [n("A", 1), n("C", 2), n("E", 2), n("G", 2)],
+    "D9":  [n("D", 2), n("Gb", 2), n("A", 2), n("C", 3)],
+    "G13": [n("G", 2), n("B", 2), n("D", 3), n("F", 3)],
+    "D9G": [n("D", 2), n("Gb", 2), n("G", 2), n("B", 2)],
+}
+
+# the lead, proud of itself
+SM = []
+def shuf_phrase(bar, notes):
+    for slot, pitch, ln in notes:
+        SM.append((bar, slot, pitch, ln))
+
+shuf_phrase(1,  [(0, n("G", 4), 1), (1, n("A", 4), 1), (2, n("C", 5), 1),
+                 (3, n("E", 5), 1), (4, n("G", 5), 3)])
+shuf_phrase(2,  [(0, n("E", 5), 1), (2, n("C", 5), 1), (4, n("A", 4), 2),
+                 (6, n("G", 4), 2)])
+shuf_phrase(3,  [(0, n("A", 4), 1), (1, n("C", 5), 1), (2, n("Eb", 5), 1),
+                 (3, n("F", 5), 1), (4, n("G", 5), 2), (6, n("F", 5), 2)])
+shuf_phrase(4,  [(0, n("E", 5), 4)])
+shuf_phrase(5,  [(0, n("E", 5), 1), (1, n("D", 5), 1), (2, n("C", 5), 1),
+                 (3, n("B", 4), 1), (4, n("A", 4), 3)])
+shuf_phrase(6,  [(0, n("Gb", 4), 1), (2, n("A", 4), 1), (4, n("C", 5), 2),
+                 (6, n("E", 5), 2)])
+shuf_phrase(7,  [(0, n("D", 5), 2), (2, n("B", 4), 1), (3, n("G", 4), 1),
+                 (4, n("F", 5), 2), (6, n("E", 5), 1), (7, n("D", 5), 1)])
+shuf_phrase(8,  [(0, n("B", 4), 2), (4, n("G", 4), 2)])
+shuf_phrase(9,  [(0, n("C", 5), 1), (1, n("E", 5), 1), (2, n("G", 5), 1),
+                 (3, n("A", 5), 1), (4, n("G", 5), 3)])
+shuf_phrase(10, [(0, n("E", 5), 1), (2, n("A", 4), 1), (4, n("C", 5), 4)])
+shuf_phrase(11, [(0, n("Eb", 5), 1), (1, n("F", 5), 1), (2, n("G", 5), 2),
+                 (4, n("A", 5), 2), (6, n("G", 5), 2)])
+shuf_phrase(12, [(0, n("F", 5), 4), (4, n("Eb", 5), 2)])
+shuf_phrase(13, [(0, n("E", 5), 1), (1, n("G", 5), 1), (2, n("A", 5), 1),
+                 (3, n("C", 6), 1), (4, n("A", 5), 3)])
+shuf_phrase(14, [(0, n("E", 5), 1), (2, n("C", 5), 1), (4, n("A", 4), 2),
+                 (6, n("C", 5), 2)])
+shuf_phrase(15, [(0, n("E", 5), 1), (1, n("D", 5), 1), (2, n("C", 5), 1),
+                 (3, n("B", 4), 1), (4, n("D", 5), 2), (6, n("B", 4), 2)])
+shuf_phrase(16, [(0, n("C", 5), 6)])
+
+
+def build_shuffle():
+    ev = []
+
+    def add(tick, msg, order=1):
+        ev.append((tick, order, msg))
+
+    for ch, prg, vol in [(CH_LEAD, PRG_LEAD, 88), (CH_BASS, PRG_BASS, 102),
+                         (CH_EP, PRG_EP, 70), (CH_DRUM, 0, 94)]:
+        add(0, mido.Message("program_change", channel=ch, program=prg), 0)
+        add(0, mido.Message("control_change", channel=ch, control=7,
+                            value=vol), 0)
+
+    for bar in range(1, SHUF_BARS + 1):
+        chord = SHUF_PROG[bar - 1]
+        t0 = (bar - 1) * 4 * PPQ
+
+        # bass: actually walking, four to the bar
+        for beat in range(4):
+            pitch = SHUF_WALK[chord][beat]
+            t = t0 + beat * PPQ
+            add(t, mido.Message("note_on", channel=CH_BASS,
+                                note=pitch, velocity=82))
+            add(t + PPQ * 7 // 10, mido.Message(
+                "note_off", channel=CH_BASS, note=pitch, velocity=0))
+
+        # e-piano: charleston comp — beat 1, and the and-of-two
+        for tick in (t0, t0 + PPQ + E_LONG):
+            for pitch in SHUF_CHORDS[chord]:
+                add(tick, mido.Message("note_on", channel=CH_EP,
+                                       note=pitch, velocity=56))
+                add(tick + E_SHORT, mido.Message(
+                    "note_off", channel=CH_EP, note=pitch, velocity=0))
+
+        # drums: ride-pattern hats, kick 1/3, crisp snare 2/4
+        for slot in range(8):
+            t = t0 + slot_time(1, slot)
+            add(t, mido.Message("note_on", channel=CH_DRUM, note=HAT,
+                                velocity=50 if slot % 2 else 66))
+            add(t + 40, mido.Message("note_off", channel=CH_DRUM,
+                                     note=HAT, velocity=0))
+        for beat, drum, vel in [(0, KICK, 92), (2, KICK, 76),
+                                (1, SNARE, 72), (3, SNARE, 78)]:
+            t = t0 + beat * PPQ
+            add(t, mido.Message("note_on", channel=CH_DRUM, note=drum,
+                                velocity=vel))
+            add(t + 60, mido.Message("note_off", channel=CH_DRUM,
+                                     note=drum, velocity=0))
+
+    for bar, slot, pitch, ln in SM:
+        t = slot_time(bar, slot)
+        add(t, mido.Message("note_on", channel=CH_LEAD, note=pitch,
+                            velocity=80))
+        add(t + slot_len(slot, ln) - 30, mido.Message(
+            "note_off", channel=CH_LEAD, note=pitch, velocity=0))
+
+    mid = mido.MidiFile(type=0, ticks_per_beat=PPQ)
+    track = mido.MidiTrack()
+    track.append(mido.MetaMessage("set_tempo",
+                                  tempo=mido.bpm2tempo(SHUF_BPM), time=0))
+    last = 0
+    for tick, _, msg in sorted(ev, key=lambda e: (e[0], e[1])):
+        track.append(msg.copy(time=tick - last))
+        last = tick
+    track.append(mido.MetaMessage("end_of_track",
+                                  time=SHUF_BARS * 4 * PPQ - last))
+    mid.tracks.append(track)
+    return mid
+
+
 def main():
     os.makedirs(OUTDIR, exist_ok=True)
     for name, build, bars, bpm, loop in [
             ("dockside", build_dockside, BARS, BPM, LOOP_BEATS),
             ("scrapnbarrel", build_rag, RAG_BARS, RAG_BPM, RAG_LOOP_BEATS),
             ("backalley", build_backalley, ALLEY_BARS, ALLEY_BPM,
-             ALLEY_LOOP_BEATS)]:
+             ALLEY_LOOP_BEATS),
+            ("shuffle", build_shuffle, SHUF_BARS, SHUF_BPM,
+             SHUF_LOOP_BEATS)]:
         path = os.path.join(OUTDIR, f"{name}.mid")
         build().save(path)
         print(f"{path}  ({bars} bars, {bars * 4 * 60 / bpm:.0f}s, "

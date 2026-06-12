@@ -18,6 +18,12 @@
    "The alley behind the Scrap & Barrel. Where the city keeps its rough drafts.",
    "There's a gate at the end marked MIDTOWN, going up. Uptown. The future.",
    "Coin-operated. Of course it's coin-operated."
+  ],
+  "MidtownRoom.entry": [
+   "Midtown Gearworks. The neon is louder, the streets are cleaner, and the manholes hiss in a higher register.",
+   "City Hall says NOTHING IS WRONG in letters you can read from the harbor.",
+   "And up the hill, behind the fence: the Great Dynamo. You can hear it from here.",
+   "It's flat. By half a step."
   ]
  },
  "objects": {
@@ -508,8 +514,7 @@
     "Act Two. I can hear the neon from here.",
     "The fare box wants ten bolts. I have pockets, and ambition.",
     "I feed it nine bolts. It counts them, blinks NINE at me, and gives them all back.",
-    "Smug, for a gate. Rivet would know where a tenth bolt grows.",
-    "The car says it's boarding 'momentarily'. It's been a long momentarily."
+    "Smug, for a gate. Rivet would know where a tenth bolt grows."
    ],
    "Use": [
     "Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.",
@@ -517,11 +522,137 @@
     "Act Two. I can hear the neon from here.",
     "The fare box wants ten bolts. I have pockets, and ambition.",
     "I feed it nine bolts. It counts them, blinks NINE at me, and gives them all back.",
-    "Smug, for a gate. Rivet would know where a tenth bolt grows.",
-    "The car says it's boarding 'momentarily'. It's been a long momentarily."
+    "Smug, for a gate. Rivet would know where a tenth bolt grows."
    ],
    "Smell": [
     "Ozone and altitude. The future smells expensive."
+   ]
+  },
+  "funicular station": {
+   "LookAt": [
+    "The funicular, catching its breath. The fare down is free. The city knows which direction people give up in."
+   ]
+  },
+  "Lefty's Spare Parts": {
+   "LookAt": [
+    "LEFTY'S SPARE PARTS. Everything slightly used, mostly left.",
+    "The window display is three gaskets and a dream."
+   ],
+   "Open": [
+    "Closed for inventory. Through the glass I can see Lefty counting his own fingers.",
+    "Recounting."
+   ],
+   "Use": [
+    "Closed for inventory. Through the glass I can see Lefty counting his own fingers.",
+    "Recounting."
+   ],
+   "Smell": [
+    "Degreaser and optimism, in that order."
+   ]
+  },
+  "the Oil Bar": {
+   "LookAt": [
+    "The Oil Bar. Uptown filtered, triple distilled, quadruple priced.",
+    "There's a velvet rope. For robots. To stand behind. Voluntarily."
+   ],
+   "Open": [
+    "A bouncer the size of a vending machine looks at my dock rust and invents a dress code.",
+    "I'm on the list, I tell him. He shows me the list. It's a picture of the door."
+   ],
+   "Use": [
+    "A bouncer the size of a vending machine looks at my dock rust and invents a dress code.",
+    "I'm on the list, I tell him. He shows me the list. It's a picture of the door."
+   ],
+   "Smell": [
+    "Single-origin crude. The good stuff. The unaffordable stuff."
+   ]
+  },
+  "Grand Cog Theater": {
+   "LookAt": [
+    "There it is. SPROCKET. On a marquee. In lights.",
+    "Two of the bulbs are out. It still feels like destiny.",
+    "Talent night. Tonight. No pressure. The marquee is the pressure.",
+    "The Grand Cog Theater. TALENT NITE, says the marquee, with a line left blank underneath.",
+    "A blank line on a marquee is the most dangerous sentence in show business."
+   ],
+   "Open": [
+    "The doors open for performers and ticket holders. I'm neither. The doors can tell.",
+    "Doors open at showtime. The clerk said to go rehearse. The clerk has a point."
+   ],
+   "Use": [
+    "The doors open for performers and ticket holders. I'm neither. The doors can tell.",
+    "Doors open at showtime. The clerk said to go rehearse. The clerk has a point."
+   ],
+   "Smell": [
+    "Velvet, valve oil, and flop sweat. Showbiz."
+   ]
+  },
+  "box office": {
+   "LookAt": [
+    "A box office with a clerk built into it. Literally. He IS the booth from the waist down."
+   ],
+   "TalkTo": [
+    "Talent night, tonight, he says. Grand prize: an oil voucher and a backstage pass.",
+    "Backstage. Where Madame Voltina reads fortunes. And guards... things. He doesn't say what things.",
+    "Sign-up needs a stage name and an act. I have a name, and a key the size of my forearm.",
+    "He says, quote, that's more act than most.",
+    "He taps the sign-up slot and looks at my key. The slot is key-shaped, conceptually.",
+    "He says doors at eight, performers at seven, panicking at six. I'm ahead of schedule."
+   ],
+   "Give": [
+    "I pitch the act: THE AMAZING SPROCKET WINDS HIMSELF UP. With a real key. On stage.",
+    "The clerk has seen everything twice, and he still blinks.",
+    "My name goes up on the marquee while I'm still holding the pen.",
+    "I keep the key. It's the act. It's also a legendary artifact, but mostly it's the act.",
+    "Already registered. One act per bot. House rules, and the house is a cog.",
+    "He slides it back. The slot only takes talent."
+   ],
+   "UsedWith": [
+    "I pitch the act: THE AMAZING SPROCKET WINDS HIMSELF UP. With a real key. On stage.",
+    "The clerk has seen everything twice, and he still blinks.",
+    "My name goes up on the marquee while I'm still holding the pen.",
+    "I keep the key. It's the act. It's also a legendary artifact, but mostly it's the act.",
+    "Already registered. One act per bot. House rules, and the house is a cog.",
+    "He slides it back. The slot only takes talent."
+   ],
+   "Smell": [
+    "Ticket stubs and stage fright."
+   ]
+  },
+  "City Hall": {
+   "LookAt": [
+    "City Hall. The banner says NOTHING IS WRONG. It's brand new.",
+    "They replaced the old banner. The old one said the same thing, smaller."
+   ],
+   "Open": [
+    "An aide opens the door exactly nine degrees. The Mayor is not seeing anyone.",
+    "Especially, he adds, anyone holding paper."
+   ],
+   "Use": [
+    "An aide opens the door exactly nine degrees. The Mayor is not seeing anyone.",
+    "Especially, he adds, anyone holding paper."
+   ],
+   "UsedWith": [
+    "I show the official notice through the gap. The aide identifies it as 'official' and 'correct'.",
+    "Then he closes the door eight of the nine degrees.",
+    "Somebody in there is afraid of this piece of paper. Noted. Filed. Act Two material.",
+    "The aide's eye appears in the gap, evaluates it, and declines on the city's behalf."
+   ],
+   "Smell": [
+    "Fresh paint and old decisions."
+   ]
+  },
+  "the Great Dynamo": {
+   "LookAt": [
+    "The Great Dynamo, up the hill, behind a fence with opinions.",
+    "Every bot on this island runs on that hum. Including me. The hum is flat by half a step.",
+    "Half a step doesn't sound like much. Neither does a clunk, until it's PERMANENT."
+   ],
+   "TalkTo": [
+    "Hang in there, big fella. I've got one key and a lead on two more."
+   ],
+   "Smell": [
+    "Ozone. The whole sky tastes like a battery up here."
    ]
   },
   "drink token": {

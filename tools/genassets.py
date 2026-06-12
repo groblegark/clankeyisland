@@ -180,6 +180,23 @@ def draw_scene(sign_lit=True, with_poster=True, crate="hanging"):
         d.rectangle([px, 76, px + 5, 88], fill=65)
         d.rectangle([px, 75, px + 5, 76], fill=68)
 
+    # --- the neon sign (at the waterline, BEHIND the dockside props:
+    # its posts run down to the dock edge, so everything that stands
+    # on the dock — board, stall, tavern — must paint over it)
+    nx, ny, nw, nh = GEOM["SIGN"]
+    d.rectangle([nx + 4, ny + nh, nx + 7, 84], fill=6)            # posts
+    d.rectangle([nx + nw - 8, ny + nh, nx + nw - 5, 84], fill=6)
+    d.rectangle([nx, ny, nx + nw, ny + nh], fill=1)               # panel
+    d.rectangle([nx, ny, nx + nw, ny + nh], outline=6)
+    main = 37 if sign_lit else 30
+    sub = 42 if sign_lit else 41
+    _neon_text(im, "CLANKER CITY", nx + 8, ny + 4, main)
+    _neon_text(im, "POP. 8,01,1", nx + 26, ny + 18, sub, small=True)
+    if sign_lit:  # glow dots on frame
+        for x in range(nx + 2, nx + nw, 6):
+            im.putpixel((x, ny + 1), 39)
+            im.putpixel((x, ny + nh - 1), 39)
+
     # --- ferry (broken, listing) at far left
     fx, fy, fw, fh = GEOM["FERRY"]
     d.polygon([(fx, fy + 24), (fx + fw, fy + 28), (fx + fw - 6, fy + 34),
@@ -281,21 +298,6 @@ def draw_scene(sign_lit=True, with_poster=True, crate="hanging"):
     for x in range(gx + 2, gx + gw - 1, 4):
         d.line([(x, gy + 1), (x, gy + gh - 1)], fill=4)
     im.putpixel((gx + gw // 2, gy + gh - 2), 45)   # glint
-
-    # --- the neon sign
-    nx, ny, nw, nh = GEOM["SIGN"]
-    d.rectangle([nx + 4, ny + nh, nx + 7, 84], fill=6)            # posts
-    d.rectangle([nx + nw - 8, ny + nh, nx + nw - 5, 84], fill=6)
-    d.rectangle([nx, ny, nx + nw, ny + nh], fill=1)               # panel
-    d.rectangle([nx, ny, nx + nw, ny + nh], outline=6)
-    main = 37 if sign_lit else 30
-    sub = 42 if sign_lit else 41
-    _neon_text(im, "CLANKER CITY", nx + 8, ny + 4, main)
-    _neon_text(im, "POP. 8,01,1", nx + 26, ny + 18, sub, small=True)
-    if sign_lit:  # glow dots on frame
-        for x in range(nx + 2, nx + nw, 6):
-            im.putpixel((x, ny + 1), 39)
-            im.putpixel((x, ny + nh - 1), 39)
 
     return im
 
@@ -682,6 +684,163 @@ def draw_alley(gate="closed", lid="closed"):
     return im
 
 
+# --------------------------------------------------- Midtown Gearworks
+
+# Scene 04 geometry. The theater rect covers the marquee (its state
+# change is Sprocket's name going up in lights); the box office sits
+# below it, non-overlapping.
+MIDTOWN_GEOM = {
+    "M_STATION":   (0, 48, 32, 56),
+    "M_LEFTYS":    (40, 40, 56, 64),
+    "M_OILBAR":    (104, 48, 48, 56),
+    "M_THEATER":   (160, 24, 72, 48),
+    "M_BOXOFFICE": (184, 72, 24, 32),
+    "M_CITYHALL":  (240, 32, 72, 72),
+    "M_DYNAMO":    (272, 0, 40, 28),
+}
+
+
+def draw_midtown(marquee="blank"):
+    im = new_img(W, H)
+    d = ImageDraw.Draw(im)
+    g = MIDTOWN_GEOM
+
+    # --- sky: thinner up here, and better lit
+    for y in range(0, 36):
+        idx = 52 + min(11, y * 11 // 36)
+        d.line([(0, y), (W, y)], fill=idx)
+    for sx, sy in [(20, 5), (60, 12), (110, 3), (150, 9), (200, 6),
+                   (250, 4), (40, 20), (135, 16)]:
+        im.putpixel((sx, sy), 104)
+
+    # --- the Dynamo District, up the hill behind its fence
+    dx0, dy0, dw0, dh0 = g["M_DYNAMO"]
+    d.polygon([(dx0 - 8, dy0 + dh0 + 8), (dx0 + 12, dy0 + 10),
+               (dx0 + dw0 + 8, dy0 + dh0 + 8)], fill=53)         # the hill
+    d.ellipse([dx0 + 12, dy0 + 6, dx0 + 32, dy0 + 20], fill=6)   # the dome
+    d.line([(dx0 + 22, dy0 + 6), (dx0 + 22, dy0)], fill=8)       # the coil
+    d.ellipse([dx0 + 20, dy0 - 2, dx0 + 24, dy0 + 2], outline=45)
+    im.putpixel((dx0 + 22, dy0), 107)                            # the spark
+    for fx2 in range(dx0 - 6, dx0 + dw0 + 6, 4):                 # the fence
+        d.line([(fx2, dy0 + 24), (fx2, dy0 + 27)], fill=6)
+
+    # --- street wall behind everything
+    d.rectangle([0, 36, W, 104], fill=4)
+    for y in range(42, 104, 10):
+        d.line([(0, y), (W, y)], fill=3)
+    d.line([(0, 104), (W, 104)], fill=8)
+
+    # --- funicular station (the way back down)
+    sx, sy, sw, sh = g["M_STATION"]
+    d.line([(sx + 10, sy + sh), (sx - 8, sy + sh + 30)], fill=8)  # rails
+    d.line([(sx + 18, sy + sh), (sx + 2, sy + sh + 30)], fill=8)
+    d.rectangle([sx + 2, sy + 10, sx + 28, sy + sh], fill=6)      # kiosk
+    d.rectangle([sx + 6, sy + 20, sx + 24, sy + 38], fill=1)      # archway
+    d.rectangle([sx, sy, sx + 31, sy + 10], fill=1)               # sign
+    d.rectangle([sx, sy, sx + 31, sy + 10], outline=6)
+    _neon_text(im, "DOWN", sx + 6, sy + 2, 42)
+    im.putpixel((sx + 15, sy + 30), 44)                           # car light
+
+    # --- Lefty's Spare Parts
+    lx, ly, lw, lh = g["M_LEFTYS"]
+    d.rectangle([lx, ly + 12, lx + lw, ly + lh], fill=19)         # shopfront
+    d.rectangle([lx, ly, lx + lw, ly + 12], fill=1)               # sign
+    d.rectangle([lx, ly, lx + lw, ly + 12], outline=6)
+    _neon_text(im, "LEFTYS", lx + 16, ly + 3, 84)
+    d.rectangle([lx + 6, ly + 20, lx + 34, ly + 48], fill=44)     # lit window
+    for px2, py2 in [(lx + 10, ly + 28), (lx + 18, ly + 36),
+                     (lx + 26, ly + 26)]:                         # the stock
+        d.ellipse([px2, py2, px2 + 6, py2 + 6], outline=9)
+    d.rectangle([lx + 40, ly + 24, lx + 52, ly + lh - 2], fill=68)  # door
+    d.rectangle([lx + 42, ly + 30, lx + 50, ly + 36], fill=1)     # CLOSED
+    _neon_text(im, "NO", lx + 43, ly + 31, 107)
+
+    # --- the Oil Bar, uptown filtered
+    ox, oy, ow, oh = g["M_OILBAR"]
+    d.rectangle([ox, oy, ox + ow, oy + oh], fill=1)               # facade
+    for y in range(oy + 4, oy + oh, 6):
+        d.line([(ox, y), (ox + ow, y)], fill=5)
+    d.rectangle([ox + 14, oy + 26, ox + 34, oy + oh], fill=5)     # door
+    d.rectangle([ox + 16, oy + 30, ox + 32, oy + 44], fill=53)    # smoked
+    # neon oil-can glyph, cocktail style
+    d.rectangle([ox + 14, oy + 6, ox + 26, oy + 16], outline=94)
+    d.line([(ox + 26, oy + 8), (ox + 34, oy + 4)], fill=94)
+    im.putpixel((ox + 35, oy + 4), 95)
+    _neon_text(im, "OIL", ox + 16, oy + 8, 94)
+    # velvet rope: two brass posts, one standard
+    for rx2 in (ox + 6, ox + 42):
+        d.rectangle([rx2, oy + oh - 14, rx2 + 2, oy + oh], fill=45)
+        im.putpixel((rx2 + 1, oy + oh - 15), 47)
+    d.arc([ox + 8, oy + oh - 18, ox + 42, oy + oh - 4], 0, 180, fill=107)
+
+    # --- the Grand Cog Theater
+    tx, ty, tw, th = g["M_THEATER"]
+    d.rectangle([tx, ty + 40, tx + tw, 104], fill=9)              # facade
+    for y in range(ty + 44, 104, 8):
+        d.line([(tx, y), (tx + tw, y)], fill=24)
+    # entrance doors (between marquee and box office)
+    d.rectangle([tx + 6, ty + 52, tx + 20, 102], fill=64)
+    d.rectangle([tx + 52, ty + 52, tx + 66, 102], fill=64)
+    d.ellipse([tx + 15, ty + 70, tx + 18, ty + 74], outline=44)
+    d.ellipse([tx + 54, ty + 70, tx + 57, ty + 74], outline=44)
+    # the marquee
+    d.rectangle([tx, ty, tx + tw, ty + 40], fill=1)
+    d.rectangle([tx, ty, tx + tw, ty + 40], outline=6)
+    for x in range(tx + 2, tx + tw - 1, 4):                       # bulbs
+        im.putpixel((x, ty + 2), 47 if (x // 4) % 3 else 41)
+        im.putpixel((x, ty + 38), 47 if (x // 4) % 3 else 41)
+    _neon_text(im, "GRAND COG", tx + 19, ty + 6, 45)
+    _neon_text(im, "TALENT NITE", tx + 15, ty + 16, 104)
+    if marquee == "sprocket":
+        _neon_text(im, "SPROCKET", tx + 21, ty + 26, 47)
+    else:
+        d.line([(tx + 22, ty + 28), (tx + 50, ty + 28)], fill=5)  # blank line
+
+    # --- box office
+    bx, by, bw, bh = g["M_BOXOFFICE"]
+    d.rectangle([bx, by, bx + bw, by + bh], fill=24)
+    d.rectangle([bx + 4, by + 4, bx + bw - 4, by + 18], fill=44)  # window
+    d.rectangle([bx + 8, by + 8, bx + 14, by + 14], fill=6)       # the clerk
+    d.rectangle([bx + 9, by + 9, bx + 11, by + 11], fill=31)      # clerk eye
+    d.rectangle([bx + 2, by + 20, bx + bw - 2, by + 26], fill=1)  # slot
+    _neon_text(im, "ACTS", bx + 4, by + 21, 45)
+
+    # --- City Hall, where nothing is wrong
+    cx, cy, cw, ch = g["M_CITYHALL"]
+    d.polygon([(cx, cy + 16), (cx + cw // 2, cy), (cx + cw, cy + 16)],
+              fill=11)                                            # pediment
+    d.rectangle([cx, cy + 16, cx + cw, 104], fill=5)
+    for colx in range(cx + 6, cx + cw - 4, 16):                   # columns
+        d.rectangle([colx, cy + 22, colx + 6, 102], fill=11)
+        d.line([(colx + 3, cy + 22), (colx + 3, 102)], fill=8)
+    d.rectangle([cx + 30, cy + 56, cx + 42, 102], fill=64)        # door
+    im.putpixel((cx + 39, cy + 78), 44)                           # handle
+    # the banner
+    d.rectangle([cx + 2, cy + 30, cx + cw - 2, cy + 44], fill=104)
+    d.rectangle([cx + 2, cy + 30, cx + cw - 2, cy + 44], outline=1)
+    _neon_text(im, "NOTHING", cx + 21, cy + 32, 107)
+    _neon_text(im, "IS WRONG", cx + 19, cy + 38, 107)
+
+    # --- street lamps between the storefronts
+    for px2 in (100, 156, 236):
+        d.rectangle([px2, 60, px2 + 1, 104], fill=6)
+        d.ellipse([px2 - 3, 54, px2 + 4, 61], fill=44)
+        im.putpixel((px2, 57), 47)
+
+    # --- pavement: cleaner up here, and it knows it
+    d.rectangle([0, 105, W, H], fill=5)
+    for y in range(110, H, 8):
+        d.line([(0, y), (W, y)], fill=4)
+    d.line([(0, 106), (W, 106)], fill=8)                          # curb
+    # a gear-shaped manhole, hissing in a higher register
+    d.ellipse([146, 122, 174, 132], outline=6)
+    d.ellipse([152, 124, 168, 130], outline=6)
+    for wx2, wy2 in [(158, 118), (162, 114), (157, 110)]:         # steam
+        im.putpixel((wx2, wy2), 11)
+
+    return im
+
+
 # ----------------------------------------------------------- verb panel
 
 def draw_verb_panel():
@@ -909,6 +1068,16 @@ ALLEY_OBJECT_NAMES = {
     "A_GATE":     "funicular gate",
 }
 
+MIDTOWN_OBJECT_NAMES = {
+    "M_STATION":   "funicular station",
+    "M_LEFTYS":    "Lefty's Spare Parts",
+    "M_OILBAR":    "the Oil Bar",
+    "M_THEATER":   "Grand Cog Theater",
+    "M_BOXOFFICE": "box office",
+    "M_CITYHALL":  "City Hall",
+    "M_DYNAMO":    "the Great Dynamo",
+}
+
 # rect centers make bad click targets for a few objects
 STAGE_HOTSPOT_OVERRIDES = {
     "CRATE":      (132, 110),  # click low: works hanging or grounded
@@ -924,6 +1093,11 @@ TAVERN_WALKBOXES = [
 ALLEY_WALKBOXES = [
     ("alleywest", [(8, 112), (168, 112), (168, 140), (8, 140)]),
     ("alleyeast", [(168, 112), (304, 112), (304, 140), (168, 140)]),
+]
+
+MIDTOWN_WALKBOXES = [
+    ("midwest", [(8, 112), (168, 112), (168, 140), (8, 140)]),
+    ("mideast", [(168, 112), (312, 112), (312, 140), (168, 140)]),
 ]
 
 # Verb anchors from game/verbs.scc (verbCenter() -> x is the center;
@@ -969,7 +1143,8 @@ def emit_stage(path):
     objects = {}
     for names, geom in [(STAGE_OBJECT_NAMES, GEOM),
                         (TAVERN_OBJECT_NAMES, TAVERN_GEOM),
-                        (ALLEY_OBJECT_NAMES, ALLEY_GEOM)]:
+                        (ALLEY_OBJECT_NAMES, ALLEY_GEOM),
+                        (MIDTOWN_OBJECT_NAMES, MIDTOWN_GEOM)]:
         for key, name in names.items():
             x, y, w, h = geom[key]
             hs = STAGE_HOTSPOT_OVERRIDES.get(key, (x + w // 2, y + h // 2))
@@ -985,10 +1160,11 @@ def emit_stage(path):
                    for name, idxs in STAGE_PROBES.items()},
         "walkboxes": [{"name": n, "points": [list(p) for p in pts]}
                       for n, pts in (WALKBOXES + TAVERN_WALKBOXES
-                                     + ALLEY_WALKBOXES)],
+                                     + ALLEY_WALKBOXES + MIDTOWN_WALKBOXES)],
         "walk_targets": {"center-west": [120, 126], "center-east": [250, 126],
                          "tavern-center": [150, 126],
-                         "alley-center": [150, 126]},
+                         "alley-center": [150, 126],
+                         "midtown-center": [150, 126]},
     }
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
@@ -1038,6 +1214,20 @@ def main():
     save_bmp(acrop(alley_open, "A_GATE"), "rooms/gate_open.bmp")
     write_box_file(os.path.join(OUT, "rooms", "alley.box"),
                    [Box(pts, name=n) for n, pts in ALLEY_WALKBOXES])
+
+    # Scene 04: Midtown Gearworks
+    midtown = draw_midtown()
+    midtown_lit = draw_midtown(marquee="sprocket")
+
+    def mcrop(src, key):
+        x, y, w, h = MIDTOWN_GEOM[key]
+        return src.crop((x, y, x + w, y + h))
+
+    save_bmp(midtown, "rooms/midtown.bmp")
+    save_bmp(mcrop(midtown, "M_THEATER"), "rooms/marquee_blank.bmp")
+    save_bmp(mcrop(midtown_lit, "M_THEATER"), "rooms/marquee_sprocket.bmp")
+    write_box_file(os.path.join(OUT, "rooms", "midtown.box"),
+                   [Box(pts, name=n) for n, pts in MIDTOWN_WALKBOXES])
 
     # bolt sprite on dock floor (background-colored patch + bolt)
     bx, by, bw, bh = GEOM["BOLT"]

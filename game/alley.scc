@@ -10,6 +10,7 @@
 #include "verbs.sch"
 #include "inventoryitems.sch"
 #include "docks.sch"
+#include "midtown.sch"
 #include "alley.sch"
 
 room AlleyRoom {
@@ -371,7 +372,11 @@ room AlleyRoom {
                 egoSay("Smug, for a gate. Rivet would know where a tenth bolt grows.");
                 return;
             }
-            egoSay("The car says it's boarding 'momentarily'. It's been a long momentarily.");
+            // all aboard — silently (room transitions say nothing: a
+            // spoken line here would desync the fare cutscene's dub)
+            startSound(ratchetSnd);
+            putActorAt(VAR_EGO, 28, 120, MidtownRoom);
+            startRoom(MidtownRoom);
             return;
         case Smell:
             egoSay("Ozone and altitude. The future smells expensive.");

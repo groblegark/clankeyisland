@@ -104,13 +104,19 @@ https://groblegark.github.io/clankeyisland/ about a minute later.
 
 ## Next steps (in rough order)
 
-1. Scene 04: Midtown Gearworks — ride the funicular for real (the gate
-   opens and the car is lit; stepping aboard still says "momentarily").
-   GDD Act 2: the Grand Cog talent show, Madame Voltina, Mayor Piston.
+1. Scene 05: talent night at the Grand Cog — win the show (the act is
+   registered: THE AMAZING SPROCKET WINDS HIMSELF UP), take the oil
+   voucher + backstage pass, meet Madame Voltina (Key #2). The City
+   Hall aide's fear of the official notice is planted for the Mayor
+   Piston expose.
 2. Optional dub upgrades: funded TTS for real deadpan direction; the
    Suno music/foley arrangement pass over the emitted dub sheet.
 3. In-game speech (monster.sou via ScummC `voice` decls) — parked.
-(Scene 03 — the Rustlers' alley with Rivet, the riddle duel, and the
-fare to Act Two — shipped 2026-06-11; the deploy gate is now the
-full-run screenplay. Scene 02, the start overlay, and the
-validate-gated deploy-web.sh shipped earlier the same day.)
+(Scene 04 — Midtown Gearworks, the funicular ride, and the talent-night
+sign-up — shipped 2026-06-12. Scene 03 and the full-run deploy gate
+shipped 2026-06-11.)
+
+Room-transition verbs (doors, the funicular) say NOTHING: dub pairing
+consumes same-verb lines in order, so a spoken ride line desyncs the
+previous cutscene's dub. Arrival flavor belongs in the destination
+room's entry script.
