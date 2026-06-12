@@ -80,9 +80,20 @@ $(BUILD)/%.soun: $(AUDIO_DIR)/%.voc | $(BUILD)
 $(MUSIC:%=$(BUILD)/%.soun): $(BUILD)/%.soun: $(AUDIO_DIR)/%.mid | $(BUILD)
 	$(SOUN) -o $@ -midi $<
 
+# in-game voice: every room source is preprocessed through genvoice.py,
+# which renders a robot-voiced VOC per egoSay line (cached by content
+# hash) and injects voice decls + %V{} talkie escapes. sld packs the
+# clips into tentacle.sou; ScummVM plays them with sound-driven talk
+# timing. See docs/research/INGAME-VOICE.md.
+$(BUILD)/%.voiced.scc: $(GAME_DIR)/%.scc $(REPO_ROOT)/tools/genvoice.py | $(BUILD)
+	python3 $(REPO_ROOT)/tools/genvoice.py -o $@ --voices $(BUILD)/voices $<
+
 # rooms
-$(BUILD)/%.roobj: $(GAME_DIR)/%.scc | $(BUILD)
+$(BUILD)/%.roobj: $(BUILD)/%.voiced.scc | $(BUILD)
 	$(SCC) -o $@ $(SCC_FLAGS) $<
+
+# keep the .voiced.scc intermediates around for debugging
+.SECONDARY:
 
 # extra dependencies
 $(BUILD)/actors.roobj: $(BUILD)/sprocket_anim.sch $(BUILD)/sprocket.cost

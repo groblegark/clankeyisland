@@ -20,3 +20,10 @@ check_gamedata=false
 # emulator (no soundfont/WebMIDI in the browser). See docs/research/AUDIO.md.
 music_driver=adlib
 opl_driver=db
+# In-game voice (monster.sou): keep text on screen alongside speech.
+# Without an explicit subtitles=true, ScummVM only force-enables text
+# when the .sou is MISSING (scumm.cpp:1541) -- so shipping voices would
+# silently turn subtitles off. The walkthrougher and the deadpan
+# captions both depend on visible text.
+subtitles=true
+speech_mute=false

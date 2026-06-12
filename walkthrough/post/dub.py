@@ -1,21 +1,22 @@
 #!/usr/bin/env python3
-"""Dub a rendered take: voice acting + the game's own soundtrack.
+"""Dub a rendered take: mux the film with the game's own soundtrack.
 
-Takes the film from render.py and produces production.mp4:
-  - voice acting: every dialog line the performer observed is rendered
-    with piper-tts (en_US-lessac-medium — flat, measured delivery; see
-    docs/research/NARRATION.md for the deadpan style rationale) and run
-    through the robot-FX chain from docs/research/AUDIO.md, which both
-    fits Sprocket's character and hides TTS seams
-  - music/SFX bed: the take's game-audio.webm — the REAL browser audio
-    (OPL theme + synthesized effects) captured by the driver's
-    MediaRecorder tap during the take, so it is sample-aligned with
-    what's on screen
-  - mix: each voice clip lands at its line's timestamp (time-compressed
-    up to 1.3x if it overruns its slot), the bed ducks under the voice
-    via sidechain compression
+Since tools/genvoice.py, the game speaks its own lines: every egoSay
+carries a %V{} talkie escape and ScummVM plays the robot-voiced clip
+from monster.sou, engine-synced to the text. The take's
+game-audio.webm (the driver's MediaRecorder tap) therefore already
+contains voice + OPL music + SFX, sample-aligned with the video — the
+default mode just trims/delays that bed under the film from render.py.
 
-Usage: dub.py <take-dir>
+--overdub restores the legacy mode for takes recorded from a build
+without a .sou: each observed line is rendered with piper-tts
+(en_US-lessac-medium, deadpan per docs/research/NARRATION.md) through
+the robot-FX chain, snapped to its frame-accurate talk segment, and
+the bed ducks under the overlay via sidechain compression. speak() is
+also imported by tools/genvoice.py — it is the single renderer for
+both the legacy overlay and the in-game clips, sharing one cache.
+
+Usage: dub.py [--overdub] <take-dir>
 """
 
 import hashlib
@@ -123,7 +124,9 @@ def detect_line_times(take, edit):
 
 
 def main():
-    take = sys.argv[1].rstrip("/")
+    overdub = "--overdub" in sys.argv
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    take = args[0].rstrip("/")
     with open(os.path.join(take, "timeline.json")) as f:
         events = json.load(f)["events"]
     with open(os.path.join(take, "render.json")) as f:
@@ -138,6 +141,27 @@ def main():
         return t - trim + card
 
     audio_start = next(e["t"] for e in events if e["type"] == "audio_start")
+
+    if not overdub:
+        # In-game voice era (tools/genvoice.py): the game speaks its own
+        # lines through monster.sou, engine-synced to the text, and they
+        # are already in the recorded bed. Mixing a piper overlay on top
+        # would double every line — so production.mp4 is just film + bed.
+        # --overdub restores the legacy piper overlay for takes recorded
+        # from a build without a .sou.
+        bed_skip = max(0.0, trim - audio_start)
+        bed_at = card + max(0.0, audio_start - trim)
+        out = os.path.join(take, "production.mp4")
+        run(["ffmpeg", "-y", "-i", film, "-i", bed_src,
+             "-filter_complex",
+             f"[1:a]atrim=start={bed_skip:.3f},asetpts=PTS-STARTPTS,"
+             f"adelay={int(bed_at*1000)}:all=1,apad,"
+             "alimiter=limit=0.95[aout]",
+             "-map", "0:v", "-map", "[aout]",
+             "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
+             "-t", f"{film_dur:.2f}", out])
+        print(f"{out}  ({dur_of(out):.0f}s, in-game voice bed)")
+        return
     lines = [e for e in events
              if e["type"] == "line_start" and e.get("text")
              and e["text"].strip(". ")]

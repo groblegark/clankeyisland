@@ -100,7 +100,37 @@ https://groblegark.github.io/clankeyisland/ about a minute later.
   (dialog JSON). Re-run after changing any of them; the game Makefile
   picks the outputs up from assets/generated/.
 - Voice cache: `~/.cache/clankey-voices` (keyed by text+fx hash —
-  rewriting a line re-renders only that line).
+  rewriting a line re-renders only that line). Shared by the legacy dub
+  overlay AND tools/genvoice.py — one renderer, two consumers.
+
+## In-game voice (tools/genvoice.py)
+
+The game speaks its own lines: `make tentacle` preprocesses every room
+source through genvoice.py (`build/<room>.voiced.scc`), which renders a
+robot-voiced VOC per egoSay line (11025 Hz u8, content-hash keyed),
+declares each as a room `voice` resource and prefixes the string with
+`%V{sym}`. sld packs the clips into tentacle.sou (copied to
+monster.sou); ScummVM plays them with SOUND-DRIVEN talk timing — the
+line stays on screen exactly as long as the clip plays, so audio and
+text cannot desync (this replaced the dub overlay's screen-scrape
+pairing, which drifted on every "..." beat: too few talk pixels to
+detect, off-by-one for the rest of the cutscene).
+
+Gotchas, learned the hard way:
+- **Room param order**: `image=`/`boxd=`/`trans=` MUST precede any
+  resource decl (scc_parse.y:497) — genvoice injects voice decls before
+  the first body entry, never right after `room X {`.
+- **subtitles=true must be explicit** (web/scummvm.ini.in) once a .sou
+  ships: ScummVM only force-enables text when the .sou is MISSING
+  (scumm.cpp:1541). The landing page also boots with `-n` in the
+  fragment so returning visitors' IDBFS-cached ini can't kill text.
+- Lines with no letters ("...", "") stay silent char-count beats —
+  by design; do not "fix" them into clips.
+- Adjacent string literals in egoSay are rejected by genvoice — join
+  them in the source.
+- dub.py's default is now a plain film+bed mux (the bed already
+  contains the in-game voice); `--overdub` restores the legacy piper
+  overlay for takes from .sou-less builds.
 
 ## The editorial desk
 

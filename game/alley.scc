@@ -1,8 +1,8 @@
-/* Clanker City Chronicles — Scene 03: the Rustlers' alley.
+/* Clanker City Chronicles -- Scene 03: the Rustlers' alley.
  * Behind the Scrap & Barrel. Rivet finally turns up (his stall said
  * BACK IN FIVE OIL CHANGES), the GDD's bolt economy gets paid off,
  * and the funicular gate to Midtown is the Act Two threshold.
- * NPC dialog is reported secondhand by Sprocket — one voice, deadpan.
+ * NPC dialog is reported secondhand by Sprocket -- one voice, deadpan.
  */
 
 #include <scummVars6.s>
@@ -35,7 +35,7 @@ room AlleyRoom {
     // ------------------------------------------------------------ music
 
     local script musicLoop() {
-        // 'Back-Alley' — the Dockside theme's lonely cousin
+        // 'Back-Alley' -- the Dockside theme's lonely cousin
         // (loop point = ALLEY_LOOP_BEATS in tools/genmusic.py)
         stopMusic();
         startMusic(bluesSnd);
@@ -126,7 +126,7 @@ room AlleyRoom {
             // post-heist: the grievance is personal now
             cutscene(0) {
                 startSound(knockSnd);
-                egoSay("I knock. The slot opens. The eye pauses — it knows what I'm here about now.");
+                egoSay("I knock. The slot opens. The eye pauses -- it knows what I'm here about now.");
                 waitForMessage();
                 egoSay("'STILL Act Three, buddy.' The slot closes. Slower this time. Almost respectful.");
                 waitForMessage();
@@ -254,13 +254,13 @@ room AlleyRoom {
                 cutscene(0) {
                     egoSay("Rivet's the name, he says. Knows everything, sells most of it. Today only: the welcome bundle, three facts, free.");
                     waitForMessage();
-                    egoSay("The funicular to Midtown takes ten bolts. Exact change. Gates can count — it's all they do.");
+                    egoSay("The funicular to Midtown takes ten bolts. Exact change. Gates can count -- it's all they do.");
                     waitForMessage();
                     egoSay("Fact two, on the house, because I look like rain: the Dynamo is winding down, whatever the posters say.");
                     waitForMessage();
                     egoSay("The Order that built it left three wind-up keys behind. All three together could wind the city back up. Or down.");
                     waitForMessage();
-                    egoSay("Fact three: the harbor keeps everything this town drops, and that dumpster is — legally — his.");
+                    egoSay("Fact three: the harbor keeps everything this town drops, and that dumpster is -- legally -- his.");
                     waitForMessage();
                 }
                 return;
@@ -273,7 +273,7 @@ room AlleyRoom {
                  if(getObjectOwner(InventoryItems::windupKey) == VAR_EGO) {
                   if(getObjectOwner(InventoryItems::poster) == VAR_EGO) {
                    if(gateNined) {
-                    // THE RIDDLE DUEL — playable (editorial B2): the
+                    // THE RIDDLE DUEL -- playable (editorial B2): the
                     // player picks Sprocket's riddle; two flop funny
                     // with a free rematch, one wins. Winner lines stay
                     // first in source after the shared intro (dub).
@@ -353,11 +353,11 @@ room AlleyRoom {
                 egoSay("He waves. He's already sorting the bolts I fed the gate. I'm not asking how.");
                 return;
             }
-            egoSay("He nods at the gate. 'Ten bolts, exact change. The hopper has no pockets and no pity.'");
+            egoSay("He nods at the gate. 'Ten bolts, exact. Go on up,' he says. 'Wave to me from the future.'");
             return;
         case Give:
         case UsedWith:
-            // a bolt really does buy a hint (the advertised economy) —
+            // a bolt really does buy a hint (the advertised economy) --
             // and the fact tracks the first thing still undone
             if(objB == InventoryItems::bolt) {
                 cutscene(0) {
@@ -396,7 +396,7 @@ room AlleyRoom {
                 return;
             }
             if(objB == InventoryItems::poster) {
-                egoSay("He won't take it as a gift. Stakes or nothing — collection ethics.");
+                egoSay("He won't take it as a gift. Stakes or nothing -- collection ethics.");
                 waitForMessage();
                 egoSay("Riddles, he says, are the alley's notary.");
                 return;
@@ -419,7 +419,7 @@ room AlleyRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
-            egoSay("Rivet's stock: pipes, springs, and a wheel from something that regrets losing it.");
+            egoSay("Rivet's stock: pipes, springs, and a wheel that outlived its vehicle.");
             return;
         case PickUp:
         case Use:
@@ -499,7 +499,7 @@ room AlleyRoom {
                 egoSay("The slot gauge is worn-bolt-sized. Money here has to have suffered. The dry one has another appointment anyway.");
                 return;
             }
-            // all aboard — silently (room transitions say nothing: a
+            // all aboard -- silently (room transitions say nothing: a
             // spoken line here would desync the fare cutscene's dub)
             startSound(ratchetSnd);
             putActorAt(VAR_EGO, 28, 120, MidtownRoom);
