@@ -65,7 +65,12 @@ def verb_lines(body):
     return out
 
 
+ROOM = re.compile(r'^\s*room\s+(\w+)\s*\{', re.M)
+
+
 def extract(src, result):
+    room_m = ROOM.search(src)
+    room = room_m.group(1) if room_m else "?"
     for m in OBJECT.finditer(src):
         body, _ = block(src, m.end() - 1)
         name_m = NAME.search(body)
@@ -83,9 +88,10 @@ def extract(src, result):
             continue
         body, _ = block(src, brace)
         lines = EGOSAY.findall(body)
-        # only scripts that actually talk (entry cutscenes etc.)
+        # only scripts that actually talk (entry cutscenes etc.);
+        # keyed by room to keep the two rooms' entry scripts apart
         if lines and m.group(1) not in result["objects"]:
-            result["cutscenes"][m.group(1)] = lines
+            result["cutscenes"][f"{room}.{m.group(1)}"] = lines
 
 
 def main():

@@ -103,7 +103,9 @@ GEOM = {
     "SIGN":   (96, 6, 128, 32),
     "FERRY":  (0, 42, 44, 32),
     "CRANE":  (48, 18, 52, 72),
-    "CRATE":  (124, 50, 20, 16),
+    # tall rect: state 1 = crate dangling at the top, state 2 = crate
+    # on the dock at the bottom (after Betty gets her oil)
+    "CRATE":  (120, 48, 24, 72),
     "STALL":  (150, 56, 50, 46),
     "BOARD":  (196, 66, 36, 38),
     "POSTER": (200, 72, 24, 24),
@@ -113,7 +115,7 @@ GEOM = {
 }
 
 
-def draw_scene(sign_lit=True, with_poster=True):
+def draw_scene(sign_lit=True, with_poster=True, crate="hanging"):
     im = new_img(W, H)
     d = ImageDraw.Draw(im)
 
@@ -198,12 +200,22 @@ def draw_scene(sign_lit=True, with_poster=True):
     im.putpixel((cx + 17, cy + 7), 1)                            # Betty's eye
     d.rectangle([cx + 34, cy + 6, cx + 78, cy + 9], fill=19)     # arm
     d.line([(cx + 76, cy + 9), (cx + 76, cy + 30)], fill=11)     # cable
-    # dangling crate
+
+    # crate (within the tall GEOM["CRATE"] rect; see object states)
     kx, ky, kw, kh = GEOM["CRATE"]
-    d.rectangle([kx, ky, kx + kw - 1, ky + kh - 1], fill=67)
-    d.rectangle([kx, ky, kx + kw - 1, ky + kh - 1], outline=64)
-    d.line([(kx, ky + kh // 2), (kx + kw - 1, ky + kh // 2)], fill=64)
-    d.line([(kx + kw // 2, ky), (kx + kw // 2, ky + kh - 1)], fill=64)
+
+    def draw_crate(top):
+        d.rectangle([kx + 2, top, kx + kw - 3, top + 15], fill=67)
+        d.rectangle([kx + 2, top, kx + kw - 3, top + 15], outline=64)
+        d.line([(kx + 2, top + 7), (kx + kw - 3, top + 7)], fill=64)
+        d.line([(kx + kw // 2, top), (kx + kw // 2, top + 15)], fill=64)
+
+    if crate == "hanging":
+        draw_crate(ky + 2)
+    elif crate == "ground":
+        # limp cable swinging free, crate sitting on the dock
+        d.line([(cx + 76, cy + 30), (cx + 74, cy + 44)], fill=11)
+        draw_crate(ky + kh - 16)
 
     # --- Rivet's scrap stall (shuttered)
     sx, sy, sw, sh = GEOM["STALL"]
@@ -287,7 +299,7 @@ FONT3 = {  # minimal 3x5 caps font for in-art signage
     'U': "101101101101011", 'V': "101101101101010", 'W': "101101111111101",
     'Y': "101101010010010", '.': "000000000000010", ',': "000000000010100",
     '0': "010101101101010", '1': "010110010010111", '8': "010101010101010",
-    ' ': "000000000000000",
+    '&': "010101010101011", ' ': "000000000000000",
 }
 
 
@@ -300,6 +312,188 @@ def _neon_text(im, text, x, y, color, small=False):
                 px, py = x + (i % 3), y + (i // 3)
                 im.putpixel((px, py), color)
         x += step
+
+
+# ------------------------------------------------- the Scrap & Barrel
+
+# Scene 02 interior geometry (all rects 8-aligned for SCUMM strips)
+TAVERN_GEOM = {
+    "T_DOOR_OUT":  (8, 56, 24, 48),
+    "T_SIGN":      (40, 8, 96, 16),
+    "T_SHELF":     (40, 32, 96, 24),
+    "T_BAR":       (32, 80, 112, 32),
+    "T_GUSKET":    (64, 48, 32, 40),
+    "T_PIANO":     (152, 40, 56, 64),
+    "T_TABLE":     (200, 88, 48, 32),
+    "T_DART":      (272, 32, 24, 24),
+    "T_WORKER":    (248, 60, 24, 48),
+    "T_DOOR_BACK": (288, 56, 24, 48),
+}
+
+
+def draw_tavern():
+    im = new_img(W, H)
+    d = ImageDraw.Draw(im)
+    g = TAVERN_GEOM
+
+    # --- walls: warm dark rust plating
+    d.rectangle([0, 0, W, 104], fill=17)
+    for y in range(6, 104, 8):
+        d.line([(0, y), (W, y)], fill=16)
+    for x in range(0, W, 40):
+        d.line([(x, 0), (x, 104)], fill=16)
+    d.line([(0, 104), (W, 104)], fill=19)                  # baseboard
+
+    # --- floor: tavern planks, warmer than the docks
+    d.rectangle([0, 105, W, H], fill=67)
+    for y in range(105, H, 6):
+        d.line([(0, y), (W, y)], fill=64)
+    for x in range(0, W, 28):
+        off = 3 if (x // 28) % 2 else 0
+        for y in range(105 + off, H, 6):
+            d.line([(x, y), (x, y + 5)], fill=65)
+
+    # --- hanging lamps with sodium glow pools
+    for lx in (88, 224):
+        d.line([(lx, 0), (lx, 14)], fill=1)
+        d.polygon([(lx - 7, 20), (lx + 7, 20), (lx + 3, 14),
+                   (lx - 3, 14)], fill=9)
+        d.ellipse([lx - 10, 19, lx + 10, 27], fill=44)
+        im.putpixel((lx, 22), 47)
+        # dim wall glow
+        d.ellipse([lx - 26, 12, lx + 26, 44], outline=18)
+
+    # --- front door (back out to the docks)
+    dx, dy, dw, dh = g["T_DOOR_OUT"]
+    d.rectangle([dx - 3, dy - 3, dx + dw + 3, dy + dh], fill=19)
+    d.rectangle([dx, dy, dx + dw, dy + dh], fill=68)
+    d.line([(dx + dw // 2, dy), (dx + dw // 2, dy + dh)], fill=64)
+    d.rectangle([dx + 4, dy + 8, dx + 12, dy + 16], fill=55)   # night porthole
+    im.putpixel((dx + 7, dy + 11), 104)                        # a star
+    d.ellipse([dx + dw - 8, dy + 22, dx + dw - 4, dy + 26], outline=44)
+
+    # --- neon sign over the bar
+    nx, ny, nw, nh = g["T_SIGN"]
+    d.rectangle([nx, ny, nx + nw, ny + nh], fill=1)
+    d.rectangle([nx, ny, nx + nw, ny + nh], outline=6)
+    _neon_text(im, "SCRAP & BARREL", nx + 19, ny + 6, 94)
+    for x in range(nx + 2, nx + nw, 6):
+        im.putpixel((x, ny + 1), 92)
+        im.putpixel((x, ny + nh - 1), 92)
+
+    # --- bottle shelves
+    sx, sy, sw, sh = g["T_SHELF"]
+    for row in (0, 1):
+        by = sy + row * 12
+        d.rectangle([sx, by + 9, sx + sw, by + 11], fill=70)   # board
+        for i, bx in enumerate(range(sx + 4, sx + sw - 4, 11)):
+            col = [33, 45, 94, 82, 11, 24][(i + row * 3) % 6]
+            d.rectangle([bx, by + 1, bx + 5, by + 9], fill=col)
+            d.rectangle([bx + 1, by, bx + 4, by + 1], fill=6)  # cap
+            im.putpixel((bx + 1, by + 3), 104)                 # glint
+
+    # --- bar counter
+    bx, by, bw, bh = g["T_BAR"]
+    d.rectangle([bx, by, bx + bw, by + 4], fill=68)            # top
+    d.rectangle([bx, by + 4, bx + bw, by + bh], fill=66)       # front
+    for x in range(bx + 6, bx + bw, 18):
+        d.rectangle([x, by + 8, x + 10, by + bh - 4], fill=64)
+    d.line([(bx, by + bh - 2), (bx + bw, by + bh - 2)], fill=46)  # brass rail
+    # glasses of 10W-40 on the counter
+    for gx2 in (bx + 14, bx + 86):
+        d.rectangle([gx2, by - 6, gx2 + 4, by], fill=11)
+        d.rectangle([gx2 + 1, by - 4, gx2 + 3, by], fill=45)
+
+    # --- Gusket, polishing the same glass forever
+    gx, gy, gw, gh = g["T_GUSKET"]
+    d.rectangle([gx + 8, gy + 14, gx + 24, gy + 36], fill=5)   # barrel body
+    d.rectangle([gx + 8, gy + 20, gx + 24, gy + 22], fill=6)   # hoop
+    d.rectangle([gx + 8, gy + 28, gx + 24, gy + 30], fill=6)
+    d.rectangle([gx + 11, gy + 4, gx + 21, gy + 14], fill=6)   # head
+    d.rectangle([gx + 10, gy + 2, gx + 22, gy + 5], fill=9)    # cap
+    d.rectangle([gx + 13, gy + 8, gx + 15, gy + 10], fill=44)  # eyes
+    d.rectangle([gx + 18, gy + 8, gx + 20, gy + 10], fill=44)
+    d.line([(gx + 8, gy + 18), (gx + 2, gy + 26)], fill=6)     # left arm
+    d.line([(gx + 24, gy + 18), (gx + 30, gy + 12)], fill=6)   # stuck arm
+    d.rectangle([gx + 28, gy + 6, gx + 32, gy + 12], fill=11)  # the glass
+    for r in (3, 6):                                           # polish loops
+        d.ellipse([gx + 27 - r, gy + 6 - r, gx + 33 + r, gy + 12 + r],
+                  outline=18)
+
+    # --- player piano (missing three keys)
+    px, py, pw, ph = g["T_PIANO"]
+    d.rectangle([px, py, px + pw, py + ph - 8], fill=70)       # body
+    d.rectangle([px, py, px + pw, py + 4], fill=68)            # lid
+    d.rectangle([px + 6, py + 8, px + pw - 6, py + 24], fill=14)   # roll
+    for x in range(px + 9, px + pw - 7, 3):                    # perforations
+        im.putpixel((x, py + 12), 1)
+        im.putpixel((x + 1, py + 18), 1)
+    keys_y = py + ph - 20
+    d.rectangle([px + 2, keys_y, px + pw - 2, keys_y + 10], fill=1)
+    missing = (3, 7, 11)
+    for i, kx2 in enumerate(range(px + 4, px + pw - 4, 4)):
+        if i in missing:
+            continue                                           # the gag
+        d.rectangle([kx2, keys_y + 1, kx2 + 2, keys_y + 9], fill=104)
+    d.rectangle([px + 4, py + ph - 8, px + 8, py + ph], fill=68)   # legs
+    d.rectangle([px + pw - 8, py + ph - 8, px + pw - 4, py + ph], fill=68)
+
+    # --- the Rustlers' corner table
+    tx, ty, tw, th = g["T_TABLE"]
+    d.ellipse([tx + 4, ty + 6, tx + tw - 4, ty + 22], fill=68)
+    d.rectangle([tx + tw // 2 - 2, ty + 20, tx + tw // 2 + 2, ty + th],
+                fill=64)
+    for wx2, wy2 in [(tx + 14, ty + 11), (tx + 22, ty + 14),
+                     (tx + 30, ty + 10)]:                      # washer pot
+        d.ellipse([wx2, wy2, wx2 + 3, wy2 + 2], outline=11)
+    for cx2, cy2 in [(tx + 10, ty + 15), (tx + 33, ty + 15)]:  # cards
+        d.rectangle([cx2, cy2, cx2 + 4, cy2 + 5], fill=104)
+    # three corroded pirate-bots, mid-argument
+    for i, (rx, ry, eye) in enumerate([(tx - 6, ty - 8, 107),
+                                       (tx + 18, ty - 16, 44),
+                                       (tx + 42, ty - 8, 31)]):
+        d.rectangle([rx + 2, ry + 10, rx + 12, ry + 26], fill=18)  # body
+        d.rectangle([rx + 4, ry + 2, rx + 10, ry + 10], fill=20)   # head
+        d.rectangle([rx + 5, ry + 5, rx + 7, ry + 7], fill=eye)    # one eye
+        if i == 1:
+            d.polygon([(rx + 3, ry + 2), (rx + 11, ry + 2),
+                       (rx + 7, ry - 3)], fill=1)              # captain hat
+
+    # --- dartboard with three darts in it
+    ax, ay, aw, ah = g["T_DART"]
+    d.ellipse([ax, ay, ax + aw, ay + ah], fill=104)
+    d.ellipse([ax + 3, ay + 3, ax + aw - 3, ay + ah - 3], fill=107)
+    d.ellipse([ax + 7, ay + 7, ax + aw - 7, ay + ah - 7], fill=104)
+    d.ellipse([ax + 10, ay + 10, ax + aw - 10, ay + ah - 10], fill=1)
+    for ddx, ddy in [(4, 6), (16, 4), (9, 18)]:
+        d.line([(ax + ddx, ay + ddy), (ax + ddx + 5, ay + ddy - 5)], fill=11)
+        im.putpixel((ax + ddx + 5, ay + ddy - 5), 31)
+
+    # --- Flange the dockworker, between games
+    wx, wy, ww, wh = g["T_WORKER"]
+    d.rectangle([wx + 4, wy + 14, wx + 20, wy + 38], fill=5)   # body
+    d.rectangle([wx + 4, wy + 24, wx + 20, wy + 26], fill=9)   # tool belt
+    d.rectangle([wx + 7, wy + 4, wx + 17, wy + 14], fill=6)    # head
+    d.rectangle([wx + 5, wy + 2, wx + 19, wy + 6], fill=45)    # hard hat
+    d.rectangle([wx + 9, wy + 8, wx + 11, wy + 10], fill=31)   # eyes
+    d.rectangle([wx + 14, wy + 8, wx + 16, wy + 10], fill=31)
+    d.line([(wx + 20, wy + 18), (wx + 26, wy + 12)], fill=6)   # dart arm
+    d.line([(wx + 26, wy + 12), (wx + 29, wy + 9)], fill=11)   # dart
+    d.rectangle([wx + 6, wy + 38, wx + 9, wy + 46], fill=6)    # legs
+    d.rectangle([wx + 15, wy + 38, wx + 18, wy + 46], fill=6)
+
+    # --- back door (to the Rustlers' alley, someday)
+    kx, ky, kw, kh = g["T_DOOR_BACK"]
+    d.rectangle([kx - 3, ky - 3, kx + kw + 3, ky + kh], fill=16)
+    d.rectangle([kx, ky, kx + kw, ky + kh], fill=4)
+    for bdy in range(ky + 6, ky + kh, 10):
+        im.putpixel((kx + 3, bdy), 6)
+        im.putpixel((kx + kw - 3, bdy), 6)
+    d.rectangle([kx + 4, ky + 14, kx + kw - 4, ky + 22], fill=1)
+    _neon_text(im, "NO", kx + 9, ky + 16, 107)
+    im.putpixel((kx + kw // 2, ky - 6), 107)                   # red lamp
+
+    return im
 
 
 # ----------------------------------------------------------- verb panel
@@ -436,6 +630,33 @@ def gen_inventory_icons():
     d.rectangle([8, 2, 10, 14], fill=11)
     d.rectangle([30, 2, 32, 14], fill=11)
     icons["inv_poster"] = im
+    # drink token: hex coin, house currency of the Scrap & Barrel
+    im = new_img(40, 16)
+    d = ImageDraw.Draw(im)
+    d.polygon([(14, 8), (17, 2), (23, 2), (26, 8), (23, 14), (17, 14)],
+              fill=82)
+    d.polygon([(14, 8), (17, 2), (23, 2), (26, 8), (23, 14), (17, 14)],
+              outline=78)
+    d.rectangle([19, 6, 21, 10], fill=86)
+    icons["inv_token"] = im
+    # oil can: the classic long-spout oiler
+    im = new_img(40, 16)
+    d = ImageDraw.Draw(im)
+    d.rectangle([10, 7, 20, 13], fill=11)                  # body
+    d.polygon([(10, 7), (20, 7), (15, 3)], fill=6)         # cone top
+    d.line([(15, 4), (28, 1)], fill=11)                    # spout
+    im.putpixel((29, 1), 45)                               # oil drop
+    d.rectangle([9, 13, 21, 14], fill=107)                 # red base
+    d.arc([20, 8, 26, 14], 270, 90, fill=6)                # handle
+    icons["inv_oilcan"] = im
+    # wind-up key: one third of a fortune-shaped plot device
+    im = new_img(40, 16)
+    d = ImageDraw.Draw(im)
+    d.ellipse([8, 4, 16, 12], outline=46, width=2)         # bow
+    d.rectangle([16, 7, 28, 9], fill=45)                   # stem
+    d.rectangle([28, 4, 31, 12], fill=46)                  # flag
+    d.rectangle([29, 7, 31, 9], fill=0)                    # notch
+    icons["inv_windupkey"] = im
     return icons
 
 
@@ -450,13 +671,36 @@ STAGE_OBJECT_NAMES = {
     "BOLT":   "shiny bolt",
     "FERRY":  "ferry",
     "CRANE":  "Boom-Arm Betty",
-    "CRATE":  "dangling crate",
+    "CRATE":  "crate",
     "STALL":  "scrap stall",
     "BOARD":  "notice board",
     "POSTER": "official notice",
     "DOOR":   "tavern door",
     "DRAIN":  "storm drain",
 }
+
+TAVERN_OBJECT_NAMES = {
+    "T_DOOR_OUT":  "door to the docks",
+    "T_SIGN":      "neon bar sign",
+    "T_SHELF":     "bottle shelf",
+    "T_BAR":       "bar",
+    "T_GUSKET":    "Gusket",
+    "T_PIANO":     "player piano",
+    "T_TABLE":     "rustlers' table",
+    "T_DART":      "dartboard",
+    "T_WORKER":    "Flange",
+    "T_DOOR_BACK": "back door",
+}
+
+# rect centers make bad click targets for a few objects
+STAGE_HOTSPOT_OVERRIDES = {
+    "CRATE": (132, 110),       # click low: works hanging or grounded
+}
+
+TAVERN_WALKBOXES = [
+    ("tavwest", [(16, 112), (160, 112), (160, 140), (16, 140)]),
+    ("taveast", [(160, 112), (304, 112), (304, 140), (160, 140)]),
+]
 
 # Verb anchors from game/verbs.scc (verbCenter() -> x is the center;
 # y is the text top, so the click point sits a few pixels lower).
@@ -483,6 +727,9 @@ STAGE_PROBES = {
     "sodium":    list(range(40, 52)),
     "sky":       list(range(52, 64)),
     "dock-wood": list(range(64, 76)),
+    "magenta":   list(range(90, 100)),
+    "greens":    list(range(78, 88)),
+    "bright-steel": list(range(9, 16)),
     "verb":      [100],
     "verb-hi":   [101],
     "white":     [104],
@@ -496,10 +743,12 @@ STAGE_PROBES = {
 def emit_stage(path):
     import json
     objects = {}
-    for key, name in STAGE_OBJECT_NAMES.items():
-        x, y, w, h = GEOM[key]
-        objects[name] = {"rect": [x, y, w, h],
-                         "hotspot": [x + w // 2, y + h // 2]}
+    for names, geom in [(STAGE_OBJECT_NAMES, GEOM),
+                        (TAVERN_OBJECT_NAMES, TAVERN_GEOM)]:
+        for key, name in names.items():
+            x, y, w, h = geom[key]
+            hs = STAGE_HOTSPOT_OVERRIDES.get(key, (x + w // 2, y + h // 2))
+            objects[name] = {"rect": [x, y, w, h], "hotspot": list(hs)}
     stage = {
         "comment": "GENERATED by tools/genassets.py --emit-stage; do not edit",
         "screen": {"w": W, "h": H + PANEL_H, "room_h": H},
@@ -510,8 +759,9 @@ def emit_stage(path):
         "probes": {name: [list(PAL[i]) for i in idxs]
                    for name, idxs in STAGE_PROBES.items()},
         "walkboxes": [{"name": n, "points": [list(p) for p in pts]}
-                      for n, pts in WALKBOXES],
-        "walk_targets": {"center-west": [120, 126], "center-east": [250, 126]},
+                      for n, pts in WALKBOXES + TAVERN_WALKBOXES],
+        "walk_targets": {"center-west": [120, 126], "center-east": [250, 126],
+                         "tavern-center": [150, 126]},
     }
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
@@ -532,11 +782,19 @@ def main():
     lit = draw_scene(sign_lit=True, with_poster=False)
     unlit = draw_scene(sign_lit=False, with_poster=False)
     postered = draw_scene(sign_lit=True, with_poster=True)
+    grounded = draw_scene(sign_lit=True, with_poster=False, crate="ground")
 
     save_bmp(lit, "rooms/docks.bmp")
     save_bmp(crop(lit, "SIGN"), "rooms/sign_on.bmp")
     save_bmp(crop(unlit, "SIGN"), "rooms/sign_off.bmp")
     save_bmp(crop(postered, "POSTER"), "rooms/poster_obj.bmp")
+    save_bmp(crop(lit, "CRATE"), "rooms/crate_hanging.bmp")
+    save_bmp(crop(grounded, "CRATE"), "rooms/crate_ground.bmp")
+
+    # Scene 02: the Scrap & Barrel
+    save_bmp(draw_tavern(), "rooms/tavern.bmp")
+    write_box_file(os.path.join(OUT, "rooms", "tavern.box"),
+                   [Box(pts, name=n) for n, pts in TAVERN_WALKBOXES])
 
     # bolt sprite on dock floor (background-colored patch + bolt)
     bx, by, bw, bh = GEOM["BOLT"]

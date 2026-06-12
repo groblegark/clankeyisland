@@ -17,9 +17,9 @@ python3 walkthrough/post/render.py walkthrough/out/<take>   # film + gif
 python3 walkthrough/post/dub.py    walkthrough/out/<take>   # + voice/music
 ```
 
-Deploy = push `web/dist` as the `gh-pages` branch (orphan commit in a
-temp dir, force-push). Live at https://groblegark.github.io/clankeyisland/
-about a minute later. Always run validate first.
+Deploy = `./tools/deploy-web.sh` — builds, runs the Act One validate
+gate, and pushes `web/dist` as the `gh-pages` branch. Live at
+https://groblegark.github.io/clankeyisland/ about a minute later.
 
 ## Pitfalls / gotchas
 
@@ -54,6 +54,23 @@ about a minute later. Always run validate first.
   LOOP_BEATS in tools/genmusic.py (16 bars × 4 + 1). A watchdog script
   in docks.scc restarts the theme if the loop falls off the end.
 - **ScummVM ini parser wants `#` comments**, not `;`.
+- **ScummC verb ids are per-compilation-unit** (assigned in first-use
+  order) and sld keeps each unit's baked constants — declare every
+  shared verb with an explicit `@ id` in common.sch or units silently
+  disagree (cost a full day: "Use X with Y" never worked).
+- **The sentence executor dispatches to objA's script.** An inventory
+  item with a bare `case Use:` gag swallows every "Use it with Y"
+  sentence — items must route `if(objB)` to objB's UsedWith themselves
+  (see inventoryitems.scc). Same for defaultAction's Give case.
+- **ScummVM compacts inventory on removal**: consume the bolt and the
+  poster shifts into slot 0; new items append after. Slot-based
+  screenplay expectations must model this.
+- **Story flags before speech**: object scripts can run concurrently
+  with a cutscene; set bits at the top of a branch, not mid-dialog.
+- **Engine truth beats label guessing**: the sentence executor
+  dbgPrints `SNTC vrb/objA/objB` (needs `--debuglevel=1`, which the
+  screenplays pass via their `game:` field) — read the take's
+  console.log instead of trusting transcript-paired line labels.
 - **Voice tier**: OPENAI_API_KEY is out of quota and the Azure resource
   only deploys DeepSeek-R1 (no TTS), so dub.py uses local piper-tts
   (lessac) + robot FX. Upgrading to ElevenLabs/funded OpenAI is a
@@ -76,11 +93,10 @@ about a minute later. Always run validate first.
 
 ## Next steps (in rough order)
 
-1. Scene 02: the Scrap & Barrel tavern (game/scenes/02-scrap-and-barrel.md)
-   — earns the oil can; unlocks Betty/crate. New room = new bg in
-   genassets, walkboxes, .scc, screenplay, stage map entries.
-2. "Click to start" overlay so visitors hear the arrival music.
-3. Wire validate as a hard gate inside build-web.sh / a deploy script.
-4. Optional dub upgrades: funded TTS for real deadpan direction; the
+1. Scene 03: the Rustlers' alley (the knock-code is already learnable
+   at the rustlers' table; the back door answers "Act Three, buddy").
+2. Optional dub upgrades: funded TTS for real deadpan direction; the
    Suno music/foley arrangement pass over the emitted dub sheet.
-5. In-game speech (monster.sou via ScummC `voice` decls) — parked.
+3. In-game speech (monster.sou via ScummC `voice` decls) — parked.
+(Scene 02, the start overlay, and the validate-gated deploy-web.sh all
+shipped 2026-06-11.)

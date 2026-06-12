@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""'Dockside' — the Scene 01 theme of Clanker City Chronicles.
+"""The songbook of Clanker City Chronicles.
 
 The score is this file: notes as data, rendered deterministically by
 mido into a single-track type-0 General MIDI file, which `soun -midi`
@@ -8,11 +8,15 @@ GM synth natively and the AdLib OPL emulator in the wasm build (see
 docs/research/AUDIO.md — programs below are chosen from the ones with
 decent GM->FM fallback: simple leads, synth bass, basic percussion).
 
-Feel: chiptune noir. A harbor at night, slightly out of warranty.
-16 bars of swung 4/4 in D minor at 88 BPM; the game loops it with
-imPlayerSetLoop at beat 65 (LOOP_BEATS below).
+Two songs:
+- 'Dockside' (Scene 01): chiptune noir, a harbor at night, slightly out
+  of warranty. 16 bars swung 4/4, D minor, 88 BPM, loop at beat 65.
+- 'The Scrap & Barrel Rag' (Scene 02): the tavern's player piano. It is
+  missing three keys, so every note that needs E5, A4 or D5 simply does
+  not happen — the holes ARE the joke. 12 bars, C major, 104 BPM,
+  loop at beat 49 (RAG_LOOP_BEATS).
 
-Output: assets/generated/audio/dockside.mid
+Output: assets/generated/audio/{dockside,scrapnbarrel}.mid
 """
 
 import os
@@ -20,7 +24,7 @@ import os
 import mido
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(ROOT, "assets", "generated", "audio", "dockside.mid")
+OUTDIR = os.path.join(ROOT, "assets", "generated", "audio")
 
 PPQ = 480
 BPM = 88
@@ -97,7 +101,7 @@ def slot_len(slot, ln):
     return slot_time(1, slot + ln) - slot_time(1, slot)
 
 
-def build():
+def build_dockside():
     ev = []  # (tick, order, mido.Message)
 
     def add(tick, msg, order=1):
@@ -168,12 +172,115 @@ def build():
     return mid
 
 
+# ------------------------------------------- The Scrap & Barrel Rag
+
+RAG_BPM = 104
+RAG_BARS = 12
+RAG_LOOP_BEATS = RAG_BARS * 4 + 1
+PRG_HONKY = 3          # honky-tonk piano: it IS a player piano
+
+# the three keys that fell out of the piano (see draw_tavern's gap gag)
+MISSING_KEYS = {n("E", 5), n("A", 4), n("D", 5)}
+
+RAG_PROG = ["C", "C", "F", "C", "G", "F", "C", "G",
+            "C", "F", "C", "G"]
+RAG_CHORDS = {
+    "C": [n("C", 4), n("E", 4), n("G", 4)],
+    "F": [n("C", 4), n("F", 4), n("A", 4)],
+    "G": [n("B", 3), n("D", 4), n("G", 4)],
+}
+RAG_ROOTS = {"C": n("C", 2), "F": n("F", 2), "G": n("G", 2)}
+RAG_FIFTH = {"C": n("G", 2), "F": n("C", 3), "G": n("D", 3)}
+
+# melody slots (8 swung-eighths per bar) — written to hit the missing
+# keys often, because a rag with holes in it is funnier than a rag
+RM = []
+def rag_phrase(bar, notes):
+    for slot, pitch, ln in notes:
+        RM.append((bar, slot, pitch, ln))
+
+rag_phrase(1,  [(0, n("E", 5), 1), (1, n("G", 5), 1), (2, n("C", 5), 1),
+                (3, n("E", 5), 1), (4, n("G", 5), 2), (6, n("A", 4), 2)])
+rag_phrase(2,  [(0, n("D", 5), 1), (1, n("E", 5), 1), (2, n("C", 5), 2),
+                (4, n("G", 4), 1), (5, n("A", 4), 1), (6, n("C", 5), 2)])
+rag_phrase(3,  [(0, n("F", 5), 1), (1, n("A", 4), 1), (2, n("C", 5), 1),
+                (3, n("D", 5), 1), (4, n("F", 5), 2), (6, n("A", 5), 2)])
+rag_phrase(4,  [(0, n("E", 5), 2), (2, n("D", 5), 1), (3, n("C", 5), 1),
+                (4, n("E", 4), 4)])
+rag_phrase(5,  [(0, n("D", 5), 1), (1, n("B", 4), 1), (2, n("G", 4), 1),
+                (3, n("D", 5), 1), (4, n("B", 4), 2), (6, n("G", 5), 2)])
+rag_phrase(6,  [(0, n("A", 4), 1), (1, n("C", 5), 1), (2, n("F", 5), 1),
+                (3, n("A", 4), 1), (4, n("C", 5), 4)])
+rag_phrase(7,  [(0, n("C", 5), 1), (1, n("E", 5), 1), (2, n("G", 5), 1),
+                (3, n("E", 5), 1), (4, n("C", 5), 2), (6, n("E", 5), 2)])
+rag_phrase(8,  [(0, n("D", 5), 2), (2, n("B", 4), 1), (3, n("A", 4), 1),
+                (4, n("G", 4), 4)])
+rag_phrase(9,  [(0, n("C", 5), 1), (1, n("E", 5), 1), (2, n("G", 5), 2),
+                (4, n("E", 5), 1), (5, n("C", 5), 1), (6, n("G", 4), 2)])
+rag_phrase(10, [(0, n("A", 4), 1), (1, n("F", 5), 1), (2, n("A", 4), 1),
+                (3, n("F", 5), 1), (4, n("D", 5), 4)])
+rag_phrase(11, [(0, n("E", 5), 1), (1, n("C", 5), 1), (2, n("E", 5), 1),
+                (3, n("C", 5), 1), (4, n("G", 4), 2), (6, n("E", 5), 2)])
+rag_phrase(12, [(0, n("D", 5), 2), (2, n("B", 4), 2), (4, n("C", 5), 4)])
+
+
+def build_rag():
+    ev = []
+
+    def add(tick, msg, order=1):
+        ev.append((tick, order, msg))
+
+    def note(ch, tick, pitch, dur, vel):
+        if pitch in MISSING_KEYS:
+            return            # that key is literally not there
+        add(tick, mido.Message("note_on", channel=ch, note=pitch,
+                               velocity=vel))
+        add(tick + dur, mido.Message("note_off", channel=ch, note=pitch,
+                                     velocity=0))
+
+    add(0, mido.Message("program_change", channel=0, program=PRG_HONKY), 0)
+    add(0, mido.Message("control_change", channel=0, control=7, value=98), 0)
+
+    for bar in range(1, RAG_BARS + 1):
+        chord = RAG_PROG[bar - 1]
+        t0 = (bar - 1) * 4 * PPQ
+        # stride left hand: oom (root/fifth) pah (chord)
+        for beat in range(4):
+            t = t0 + beat * PPQ
+            if beat % 2 == 0:
+                low = RAG_ROOTS[chord] if beat == 0 else RAG_FIFTH[chord]
+                note(0, t, low, PPQ // 2, 74)
+            else:
+                for p in RAG_CHORDS[chord]:
+                    note(0, t, p, PPQ // 3, 58)
+
+    for bar, slot, pitch, ln in RM:
+        t = slot_time(bar, slot)
+        note(0, t, pitch, slot_len(slot, ln) - 30, 80)
+
+    mid = mido.MidiFile(type=0, ticks_per_beat=PPQ)
+    track = mido.MidiTrack()
+    track.append(mido.MetaMessage("set_tempo",
+                                  tempo=mido.bpm2tempo(RAG_BPM), time=0))
+    last = 0
+    for tick, _, msg in sorted(ev, key=lambda e: (e[0], e[1])):
+        track.append(msg.copy(time=tick - last))
+        last = tick
+    track.append(mido.MetaMessage("end_of_track",
+                                  time=RAG_BARS * 4 * PPQ - last))
+    mid.tracks.append(track)
+    return mid
+
+
 def main():
-    os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    mid = build()
-    mid.save(OUT)
-    secs = BARS * 4 * 60 / BPM
-    print(f"{OUT}  ({BARS} bars, {secs:.0f}s, loop at beat {LOOP_BEATS})")
+    os.makedirs(OUTDIR, exist_ok=True)
+    for name, build, bars, bpm, loop in [
+            ("dockside", build_dockside, BARS, BPM, LOOP_BEATS),
+            ("scrapnbarrel", build_rag, RAG_BARS, RAG_BPM, RAG_LOOP_BEATS)]:
+        path = os.path.join(OUTDIR, f"{name}.mid")
+        build().save(path)
+        print(f"{path}  ({bars} bars, {bars * 4 * 60 / bpm:.0f}s, "
+              f"loop at beat {loop})")
 
 
 if __name__ == "__main__":

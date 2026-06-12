@@ -1,0 +1,404 @@
+/* Clanker City Chronicles — Scene 02: the Scrap & Barrel.
+ * Dockside tavern. The player piano is missing three keys
+ * (foreshadowing: keys). NPC dialog is reported secondhand by
+ * Sprocket — one voice, maximum deadpan.
+ */
+
+#include <scummVars6.s>
+#include "common.sch"
+#include "verbs.sch"
+#include "inventoryitems.sch"
+#include "docks.sch"
+#include "tavern.sch"
+
+room TavernRoom {
+
+    image = "rooms/tavern.bmp";
+    boxd = "rooms/tavern.box";
+    trans = 0;
+
+    // ------------------------------------------------------------ sounds
+
+    sound ragSnd     = "scrapnbarrel.soun";
+    sound ratchetSnd = "ratchet.soun";
+    sound dartSnd    = "dart.soun";
+    sound sizzleSnd  = "sizzle.soun";
+    sound clinkSnd   = "clink.soun";
+    sound plinkSnd   = "plink.soun";
+    sound knockSnd   = "knock.soun";
+    sound pickupSnd  = "pickup.soun";
+
+    // ------------------------------------------------------------ music
+
+    local script musicLoop() {
+        // the player piano's set list: one rag, with holes in it
+        // (loop point = RAG_LOOP_BEATS in tools/genmusic.py)
+        stopMusic();
+        startMusic(ragSnd);
+        imPlayerSetLoop(ragSnd, 999, 1, 0, 49, 0);
+        while(1) {
+            delay(120);
+            unless(isSoundRunning(ragSnd)) {
+                startMusic(ragSnd);
+                imPlayerSetLoop(ragSnd, 999, 1, 0, 49, 0);
+            }
+        }
+    }
+
+    // ------------------------------------------------------- room entry
+
+    local script entry() {
+        startScript(1, musicLoop, []);
+
+        unless(visitedTavern) {
+            visitedTavern = 1;
+            cutscene(2) {
+                putActorAt(VAR_EGO, 28, 118, TavernRoom);
+                walkActorTo(VAR_EGO, 70, 126);
+                waitForActor(VAR_EGO);
+                egoSay("The Scrap & Barrel. Where the floor is sticky and nothing is explained.");
+                waitForMessage();
+                egoSay("The bartender says to mind the everything.");
+                waitForMessage();
+                egoSay("The piano is playing itself. Badly. With confidence.");
+                waitForMessage();
+            }
+        }
+    }
+
+    // ---------------------------------------------------------- objects
+
+    object doorOut {
+        x = 8;
+        y = 56;
+        w = 24;
+        h = 48;
+        dir = EAST;
+        name = "door to the docks";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The way back to the docks. The night air smells of opportunity and brine.");
+            return;
+        case Open:
+        case Use:
+            putActorAt(VAR_EGO, 282, 120, DockRoom);
+            startRoom(DockRoom);
+            return;
+        }
+    }
+
+    object barSign {
+        x = 40;
+        y = 8;
+        w = 96;
+        h = 16;
+        dir = NORTH;
+        name = "neon bar sign";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("SCRAP & BARREL. The ampersand is the freshest thing in here.");
+            return;
+        case Smell:
+            egoSay("Neon doesn't smell. The regret underneath it does.");
+            return;
+        }
+    }
+
+    object shelf {
+        x = 40;
+        y = 32;
+        w = 96;
+        h = 24;
+        dir = NORTH;
+        name = "bottle shelf";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Top-shelf lubricants. Literally. The bottom shelf is the same stuff with dust on it.");
+            return;
+        case PickUp:
+            egoSay("Gusket's eye is tracking me like a security camera.");
+            waitForMessage();
+            egoSay("Because it is one. There's a little red light.");
+            return;
+        case Smell:
+            egoSay("Esters, additives, and a 2% hint of regret. A good year.");
+            return;
+        }
+    }
+
+    object barCounter {
+        x = 32;
+        y = 80;
+        w = 112;
+        h = 32;
+        dir = NORTH;
+        name = "bar";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Polished to a mirror finish in one specific spot. Wonder why.");
+            return;
+        case Use:
+            egoSay("I'd order something, but my warranty has opinions about additives.");
+            return;
+        case Smell:
+            egoSay("Spilled 10W-40, wiped with a rag that has seen things.");
+            return;
+        }
+    }
+
+    object gusket {
+        x = 64;
+        y = 48;
+        w = 32;
+        h = 40;
+        dir = SOUTH;
+        name = "Gusket";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            unless(servoFixed) {
+                egoSay("Gusket the bartender. He's been polishing that one glass since before I was assembled.");
+                waitForMessage();
+                egoSay("His arm servo is stuck in a loop. The glass, to be fair, is immaculate.");
+                return;
+            }
+            egoSay("Gusket, finally polishing a DIFFERENT glass. Growth.");
+            return;
+        case TalkTo:
+            unless(servoFixed) {
+                egoSay("He says I look like I've had a hard drive, pal.");
+                waitForMessage();
+                egoSay("I ask about oil. He says oil is for paying customers and his last can rode off with the dart league.");
+                waitForMessage();
+                egoSay("He'd shake my hand, he says, but his arm's been polishing this glass since the Dynamo dimmed.");
+                waitForMessage();
+                egoSay("The servo's jammed. A little shim in the ratchet would free it. Something small. Something... bolt-shaped.");
+                return;
+            }
+            unless(dartsDone) {
+                egoSay("He says Flange by the dartboard has the last oil can in the building.");
+                waitForMessage();
+                egoSay("And that Flange would bet his own head gasket on a dart game.");
+                return;
+            }
+            egoSay("He says my drinks are free for life. Well. One drink. Per life.");
+            return;
+        case UsedWith:
+            if(objB == InventoryItems::bolt) {
+                servoFixed = 1;
+                setObjectOwner(InventoryItems::bolt, 0);
+                cutscene(0) {
+                    egoSay("Hold still, sir. This is a certified maintenance procedure.");
+                    waitForMessage();
+                    startSound(ratchetSnd);
+                    delay(40);
+                    egoSay("The bolt slots into the ratchet. The servo unwinds. The glass, at long last, comes down.");
+                    waitForMessage();
+                    egoSay("My fortune. Reduced to eight thousand and nine.");
+                    waitForMessage();
+                    startSound(clinkSnd);
+                    pickupObject(InventoryItems::token, InventoryItems);
+                    egoSay("He flips me a drink token. Says Flange takes those as table stakes at the dartboard.");
+                    waitForMessage();
+                }
+                return;
+            }
+            egoSay("He polishes it politely and hands it back.");
+            return;
+        case Smell:
+            egoSay("Bartender oil and quiet patience.");
+            return;
+        }
+    }
+
+    object piano {
+        x = 152;
+        y = 40;
+        w = 56;
+        h = 64;
+        dir = NORTH;
+        name = "player piano";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A player piano, playing itself. It's missing three keys.");
+            waitForMessage();
+            egoSay("...That feels thematically significant.");
+            return;
+        case Use:
+            startSound(plinkSnd);
+            egoSay("Two notes work. The third key isn't missing a note. It's missing entirely.");
+            waitForMessage();
+            egoSay("I requested a song. It requested a tuner.");
+            return;
+        case Smell:
+            egoSay("Felt, brass, and the ghost of a B-flat.");
+            return;
+        }
+    }
+
+    object rustlersTable {
+        x = 200;
+        y = 88;
+        w = 48;
+        h = 32;
+        dir = NORTH;
+        name = "rustlers' table";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Three corroded pirate-bots playing cards for washers.");
+            waitForMessage();
+            egoSay("One of them insists washers are 'post-bolt currency'. The other two are holding washers, so they're not arguing hard.");
+            return;
+        case TalkTo:
+            unless(heardKnockCode) {
+                heardKnockCode = 1;
+                egoSay("I lean in casually. Extremely casually. Nobody has ever leaned this casually.");
+                waitForMessage();
+                egoSay("The one in the hat says: you CLANG twice, then once, then twice, you barnacle.");
+                waitForMessage();
+                egoSay("I am definitely not supposed to know that.");
+                return;
+            }
+            egoSay("They've moved on to arguing about whether the table is winning.");
+            return;
+        case Smell:
+            egoSay("Salt corrosion and bluffing.");
+            return;
+        }
+    }
+
+    object dartboard {
+        x = 272;
+        y = 32;
+        w = 24;
+        h = 24;
+        dir = NORTH;
+        name = "dartboard";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Regulation dartboard. The wall around it has suffered.");
+            return;
+        case Use:
+            unless(dartsDone) {
+                egoSay("Flange owns the board. Flange owns the darts. The arrangement is explained to me with gestures.");
+                return;
+            }
+            egoSay("Retired champion. I don't need to prove anything.");
+            return;
+        }
+    }
+
+    object flange {
+        x = 248;
+        y = 60;
+        w = 24;
+        h = 48;
+        dir = SOUTH;
+        name = "Flange";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A dockworker bot named Flange. Arm like a hydraulic press. Currently between games.");
+            return;
+        case TalkTo:
+            unless(dartsDone) {
+                egoSay("He says: darts, table stakes one drink token, house rules, he always wins.");
+                waitForMessage();
+                egoSay("The oil can on his belt is the wager. The smugness comes free.");
+                return;
+            }
+            egoSay("He's explaining to the wall how he was robbed. The wall agrees.");
+            return;
+        case Give:
+        case UsedWith:
+            if(objB == InventoryItems::token) {
+                dartsDone = 1;
+                cutscene(0) {
+                    startSound(clinkSnd);
+                    egoSay("Token on the rail. Game on.");
+                    waitForMessage();
+                    setObjectOwner(InventoryItems::token, 0);
+                    startSound(dartSnd);
+                    delay(30);
+                    egoSay("Dart one: the wall.");
+                    waitForMessage();
+                    startSound(dartSnd);
+                    delay(30);
+                    egoSay("Dart two: a different wall.");
+                    waitForMessage();
+                    startSound(dartSnd);
+                    delay(30);
+                    egoSay("Dart three is in the ocean. We're indoors. Nobody knows.");
+                    waitForMessage();
+                    egoSay("Flange is laughing so hard he goes for the showboat finish: three darts, one throw, behind the back.");
+                    waitForMessage();
+                    startSound(dartSnd);
+                    delay(15);
+                    startSound(dartSnd);
+                    delay(15);
+                    startSound(dartSnd);
+                    delay(25);
+                    startSound(sizzleSnd);
+                    egoSay("His shoulder servo overheats with a noise like bacon achieving liftoff.");
+                    waitForMessage();
+                    startSound(pickupSnd);
+                    pickupObject(InventoryItems::oilcan, InventoryItems);
+                    egoSay("House rules: the overheated party forfeits the wager. The oil can is mine.");
+                    waitForMessage();
+                    egoSay("Losing this badly took real skill. Nobody will ever believe that.");
+                    waitForMessage();
+                }
+                return;
+            }
+            egoSay("He squints at it, then at me. We agree it isn't a drink token.");
+            return;
+        case Smell:
+            egoSay("Hot bearings and confidence.");
+            return;
+        }
+    }
+
+    object doorBack {
+        x = 288;
+        y = 56;
+        w = 24;
+        h = 48;
+        dir = WEST;
+        name = "back door";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A heavy back door. The sign says NO. Just NO. Punctuation costs extra.");
+            return;
+        case Open:
+        case Use:
+            if(heardKnockCode) {
+                startSound(knockSnd);
+                egoSay("CLANG-CLANG. CLANG. CLANG-CLANG.");
+                waitForMessage();
+                egoSay("A slot opens. An eye looks at me. A voice says: 'Act Three, buddy.' The slot closes.");
+                waitForMessage();
+                egoSay("Everyone in this town has read the script except me.");
+                return;
+            }
+            egoSay("Locked. From the sound of it, there's a knock-code. From the smell of it, I don't want to know.");
+            return;
+        case Smell:
+            egoSay("Rust, secrets, and back-alley grease.");
+            return;
+        }
+    }
+
+}

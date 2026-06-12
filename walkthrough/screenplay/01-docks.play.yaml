@@ -3,13 +3,13 @@
 # the transcript. See docs/WALKTHROUGHER.md.
 
 title: "Clanker City Chronicles — Scene 01: The Docks"
-game: chronicles
+game: "--debuglevel=1 chronicles"
 stage: docks.stage.json
 transcript: docks.transcript.json
 
 shots:
   - name: arrival
-    cutscene: entry           # auto-plays on boot; validate skips after a taste
+    cutscene: DockRoom.entry           # auto-plays on boot; validate skips after a taste
     expect: [talking]
     timeout: 60
 
@@ -21,13 +21,13 @@ shots:
     do: {verb: Use, object: neon sign}
     expect:
       - talking
-      - pixel: {at: shiny bolt, is: steel}
+      - pixel: {at: shiny bolt, is: bright-steel}
 
   - name: legal-tender
     do: {verb: Pick up, object: shiny bolt}
     expect:
       - talking
-      - pixel: {at: inventory.slot0, is: steel}
+      - pixel: {at: inventory.slot0, is: bright-steel}
 
   - name: smell-of-adventure
     only: perform
@@ -42,7 +42,7 @@ shots:
   - name: take-the-evidence
     do: {verb: Pick up, object: official notice}
     expect:
-      - pixel: {at: inventory.slot1, is: steel}
+      - pixel: {at: inventory.slot1, is: bright-steel}
 
   - name: meet-betty
     do: {verb: Talk to, object: Boom-Arm Betty}

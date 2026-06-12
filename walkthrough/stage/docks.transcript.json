@@ -1,6 +1,6 @@
 {
  "cutscenes": {
-  "entry": [
+  "DockRoom.entry": [
    "Clanker City! The big smoke! The city of ten thousand gears!",
    "One small maintenance-bot, one dream, and not so much as an oil can to my name.",
    "Thanks for the ride! I'll catch the return ferry once I'm rich and famous.",
@@ -8,6 +8,11 @@
    "That clunk sounded expensive.",
    "That clunk sounded PERMANENT.",
    "Well. Guess I live here now."
+  ],
+  "TavernRoom.entry": [
+   "The Scrap & Barrel. Where the floor is sticky and nothing is explained.",
+   "The bartender says to mind the everything.",
+   "The piano is playing itself. Badly. With confidence."
   ]
  },
  "objects": {
@@ -66,36 +71,68 @@
    "LookAt": [
     "A cargo crane, frozen mid-lift. Or mid-yawn. Hard to tell.",
     "The operator plate says 'BOOM-ARM BETTY'. Her eye-light is blinking in morse.",
-    "O... I... L. Yeah, Betty, we've all been there."
+    "O... I... L. Yeah, Betty, we've all been there.",
+    "Betty's lifting things and putting them down again. For joy, near as I can tell."
    ],
    "TalkTo": [
     "Hello up there! Lovely evening!",
     "...",
-    "She'd wave back if she could. She's out of oil, not out of manners."
+    "She'd wave back if she could. She's out of oil, not out of manners.",
+    "Her eye-light blinks: T... H... X.",
+    "She's billing by the letter. I respect it."
    ],
    "Use": [
     "Her joints are dry as a tax form. She needs oil before she'll move that crate."
+   ],
+   "UsedWith": [
+    "Open wide, Betty. Doctor's orders.",
+    "The oil goes in. Twenty years of squeak go out.",
+    "Betty sets the crate down with the gentleness of a very large aunt.",
+    "Her eye-light blinks T-H-X. We're friends now. It's official.",
+    "She considers it from up there and blinks a polite no."
    ],
    "Smell": [
     "Burnt servo grease. A working robot's perfume."
    ]
   },
-  "dangling crate": {
+  "crate": {
    "LookAt": [
     "Stenciled on the side: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
-    "Ominous AND conveniently plot-relevant."
+    "Ominous AND conveniently plot-relevant. Also twenty feet up.",
+    "On the dock now, at a polite opening height.",
+    "Empty, except for packing grease and destiny residue."
    ],
    "PickUp": [
     "It's twenty feet up. My arms are stock parts.",
-    "Betty could set it down, if anyone gave her a drink of oil."
+    "Betty could set it down, if anyone gave her a drink of oil.",
+    "The lid argues. I argue back with a plank.",
+    "A brass wind-up key the size of my forearm. One of three, if the stencil is honest.",
+    "Act One: complete. Probably. Towns like this love a twist.",
+    "Already opened. The destiny has been extracted."
    ],
    "Use": [
     "It's twenty feet up. My arms are stock parts.",
-    "Betty could set it down, if anyone gave her a drink of oil."
+    "Betty could set it down, if anyone gave her a drink of oil.",
+    "The lid argues. I argue back with a plank.",
+    "A brass wind-up key the size of my forearm. One of three, if the stencil is honest.",
+    "Act One: complete. Probably. Towns like this love a twist.",
+    "Already opened. The destiny has been extracted."
    ],
    "Move": [
     "It's twenty feet up. My arms are stock parts.",
-    "Betty could set it down, if anyone gave her a drink of oil."
+    "Betty could set it down, if anyone gave her a drink of oil.",
+    "The lid argues. I argue back with a plank.",
+    "A brass wind-up key the size of my forearm. One of three, if the stencil is honest.",
+    "Act One: complete. Probably. Towns like this love a twist.",
+    "Already opened. The destiny has been extracted."
+   ],
+   "Open": [
+    "It's twenty feet up. My arms are stock parts.",
+    "Betty could set it down, if anyone gave her a drink of oil.",
+    "The lid argues. I argue back with a plank.",
+    "A brass wind-up key the size of my forearm. One of three, if the stencil is honest.",
+    "Act One: complete. Probably. Towns like this love a twist.",
+    "Already opened. The destiny has been extracted."
    ]
   },
   "scrap stall": {
@@ -143,13 +180,9 @@
     "The Scrap & Barrel. I can hear a player piano in there, missing several keys.",
     "...That feels thematically significant."
    ],
-   "Open": [
-    "Bolted from the inside. The GOOD kind of bolted. I respect the craftsmanship."
-   ],
-   "Use": [
+   "Move": [
     "Knock knock.",
-    "A voice inside: 'WE OPEN IN ACT TWO.'",
-    "This town has a very literal relationship with dramatic structure."
+    "A voice inside: 'IT'S OPEN. THE KNOCKING IS DECORATIVE.'"
    ],
    "Smell": [
     "Spilled 10W-40 and broken dreams. So... a tavern."
@@ -168,6 +201,194 @@
    ],
    "Open": [
     "My fingers are factory-standard. I'd need something magnetic. On a string."
+   ]
+  },
+  "door to the docks": {
+   "LookAt": [
+    "The way back to the docks. The night air smells of opportunity and brine."
+   ]
+  },
+  "neon bar sign": {
+   "LookAt": [
+    "SCRAP & BARREL. The ampersand is the freshest thing in here."
+   ],
+   "Smell": [
+    "Neon doesn't smell. The regret underneath it does."
+   ]
+  },
+  "bottle shelf": {
+   "LookAt": [
+    "Top-shelf lubricants. Literally. The bottom shelf is the same stuff with dust on it."
+   ],
+   "PickUp": [
+    "Gusket's eye is tracking me like a security camera.",
+    "Because it is one. There's a little red light."
+   ],
+   "Smell": [
+    "Esters, additives, and a 2% hint of regret. A good year."
+   ]
+  },
+  "bar": {
+   "LookAt": [
+    "Polished to a mirror finish in one specific spot. Wonder why."
+   ],
+   "Use": [
+    "I'd order something, but my warranty has opinions about additives."
+   ],
+   "Smell": [
+    "Spilled 10W-40, wiped with a rag that has seen things."
+   ]
+  },
+  "Gusket": {
+   "LookAt": [
+    "Gusket the bartender. He's been polishing that one glass since before I was assembled.",
+    "His arm servo is stuck in a loop. The glass, to be fair, is immaculate.",
+    "Gusket, finally polishing a DIFFERENT glass. Growth."
+   ],
+   "TalkTo": [
+    "He says I look like I've had a hard drive, pal.",
+    "I ask about oil. He says oil is for paying customers and his last can rode off with the dart league.",
+    "He'd shake my hand, he says, but his arm's been polishing this glass since the Dynamo dimmed.",
+    "The servo's jammed. A little shim in the ratchet would free it. Something small. Something... bolt-shaped.",
+    "He says Flange by the dartboard has the last oil can in the building.",
+    "And that Flange would bet his own head gasket on a dart game.",
+    "He says my drinks are free for life. Well. One drink. Per life."
+   ],
+   "UsedWith": [
+    "Hold still, sir. This is a certified maintenance procedure.",
+    "The bolt slots into the ratchet. The servo unwinds. The glass, at long last, comes down.",
+    "My fortune. Reduced to eight thousand and nine.",
+    "He flips me a drink token. Says Flange takes those as table stakes at the dartboard.",
+    "He polishes it politely and hands it back."
+   ],
+   "Smell": [
+    "Bartender oil and quiet patience."
+   ]
+  },
+  "player piano": {
+   "LookAt": [
+    "A player piano, playing itself. It's missing three keys.",
+    "...That feels thematically significant."
+   ],
+   "Use": [
+    "Two notes work. The third key isn't missing a note. It's missing entirely.",
+    "I requested a song. It requested a tuner."
+   ],
+   "Smell": [
+    "Felt, brass, and the ghost of a B-flat."
+   ]
+  },
+  "rustlers' table": {
+   "LookAt": [
+    "Three corroded pirate-bots playing cards for washers.",
+    "One of them insists washers are 'post-bolt currency'. The other two are holding washers, so they're not arguing hard."
+   ],
+   "TalkTo": [
+    "I lean in casually. Extremely casually. Nobody has ever leaned this casually.",
+    "The one in the hat says: you CLANG twice, then once, then twice, you barnacle.",
+    "I am definitely not supposed to know that.",
+    "They've moved on to arguing about whether the table is winning."
+   ],
+   "Smell": [
+    "Salt corrosion and bluffing."
+   ]
+  },
+  "dartboard": {
+   "LookAt": [
+    "Regulation dartboard. The wall around it has suffered."
+   ],
+   "Use": [
+    "Flange owns the board. Flange owns the darts. The arrangement is explained to me with gestures.",
+    "Retired champion. I don't need to prove anything."
+   ]
+  },
+  "Flange": {
+   "LookAt": [
+    "A dockworker bot named Flange. Arm like a hydraulic press. Currently between games."
+   ],
+   "TalkTo": [
+    "He says: darts, table stakes one drink token, house rules, he always wins.",
+    "The oil can on his belt is the wager. The smugness comes free.",
+    "He's explaining to the wall how he was robbed. The wall agrees."
+   ],
+   "Give": [
+    "Token on the rail. Game on.",
+    "Dart one: the wall.",
+    "Dart two: a different wall.",
+    "Dart three is in the ocean. We're indoors. Nobody knows.",
+    "Flange is laughing so hard he goes for the showboat finish: three darts, one throw, behind the back.",
+    "His shoulder servo overheats with a noise like bacon achieving liftoff.",
+    "House rules: the overheated party forfeits the wager. The oil can is mine.",
+    "Losing this badly took real skill. Nobody will ever believe that.",
+    "He squints at it, then at me. We agree it isn't a drink token."
+   ],
+   "UsedWith": [
+    "Token on the rail. Game on.",
+    "Dart one: the wall.",
+    "Dart two: a different wall.",
+    "Dart three is in the ocean. We're indoors. Nobody knows.",
+    "Flange is laughing so hard he goes for the showboat finish: three darts, one throw, behind the back.",
+    "His shoulder servo overheats with a noise like bacon achieving liftoff.",
+    "House rules: the overheated party forfeits the wager. The oil can is mine.",
+    "Losing this badly took real skill. Nobody will ever believe that.",
+    "He squints at it, then at me. We agree it isn't a drink token."
+   ],
+   "Smell": [
+    "Hot bearings and confidence."
+   ]
+  },
+  "back door": {
+   "LookAt": [
+    "A heavy back door. The sign says NO. Just NO. Punctuation costs extra."
+   ],
+   "Open": [
+    "CLANG-CLANG. CLANG. CLANG-CLANG.",
+    "A slot opens. An eye looks at me. A voice says: 'Act Three, buddy.' The slot closes.",
+    "Everyone in this town has read the script except me.",
+    "Locked. From the sound of it, there's a knock-code. From the smell of it, I don't want to know."
+   ],
+   "Use": [
+    "CLANG-CLANG. CLANG. CLANG-CLANG.",
+    "A slot opens. An eye looks at me. A voice says: 'Act Three, buddy.' The slot closes.",
+    "Everyone in this town has read the script except me.",
+    "Locked. From the sound of it, there's a knock-code. From the smell of it, I don't want to know."
+   ],
+   "Smell": [
+    "Rust, secrets, and back-alley grease."
+   ]
+  },
+  "drink token": {
+   "LookAt": [
+    "One genuine Scrap & Barrel drink token. Redeemable for one drink, zero refunds, unlimited regret."
+   ],
+   "Use": [
+    "Gusket said Flange takes these as table stakes. At the dartboard."
+   ],
+   "Smell": [
+    "Every hand in the tavern, in chronological order."
+   ]
+  },
+  "oil can": {
+   "LookAt": [
+    "Small-batch, dock-aged 10W-40. The good stuff."
+   ],
+   "Use": [
+    "I'm not drinking it. It's medicine. For someone with a boom arm."
+   ],
+   "Smell": [
+    "Notes of machine shop, with a long viscous finish."
+   ]
+  },
+  "wind-up key": {
+   "LookAt": [
+    "A brass wind-up key the size of my forearm. One of three.",
+    "The legends say so. The legends are a stencil on a crate. Still counts."
+   ],
+   "Use": [
+    "It wants a keyhole the size of a manhole. I'll know it when I see it."
+   ],
+   "Smell": [
+    "Brass and consequence."
    ]
   }
  }

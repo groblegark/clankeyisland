@@ -24,7 +24,7 @@ int numDialog,numActiveDialog,dialogOffset,selectedSentence;
 int dialogColor, dialogHiColor;
 verb dialogVerb0 @ 110, dialogVerb1 @ 111, dialogVerb2 @ 112;
 verb dialogVerb3 @ 113, dialogVerb4 @ 114;
-verb dialogUp, dialogDown;
+verb dialogUp @ 115, dialogDown @ 116;
 
 #define MAX_DIALOG_LINES    5
 #define MAX_DIALOG_SENTENCE 16

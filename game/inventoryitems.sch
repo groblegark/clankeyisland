@@ -5,4 +5,7 @@ room InventoryItems {
     // Inventory objects
     object bolt;
     object poster;
+    object token;
+    object oilcan;
+    object windupKey;
 }

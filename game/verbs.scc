@@ -7,7 +7,7 @@
 #include "common.sch"
 #include "verbs.sch"
 
-verb backgroundVerb;
+verb backgroundVerb @ 99;
 
 
 room Verbs {

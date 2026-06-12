@@ -3,29 +3,34 @@
  * Copyright (C) 2007 Alban Bedel (GPL v2+). Game content (C) 2026.
  */
 
-// The action verbs
-verb Give,  PickUp, Use;
-verb Open,  LookAt, Smell;
-verb TalkTo,Move;
+// The action verbs.
+// EXPLICIT ids: scc numbers implicit verbs per compilation unit (in
+// first-use order!) and sld keeps whatever each unit baked — verb ids
+// inside event tables and getVerbEntrypoint() calls are plain constants,
+// so units silently disagree (Preposition was 12 in inventoryitems.scc
+// and 18 in common.scc; "Use X with Y" never worked). Pin everything.
+verb Give @ 2,  PickUp @ 3, Use @ 4;
+verb Open @ 5,  LookAt @ 6, Smell @ 7;
+verb TalkTo @ 8, Move @ 9;
 
-verb WalkTo, WalkToXY;
+verb WalkTo @ 10, WalkToXY @ 11;
 
-verb UsedWith;
-verb InventoryObject;
+verb UsedWith @ 12;
+verb InventoryObject @ 13;
 
 bit verbsOn,cursorOn,cursorLoaded;
 int sntcVerb,sntcObjA,sntcObjADesc,sntcObjB,sntcObjBDesc;
 int* invObj;
 
 // The sentence line
-verb SntcLine;
+verb SntcLine @ 14;
 
 // The inventory slots
 verb invSlot0 @ 100, invSlot1 @ 101, invSlot2 @ 102, invSlot3 @ 103,
     invSlot4 @ 104, invSlot5 @ 105, invSlot6 @ 106, invSlot7 @ 107;
 
 // The inventory arrows
-verb invUp, invDown;
+verb invUp @ 120, invDown @ 121;
 int invOffset;
 #define INVENTORY_COL   2
 #define INVENTORY_LINE  2
@@ -39,7 +44,7 @@ int invOffset;
 #define WHITE_COLOR      104
 
 // Object callbacks
-verb Icon,Preposition,SetBoxes;
+verb Icon @ 90, Preposition @ 91, SetBoxes @ 92;
 
 // Object class
 class Openable,Pickable, Person;
