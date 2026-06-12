@@ -1,308 +1,504 @@
 1
-00:00:05,680 --> 00:00:09,710
+00:00:05,700 --> 00:00:09,750
 Clanker City! The big smoke! The city of ten thousand gears!
 
 2
-00:00:09,710 --> 00:00:14,639
+00:00:09,750 --> 00:00:14,480
 One small maintenance-bot, one dream, and not so much as an oil can to my name.
 
 3
-00:00:14,639 --> 00:00:19,169
+00:00:14,700 --> 00:00:19,200
 Thanks for the ride! I'll catch the return ferry once I'm rich and famous.
 
 4
-00:00:20,540 --> 00:00:23,020
+00:00:20,530 --> 00:00:23,010
 ...
 
 5
-00:00:23,020 --> 00:00:25,460
+00:00:23,010 --> 00:00:25,480
 That clunk sounded expensive.
 
 6
-00:00:26,120 --> 00:00:28,580
+00:00:26,140 --> 00:00:28,630
 That clunk sounded PERMANENT.
 
 7
-00:00:33,420 --> 00:00:36,260
-WELCOME TO CLANKER CITY. POP. 8,01,1.
+00:00:28,630 --> 00:00:35,620
+Well. Guess I live here now.
 
 8
-00:00:36,260 --> 00:00:40,390
-Population eight-oh-one-comma-one. The punctuation died first.
+00:00:35,620 --> 00:00:39,650
+The neon sign dips. The tavern window. The lit windows across the water. All together, like the city skipped a heartbeat.
 
 9
-00:00:44,760 --> 00:00:47,980
-Maybe a good honest whack will fix the display.
+00:00:44,510 --> 00:00:47,350
+WELCOME TO CLANKER CITY. POP. 8,01,1.
 
 10
-00:00:48,420 --> 00:00:52,120
-It rained a bolt. In this town that's basically a tip.
+00:00:47,350 --> 00:00:51,490
+Population eight-oh-one-comma-one. The punctuation died first.
 
 11
-00:00:56,890 --> 00:01:01,890
-One bolt. Only eight thousand and ten more and I can afford a personality upgrade.
+00:00:51,490 --> 00:00:56,720
+Something inside it rattles on every flicker. Loose hardware. Practically an invoice.
 
 12
-00:01:07,810 --> 00:01:10,720
-Official city notice, hot off the press:
+00:01:01,100 --> 00:01:04,360
+Maybe a good honest whack will fix the display.
 
 13
-00:01:10,720 --> 00:01:15,170
-'DYNAMO MAINTENANCE: NOTHING IS WRONG. NOTHING HAS EVER BEEN WRONG.'
+00:01:04,800 --> 00:01:08,509
+It rained a bolt. In this town that's basically a tip.
 
 14
-00:01:15,170 --> 00:01:18,530
-'DO NOT STOCKPILE OIL. SIGNED, MAYOR PISTON.'
+00:01:13,320 --> 00:01:18,320
+One bolt. Only eight thousand and ten more and I can afford a personality upgrade.
 
 15
-00:01:18,530 --> 00:01:23,259
-The Great Dynamo powers every bot on this island. Including me, as of today.
+00:01:24,020 --> 00:01:27,080
+Official city notice, hot off the press:
 
 16
-00:01:23,479 --> 00:01:27,039
-So that notice is the scariest thing I've ever read.
+00:01:27,080 --> 00:01:31,660
+'DYNAMO MAINTENANCE: NOTHING IS WRONG. NOTHING HAS EVER BEEN WRONG.'
 
 17
-00:01:31,210 --> 00:01:34,140
-Let me read it first. I'm a maintenance-bot, not a barbarian.
+00:01:31,660 --> 00:01:34,919
+'DO NOT STOCKPILE OIL. SIGNED, MAYOR PISTON.'
 
 18
-00:01:40,729 --> 00:01:43,130
-Hello up there! Lovely evening!
+00:01:34,919 --> 00:01:39,720
+The Great Dynamo powers every bot on this island. Including me, as of today.
 
 19
-00:01:44,450 --> 00:01:48,800
-...
+00:01:39,720 --> 00:01:47,530
+Not wires — the hum. It keeps every mainspring on the island wound. Remotely. Steam bot, clockwork bot, engine bot: all spring-banked.
 
 20
-00:02:15,220 --> 00:02:19,060
-A player piano, playing itself. It's missing three keys.
+00:01:47,530 --> 00:01:51,690
+Hand-winding is the backup. Crude, short-burst, off-warranty.
 
 21
-00:02:19,060 --> 00:02:22,170
-...That feels thematically significant.
+00:01:51,690 --> 00:01:55,380
+So that notice is the scariest thing I've ever read.
 
 22
-00:02:54,220 --> 00:02:58,910
-I lean in casually. Extremely casually. Nobody has ever leaned this casually.
+00:01:59,539 --> 00:02:02,580
+Let me read it first. I'm a maintenance-bot, not a barbarian.
 
 23
-00:02:58,910 --> 00:03:03,890
-The one in the hat says: you CLANG twice, then once, then twice, you barnacle.
+00:02:09,350 --> 00:02:11,950
+Hello up there! Lovely evening!
 
 24
-00:03:03,890 --> 00:03:07,000
-I am definitely not supposed to know that.
+00:02:13,040 --> 00:02:17,370
+...
 
 25
-00:03:13,450 --> 00:03:15,660
-Token on the rail. Game on.
+00:02:43,840 --> 00:02:47,760
+A player piano, playing itself. It's missing three keys.
 
 26
-00:03:16,350 --> 00:03:18,380
-Dart one: the wall.
+00:02:47,760 --> 00:02:50,810
+...That feels thematically significant.
 
 27
-00:03:18,840 --> 00:03:21,280
-Dart two: a different wall.
+00:02:57,560 --> 00:03:01,480
+Hold still, sir. This is a certified maintenance procedure.
 
 28
-00:03:21,710 --> 00:03:25,450
-Dart three is in the ocean. We're indoors. Nobody knows.
+00:03:02,150 --> 00:03:07,570
+The bolt slots into the ratchet. The servo unwinds. The glass, at long last, comes down.
 
 29
-00:03:25,660 --> 00:03:31,440
-Flange is laughing so hard he goes for the showboat finish: three darts, one throw, behind the back.
+00:03:07,570 --> 00:03:10,829
+My fortune. Reduced to eight thousand and nine.
 
 30
-00:03:32,560 --> 00:03:36,970
-His shoulder servo overheats with a noise like bacon achieving liftoff.
+00:03:11,049 --> 00:03:16,049
+He flips me a drink token. Says Flange takes those as table stakes at the dartboard.
 
 31
-00:03:36,970 --> 00:03:41,610
-House rules: the overheated party forfeits the wager. The oil can is mine.
+00:03:22,820 --> 00:03:27,600
+I lean in casually. Extremely casually. Nobody has ever leaned this casually.
 
 32
-00:03:41,610 --> 00:03:46,010
-Losing this badly took real skill. Nobody will ever believe that.
+00:03:27,600 --> 00:03:32,579
+The one in the hat says: you CLANG twice, then once, then twice, you barnacle.
 
 33
-00:04:03,220 --> 00:04:05,880
-Her joints are dry as a tax form. She needs oil before she'll move that crate.
+00:03:32,579 --> 00:03:35,620
+I am definitely not supposed to know that.
 
 34
-00:04:23,900 --> 00:04:27,210
-It's twenty feet up. My arms are stock parts.
+00:03:42,250 --> 00:03:44,420
+Token on the rail. Game on.
 
 35
-00:04:27,210 --> 00:04:32,320
-Betty could set it down, if anyone gave her a drink of oil.
+00:03:45,079 --> 00:03:47,030
+Dart one: the wall.
 
 36
-00:04:32,320 --> 00:04:36,359
-The lid argues. I argue back with a plank.
+00:03:47,690 --> 00:03:50,090
+Dart two: a different wall.
 
 37
-00:05:04,840 --> 00:05:09,090
-Rivet's the name, he says. Knows everything. First fact's free:
+00:03:50,530 --> 00:03:54,450
+Dart three is in the ocean. We're indoors. Nobody knows.
 
 38
-00:05:09,090 --> 00:05:14,690
-The funicular to Midtown takes ten bolts. Exact change. Gates can count — it's all they do.
+00:03:54,450 --> 00:04:00,320
+Flange is laughing so hard he goes for the showboat finish: three darts, one throw, behind the back.
 
 39
-00:05:14,909 --> 00:05:20,060
-Second fact costs a bolt. He can see I don't have one. He mentions that for free too.
+00:04:01,220 --> 00:04:05,760
+His shoulder servo overheats with a noise like bacon achieving liftoff.
 
 40
-00:05:20,060 --> 00:05:26,770
-Third freebie, out of pity: the harbor keeps everything this town drops, and that dumpster is — legally — his.
+00:04:05,760 --> 00:04:10,549
+House rules: the overheated party forfeits the wager. The oil can is mine.
 
 41
-00:05:32,950 --> 00:05:37,599
-Someone sprayed DYNAMO IS FINE. Crossed out. Under it, smaller: IT IS NOT.
+00:04:10,549 --> 00:04:14,660
+Losing this badly took real skill. Nobody will ever believe that.
 
 42
-00:05:37,599 --> 00:05:41,680
-Under that, very small: NO REFUNDS. The whole town, one wall.
+00:04:32,100 --> 00:04:34,710
+Open wide, Betty. Doctor's orders.
 
 43
-00:05:46,330 --> 00:05:48,120
-Knock knock.
+00:04:35,600 --> 00:04:38,860
+The oil goes in. Twenty years of squeak go out.
 
 44
-00:05:48,120 --> 00:05:53,950
-The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'
+00:04:38,860 --> 00:04:43,230
+Betty sets the crate down with the gentleness of a very large aunt.
 
 45
-00:05:53,950 --> 00:05:57,560
-This organization has remarkable message discipline.
+00:04:48,910 --> 00:04:51,960
+It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.
 
 46
-00:06:02,630 --> 00:06:08,080
-Inside: one rubber duck, seized. One manual for a better game. And a magnet on a string.
+00:04:51,960 --> 00:04:57,830
+Betty could set it down, if anyone gave her a drink of oil.
 
 47
-00:06:08,080 --> 00:06:13,210
-In a town held together by bolts, a magnet on a string is a license to print money.
+00:04:57,830 --> 00:05:02,160
+The lid argues. I argue back with a plank.
 
 48
-00:06:25,080 --> 00:06:29,549
-My fingers are factory-standard. I'd need something magnetic. On a string.
+00:05:29,370 --> 00:05:36,130
+Rivet's the name, he says. Knows everything, sells most of it. Today only: the welcome bundle, three facts, free.
 
 49
-00:06:51,280 --> 00:06:56,169
-Rivet's the name, he says. Knows everything. First fact's free:
-
-50
-00:06:56,380 --> 00:07:02,370
+00:05:36,130 --> 00:05:41,780
 The funicular to Midtown takes ten bolts. Exact change. Gates can count — it's all they do.
 
+50
+00:05:41,780 --> 00:05:47,860
+Fact two, on the house, because I look like rain: the Dynamo is winding down, whatever the posters say.
+
 51
-00:07:02,370 --> 00:07:08,580
-Second fact costs a bolt. He can see I don't have one. He mentions that for free too.
+00:05:48,070 --> 00:05:54,600
+The Order that built it left three wind-up keys behind. All three together could wind the city back up. Or down.
 
 52
-00:07:08,580 --> 00:07:11,930
-Third freebie, out of pity: the harbor keeps everything this town drops, and that dumpster is — legally — his.
+00:05:54,600 --> 00:06:00,480
+Fact three: the harbor keeps everything this town drops, and that dumpster is — legally — his.
 
 53
-00:07:11,930 --> 00:07:16,789
-Nine bolts, I tell him. He appraises my pockets from four feet away. Correctly.
+00:06:06,810 --> 00:06:11,380
+Someone sprayed DYNAMO IS FINE. Crossed out. Under it, smaller: IT IS NOT.
 
 54
-00:07:16,789 --> 00:07:21,080
-He proposes a riddle duel. His bolt against my official city notice. The alley has rules, apparently.
+00:06:11,600 --> 00:06:14,220
+Under that, very small: NO REFUNDS.
 
 55
-00:07:26,419 --> 00:07:31,549
-Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.
+00:06:19,070 --> 00:06:20,820
+Knock knock.
 
 56
-00:07:32,010 --> 00:07:37,380
-The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.
+00:06:20,820 --> 00:06:26,640
+The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'
 
 57
-00:07:37,599 --> 00:07:40,520
-Act Two. I can hear the neon from here.
+00:06:26,640 --> 00:06:30,220
+This organization has remarkable message discipline.
 
 58
-00:07:44,740 --> 00:07:49,680
-Gate's open, car's lit. Midtown keeps glittering like it doesn't know I'm coming.
+00:06:35,280 --> 00:06:41,230
+Inside: one rubber duck, seized. One manual in a language of pure grease. And a magnet on a string.
 
 59
-00:07:49,680 --> 00:07:53,919
-Act Two will still be uptown tomorrow. Probably. If the Dynamo holds.
+00:06:41,230 --> 00:06:46,340
+In a town held together by bolts, a magnet on a string is a license to print money.
 
 60
-00:08:00,010 --> 00:08:06,299
-Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.
+00:06:58,150 --> 00:07:01,900
+Down goes the magnet, on the city's last honest string.
 
 61
-00:08:06,299 --> 00:08:11,030
-The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.
+00:07:02,580 --> 00:07:05,420
+Something bites. Several somethings.
 
 62
-00:08:11,030 --> 00:08:15,900
-Act Two. I can hear the neon from here.
+00:07:05,420 --> 00:07:09,370
+Nine bolts. This city has been tipping the ocean for years.
 
 63
-00:08:15,900 --> 00:08:18,340
-The fare box wants ten bolts. I have pockets, and ambition.
+00:07:25,350 --> 00:07:29,560
+I feed it the fistful. It counts, blinks NINE, and returns the lot.
 
 64
-00:08:24,440 --> 00:08:29,630
-Talent night, tonight, he says. Grand prize: an oil voucher and a backstage pass.
+00:07:29,780 --> 00:07:33,310
+Smug, for a gate. Rivet would know where a tenth grows.
 
 65
-00:08:29,630 --> 00:08:35,569
-Backstage. Where Madame Voltina reads fortunes. And guards... things. He doesn't say what things.
+00:07:38,830 --> 00:07:43,650
+Rivet's the name, he says. Knows everything, sells most of it. Today only: the welcome bundle, three facts, free.
 
 66
-00:08:35,569 --> 00:08:40,770
-Sign-up needs a stage name and an act. I have a name, and a key the size of my forearm.
+00:07:43,870 --> 00:07:50,680
+The funicular to Midtown takes ten bolts. Exact change. Gates can count — it's all they do.
 
 67
-00:08:40,770 --> 00:08:44,110
-He says, quote, that's more act than most.
+00:07:50,680 --> 00:07:56,820
+Fact two, on the house, because I look like rain: the Dynamo is winding down, whatever the posters say.
 
 68
-00:08:49,890 --> 00:08:53,699
-The Great Dynamo, up the hill, behind a fence with opinions.
+00:07:56,820 --> 00:08:00,290
+The Order that built it left three wind-up keys behind. All three together could wind the city back up. Or down.
 
 69
-00:08:53,920 --> 00:08:59,100
-Every bot on this island runs on that hum. Including me. The hum is flat by half a step.
+00:08:00,290 --> 00:08:05,170
+Fact three: the harbor keeps everything this town drops, and that dumpster is — legally — his.
 
 70
-00:08:59,319 --> 00:09:04,230
-Half a step doesn't sound like much. Neither does a clunk, until it's PERMANENT.
+00:08:05,170 --> 00:08:07,860
+Nine bolts, I tell him. He appraises my pockets from four feet away. Correctly.
 
 71
-00:09:08,920 --> 00:09:12,990
-City Hall. The banner says NOTHING IS WRONG. It's brand new.
+00:08:13,160 --> 00:08:18,300
+Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.
 
 72
-00:09:12,990 --> 00:09:17,460
-They replaced the old banner. The old one said the same thing, smaller.
+00:08:18,750 --> 00:08:24,350
+The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.
 
 73
-00:09:21,840 --> 00:09:26,569
-An aide opens the door exactly nine degrees. The Mayor is not seeing anyone.
+00:08:24,350 --> 00:08:27,220
+Uptown. I can hear the neon from here.
 
 74
-00:09:26,569 --> 00:09:29,699
-Especially, he adds, anyone holding paper.
+00:08:31,430 --> 00:08:36,300
+Gate's open, car's lit. Midtown keeps glittering like it doesn't know I'm coming.
 
 75
-00:09:58,980 --> 00:10:02,319
-There it is. SPROCKET. On a marquee. In lights.
+00:08:36,300 --> 00:08:39,909
+Midtown can wait. The Dynamo, I'm less sure about.
 
 76
-00:10:02,319 --> 00:10:06,090
-Two of the bulbs are out. It still feels like destiny.
+00:08:45,970 --> 00:08:52,260
+Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.
 
 77
-00:10:06,090 --> 00:10:10,300
+00:08:52,260 --> 00:08:56,870
+The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.
+
+78
+00:08:56,870 --> 00:09:01,760
+Uptown. I can hear the neon from here.
+
+79
+00:09:01,980 --> 00:09:04,160
+The fare box wants ten bolts. I have pockets, and ambition.
+
+80
+00:09:10,320 --> 00:09:15,490
+Talent night, tonight, he says. Grand prize: an oil voucher and a backstage pass.
+
+81
+00:09:15,490 --> 00:09:21,290
+Backstage. Where Madame Voltina reads fortunes. And guards... things. He doesn't say what things.
+
+82
+00:09:21,290 --> 00:09:26,640
+Sign-up needs a stage name and an act. I have a name, and a key the size of my forearm.
+
+83
+00:09:26,640 --> 00:09:29,790
+He says, quote, that's more act than most.
+
+84
+00:09:30,010 --> 00:09:35,780
+You keep your props, he adds, before I can ask. House insurance won't survive a second Houdini.
+
+85
+00:09:41,520 --> 00:09:45,550
+The Great Dynamo, up the hill, behind a fence with opinions.
+
+86
+00:09:45,550 --> 00:09:50,960
+Every bot on this island runs on that hum. Including me. The hum is flat by half a step.
+
+87
+00:09:50,960 --> 00:09:54,780
+Half a step doesn't sound like much. Neither did the clunk.
+
+88
+00:09:59,430 --> 00:10:03,460
+City Hall. The banner says NOTHING IS WRONG. It's brand new.
+
+89
+00:10:03,460 --> 00:10:07,980
+They replaced the old banner. The old one said the same thing, smaller.
+
+90
+00:10:12,010 --> 00:10:16,790
+An aide opens the door exactly nine degrees. The Mayor is not seeing anyone.
+
+91
+00:10:16,790 --> 00:10:19,920
+Especially, he adds, anyone holding paper.
+
+92
+00:10:25,900 --> 00:10:31,070
+I pitch the act: THE AMAZING SPROCKET WINDS HIMSELF UP. With a real key. On stage.
+
+93
+00:10:31,070 --> 00:10:35,030
+The clerk has seen everything twice, and he still blinks.
+
+94
+00:10:35,030 --> 00:10:39,100
+My name goes up on the marquee while I'm still holding the pen.
+
+95
+00:10:39,100 --> 00:10:41,800
+I keep the key. It's the act.
+
+96
+00:10:46,480 --> 00:10:49,780
+There it is. SPROCKET. On a marquee. In lights.
+
+97
+00:10:49,780 --> 00:10:53,380
+Two of the bulbs are out. The rest are compensating.
+
+98
+00:10:53,600 --> 00:10:57,650
 Talent night. Tonight. No pressure. The marquee is the pressure.
+
+99
+00:11:03,750 --> 00:11:10,230
+The doors open for performers. I'm a spectator with a forearm-sized key. The doors can tell.
+
+100
+00:11:30,740 --> 00:11:35,830
+Sprocket, he says, reading the marquee off my face. The wind-up act. You're on next.
+
+101
+00:11:35,830 --> 00:11:42,370
+One problem: the spotlight operator went into low-power mode during the juggler. The juggler had that effect.
+
+102
+00:11:42,370 --> 00:11:47,340
+House rule: no spot, no act. He says it like the rule has a plaque somewhere.
+
+103
+00:11:47,340 --> 00:11:52,980
+He looks from my key to the dark booth and back. He likes my chances, he says. Conditionally.
+
+104
+00:11:58,940 --> 00:12:02,470
+I try some crowd work. How's everybody doing tonight?
+
+105
+00:12:02,470 --> 00:12:05,370
+A voice from the dark: 'WORSE NOW.'
+
+106
+00:12:09,820 --> 00:12:13,160
+I rap on the booth. HOUSE LIGHTS, BUDDY. SHOWTIME.
+
+107
+00:12:13,380 --> 00:12:18,570
+His eye flickers up through three shades of amber. He checks the program, then checks me.
+
+108
+00:12:18,800 --> 00:12:23,740
+He mouths: 'the wind-up act?' I nod. He cracks every knuckle he has. Both of them.
+
+109
+00:12:30,960 --> 00:12:36,240
+The curtain opens. The house goes quiet the way a dropped wrench goes quiet. Mid-air.
+
+110
+00:12:36,240 --> 00:12:40,270
+I wind myself. Eight full turns. Regulation maximum is five.
+
+111
+00:12:40,490 --> 00:12:42,450
+The spring lets go.
+
+112
+00:12:42,450 --> 00:12:45,570
+I am now performing unscheduled acrobatics.
+
+113
+00:12:45,570 --> 00:12:50,030
+The proscenium and I meet several times. It gives as good as it gets.
+
+114
+00:12:50,030 --> 00:12:55,010
+I land in the spotlight. On my feet. Nobody is more surprised than the feet.
+
+115
+00:12:55,010 --> 00:12:59,960
+Silence. Then the house comes apart. The bots who can't stand wave their wheels.
+
+116
+00:12:59,960 --> 00:13:05,160
+The emcee declares it the most honest act in Grand Cog history. I don't correct him.
+
+117
+00:13:05,160 --> 00:13:10,330
+First prize: one oil voucher, and a backstage pass on a lanyard of bicycle chain.
+
+118
+00:13:10,330 --> 00:13:16,860
+The spring spat the key to the boards at launch. I go to collect it for the bow — my hand closes on applause.
+
+119
+00:13:16,860 --> 00:13:22,590
+A hook on a line whips up past the proscenium. Fishing tackle. Somebody else's magnet-on-a-string.
+
+120
+00:13:22,820 --> 00:13:26,720
+Up on the catwalk, a hatch clicks shut. Two clangs. One. Two.
+
+121
+00:13:26,720 --> 00:13:33,880
+The hats from the card table. The spyglass from the catwalk. I hand-delivered the thing — lit stage, my name in bulbs.
+
+122
+00:13:33,880 --> 00:13:37,330
+Everyone in this house saw a triumph. I saw a hatch.
+
+123
+00:13:42,510 --> 00:13:48,750
+I flash the pass. The stagehand reads it twice. Nothing in his build explains how he steps aside, but he does.
+
+124
+00:13:48,750 --> 00:13:55,430
+The dark behind him smells like ozone and incense. A voice from it says: 'I have been expecting you, key-bearer.'
+
+125
+00:13:55,430 --> 00:14:02,600
+I start to explain about the key. 'I know,' says the voice. 'Ask me sometime about the key that winds itself. Mind the cables.'
+
+126
+00:14:02,600 --> 00:14:06,720
+Madame Voltina. I'm going to need a minute, and possibly a will.
 
