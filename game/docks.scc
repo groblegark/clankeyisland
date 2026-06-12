@@ -116,6 +116,14 @@ room DockRoom {
                 waitForActor(sprocket);
                 egoSay("Well. Guess I live here now.");
                 waitForMessage();
+                // the premise, unskippably (editorial B4) — and the
+                // screen dims with the line (embodiment sweep)
+                setObjectState(neonSign, 2);
+                egoSay("The neon sign dips. The tavern window. The lit windows across the water. All together, like the city skipped a heartbeat.");
+                waitForMessage();
+                setObjectState(neonSign, 1);
+                egoSay("Nobody on the dock looks up. That's the part I don't like.");
+                waitForMessage();
             }
             override {
                 if(VAR_OVERRIDE) {
@@ -147,9 +155,15 @@ room DockRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
-            egoSay("WELCOME TO CLANKER CITY. POP. 8,01,1.");
-            waitForMessage();
-            egoSay("Population eight-oh-one-comma-one. The punctuation died first.");
+            unless(signShookBolt) {
+                egoSay("WELCOME TO CLANKER CITY. POP. 8,01,1.");
+                waitForMessage();
+                egoSay("Population eight-oh-one-comma-one. The punctuation died first.");
+                waitForMessage();
+                egoSay("Something inside it rattles on every flicker. Loose hardware. Practically an invoice.");
+                return;
+            }
+            egoSay("Still POP. 8,01,1. The bolt wasn't load-bearing for the comma. Maintenance is iterative.");
             return;
         case Use:
         case Move:
@@ -233,7 +247,7 @@ room DockRoom {
             egoSay("The foghorn wheezed. I'm choosing to hear that as optimism.");
             return;
         case Smell:
-            egoSay("Salt water and burnt transmission fluid. The smell of adventure!");
+            egoSay("Salt water and burnt transmission fluid. Adventure, by the nose of it.");
             return;
         }
     }
@@ -273,8 +287,9 @@ room DockRoom {
             egoSay("She's billing by the letter. I respect it.");
             return;
         case Use:
-            egoSay("Her joints are dry as a tax form. She needs oil before she'll move that crate.");
+            egoSay("Her joints are dry as a tax form.");
             return;
+        case Give:
         case UsedWith:
             if(objB == InventoryItems::oilcan) {
                 bettyOiled = 1;
@@ -289,8 +304,6 @@ room DockRoom {
                     startSound(thudSnd);
                     setObjectState(crate, 2);
                     egoSay("Betty sets the crate down with the gentleness of a very large aunt.");
-                    waitForMessage();
-                    egoSay("Her eye-light blinks T-H-X. We're friends now. It's official.");
                     waitForMessage();
                 }
                 return;
@@ -321,7 +334,7 @@ room DockRoom {
             egoSay("Stenciled on the side: PROPERTY OF THE ORDER OF THE WIND-UP KEY.");
             waitForMessage();
             unless(bettyOiled) {
-                egoSay("Ominous AND conveniently plot-relevant. Also twenty feet up.");
+                egoSay("Ominous AND conveniently plot-relevant. Also up a crane.");
                 return;
             }
             unless(crateOpened) {
@@ -335,7 +348,7 @@ room DockRoom {
         case Move:
         case Open:
             unless(bettyOiled) {
-                egoSay("It's twenty feet up. My arms are stock parts.");
+                egoSay("It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.");
                 waitForMessage();
                 egoSay("Betty could set it down, if anyone gave her a drink of oil.");
                 return;
@@ -348,9 +361,9 @@ room DockRoom {
                     waitForMessage();
                     startSound(pickupSnd);
                     pickupObject(InventoryItems::windupKey, InventoryItems);
-                    egoSay("A brass wind-up key the size of my forearm. One of three, if the stencil is honest.");
+                    egoSay("A brass wind-up key the size of my forearm. Stenciled: PROPERTY OF THE ORDER OF THE WIND-UP KEY.");
                     waitForMessage();
-                    egoSay("Act One: complete. Probably. Towns like this love a twist.");
+                    egoSay("Whoever ships a thing like this as deck cargo deserves to lose it.");
                     waitForMessage();
                 }
                 return;
@@ -405,6 +418,10 @@ room DockRoom {
                     egoSay("'DO NOT STOCKPILE OIL. SIGNED, MAYOR PISTON.'");
                     waitForMessage();
                     egoSay("The Great Dynamo powers every bot on this island. Including me, as of today.");
+                    waitForMessage();
+                    egoSay("Not wires — the hum. It keeps every mainspring on the island wound. Remotely. Steam bot, clockwork bot, engine bot: all spring-banked.");
+                    waitForMessage();
+                    egoSay("Hand-winding is the backup. Crude, short-burst, off-warranty.");
                     waitForMessage();
                     egoSay("So that notice is the scariest thing I've ever read.");
                     waitForMessage();
@@ -466,9 +483,7 @@ room DockRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
-            egoSay("The Scrap & Barrel. I can hear a player piano in there, missing several keys.");
-            waitForMessage();
-            egoSay("...That feels thematically significant.");
+            egoSay("The Scrap & Barrel. I can hear a player piano in there. There's a hole in the tune it keeps not noticing.");
             return;
         case Open:
         case Use:
@@ -485,7 +500,7 @@ room DockRoom {
             }
             return;
         case Smell:
-            egoSay("Spilled 10W-40 and broken dreams. So... a tavern.");
+            egoSay("10W-40, spilled and re-spilled. The cornerstone of hospitality.");
             return;
         }
     }
@@ -518,7 +533,7 @@ room DockRoom {
                 unless(drainFished) {
                     drainFished = 1;
                     cutscene(0) {
-                        egoSay("Magnet on a string. The harbor's least regulated financial instrument.");
+                        egoSay("Down goes the magnet, on the city's last honest string.");
                         waitForMessage();
                         startSound(splashSnd);
                         delay(40);

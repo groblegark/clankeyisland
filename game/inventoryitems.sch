@@ -11,4 +11,6 @@ room InventoryItems {
     object magnet;
     object boltStash;
     object tenthBolt;
+    object oilVoucher;
+    object backstagePass;
 }

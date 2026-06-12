@@ -91,5 +91,12 @@ one-line `tools/patches/0002-scummvm-configure-respect-datadir.patch`.
   Bar and City Hall ("NOTHING IS WRONG"), and open Act Two by signing
   up for Grand Cog talent night — Sprocket's act: winding himself up
   with a legendary artifact. His name goes up on the marquee in lights.
-- [ ] Scene 05: talent night at the Grand Cog (win the show, get
-  backstage to Madame Voltina and Key #2)
+- [x] Scene 05: talent night at the Grand Cog — wake the spotlight
+  operator, perform THE AMAZING SPROCKET WINDS HIMSELF UP (eight turns;
+  regulation maximum is five), win the oil voucher and backstage pass —
+  and lose Key #1 to the Rustlers mid-ovation. Voltina is expecting you.
+- [x] The editorial desk (docs/editorial/CHARTER.md): adversarial
+  puzzle/comedy/story/player critics + showrunner defense, run as a
+  Claude Code workflow; first report fixed 6 of its 7 BLOCKERs same day
+- [ ] The interactive riddle duel (editorial B2) + Scene 06: backstage
+  with Madame Voltina

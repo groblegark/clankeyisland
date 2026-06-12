@@ -9,6 +9,7 @@ room AlleyRoom {
     bit metRivet;
     bit riddleDone;
     bit fareDone;
+    bit gateNined;
 
     object wayOut;
     object hideoutDoor;

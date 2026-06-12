@@ -222,17 +222,21 @@ room ResRoom {
            break;
 
        case Give:
-           if(objB && objB is Person) {
-               // route to the recipient's Give handler if they have one
+           if(objB) {
+               // route to the recipient's Give handler if it has one —
+               // ANY object, not just Persons: gates take fares, slots
+               // take tokens (the old `is Person` guard silently ate
+               // "Give bolts to funicular gate")
                if(getObjectVerbEntrypoint(objB,Give)) {
                    startObject2(objB,Give,[ Give, objB, objA ]);
                    break;
                }
-               egoSay("Maybe later. It might be a collector's item.");
-               break;
+               if(objB is Person) {
+                   egoSay("Maybe later. It might be a collector's item.");
+                   break;
+               }
            }
-           else
-               egoSay("I can't do that!");
+           egoSay("I can't do that!");
            break;
 
         case LookAt:
@@ -267,7 +271,7 @@ room ResRoom {
             if(objA is Person)
                 egoSay("Smells like hard work and WD-40.");
             else
-                egoSay("My olfactory sensor only detects rust. It is very happy here.");
+                egoSay("Nothing my scent library has a match for. Filing it under 'municipal'.");
             break;
 
         case TalkTo:

@@ -3,7 +3,8 @@
 # -> docks (Betty -> crate -> the first wind-up key) -> the alley
 # (Rivet -> dumpster magnet) -> docks (fish the drain: nine bolts)
 # -> alley (riddle duel: the tenth -> pay the funicular fare)
-# -> Midtown (case the street -> sign up for talent night).
+# -> Midtown (case the street -> sign up for talent night)
+# -> the Grand Cog (wake the spotlight -> the act -> backstage pass).
 # This is the deploy gate: if this doesn't pass, the game doesn't ship.
 
 title: "Clanker City Chronicles — The Story So Far"
@@ -68,10 +69,12 @@ shots:
       - pixel: {at: inventory.slot1, is: greens}
     timeout: 60
 
+  # on the validate path since editorial B9: the knock-code and the
+  # Rustlers' name must be in every player's head before the heist
   - name: extremely-casual
-    only: perform
     do: {verb: Talk to, object: "rustlers' table"}
     expect: [talking]
+    timeout: 60
     hold: 1.5
 
   - name: the-dart-hustle
@@ -152,6 +155,11 @@ shots:
       - pixel: {at: [76, 24], is: magenta}
     timeout: 60
 
+  - name: try-the-fare
+    do: {verb: Give, object: funicular gate, with: inventory.slot3}
+    expect: [talking]                        # the gate blinks NINE
+    timeout: 60
+
   - name: the-riddle-duel
     do: {verb: Talk to, object: Rivet}
     expect: [talking]
@@ -207,6 +215,45 @@ shots:
 
   - name: in-lights
     do: {verb: Examine, object: Grand Cog Theater}
+    expect: [talking]
+    timeout: 60
+    hold: 2.0
+
+  # ------------------------------------- Scene 05: talent night
+  - name: enter-the-grand-cog
+    do: {verb: Open, object: Grand Cog Theater}
+    expect:
+      - talking                              # the house entry cutscene
+      - pixel: {at: [110, 12], is: sodium}   # the chandelier of chandeliers
+    timeout: 90
+
+  - name: the-emcee
+    do: {verb: Talk to, object: the emcee}
+    expect: [talking]
+    timeout: 60
+
+  - name: tough-room
+    only: perform
+    do: {verb: Talk to, object: the audience}
+    expect: [talking]
+
+  - name: house-lights
+    do: {verb: Use, object: spotlight booth}
+    expect: [talking]
+    timeout: 60
+
+  - name: the-amazing-sprocket
+    do: {verb: Use, object: the stage, with: inventory.slot1}
+    expect:
+      - talking
+      - pixel: {at: [220, 40], is: teal}     # curtain open: the backdrop
+      # the Rustlers take the key mid-ovation, so the inventory
+      # compacts: poster0, magnet1, voucher2, pass3
+      - pixel: {at: inventory.slot2, is: sodium}   # the oil voucher
+    timeout: 150
+
+  - name: stage-door
+    do: {verb: Open, object: stage door}
     expect: [talking]
     timeout: 60
     hold: 2.0

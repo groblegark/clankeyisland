@@ -41,7 +41,7 @@ room InventoryItems {
                 egoSay("Those two things politely decline each other.");
                 return;
             }
-            egoSay("I'm saving it. It's one ninth of a fortune.");
+            egoSay("Saving it. Unless something jammed needs a shim more than I need a fortune.");
             return;
         }
     }
@@ -169,9 +169,7 @@ room InventoryItems {
                 sntcPrepo[0] = "on";
             return;
         case LookAt:
-            egoSay("A brass wind-up key the size of my forearm. One of three.");
-            waitForMessage();
-            egoSay("The legends say so. The legends are a stencil on a crate. Still counts.");
+            egoSay("A brass wind-up key the size of my forearm. Somebody polished it for years. Somebody is going to want it back.");
             return;
         case Use:
             if(objB) {
@@ -185,10 +183,10 @@ room InventoryItems {
                 egoSay("Those two things politely decline each other.");
                 return;
             }
-            egoSay("It wants a keyhole the size of a manhole. I'll know it when I see it.");
+            egoSay("Big key, seeking big lock. Open, in the meantime, to showbiz.");
             return;
         case Smell:
-            egoSay("Brass and consequence.");
+            egoSay("Brass polish. Somebody maintained this thing its whole life.");
             return;
         }
     }
@@ -211,7 +209,7 @@ room InventoryItems {
                 sntcPrepo[0] = "with";
             return;
         case LookAt:
-            egoSay("A magnet on a string. The harbor's least regulated financial instrument.");
+            egoSay("A magnet on a string. Point it at the ground and walk slowly.");
             return;
         case Use:
             if(objB) {
@@ -307,10 +305,92 @@ room InventoryItems {
                 egoSay("Those two things politely decline each other.");
                 return;
             }
-            egoSay("With the other nine, that's a fare. The gate does the math. It's all gates do.");
+            egoSay("With the other nine, that's a fare.");
             return;
         case Smell:
             egoSay("Faintly of riddles.");
+            return;
+        }
+    }
+
+    object oilVoucher {
+        w = 40;
+        h = 16;
+        x = 0;
+        name = "oil voucher";
+        states = {
+            { 0, 0, "inventory/inv_voucher.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case Preposition:
+            if(vrb == Give)
+                sntcPrepo[0] = "to";
+            else
+                sntcPrepo[0] = "with";
+            return;
+        case LookAt:
+            egoSay("GOOD FOR ONE PREMIUM OIL SERVICE. Valid at participating establishments.");
+            waitForMessage();
+            egoSay("The only establishment that participates has a velvet rope.");
+            return;
+        case Use:
+            if(objB) {
+                // route "Use me with/on X" to X's UsedWith — the engine
+                // dispatches to OUR script (objA), so a bare Use gag
+                // here would swallow every two-object sentence
+                if(getObjectVerbEntrypoint(objB, UsedWith)) {
+                    startObject2(objB, UsedWith, [ UsedWith, objB, objA ]);
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
+            egoSay("I'm saving it for somewhere with a rope to get past.");
+            return;
+        case Smell:
+            egoSay("Thermal paper. It's already fading. Spend it.");
+            return;
+        }
+    }
+
+    object backstagePass {
+        w = 40;
+        h = 16;
+        x = 0;
+        name = "backstage pass";
+        states = {
+            { 0, 0, "inventory/inv_pass.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case Preposition:
+            if(vrb == Give)
+                sntcPrepo[0] = "to";
+            else
+                sntcPrepo[0] = "with";
+            return;
+        case LookAt:
+            egoSay("ALL ACCESS, it says, over my own startled face. The lanyard is genuine bicycle chain.");
+            return;
+        case Use:
+            if(objB) {
+                // route "Use me with/on X" to X's UsedWith — the engine
+                // dispatches to OUR script (objA), so a bare Use gag
+                // here would swallow every two-object sentence
+                if(getObjectVerbEntrypoint(objB, UsedWith)) {
+                    startObject2(objB, UsedWith, [ UsedWith, objB, objA ]);
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
+            egoSay("It opens exactly one door, and the door comes with staff.");
+            return;
+        case Smell:
+            egoSay("Chain grease. The lanyard has a past.");
             return;
         }
     }

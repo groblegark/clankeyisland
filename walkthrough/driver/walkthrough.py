@@ -440,6 +440,10 @@ class Performer:
         d = shot.get("do", {})
         if "verb" in d:
             case = VERB_CASE.get(d["verb"], d["verb"])
+            if "with" in d and case == "Use":
+                # "Use X with Y" speaks from Y's UsedWith handler, not
+                # its bare-Use gag (the item routes the sentence there)
+                case = "UsedWith"
             return (self.transcript["objects"]
                     .get(d["object"], {}).get(case, []))
         return []
