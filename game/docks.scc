@@ -9,6 +9,7 @@
 #include "common.sch"
 #include "docks.sch"
 #include "tavern.sch"
+#include "alley.sch"
 #include "inventoryitems.sch"
 #include "verbs.sch"
 #include "actors.sch"
@@ -32,6 +33,8 @@ room DockRoom {
     sound foghornSnd  = "foghorn.soun";
     sound thudSnd     = "thud.soun";
     sound ratchetSnd  = "ratchet.soun";
+    sound splashSnd   = "splash.soun";
+    sound clinkSnd    = "clink.soun";
 
     // -------------------------------------------------- ambient scripts
 
@@ -497,14 +500,65 @@ room DockRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
-            egoSay("Something glints down there. Several somethings.");
-            waitForMessage();
-            egoSay("The city's loose change goes to the sea. Poetic. Infuriating.");
+            unless(drainFished) {
+                egoSay("Something glints down there. Several somethings.");
+                waitForMessage();
+                egoSay("The city's loose change goes to the sea. Poetic. Infuriating.");
+                return;
+            }
+            egoSay("Nothing glints down there anymore. You're welcome, drain.");
             return;
         case PickUp:
         case Use:
         case Open:
             egoSay("My fingers are factory-standard. I'd need something magnetic. On a string.");
+            return;
+        case UsedWith:
+            if(objB == InventoryItems::magnet) {
+                unless(drainFished) {
+                    drainFished = 1;
+                    cutscene(0) {
+                        egoSay("Magnet on a string. The harbor's least regulated financial instrument.");
+                        waitForMessage();
+                        startSound(splashSnd);
+                        delay(40);
+                        egoSay("Something bites. Several somethings.");
+                        waitForMessage();
+                        startSound(clinkSnd);
+                        pickupObject(InventoryItems::boltStash, InventoryItems);
+                        egoSay("Nine bolts. This city has been tipping the ocean for years.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                egoSay("The drain has been fished to commercial extinction.");
+                return;
+            }
+            egoSay("The drain only wants what everyone wants. Something magnetic.");
+            return;
+        }
+    }
+
+    object alleyMouth {
+        x = 300;
+        y = 44;
+        w = 20;
+        h = 60;
+        dir = WEST;
+        name = "alley mouth";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A gap between the tavern and the cliff. The sign says ALLEY, in case the dark didn't read as one.");
+            return;
+        case Open:
+        case Use:
+            putActorAt(VAR_EGO, 24, 120, AlleyRoom);
+            startRoom(AlleyRoom);
+            return;
+        case Smell:
+            egoSay("Trouble, marinating.");
             return;
         }
     }

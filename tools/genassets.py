@@ -112,6 +112,8 @@ GEOM = {
     "DOOR":   (268, 62, 28, 42),
     "DRAIN":  (148, 120, 24, 10),
     "BOLT":   (112, 116, 16, 8),
+    # the gap to the Rustlers' alley (Scene 03), sign included
+    "ALLEY":  (300, 44, 20, 60),
 }
 
 
@@ -263,6 +265,15 @@ def draw_scene(sign_lit=True, with_poster=True, crate="hanging"):
     d.rectangle([tx + 10, ty - 12, tx + 18, ty - 4], fill=46)
     d.arc([tx + 18, ty - 11, tx + 24, ty - 5], 270, 90, fill=46)
     d.rectangle([tx + 26, ty - 12, tx + 36, ty - 4], fill=2)
+
+    # --- the alley mouth (between tavern and cliff, to Scene 03)
+    ax2, ay2, aw2, ah2 = GEOM["ALLEY"]
+    d.rectangle([302, 56, 319, 104], fill=1)                  # the gap
+    for gy2 in range(62, 100, 12):                            # depth hints
+        d.line([(305, gy2), (308, gy2 + 4)], fill=52)
+    d.rectangle([300, 44, 319, 54], fill=1)                   # sign panel
+    d.rectangle([300, 44, 319, 54], outline=6)
+    _neon_text(im, "ALLEY", 300, 46, 45)
 
     # --- storm drain
     gx, gy, gw, gh = GEOM["DRAIN"]
@@ -496,6 +507,181 @@ def draw_tavern():
     return im
 
 
+# ------------------------------------------------- the Rustlers' alley
+
+# Scene 03 geometry. A_DUMPSTER is tall so the open-lid state stays
+# inside the object rect (same trick as the docks crate).
+ALLEY_GEOM = {
+    "A_MOUTH":    (0, 56, 24, 48),
+    "A_HIDEOUT":  (40, 56, 24, 48),
+    "A_GRAFFITI": (72, 24, 64, 24),
+    "A_DUMPSTER": (80, 56, 56, 48),
+    "A_ESCAPE":   (144, 8, 32, 64),
+    "A_RIVET":    (192, 56, 32, 48),
+    "A_JUNK":     (224, 72, 32, 32),
+    "A_GATE":     (264, 24, 48, 80),
+}
+
+
+def draw_alley(gate="closed", lid="closed"):
+    im = new_img(W, H)
+    d = ImageDraw.Draw(im)
+    g = ALLEY_GEOM
+
+    # --- a slot of night sky between the rooflines
+    for y in range(0, 20):
+        idx = 52 + min(11, y * 9 // 20)
+        d.line([(0, y), (W, y)], fill=idx)
+    for sx, sy in [(30, 4), (90, 9), (170, 3), (230, 11), (300, 6),
+                   (130, 14)]:
+        im.putpixel((sx, sy), 104)
+
+    # --- back wall: the tavern's rear. Rust plating, zero hospitality.
+    d.rectangle([0, 20, W, 108], fill=16)
+    for y in range(26, 108, 8):
+        d.line([(0, y), (W, y)], fill=17)
+    for x in range(20, W, 56):                       # plate seams
+        d.line([(x, 20), (x, 108)], fill=17)
+    for rx, ry in [(28, 50), (130, 88), (210, 34), (250, 92)]:
+        d.ellipse([rx, ry, rx + 10, ry + 5], fill=18)   # rust blooms
+    d.line([(0, 108), (W, 108)], fill=19)
+
+    # --- ground: wet asphalt with one honest puddle
+    d.rectangle([0, 109, W, H], fill=3)
+    for y in range(113, H, 7):
+        d.line([(0, y), (W, y)], fill=2)
+    d.ellipse([196, 122, 244, 132], fill=53)         # puddle
+    d.line([(204, 126), (236, 126)], fill=33)        # neon sheen
+
+    # --- mouth back to the docks (west), with dock-glow spilling in
+    mx, my, mw, mh = g["A_MOUTH"]
+    d.rectangle([mx, my, mx + mw, my + mh], fill=1)
+    d.rectangle([mx, my, mx + 3, my + mh], fill=53)  # far light
+    for yy in range(my + 30, my + mh, 5):
+        d.line([(mx + 4, yy), (mx + 9, yy)], fill=41)
+    d.rectangle([mx, my - 12, mx + 19, my - 2], fill=1)
+    d.rectangle([mx, my - 12, mx + 19, my - 2], outline=6)
+    _neon_text(im, "DOCKS", mx + 1, my - 10, 42)
+
+    # --- the door you are not supposed to notice
+    hx, hy, hw, hh = g["A_HIDEOUT"]
+    d.rectangle([hx - 3, hy - 3, hx + hw + 3, hy + hh], fill=17)
+    d.rectangle([hx, hy, hx + hw, hy + hh], fill=5)
+    for yy in range(hy + 6, hy + hh, 10):            # rivets, no handle
+        im.putpixel((hx + 3, yy), 6)
+        im.putpixel((hx + hw - 3, yy), 6)
+    d.rectangle([hx + 5, hy + 14, hx + hw - 5, hy + 18], fill=1)  # eye slot
+    d.rectangle([hx + hw // 2 - 1, hy - 8, hx + hw // 2 + 1, hy - 6],
+                fill=107)                            # fresh red lamp
+
+    # --- the wall, annotated by the public
+    _neon_text(im, "DYNAMO IS FINE", 76, 24, 94)
+    d.line([(75, 27), (132, 25)], fill=107)          # the cross-out
+    _neon_text(im, "IT IS NOT", 80, 32, 84)
+    _neon_text(im, "NO REFUNDS", 78, 40, 45)
+
+    # --- municipal dumpster (Rivet's, legally)
+    dx2, dy2, dw2, dh2 = g["A_DUMPSTER"]
+    body_t = dy2 + 26                                # body top (y=82)
+    d.rectangle([dx2 + 2, body_t, dx2 + dw2 - 2, dy2 + dh2 - 2], fill=80)
+    for x in range(dx2 + 8, dx2 + dw2 - 4, 10):      # ridges
+        d.line([(x, body_t + 2), (x, dy2 + dh2 - 4)], fill=78)
+    im.putpixel((dx2 + 4, dy2 + dh2 - 1), 1)         # wheels
+    im.putpixel((dx2 + dw2 - 5, dy2 + dh2 - 1), 1)
+    if lid == "closed":
+        d.polygon([(dx2, body_t), (dx2 + dw2, body_t),
+                   (dx2 + dw2 - 4, body_t - 6), (dx2 + 4, body_t - 6)],
+                  fill=82)
+        d.rectangle([dx2 + 22, body_t - 5, dx2 + 34, body_t - 3], fill=84)
+    else:
+        d.rectangle([dx2 + 4, body_t - 6, dx2 + dw2 - 4, body_t], fill=1)
+        d.polygon([(dx2 + 2, body_t - 4), (dx2 + dw2 - 2, body_t - 4),
+                   (dx2 + dw2 - 10, dy2 + 2), (dx2 + 10, dy2 + 2)],
+                  fill=78)                           # lid thrown back
+        d.rectangle([dx2 + 12, body_t - 5, dx2 + 15, body_t - 3],
+                    fill=47)                         # the duck (seized)
+
+    # --- fire escape, with management
+    ex, ey, ew, eh = g["A_ESCAPE"]
+    for py2 in (ey + 16, ey + 36, ey + 56):          # platforms
+        d.line([(ex + 2, py2), (ex + ew - 2, py2)], fill=6)
+        d.line([(ex + 2, py2 - 6), (ex + ew - 2, py2 - 6)], fill=6)
+        for x in range(ex + 4, ex + ew - 2, 5):
+            d.line([(x, py2 - 6), (x, py2)], fill=6)
+    d.line([(ex + ew - 4, ey + 16), (ex + 4, ey + 36)], fill=8)   # stairs
+    d.line([(ex + ew - 4, ey + 36), (ex + 4, ey + 56)], fill=8)
+    # the Rustler lookout, taking notes on the top platform
+    d.rectangle([ex + 8, ey + 4, ex + 18, ey + 15], fill=1)       # body
+    d.rectangle([ex + 10, ey, ex + 16, ey + 4], fill=1)           # head
+    im.putpixel((ex + 11, ey + 2), 107)                           # the eye
+    d.line([(ex + 8, ey + 6), (ex - 2, ey + 3)], fill=1)          # spyglass
+    im.putpixel((ex - 3, ey + 3), 31)
+
+    # --- Rivet, sorting screws by mood
+    rx, ry, rw, rh = g["A_RIVET"]
+    d.ellipse([rx + 6, ry + 14, rx + 26, ry + 38], fill=5)        # round bot
+    d.pieslice([rx + 6, ry + 14, rx + 26, ry + 38], 180, 270,
+               fill=9)                                            # odd plate
+    d.pieslice([rx + 6, ry + 14, rx + 26, ry + 38], 0, 60,
+               fill=66)                                           # odder one
+    d.ellipse([rx + 11, ry + 18, rx + 21, ry + 28], fill=6)       # eye ring
+    d.ellipse([rx + 13, ry + 20, rx + 19, ry + 26], fill=44)      # the lens
+    im.putpixel((rx + 16, ry + 23), 1)                            # pupil
+    d.line([(rx + 6, ry + 28), (rx, ry + 36)], fill=6)            # arms
+    d.line([(rx + 26, ry + 28), (rx + 32, ry + 38)], fill=6)
+    d.rectangle([rx + 10, ry + 38, rx + 13, ry + 46], fill=6)     # stub legs
+    d.rectangle([rx + 19, ry + 38, rx + 22, ry + 46], fill=6)
+    for bx2, by2 in [(rx - 2, ry + 44), (rx + 2, ry + 46),
+                     (rx + 30, ry + 45)]:                         # the moods
+        d.rectangle([bx2, by2, bx2 + 2, by2 + 1], fill=12)
+
+    # --- the stock
+    jx, jy, jw, jh = g["A_JUNK"]
+    d.polygon([(jx, jy + jh), (jx + 8, jy + 10), (jx + 18, jy + 16),
+               (jx + 26, jy + 4), (jx + jw, jy + jh)], fill=6)
+    d.ellipse([jx + 18, jy + 14, jx + 30, jy + 26], outline=11)   # a wheel
+    d.rectangle([jx + 2, jy + 20, jx + 14, jy + 24], fill=18)     # a pipe
+    d.line([(jx + 8, jy + 12), (jx + 12, jy + 4)], fill=8)        # a spring
+
+    # --- the funicular gate: Act Two, coin-operated
+    fx, fy, fw, fh = g["A_GATE"]
+    # rails climbing the cliff out the top-right
+    d.line([(fx + 24, fy + 80), (fx + 46, fy)], fill=8)
+    d.line([(fx + 32, fy + 80), (fx + 47, fy + 20)], fill=8)
+    for i in range(5):                               # ties
+        ty2 = fy + 70 - i * 14
+        d.line([(fx + 26 + i * 4, ty2), (fx + 34 + i * 4, ty2)], fill=6)
+    d.rectangle([fx + 4, fy + 16, fx + 8, fy + 80], fill=6)       # posts
+    d.rectangle([fx + 40, fy + 16, fx + 44, fy + 80], fill=6)
+    d.rectangle([fx + 4, fy + 12, fx + 44, fy + 16], fill=6)      # beam
+    d.rectangle([fx + 2, fy, fx + 46, fy + 10], fill=1)           # sign
+    d.rectangle([fx + 2, fy, fx + 46, fy + 10], outline=6)
+    _neon_text(im, "MIDTOWN", fx + 4, fy + 2, 45)
+    for i in range(3):                               # the up arrow
+        d.line([(fx + 36 + i, fy + 7 - i), (fx + 40 - i, fy + 7 - i)],
+               fill=45)
+    # the opening
+    d.rectangle([fx + 8, fy + 20, fx + 40, fy + 80], fill=1)
+    if gate == "closed":
+        for x in range(fx + 8, fx + 40, 6):          # lattice
+            d.line([(x, fy + 20), (x + 12, fy + 80)], fill=6)
+            d.line([(x + 12, fy + 20), (x, fy + 80)], fill=6)
+    else:
+        # the little brass car, lit up like a promise
+        d.rectangle([fx + 12, fy + 34, fx + 36, fy + 76], fill=24)
+        d.rectangle([fx + 12, fy + 30, fx + 36, fy + 34], fill=6)  # roof
+        d.rectangle([fx + 16, fy + 40, fx + 32, fy + 52], fill=44)  # window
+        d.line([(fx + 24, fy + 40), (fx + 24, fy + 52)], fill=6)
+        d.line([(fx + 12, fy + 60), (fx + 36, fy + 60)], fill=9)
+        im.putpixel((fx + 24, fy + 78), 47)          # headlamp
+    # fare box on the post, with the price of the future on it
+    d.rectangle([fx, fy + 56, fx + 11, fy + 80], fill=5)
+    d.rectangle([fx + 2, fy + 60, fx + 9, fy + 62], fill=1)       # slot
+    _neon_text(im, "10", fx + 2, fy + 68, 107)
+
+    return im
+
+
 # ----------------------------------------------------------- verb panel
 
 def draw_verb_panel():
@@ -657,6 +843,25 @@ def gen_inventory_icons():
     d.rectangle([28, 4, 31, 12], fill=46)                  # flag
     d.rectangle([29, 7, 31, 9], fill=0)                    # notch
     icons["inv_windupkey"] = im
+    # magnet on a string: the harbor's least regulated financial instrument
+    im = new_img(40, 16)
+    d = ImageDraw.Draw(im)
+    d.rectangle([10, 6, 30, 11], fill=107)                 # bar magnet
+    d.rectangle([10, 6, 13, 11], fill=104)                 # painted pole
+    d.rectangle([27, 6, 30, 11], fill=104)
+    d.line([(20, 6), (20, 3)], fill=11)                    # the string
+    d.line([(20, 3), (33, 1)], fill=11)
+    icons["inv_magnet"] = im
+    # a fistful of bolts: nine, allegedly
+    im = new_img(40, 16)
+    d = ImageDraw.Draw(im)
+    for hx, hy in [(13, 7), (19, 5), (25, 8), (16, 10), (22, 11)]:
+        d.polygon([(hx - 3, hy), (hx, hy - 3), (hx + 3, hy),
+                   (hx + 3, hy + 2), (hx, hy + 4), (hx - 3, hy + 2)],
+                  fill=12)
+        im.putpixel((hx, hy - 2), 14)
+    d.rectangle([28, 8, 33, 10], fill=10)                  # one escapee
+    icons["inv_boltstash"] = im
     return icons
 
 
@@ -677,6 +882,7 @@ STAGE_OBJECT_NAMES = {
     "POSTER": "official notice",
     "DOOR":   "tavern door",
     "DRAIN":  "storm drain",
+    "ALLEY":  "alley mouth",
 }
 
 TAVERN_OBJECT_NAMES = {
@@ -692,14 +898,32 @@ TAVERN_OBJECT_NAMES = {
     "T_DOOR_BACK": "back door",
 }
 
+ALLEY_OBJECT_NAMES = {
+    "A_MOUTH":    "way to the docks",
+    "A_HIDEOUT":  "steel door",
+    "A_GRAFFITI": "graffiti",
+    "A_DUMPSTER": "dumpster",
+    "A_ESCAPE":   "fire escape",
+    "A_RIVET":    "Rivet",
+    "A_JUNK":     "junk heap",
+    "A_GATE":     "funicular gate",
+}
+
 # rect centers make bad click targets for a few objects
 STAGE_HOTSPOT_OVERRIDES = {
-    "CRATE": (132, 110),       # click low: works hanging or grounded
+    "CRATE":      (132, 110),  # click low: works hanging or grounded
+    "A_DUMPSTER": (108, 94),   # click the body, not the open-lid air
+    "A_GATE":     (288, 96),   # click the gate, not the sign
 }
 
 TAVERN_WALKBOXES = [
     ("tavwest", [(16, 112), (160, 112), (160, 140), (16, 140)]),
     ("taveast", [(160, 112), (304, 112), (304, 140), (160, 140)]),
+]
+
+ALLEY_WALKBOXES = [
+    ("alleywest", [(8, 112), (168, 112), (168, 140), (8, 140)]),
+    ("alleyeast", [(168, 112), (304, 112), (304, 140), (168, 140)]),
 ]
 
 # Verb anchors from game/verbs.scc (verbCenter() -> x is the center;
@@ -744,7 +968,8 @@ def emit_stage(path):
     import json
     objects = {}
     for names, geom in [(STAGE_OBJECT_NAMES, GEOM),
-                        (TAVERN_OBJECT_NAMES, TAVERN_GEOM)]:
+                        (TAVERN_OBJECT_NAMES, TAVERN_GEOM),
+                        (ALLEY_OBJECT_NAMES, ALLEY_GEOM)]:
         for key, name in names.items():
             x, y, w, h = geom[key]
             hs = STAGE_HOTSPOT_OVERRIDES.get(key, (x + w // 2, y + h // 2))
@@ -759,9 +984,11 @@ def emit_stage(path):
         "probes": {name: [list(PAL[i]) for i in idxs]
                    for name, idxs in STAGE_PROBES.items()},
         "walkboxes": [{"name": n, "points": [list(p) for p in pts]}
-                      for n, pts in WALKBOXES + TAVERN_WALKBOXES],
+                      for n, pts in (WALKBOXES + TAVERN_WALKBOXES
+                                     + ALLEY_WALKBOXES)],
         "walk_targets": {"center-west": [120, 126], "center-east": [250, 126],
-                         "tavern-center": [150, 126]},
+                         "tavern-center": [150, 126],
+                         "alley-center": [150, 126]},
     }
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
@@ -795,6 +1022,22 @@ def main():
     save_bmp(draw_tavern(), "rooms/tavern.bmp")
     write_box_file(os.path.join(OUT, "rooms", "tavern.box"),
                    [Box(pts, name=n) for n, pts in TAVERN_WALKBOXES])
+
+    # Scene 03: the Rustlers' alley
+    alley = draw_alley()
+    alley_open = draw_alley(gate="open", lid="open")
+
+    def acrop(src, key):
+        x, y, w, h = ALLEY_GEOM[key]
+        return src.crop((x, y, x + w, y + h))
+
+    save_bmp(alley, "rooms/alley.bmp")
+    save_bmp(acrop(alley, "A_DUMPSTER"), "rooms/dumpster_closed.bmp")
+    save_bmp(acrop(alley_open, "A_DUMPSTER"), "rooms/dumpster_open.bmp")
+    save_bmp(acrop(alley, "A_GATE"), "rooms/gate_closed.bmp")
+    save_bmp(acrop(alley_open, "A_GATE"), "rooms/gate_open.bmp")
+    write_box_file(os.path.join(OUT, "rooms", "alley.box"),
+                   [Box(pts, name=n) for n, pts in ALLEY_WALKBOXES])
 
     # bolt sprite on dock floor (background-colored patch + bolt)
     bx, by, bw, bh = GEOM["BOLT"]

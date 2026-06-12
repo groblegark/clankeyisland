@@ -272,11 +272,106 @@ def build_rag():
     return mid
 
 
+# ----------------------------------------------------- Back-Alley Blues
+
+# Scene 03: the Rustlers' alley. The Dockside theme's lonely cousin —
+# same harbor, fewer streetlights. Sparse walking bass, one e-piano
+# stab per bar, a muted lead that mostly declines to comment.
+ALLEY_BPM = 76
+ALLEY_BARS = 12
+ALLEY_LOOP_BEATS = ALLEY_BARS * 4 + 1
+
+ALLEY_PROG = ["Am", "Am", "Dm6", "Am", "F", "E7", "Am", "E7",
+              "Am", "Dm6", "E7", "Am"]
+ALLEY_CHORDS = {
+    "Am":  [n("A", 3), n("C", 4), n("E", 4)],
+    "Dm6": [n("D", 3), n("F", 3), n("B", 3)],
+    "F":   [n("F", 3), n("A", 3), n("C", 4)],
+    "E7":  [n("E", 3), n("Ab", 3), n("D", 4)],
+}
+ALLEY_ROOTS = {"Am": n("A", 1), "Dm6": n("D", 2), "F": n("F", 1),
+               "E7": n("E", 2)}
+ALLEY_FIFTH = {"Am": n("E", 2), "Dm6": n("A", 2), "F": n("C", 2),
+               "E7": n("B", 2)}
+
+# the lead speaks in bars 3-4, 7-8 and 11-12 and otherwise minds its own
+AM = []
+def alley_phrase(bar, notes):
+    for slot, pitch, ln in notes:
+        AM.append((bar, slot, pitch, ln))
+
+alley_phrase(3,  [(0, n("A", 4), 2), (2, n("C", 5), 1), (3, n("B", 4), 1),
+                  (4, n("A", 4), 4)])
+alley_phrase(4,  [(0, n("E", 4), 6)])
+alley_phrase(7,  [(0, n("C", 5), 2), (2, n("B", 4), 1), (3, n("A", 4), 1),
+                  (4, n("E", 4), 3)])
+alley_phrase(8,  [(0, n("Ab", 4), 4), (4, n("B", 4), 2)])
+alley_phrase(11, [(0, n("E", 5), 2), (2, n("D", 5), 1), (3, n("B", 4), 1),
+                  (4, n("Ab", 4), 2)])
+alley_phrase(12, [(0, n("A", 4), 8)])
+
+
+def build_backalley():
+    ev = []
+
+    def add(tick, msg, order=1):
+        ev.append((tick, order, msg))
+
+    for ch, prg, vol in [(CH_LEAD, PRG_LEAD, 62), (CH_BASS, PRG_BASS, 92),
+                         (CH_EP, PRG_EP, 58)]:
+        add(0, mido.Message("program_change", channel=ch, program=prg), 0)
+        add(0, mido.Message("control_change", channel=ch, control=7,
+                            value=vol), 0)
+
+    for bar in range(1, ALLEY_BARS + 1):
+        chord = ALLEY_PROG[bar - 1]
+        t0 = (bar - 1) * 4 * PPQ
+
+        # bass: root on 1, fifth on 3, nothing in between. An alley walk.
+        for beat, pitch in [(0, ALLEY_ROOTS[chord]),
+                            (2, ALLEY_FIFTH[chord])]:
+            t = t0 + beat * PPQ
+            add(t, mido.Message("note_on", channel=CH_BASS,
+                                note=pitch, velocity=70))
+            add(t + PPQ * 4 // 5, mido.Message(
+                "note_off", channel=CH_BASS, note=pitch, velocity=0))
+
+        # e-piano: one stab per bar, on the and-of-two, like a shrug
+        t = t0 + PPQ + E_LONG
+        for pitch in ALLEY_CHORDS[chord]:
+            add(t, mido.Message("note_on", channel=CH_EP,
+                                note=pitch, velocity=44))
+            add(t + PPQ // 2, mido.Message(
+                "note_off", channel=CH_EP, note=pitch, velocity=0))
+
+    for bar, slot, pitch, ln in AM:
+        t = slot_time(bar, slot)
+        add(t, mido.Message("note_on", channel=CH_LEAD, note=pitch,
+                            velocity=56))
+        add(t + slot_len(slot, ln) - 30, mido.Message(
+            "note_off", channel=CH_LEAD, note=pitch, velocity=0))
+
+    mid = mido.MidiFile(type=0, ticks_per_beat=PPQ)
+    track = mido.MidiTrack()
+    track.append(mido.MetaMessage("set_tempo",
+                                  tempo=mido.bpm2tempo(ALLEY_BPM), time=0))
+    last = 0
+    for tick, _, msg in sorted(ev, key=lambda e: (e[0], e[1])):
+        track.append(msg.copy(time=tick - last))
+        last = tick
+    track.append(mido.MetaMessage("end_of_track",
+                                  time=ALLEY_BARS * 4 * PPQ - last))
+    mid.tracks.append(track)
+    return mid
+
+
 def main():
     os.makedirs(OUTDIR, exist_ok=True)
     for name, build, bars, bpm, loop in [
             ("dockside", build_dockside, BARS, BPM, LOOP_BEATS),
-            ("scrapnbarrel", build_rag, RAG_BARS, RAG_BPM, RAG_LOOP_BEATS)]:
+            ("scrapnbarrel", build_rag, RAG_BARS, RAG_BPM, RAG_LOOP_BEATS),
+            ("backalley", build_backalley, ALLEY_BARS, ALLEY_BPM,
+             ALLEY_LOOP_BEATS)]:
         path = os.path.join(OUTDIR, f"{name}.mid")
         build().save(path)
         print(f"{path}  ({bars} bars, {bars * 4 * 60 / bpm:.0f}s, "

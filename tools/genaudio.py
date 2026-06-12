@@ -216,6 +216,30 @@ def sfx_plink():
     return concat(p1, silence(0.02), p2, silence(0.02), ghost)
 
 
+def sfx_splash():
+    """A magnet on a string meeting the harbor: plop, fizz, one drip."""
+    plop = mix(partials(0.09, [(170, 1.0, 28), (88, 0.6, 22)]),
+               noise_burst(0.03, 0.7, 120))
+    fizz = noise_burst(0.4, 0.22, 8)
+    drip = partials(0.06, [(880, 0.4, 60), (1320, 0.2, 80)])
+    return concat(plop, fizz, silence(0.14), drip)
+
+
+def sfx_creak():
+    """A municipal dumpster lid exercising its right to complain,
+    then giving up with a slam."""
+    n = int(RATE * 0.55)
+    groan = []
+    for i in range(n):
+        t = i / RATE
+        f = 360 + 110 * math.sin(2 * math.pi * 2.6 * t) + 180 * t
+        sq = 1.0 if math.sin(2 * math.pi * f * t) >= 0 else -1.0
+        groan.append(0.2 * sq * (0.35 + 0.65 * math.sin(math.pi * i / n)))
+    slam = mix(partials(0.14, [(92, 1.0, 24), (150, 0.5, 30)]),
+               noise_burst(0.03, 0.6, 90))
+    return concat(groan, silence(0.05), slam)
+
+
 EFFECTS = {
     "whack": sfx_whack,
     "bolt_drop": sfx_bolt_drop,
@@ -228,6 +252,8 @@ EFFECTS = {
     "clink": sfx_clink,
     "thud": sfx_thud,
     "plink": sfx_plink,
+    "splash": sfx_splash,
+    "creak": sfx_creak,
 }
 
 

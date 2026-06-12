@@ -8,6 +8,7 @@ room DockRoom {
     bit doneArrival;
     bit bettyOiled;
     bit crateOpened;
+    bit drainFished;
 
     object neonSign;
     object ferry;
@@ -19,4 +20,5 @@ room DockRoom {
     object tavernDoor;
     object drain;
     object dockBolt;
+    object alleyMouth;
 }

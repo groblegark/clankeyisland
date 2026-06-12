@@ -1,0 +1,170 @@
+# Clanker City Chronicles — the full run, boot to the Act Two threshold.
+# Docks (bolt, poster) -> tavern (servo -> token -> darts -> oil can)
+# -> docks (Betty -> crate -> the first wind-up key) -> the alley
+# (Rivet -> dumpster magnet) -> docks (fish the drain: nine bolts)
+# -> alley (riddle duel: the tenth -> pay the funicular fare).
+# This is the deploy gate: if this doesn't pass, the game doesn't ship.
+
+title: "Clanker City Chronicles — The Story So Far"
+game: "--debuglevel=1 chronicles"
+stage: docks.stage.json
+transcript: docks.transcript.json
+
+shots:
+  # ------------------------------------------------ Scene 01: the Docks
+  - name: arrival
+    cutscene: DockRoom.entry
+    expect: [talking]
+    timeout: 60
+
+  - name: the-sign
+    do: {verb: Examine, object: neon sign}
+    expect: [talking]
+
+  - name: percussive-maintenance
+    do: {verb: Use, object: neon sign}
+    expect:
+      - talking
+      - pixel: {at: shiny bolt, is: bright-steel}
+
+  - name: legal-tender
+    do: {verb: Pick up, object: shiny bolt}
+    expect:
+      - talking
+      - pixel: {at: inventory.slot0, is: bright-steel}
+
+  - name: civic-duty
+    do: {verb: Examine, object: notice board}
+    expect: [talking]
+
+  - name: take-the-evidence
+    do: {verb: Pick up, object: official notice}
+    expect:
+      - pixel: {at: inventory.slot1, is: bright-steel}
+
+  - name: meet-betty
+    do: {verb: Talk to, object: Boom-Arm Betty}
+    expect: [talking]
+    hold: 1.5
+
+  # --------------------------------------- Scene 02: the Scrap & Barrel
+  - name: enter-the-tavern
+    do: {verb: Open, object: tavern door}
+    expect:
+      - pixel: {at: [88, 9], is: magenta}    # the bar sign's glow dots
+    timeout: 60
+
+  - name: the-piano
+    do: {verb: Examine, object: player piano}
+    expect: [talking]
+
+  - name: certified-maintenance
+    do: {verb: Use, object: Gusket, with: inventory.slot0}
+    expect:
+      - talking
+      # consumption compacts the inventory: poster shifts to slot0,
+      # each new item appends at slot1
+      - pixel: {at: inventory.slot1, is: greens}
+    timeout: 60
+
+  - name: extremely-casual
+    only: perform
+    do: {verb: Talk to, object: "rustlers' table"}
+    expect: [talking]
+    hold: 1.5
+
+  - name: the-dart-hustle
+    do: {verb: Give, object: Flange, with: inventory.slot1}
+    expect:
+      - talking
+      - pixel: {at: [284, 175], is: red}     # oil can's red base, slot 1
+    timeout: 90
+
+  # ----------------------------------------- Scene 01 again: the payoff
+  - name: back-to-the-docks
+    do: {verb: Open, object: door to the docks}
+    expect:
+      - pixel: {at: [10, 4], is: sky}        # night sky = we're outside
+    timeout: 60
+
+  - name: doctors-orders
+    do: {verb: Use, object: Boom-Arm Betty, with: inventory.slot1}
+    expect:
+      - talking
+      - pixel: {at: [132, 56], is: sky}      # crate no longer hanging
+    timeout: 60
+
+  - name: the-first-key
+    do: {verb: Open, object: crate}
+    expect:
+      - talking
+      - pixel: {at: inventory.slot1, is: sodium}   # brass key in pocket
+    timeout: 60
+    hold: 2.0
+
+  # ------------------------------------- Scene 03: the Rustlers' alley
+  - name: into-the-alley
+    do: {verb: Open, object: alley mouth}
+    expect:
+      - pixel: {at: [76, 24], is: magenta}   # the graffiti's first coat
+    timeout: 60
+
+  - name: meet-rivet
+    do: {verb: Talk to, object: Rivet}
+    expect: [talking]
+    timeout: 60
+
+  - name: the-wall
+    only: perform
+    do: {verb: Examine, object: graffiti}
+    expect: [talking]
+
+  - name: message-discipline
+    only: perform
+    do: {verb: Open, object: steel door}
+    expect: [talking]
+    timeout: 60
+
+  - name: dumpster-diving
+    do: {verb: Open, object: dumpster}
+    expect:
+      - talking
+      - pixel: {at: inventory.slot2, is: red}      # the bar magnet
+    timeout: 60
+
+  - name: back-out-front
+    do: {verb: Open, object: way to the docks}
+    expect:
+      - pixel: {at: [10, 4], is: sky}
+    timeout: 60
+
+  - name: gone-fishing
+    do: {verb: Use, object: storm drain, with: inventory.slot2}
+    expect:
+      - talking
+      - pixel: {at: inventory.slot3, is: bright-steel}   # nine bolts
+    timeout: 60
+
+  - name: back-to-the-alley
+    do: {verb: Open, object: alley mouth}
+    expect:
+      - pixel: {at: [76, 24], is: magenta}
+    timeout: 60
+
+  - name: the-riddle-duel
+    do: {verb: Talk to, object: Rivet}
+    expect: [talking]
+    timeout: 90
+
+  - name: pay-the-fare
+    do: {verb: Use, object: funicular gate}
+    expect:
+      - talking
+      - pixel: {at: [284, 70], is: sodium}   # the car's lit window
+    timeout: 90
+
+  - name: now-boarding
+    do: {verb: Examine, object: funicular gate}
+    expect: [talking]
+    timeout: 60
+    hold: 2.0

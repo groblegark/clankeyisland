@@ -1,0 +1,375 @@
+/* Clanker City Chronicles — Scene 03: the Rustlers' alley.
+ * Behind the Scrap & Barrel. Rivet finally turns up (his stall said
+ * BACK IN FIVE OIL CHANGES), the GDD's bolt economy gets paid off,
+ * and the funicular gate to Midtown is the Act Two threshold.
+ * NPC dialog is reported secondhand by Sprocket — one voice, deadpan.
+ */
+
+#include <scummVars6.s>
+#include "common.sch"
+#include "verbs.sch"
+#include "inventoryitems.sch"
+#include "docks.sch"
+#include "alley.sch"
+
+room AlleyRoom {
+
+    image = "rooms/alley.bmp";
+    boxd = "rooms/alley.box";
+    trans = 0;
+
+    // ------------------------------------------------------------ sounds
+
+    sound bluesSnd   = "backalley.soun";
+    sound knockSnd   = "knock.soun";
+    sound creakSnd   = "creak.soun";
+    sound pickupSnd  = "pickup.soun";
+    sound clinkSnd   = "clink.soun";
+    sound ratchetSnd = "ratchet.soun";
+    sound thudSnd    = "thud.soun";
+
+    // ------------------------------------------------------------ music
+
+    local script musicLoop() {
+        // 'Back-Alley' — the Dockside theme's lonely cousin
+        // (loop point = ALLEY_LOOP_BEATS in tools/genmusic.py)
+        stopMusic();
+        startMusic(bluesSnd);
+        imPlayerSetLoop(bluesSnd, 999, 1, 0, 49, 0);
+        while(1) {
+            delay(120);
+            unless(isSoundRunning(bluesSnd)) {
+                startMusic(bluesSnd);
+                imPlayerSetLoop(bluesSnd, 999, 1, 0, 49, 0);
+            }
+        }
+    }
+
+    // ------------------------------------------------------- room entry
+
+    local script entry() {
+        startScript(1, musicLoop, []);
+
+        unless(visitedAlley) {
+            visitedAlley = 1;
+            cutscene(2) {
+                putActorAt(VAR_EGO, 24, 120, AlleyRoom);
+                walkActorTo(VAR_EGO, 70, 126);
+                waitForActor(VAR_EGO);
+                egoSay("The alley behind the Scrap & Barrel. Where the city keeps its rough drafts.");
+                waitForMessage();
+                egoSay("There's a gate at the end marked MIDTOWN, going up. Uptown. The future.");
+                waitForMessage();
+                egoSay("Coin-operated. Of course it's coin-operated.");
+                waitForMessage();
+            }
+        }
+    }
+
+    // ---------------------------------------------------------- objects
+
+    object wayOut {
+        x = 0;
+        y = 56;
+        w = 24;
+        h = 48;
+        dir = EAST;
+        name = "way to the docks";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Back through the gap, the docks. My ferry's still out there, doing modern art.");
+            return;
+        case Open:
+        case Use:
+            putActorAt(VAR_EGO, 302, 120, DockRoom);
+            startRoom(DockRoom);
+            return;
+        }
+    }
+
+    object hideoutDoor {
+        x = 40;
+        y = 56;
+        w = 24;
+        h = 48;
+        dir = EAST;
+        name = "steel door";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A steel door with no handle, no sign, and a brand-new red lamp.");
+            waitForMessage();
+            egoSay("The kind of door that's also a policy.");
+            return;
+        case Open:
+        case Use:
+        case Move:
+            cutscene(0) {
+                startSound(knockSnd);
+                egoSay("Knock knock.");
+                waitForMessage();
+                egoSay("The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'");
+                waitForMessage();
+                egoSay("This organization has remarkable message discipline.");
+                waitForMessage();
+            }
+            return;
+        case Smell:
+            egoSay("Rust and secrets. The house blend.");
+            return;
+        }
+    }
+
+    object graffiti {
+        x = 72;
+        y = 24;
+        w = 64;
+        h = 24;
+        dir = NORTH;
+        name = "graffiti";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Someone sprayed DYNAMO IS FINE. Crossed out. Under it, smaller: IT IS NOT.");
+            waitForMessage();
+            egoSay("Under that, very small: NO REFUNDS. The whole town, one wall.");
+            return;
+        case Smell:
+            egoSay("Fresh paint over old paint over older paint. Sediment, with opinions.");
+            return;
+        }
+    }
+
+    object dumpster {
+        x = 80;
+        y = 56;
+        w = 56;
+        h = 48;
+        dir = NORTH;
+        name = "dumpster";
+        class = { Openable };
+        states = {
+            { 0, 0, "rooms/dumpster_closed.bmp" },
+            { 0, 0, "rooms/dumpster_open.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A municipal dumpster. The graffiti above appraises it at three stars.");
+            return;
+        case Open:
+        case Use:
+            // "in my pocket" is owner == VAR_EGO: ScummC links objects
+            // with owner 0x0F by default (scc_ld.c), so a bare
+            // getObjectOwner() truth test is ALWAYS true
+            unless(getObjectOwner(InventoryItems::magnet) == VAR_EGO) {
+                cutscene(0) {
+                    startSound(creakSnd);
+                    setObjectState(dumpster, 2);
+                    egoSay("Inside: one rubber duck, seized. One manual for a better game. And a magnet on a string.");
+                    waitForMessage();
+                    startSound(pickupSnd);
+                    pickupObject(InventoryItems::magnet, InventoryItems);
+                    egoSay("In a town held together by bolts, a magnet on a string is a license to print money.");
+                    waitForMessage();
+                }
+                return;
+            }
+            egoSay("The duck has seniority now. I'm not fighting the duck.");
+            return;
+        case Smell:
+            egoSay("Banana oil and municipal despair.");
+            return;
+        }
+    }
+
+    object fireEscape {
+        x = 144;
+        y = 8;
+        w = 32;
+        h = 64;
+        dir = NORTH;
+        name = "fire escape";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A fire escape, and on it a Rustler with a spyglass, pointed at the docks.");
+            waitForMessage();
+            egoSay("He's taking notes. I'm in the notes.");
+            return;
+        case TalkTo:
+            egoSay("I wave up at him. He writes that down too.");
+            return;
+        case PickUp:
+        case Use:
+            egoSay("The ladder's rusted shut. The Rustler shakes his head, slowly. Professional courtesy.");
+            return;
+        }
+    }
+
+    object rivet {
+        x = 192;
+        y = 56;
+        w = 32;
+        h = 48;
+        dir = SOUTH;
+        name = "Rivet";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A round little bot built entirely out of other bots, sorting screws by mood.");
+            waitForMessage();
+            egoSay("The stall out front says BACK IN FIVE OIL CHANGES. This is where he goes when he's back.");
+            return;
+        case TalkTo:
+            unless(metRivet) {
+                metRivet = 1;
+                cutscene(0) {
+                    egoSay("Rivet's the name, he says. Knows everything. First fact's free:");
+                    waitForMessage();
+                    egoSay("The funicular to Midtown takes ten bolts. Exact change. Gates can count — it's all they do.");
+                    waitForMessage();
+                    egoSay("Second fact costs a bolt. He can see I don't have one. He mentions that for free too.");
+                    waitForMessage();
+                    egoSay("Third freebie, out of pity: the harbor keeps everything this town drops, and that dumpster is — legally — his.");
+                    waitForMessage();
+                }
+                return;
+            }
+            if(riddleDone) {
+                if(fareDone) {
+                    egoSay("He waves. He's already sorting the bolts I fed the gate. I'm not asking how.");
+                    return;
+                }
+                egoSay("He nods at the gate. 'Ten bolts, exact change. It's all they do.'");
+                return;
+            }
+            if(getObjectOwner(InventoryItems::boltStash) == VAR_EGO) {
+                riddleDone = 1;
+                cutscene(0) {
+                    egoSay("Nine bolts, I tell him. He appraises my pockets from four feet away. Correctly.");
+                    waitForMessage();
+                    egoSay("He proposes a riddle duel. His bolt against my official city notice. The alley has rules, apparently.");
+                    waitForMessage();
+                    egoSay("Rivet goes first: 'What has a hundred teeth and never bites?' A gear. In this town it's always a gear.");
+                    waitForMessage();
+                    egoSay("My turn. 'What winds down... but never winds up?'");
+                    waitForMessage();
+                    egoSay("He opens his mouth. He closes it. He looks uptown, at the Dynamo District.");
+                    waitForMessage();
+                    startSound(clinkSnd);
+                    pickupObject(InventoryItems::tenthBolt, InventoryItems);
+                    egoSay("He pays the bolt without a word. The best riddles aren't funny.");
+                    waitForMessage();
+                }
+                return;
+            }
+            unless(getObjectOwner(InventoryItems::magnet) == VAR_EGO) {
+                egoSay("He says everything a bot needs is in that dumpster, and he says it as the dumpster's legal owner.");
+                return;
+            }
+            egoSay("He eyes the magnet. He says the docks have a drain, the drain has a glint, and the glint has my name on it.");
+            return;
+        case Give:
+        case UsedWith:
+            egoSay("He appraises it, names a price, and the price is an insult. We're both happier keeping it.");
+            return;
+        case Smell:
+            egoSay("WD-40 and good information.");
+            return;
+        }
+    }
+
+    object junkHeap {
+        x = 224;
+        y = 72;
+        w = 32;
+        h = 32;
+        dir = NORTH;
+        name = "junk heap";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Rivet's stock: pipes, springs, and a wheel from something that regrets losing it.");
+            return;
+        case PickUp:
+        case Use:
+            egoSay("Rivet clears his throat without having one. Inventory is sacred.");
+            return;
+        case Smell:
+            egoSay("Rust. Vintage rust. Estate rust.");
+            return;
+        }
+    }
+
+    object gate {
+        x = 264;
+        y = 24;
+        w = 48;
+        h = 80;
+        dir = EAST;
+        name = "funicular gate";
+        class = { Openable };
+        states = {
+            { 0, 0, "rooms/gate_closed.bmp" },
+            { 0, 0, "rooms/gate_open.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            unless(fareDone) {
+                egoSay("A wrought-iron gate, a rail going up the cliff, and a sign: MIDTOWN. FARE, 10 BOLTS.");
+                waitForMessage();
+                egoSay("Uptown. Act Two. The future. It has a coin slot.");
+                return;
+            }
+            egoSay("Gate's open, car's lit. Midtown keeps glittering like it doesn't know I'm coming.");
+            return;
+        case Open:
+        case Use:
+            unless(fareDone) {
+                unless(getObjectOwner(InventoryItems::boltStash) == VAR_EGO) {
+                    egoSay("The fare box wants ten bolts. I have pockets, and ambition.");
+                    return;
+                }
+                unless(getObjectOwner(InventoryItems::tenthBolt) == VAR_EGO) {
+                    egoSay("I feed it nine bolts. It counts them, blinks NINE at me, and gives them all back.");
+                    waitForMessage();
+                    egoSay("Smug, for a gate. Rivet would know where a tenth bolt grows.");
+                    return;
+                }
+                fareDone = 1;
+                setObjectOwner(InventoryItems::boltStash, 0);
+                setObjectOwner(InventoryItems::tenthBolt, 0);
+                cutscene(0) {
+                    startSound(clinkSnd);
+                    egoSay("Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.");
+                    waitForMessage();
+                    startSound(ratchetSnd);
+                    delay(30);
+                    setObjectState(gate, 2);
+                    startSound(thudSnd);
+                    egoSay("The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.");
+                    waitForMessage();
+                    egoSay("Act Two. I can hear the neon from here.");
+                    waitForMessage();
+                }
+                return;
+            }
+            egoSay("The car says it's boarding 'momentarily'. It's been a long momentarily.");
+            waitForMessage();
+            egoSay("Midtown will keep. Probably. If the Dynamo holds.");
+            return;
+        case Smell:
+            egoSay("Ozone and altitude. The future smells expensive.");
+            return;
+        }
+    }
+
+}
