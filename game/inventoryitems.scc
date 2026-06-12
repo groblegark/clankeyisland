@@ -395,4 +395,46 @@ room InventoryItems {
         }
     }
 
+    object voltKey {
+        w = 40;
+        h = 16;
+        x = 0;
+        name = "the second key";
+        states = {
+            { 0, 0, "inventory/inv_voltkey.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case Preposition:
+            if(vrb == Give)
+                sntcPrepo[0] = "to";
+            else
+                sntcPrepo[0] = "on";
+            return;
+        case LookAt:
+            egoSay("Brass, forearm-sized, second of three. This one has never been on a marquee.");
+            waitForMessage();
+            egoSay("We're keeping it that way.");
+            return;
+        case Use:
+            if(objB) {
+                // route "Use me with/on X" to X's UsedWith — the engine
+                // dispatches to OUR script (objA), so a bare Use gag
+                // here would swallow every two-object sentence
+                if(getObjectVerbEntrypoint(objB, UsedWith)) {
+                    startObject2(objB, UsedWith, [ UsedWith, objB, objA ]);
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
+            egoSay("It wants the Dynamo. The Dynamo wants its siblings first.");
+            return;
+        case Smell:
+            egoSay("Ozone. It kept the jar's accent.");
+            return;
+        }
+    }
+
 }

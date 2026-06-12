@@ -750,3 +750,110 @@ Template bans verified: zero "[material] and [abstract noun]" Smell lines (shape
 6. **Ghost-light flicker** uses the `signFlicker` pattern — remember the stopScript-on-exit bug class.
 7. **New verb ids:** none — all shared verbs already pinned in `common.sch`.
 8. **Pipeline touch list:** `backstage.scc/.sch`, `common.sch` (voltina actor decl + VOLTINA_COLOR + globals), `actors.scc` (talk color), `inventoryitems.scc/.sch` (`voltKey`), `theater.scc` (door edit + greeting conversion), `genassets.py` (`BACK_GEOM`, `draw_backstage`, card/jar states, voltina costume frames, talk-color probe + collision assert, stage-map emit), `genmusic.py` (`seance`), `genaudio.py` (5 SFX), `game/Makefile` (voltina.scost), `dub.py` CAST (kristin + chorus/echo/lowpass-5000), `full-run.play.yaml` + streamer screenplay, then the editorial desk before validate — no scene ships with open BLOCKERs.
+---
+
+## 10. Build-integration note (implementer -> integrator, 2026-06-12)
+
+Scene 06 is implemented and compiles (`cd game && make tentacle` green).
+What landed, what was deviated, and what the integrator must do serially:
+
+### Room number / link order
+- `backstage.scc` is appended to `SRCS` **after `theater.scc`** in
+  `game/Makefile`; sld assigns room ids in link order, so
+  `BackstageRoom` is the **11th room resource** (after ResRoom, Verbs,
+  Dialog, Actors, InventoryItems, Dock, Tavern, Alley, Midtown,
+  Theater). Keep it last-but-stable: inserting a room ahead of it
+  renumbers everything downstream of the insert.
+
+### Makefile additions (already in this branch)
+- `SRCS += backstage.scc`
+- `$(BUILD)/backstage.roobj: $(SOUNS)`
+- No new .soun targets — the room borrows existing resources (below).
+
+### Transit wiring (theater.scc — already in this branch)
+- `theater.sch` gained `bit voltinaGreeted;`.
+- `backstageDoor` Open/Use: NEW first branch — `if(voltinaGreeted)`
+  does a **silent** `putActorAt(VAR_EGO, 30, 120, BackstageRoom);
+  startRoom(BackstageRoom);`. The shipped greeting cutscene is intact
+  (still egoSay-reported, NOT converted to actorSay — see deviations)
+  and now sets `voltinaGreeted = 1` before its first line.
+- `theater.scc` now includes `backstage.sch`.
+- Return trip: backstage `doorStage` ("door to the stage") puts the
+  ego at (270, 120) in TheaterRoom, silently.
+
+### Globals touched
+- `common.sch`: **`bit heardKnockCode` moved here** from tavern.sch's
+  room block (room bits are room-local; Scene 06 reads AND writes it).
+  Tavern call sites compile unchanged. Scene 06 sets it
+  unconditionally in the Card III truth branch (the B9 forced echo).
+- `windTurns` (already global, common.sch): read by the card-II
+  backstage-pass wrong-offer branch (`> 5` -> the "eight turns" line).
+  Note the spec's name `gWindTurns` does not exist; the B8 global is
+  plain `windTurns`.
+- New inventory item `InventoryItems::voltKey` ("the second key") +
+  `inv_voltkey.bmp` icon; acquired via `pickupObject` in the truth
+  cutscene. 5th item -> inventory slot 4, off-page on the 2x2 panel.
+
+### Pipeline files touched (already in this branch)
+- `tools/genassets.py`: `BACK_GEOM` + `BACK_CARDS`, `draw_backstage()`
+  (brick/wood/velvet palette, parlor, painted Voltina, 5 table states,
+  2 jar states, 2 ghost-light states), `BACK_OBJECT_NAMES`,
+  `BACK_WALKBOXES`, stage-map emit + `backstage-center` walk target,
+  probes `brass` [45-47] and `card-white` [104], `inv_voltkey` icon.
+  State rects are 8-multiple sized (scc rejects others) — B_GHOST/
+  B_TABLE/B_JAR differ slightly from the spec's table in section 3;
+  `BACK_GEOM` is now the source of truth and the .scc rects match it.
+- `assets/generated/` + `walkthrough/stage/docks.stage.json` +
+  `docks.transcript.json` regenerated (additive diffs only).
+
+### Integrator must do, serially
+1. Append `docs/scenes/SCENE-06-shots.yaml` to
+   `walkthrough/screenplay/full-run.play.yaml` (after the scene-05
+   `stage-door` shot). Schema notes are at the top of that file —
+   notably `{dialog: N}` from spec section 6 does not exist in the
+   driver; everything uses the shipped `choose:` two-phase key.
+2. Run the editorial desk over this scene's text, then validate
+   (`walkthrough.py --serve full-run.play.yaml`). Do not ship with
+   open BLOCKERs.
+3. When genmusic/genaudio grow the Scene 06 brief (section 5), swap
+   the placeholder sound casts in backstage.scc:
+   `seanceSnd=backalley.soun -> seance.soun` (and the loop constant
+   49 -> SEANCE_LOOP_BEATS), `arcSnd=sizzle -> arc`, `fizzleSnd=plink
+   -> fizzle`, `dealSnd=dart -> deal`, `jarSnd=clink -> jar`, plus a
+   distinct `arcbig` for the bluff zap. Add the new SFX/MUSIC names to
+   the Makefile lists.
+4. The actorSay conversion (NPC-DIALOG step 10) happens AFTER the
+   shared pipeline steps 1-9 land: the TODO block at the top of
+   backstage.scc is the swap-in map. Until then Voltina speaks in
+   quoted reportage like every shipped NPC.
+
+### Deviations from spec (deliberate)
+- **No actorSay / no costume yet.** NPC-DIALOG specifies Voltina as a
+  FULL costumed actor (beyond Tier A) and gates her on pipeline steps
+  1-9, none of which exist in-repo (transcript/driver/dub are
+  egoSay-only). Her lines ship as Sprocket-reported quotes (<=12 words
+  per quoted punchline), per the existing-scene idiom.
+- **Backstage door renamed** "stage door" -> "door to the stage":
+  object names are globally unique keys in the stage map and the
+  transcript; reusing the theater's name would corrupt both.
+- **Card III tree is opened by `Use reading table`** at readingStage 3
+  (and re-opened the same way after a flop), instead of auto-starting
+  inside the card-II cutscene: the driver's `choose:` is a two-phase
+  do-shot, and one pick per engagement is the shipped riddle-duel
+  idiom. A 4th option ("I need a minute.") lets the player walk away.
+  UsedWith on the face-down card redirects ("It wants an answer, out
+  loud."); spec had a dead fall-through to "she hasn't dealt yet".
+- **Hub options are always visible** (asked ones get short repeat
+  lines) so `choose:` indices stay stable for the screenplay; the
+  spec hid options 1/3 after asking, which shifts indices.
+- **Dub-bucket isolation**: cards I and II share the table's
+  Give/UsedWith bucket, so card II's lines live in a local script
+  (`cardTwo`) paired via a `cutscene:` key; same trick for the hub
+  options and Card III flops. Card I, the intro, and the truth pair
+  from their bucket fronts. (transcript.py buckets local scripts by
+  name — this is the same contract the alley gate solved with a
+  Give/Use verb split.)
+- **"One up a hill" softened** to "one still a rumor that winds
+  itself" in the climax: on-screen sources at that moment are the
+  stage-door greeting plant only; "up the hill" arrives with the
+  optCrank ask (embodiment: no unsourced knowledge).

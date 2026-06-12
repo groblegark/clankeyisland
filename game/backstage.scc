@@ -1,0 +1,725 @@
+/* Clanker City Chronicles — Scene 06: backstage at the Grand Cog.
+ * Madame Voltina's parlor where the fire exit should be. The price of
+ * Key #2 is a reading: three cards, each answered out of the player's
+ * own playthrough — no fetches, the puzzle is recognizing your own
+ * route. NPC dialog is reported secondhand by Sprocket — one voice,
+ * deadpan. Walkthrough-path lines go FIRST in source per handler.
+ *
+ * TODO(actorSay): Voltina is the designated first costumed talking
+ * actor (docs/research/NPC-DIALOG.md — full costume, stand + 2
+ * tesla-arc talk frames, a talk color from the 108+ range, dub CAST
+ * en_US-kristin-medium + chorus/echo). That pipeline (transcript/
+ * driver/dub are egoSay-only today) has not landed, so her lines stay
+ * reported in Sprocket's register like every other NPC. To convert:
+ *   - actor voltina_a + VOLTINA_COLOR in common.sch, a setupActors
+ *     block in actors.scc, the .scost costume + Makefile rule
+ *   - putActorAt(voltina_a, 172, 100, BackstageRoom) in entry() on
+ *     EVERY entry — and parked at the theater stage door before the
+ *     greeting — BEFORE any line (actorTalk drops lines for actors
+ *     not in the current room)
+ *   - split each egoSay below at the quoted span: the quote becomes
+ *     actorSay(voltina_a, "..."), the frame stays Sprocket's. Source
+ *     order per handler must not change (dub pairing).
+ */
+
+#include <scummVars6.s>
+#include "common.sch"
+#include "verbs.sch"
+#include "inventoryitems.sch"
+#include "dialog.sch"
+#include "theater.sch"
+#include "backstage.sch"
+
+room BackstageRoom {
+
+    image = "rooms/backstage.bmp";
+    boxd = "rooms/backstage.box";
+    trans = 0;
+
+    // ------------------------------------------------------------ sounds
+    // TODO(audio): placeholder casting until genmusic grows the
+    // "seance" waltz and genaudio the arc/arcbig/fizzle/deal/jar VOCs
+    // (Scene 06 brief, docs/scenes/SCENE-06-backstage-voltina.md s5).
+
+    sound seanceSnd = "backalley.soun";
+    sound arcSnd    = "sizzle.soun";
+    sound fizzleSnd = "plink.soun";
+    sound dealSnd   = "dart.soun";
+    sound jarSnd    = "clink.soun";
+    sound pickupSnd = "pickup.soun";
+    sound creakSnd  = "creak.soun";
+
+    char* dlgStr;       // dialog-option scratch (openquest idiom)
+    int readingStage;   // 0 undealt, 1 card I up, 2 card II up,
+                        // 3 card III face down, 4 reading paid
+
+    // ------------------------------------------------------------ music
+
+    local script musicLoop() {
+        // the parlor doesn't swing, it sways (placeholder loop point =
+        // ALLEY_LOOP_BEATS while seanceSnd borrows the back-alley reel)
+        stopMusic();
+        startMusic(seanceSnd);
+        imPlayerSetLoop(seanceSnd, 999, 1, 0, 49, 0);
+        while(1) {
+            delay(120);
+            unless(isSoundRunning(seanceSnd)) {
+                startMusic(seanceSnd);
+                imPlayerSetLoop(seanceSnd, 999, 1, 0, 49, 0);
+            }
+        }
+    }
+
+    // the ghost light stutters: the brownout reaches backstage too
+    // (signFlicker pattern, docks.scc — the N-A5 deadline texture)
+    local script ghostFlicker() {
+        while(1) {
+            delay(getRandomNumberRange(90, 320));
+            setObjectState(ghostLight, 2);
+            delay(getRandomNumberRange(2, 5));
+            setObjectState(ghostLight, 1);
+        }
+    }
+
+    // ------------------------------------------------------- room entry
+
+    local script entry() {
+        startScript(1, musicLoop, []);
+        startScript(1, ghostFlicker, []);
+        // TODO(actorSay): putActorAt(voltina_a, 172, 100, BackstageRoom)
+        // here, every entry, before any of her lines.
+        unless(visitedBackstage) {
+            visitedBackstage = 1;
+            cutscene(2) {
+                try {
+                    putActorAt(VAR_EGO, 30, 120, BackstageRoom);
+                    walkActorTo(VAR_EGO, 80, 124);
+                    waitForActor(VAR_EGO);
+                    egoSay("Backstage. Rope, sandbags, and a fortune-teller's parlor where the fire exit should be.");
+                    waitForMessage();
+                    egoSay("Three keys wind this city back up. As of the ovation, I hold none of them.");
+                    waitForMessage();
+                    egoSay("The cables on the floor all run one direction. The direction glows.");
+                    waitForMessage();
+                    egoSay("A voice from the parlor: 'Mind the cables.'");
+                    waitForMessage();
+                    egoSay("I mind the cables.");
+                    waitForMessage();
+                }
+            }
+        }
+    }
+
+    // -------------------------------------------------- the reading beats
+    // Each canonical beat with a shared trigger lives in its own local
+    // script: transcript.py buckets script lines under the script's
+    // name, so the screenplay can pair them via a cutscene: key.
+    // Shared (object,verb) buckets pair from the FRONT — two canonical
+    // beats must never share one (see alley.scc's gate Give/Use split).
+
+    local script cardTwo() {
+        // CARD II resolves: the voucher is the debt (readingStage is
+        // already 3 — the caller sets flags before speech)
+        cutscene(0) {
+            startSound(arcSnd);
+            egoSay("The arc tastes the voucher. 'One free oil. Redeemable where the rope is velvet.'");
+            waitForMessage();
+            egoSay("She taps it twice with an arc and hands it back uncashed.");
+            waitForMessage();
+            egoSay("'Cash it where City Hall drinks. Debts talk after hours.'");
+            waitForMessage();
+            startSound(dealSnd);
+            setObjectState(readingTable, 4);
+            egoSay("Card three lands face down. The first two didn't do that.");
+            waitForMessage();
+            egoSay("'The future,' she says. 'Place the key.'");
+            waitForMessage();
+            egoSay("The table waits. My pockets hold a notice, a magnet, a voucher, and a pass. Notably: no key.");
+            waitForMessage();
+        }
+    }
+
+    local script cardThreePass() {
+        // flop, repeatable: the pass opens one door
+        cutscene(0) {
+            egoSay("I deal the pass onto the felt with intent.");
+            waitForMessage();
+            startSound(fizzleSnd);
+            egoSay("'That opens one door. The future has more doors.'");
+            waitForMessage();
+        }
+    }
+
+    local script cardThreeBluff() {
+        // the zap gag, repeatable: the rule from the intro, demonstrated
+        cutscene(0) {
+            egoSay("I explain that the key is in my other chassis.");
+            waitForMessage();
+            startSound(arcSnd);
+            egoSay("The arc that finds me is small, educational, and extremely specific.");
+            waitForMessage();
+            egoSay("'The coil bills for lies.'");
+            waitForMessage();
+        }
+    }
+
+    // ------------------------------------------------- the dialog hub
+    // One question per ask (riddle-duel idiom: pick, answer, dialog
+    // closes; the walkthrougher clicks one option per Talk to).
+
+    local script optCrank() {
+        // the Old Crank plant (editorial N-A10) — canonical path
+        unless(askedCrank) {
+            askedCrank = 1;
+            cutscene(0) {
+                egoSay("I ask about the key that winds itself. As instructed.");
+                waitForMessage();
+                egoSay("'Old Crank,' she says. 'Up the hill, behind the fence. Older than the hum.'");
+                waitForMessage();
+                egoSay("'He was winding himself before the city needed winding.'");
+                waitForMessage();
+                egoSay("'When you hold two keys, ask him where the third one stands.'");
+                waitForMessage();
+                egoSay("A hermit, a fence, and a riddle with posture.");
+                waitForMessage();
+            }
+            return;
+        }
+        egoSay("'Old Crank,' she says again. 'Up the hill. He keeps.'");
+    }
+
+    local script optWhoTook() {
+        // post-reading answer first in source: the pre-reading
+        // deflection is the guard, and guards trail (dub pairing)
+        if(readingStage >= 4) {
+            egoSay("'Their door answers to the knock,' she says. 'Doors are not loyal.'");
+            waitForMessage();
+            egoSay("Twice. Once. Twice. I've got it.");
+            return;
+        }
+        egoSay("'The cards answer that one. Place them.'");
+        waitForMessage();
+        egoSay("The felt is greener on the business side of the table.");
+    }
+
+    local script optWant() {
+        // her want, said out loud (editorial N-A6)
+        unless(askedWant) {
+            askedWant = 1;
+            cutscene(0) {
+                egoSay("I ask what she gets out of vetting key-bearers.");
+                waitForMessage();
+                egoSay("'A city with one future puts fortune-tellers out of work.'");
+                waitForMessage();
+                egoSay("'Everyone stopping is not a fortune. It's a schedule.'");
+                waitForMessage();
+                egoSay("She wants tomorrow back on the table. Professionally.");
+                waitForMessage();
+            }
+            return;
+        }
+        egoSay("'Same answer,' she says. 'A negotiable tomorrow.'");
+    }
+
+    local script optLater() {
+        egoSay("'Mind the cables.'");
+        waitForMessage();
+        egoSay("I'm learning.");
+    }
+
+    // ---------------------------------------------------------- objects
+
+    object doorStage {
+        x = 0;
+        y = 56;
+        w = 24;
+        h = 48;
+        dir = EAST;
+        name = "door to the stage";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Back to the stage. The confetti should be settling by now.");
+            return;
+        case Open:
+        case Use:
+            // room transitions say NOTHING (docs/NOTES.md)
+            putActorAt(VAR_EGO, 270, 120, TheaterRoom);
+            startRoom(TheaterRoom);
+            return;
+        }
+    }
+
+    object costumeRack {
+        x = 32;
+        y = 36;
+        w = 44;
+        h = 60;
+        dir = NORTH;
+        name = "costume rack";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Forty years of acts on hangers. A bear suit for a bot. A bot suit for, presumably, a bear.");
+            return;
+        case Use:
+            egoSay("Nothing in my size. Everything in my price range.");
+            return;
+        case Smell:
+            egoSay("Mothballs, losing.");
+            return;
+        }
+    }
+
+    object ghostLight {
+        x = 88;
+        y = 48;
+        w = 16;
+        h = 56;
+        dir = NORTH;
+        name = "ghost light";
+        states = {
+            { 0, 0, "rooms/ghost_lit.bmp" },
+            { 0, 0, "rooms/ghost_dark.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A bare bulb on a stand, center backstage. Theater law: it never goes out.");
+            waitForMessage();
+            egoSay("It's flickering.");
+            return;
+        case Use:
+            egoSay("Not my circuit. Some maintenance is above my pay grade, which is zero.");
+            return;
+        }
+    }
+
+    object fuseBox {
+        x = 296;
+        y = 24;
+        w = 18;
+        h = 28;
+        dir = EAST;
+        name = "fuse box";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The theater's fuse box. Somebody has labeled every single fuse HER.");
+            return;
+        case Open:
+        case Use:
+            egoSay("I leave it shut. The wiring outranks me, and the wiring is a person.");
+            return;
+        }
+    }
+
+    object voltina {
+        x = 148;
+        y = 28;
+        w = 48;
+        h = 52;
+        dir = SOUTH;
+        name = "Madame Voltina";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A tesla coil in a shawl. Her head is a glass dome with weather inside.");
+            waitForMessage();
+            egoSay("There's no crystal ball on the table. She's the ball.");
+            return;
+        case TalkTo:
+            // the intro: walkthrough path, FIRST in source (dub pairing)
+            unless(metVoltina) {
+                metVoltina = 1;
+                readingStage = 1;           // flags before speech
+                cutscene(0) {
+                    egoSay("'Sprocket,' says the parlor. 'Late of the docks, lately of the stage.'");
+                    waitForMessage();
+                    egoSay("I ask how she follows my career. 'The theater is wired. I am the wiring.'");
+                    waitForMessage();
+                    egoSay("'You came for the one in the jar.'");
+                    waitForMessage();
+                    egoSay("There's a jar. In it: a brass key the size of my forearm.");
+                    waitForMessage();
+                    egoSay("The stencil on the glass matches the crate my luck came in.");
+                    waitForMessage();
+                    egoSay("'The Order left it with me. I vet the bearer.'");
+                    waitForMessage();
+                    egoSay("I ask what the vetting costs. 'A reading. Yours.'");
+                    waitForMessage();
+                    egoSay("'Used to be I'd read you cold. The brownouts ended cold reads.'");
+                    waitForMessage();
+                    egoSay("'Three cards. Past, present, future. Answer each with what you carry.'");
+                    waitForMessage();
+                    egoSay("'Carried things remember. Lie, and the coil bills you.'");
+                    waitForMessage();
+                    startSound(dealSnd);
+                    setObjectState(readingTable, 2);
+                    egoSay("A card snaps onto the felt. A woodcut of a printing press, smiling.");
+                    waitForMessage();
+                    egoSay("'The past,' she says. 'Place the lie this city printed you.'");
+                    waitForMessage();
+                }
+                return;
+            }
+            // the hub (one pick per ask; option scripts carry the lines)
+            dlgStr[0] = "Tell me about the key that winds itself.";
+            Dialog::dialogAdd(dlgStr);
+            dlgStr = 0;
+            dlgStr[0] = "Who took my key?";
+            Dialog::dialogAdd(dlgStr);
+            dlgStr = 0;
+            dlgStr[0] = "What do you get out of vetting key-bearers?";
+            Dialog::dialogAdd(dlgStr);
+            dlgStr = 0;
+            dlgStr[0] = "That's all for now.";
+            Dialog::dialogAdd(dlgStr);
+            dlgStr = 0;
+            Dialog::dialogStart(0, 0);
+            do breakScript() while(selectedSentence < 0);
+            Dialog::dialogHide();
+            Dialog::dialogClear(1);
+            Dialog::dialogEnd();
+            if(selectedSentence == 0) {
+                optCrank();
+                return;
+            }
+            if(selectedSentence == 1) {
+                optWhoTook();
+                return;
+            }
+            if(selectedSentence == 2) {
+                optWant();
+                return;
+            }
+            optLater();
+            return;
+        case Give:
+        case UsedWith:
+            // handing her things = placing them on the table
+            startObject2(readingTable, UsedWith,
+                         [ UsedWith, readingTable, objB ]);
+            return;
+        case Smell:
+            egoSay("Ozone at a concentration my manual files under 'leave'.");
+            return;
+        }
+    }
+
+    object readingTable {
+        x = 136;
+        y = 80;
+        w = 72;
+        h = 32;
+        dir = NORTH;
+        name = "reading table";
+        states = {
+            { 0, 0, "rooms/table_bare.bmp" },
+            { 0, 0, "rooms/table_card1.bmp" },
+            { 0, 0, "rooms/table_card2.bmp" },
+            { 0, 0, "rooms/table_card3down.bmp" },
+            { 0, 0, "rooms/table_card3up.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            if(readingStage == 1) {
+                egoSay("Card one, face up: a printing press, smiling. The felt waits.");
+                return;
+            }
+            if(readingStage == 2) {
+                egoSay("Card two, face up: an open hand, palm up. Municipal.");
+                return;
+            }
+            if(readingStage == 3) {
+                egoSay("Card three, face down. The first two didn't do that.");
+                return;
+            }
+            if(readingStage >= 4) {
+                egoSay("Three cards spent, one key paid. The felt looks satisfied. For felt.");
+                return;
+            }
+            egoSay("Green felt, scorch marks in threes. The scorches are tidy. The felt has accepted its life.");
+            return;
+        case Give:
+        case UsedWith:
+            // ====== CARD I, the walkthrough path — FIRST in source ======
+            if(readingStage == 1) {
+                if(objB == InventoryItems::poster) {
+                    readingStage = 2;       // flag before speech
+                    cutscene(0) {
+                        startSound(arcSnd);
+                        egoSay("The arc hits the notice and goes the color of a courtroom.");
+                        waitForMessage();
+                        egoSay("'NOTHING IS WRONG,' she reads. 'Issued in bulk. Believed by no one.'");
+                        waitForMessage();
+                        egoSay("'You pried it off a public board. Past, verified.'");
+                        waitForMessage();
+                        egoSay("She slides it back across the felt. The past is mine to keep.");
+                        waitForMessage();
+                        startSound(dealSnd);
+                        setObjectState(readingTable, 3);
+                        egoSay("Card two: a woodcut of an open hand, palm up. Municipal.");
+                        waitForMessage();
+                        egoSay("'The present,' she says. 'Place the debt this city owes you.'");
+                        waitForMessage();
+                    }
+                    return;
+                }
+            }
+            // ====== CARD II, the walkthrough path ======
+            if(readingStage == 2) {
+                if(objB == InventoryItems::oilVoucher) {
+                    readingStage = 3;       // flag before speech
+                    cardTwo();
+                    return;
+                }
+            }
+            // ====== wrong offers, card I — true but rejected, and
+            // personalized: the coil reads the player's route ======
+            if(readingStage == 1) {
+                if(objB == InventoryItems::magnet) {
+                    startSound(fizzleSnd);
+                    egoSay("'It fished nine bolts out of a drain,' she reads. 'True. Not printed.'");
+                    waitForMessage();
+                    egoSay("The coil reads by touch, and everything I've carried is a diary.");
+                    return;
+                }
+                if(objB == InventoryItems::oilVoucher) {
+                    startSound(fizzleSnd);
+                    egoSay("'Ink so fresh it's still deciding. That isn't past. That's Tuesday.'");
+                    return;
+                }
+                if(objB == InventoryItems::backstagePass) {
+                    startSound(fizzleSnd);
+                    egoSay("'You earned that an hour ago. The past takes longer to print.'");
+                    return;
+                }
+                egoSay("'The card is patient.'");
+                return;
+            }
+            // ====== wrong offers, card II ======
+            if(readingStage == 2) {
+                if(objB == InventoryItems::poster) {
+                    startSound(fizzleSnd);
+                    egoSay("'That's what the city owes itself. Pockets again.'");
+                    return;
+                }
+                if(objB == InventoryItems::magnet) {
+                    startSound(fizzleSnd);
+                    egoSay("'The harbor paid that one. Nine bolts, settled.'");
+                    return;
+                }
+                if(objB == InventoryItems::backstagePass) {
+                    startSound(fizzleSnd);
+                    // she quotes the actual act (windTurns, common.sch).
+                    // Only the eight-turn act wins the show today; the
+                    // square branch survives alternate B8 winners.
+                    if(windTurns > 5) {
+                        egoSay("'You won that at eight turns. Regulation is five.'");
+                        waitForMessage();
+                        egoSay("The coil watched my act. Everyone's a critic with provenance.");
+                        return;
+                    }
+                    egoSay("'Square winnings. A pass is permission, not debt.'");
+                    return;
+                }
+                egoSay("'The card is patient.'");
+                return;
+            }
+            if(readingStage == 3) {
+                egoSay("Card three is face down and done with objects. It wants an answer, out loud.");
+                return;
+            }
+            if(readingStage >= 4) {
+                egoSay("The reading is over. The felt is off the clock.");
+                return;
+            }
+            egoSay("She hasn't dealt yet. Cards first, business after.");
+            return;
+        case Use:
+            // ====== CARD III, the walkthrough path: the future is a
+            // dialog, and the winning move is a confession ======
+            if(readingStage == 3) {
+                dlgStr[0] = "Offer the backstage pass. It opens doors.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "The key is in my other chassis.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "The truth: I had it, I advertised it, a hook took it.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "I need a minute.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                Dialog::dialogStart(0, 0);
+                do breakScript() while(selectedSentence < 0);
+                Dialog::dialogHide();
+                Dialog::dialogClear(1);
+                Dialog::dialogEnd();
+                // winner branch first in SOURCE (dub pairing); the
+                // flops live in their own scripts (own dub buckets)
+                if(selectedSentence == 2) {
+                    readingStage = 4;           // flags before speech;
+                    knewKnock = heardKnockCode; // capture, then force
+                    heardKnockCode = 1;         // the echo (B9)
+                    cutscene(0) {
+                        egoSay("The truth, then. I put my name in bulbs and the key on a lit stage. A hook took it at the bow.");
+                        waitForMessage();
+                        egoSay("'Truth.' The arc doesn't flinch. Neither of us mentions whose idea the bulbs were.");
+                        waitForMessage();
+                        startSound(creakSnd);
+                        setObjectState(readingTable, 5);
+                        egoSay("She turns the card with an arc. A woodcut of a city, held upside down, being shaken.");
+                        waitForMessage();
+                        egoSay("'The Rustlers don't want a dark city. They want one that pays to stay lit.'");
+                        waitForMessage();
+                        egoSay("'Wind it down. Ransom the rewind. Salvage rates.' Their words, says the card.");
+                        waitForMessage();
+                        egoSay("Piracy, with invoices.");
+                        waitForMessage();
+                        egoSay("'Your future knocks,' she says. 'Twice. Once. Twice.'");
+                        waitForMessage();
+                        // recognition first in source: the eavesdrop is
+                        // on the validate path (editorial B9)
+                        if(knewKnock) {
+                            egoSay("I know that knock. It plays cards in the Scrap & Barrel.");
+                            waitForMessage();
+                        }
+                        unless(knewKnock) {
+                            egoSay("Twice. Once. Twice. I file the rhythm somewhere fireproof.");
+                            waitForMessage();
+                        }
+                        egoSay("'The reading is paid,' she says. 'Ground yourself.'");
+                        waitForMessage();
+                        startSound(jarSnd);
+                        setObjectState(keyJar, 2);
+                        egoSay("She earths the jar with a rod the size of a baton. The lid gives a small, ceremonial pop.");
+                        waitForMessage();
+                        startSound(pickupSnd);
+                        pickupObject(InventoryItems::voltKey, InventoryItems);
+                        egoSay("'Key the second,' she says. 'Lose it slower.'");
+                        waitForMessage();
+                        egoSay("One key in hand, one behind a knock, one still a rumor that winds itself. The math is moving again.");
+                        waitForMessage();
+                        egoSay("'Make tomorrow negotiable again. I have appointments.'");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                if(selectedSentence == 0) {
+                    cardThreePass();
+                    return;
+                }
+                if(selectedSentence == 1) {
+                    cardThreeBluff();
+                    return;
+                }
+                egoSay("I step back. The card stays face down. It has nowhere better to be.");
+                return;
+            }
+            if(readingStage >= 4) {
+                egoSay("The reading is over. The felt is off the clock.");
+                return;
+            }
+            egoSay("It's her table. I've seen what the coil does to volunteers.");
+            return;
+        case Smell:
+            egoSay("Ozone. Old felt. More ozone.");
+            return;
+        }
+    }
+
+    object cardCarousel {
+        x = 208;
+        y = 64;
+        w = 24;
+        h = 32;
+        dir = NORTH;
+        name = "card carousel";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A brass carousel of punch-cards. The holes are the fortunes. The cards are just chaperones.");
+            return;
+        case PickUp:
+        case Use:
+            egoSay("It deals for her. It has seniority.");
+            return;
+        }
+    }
+
+    object keyJar {
+        x = 240;
+        y = 48;
+        w = 32;
+        h = 48;
+        dir = NORTH;
+        name = "key in a jar";
+        class = { Openable };
+        states = {
+            { 0, 0, "rooms/jar_key.bmp" },
+            { 0, 0, "rooms/jar_empty.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            // pre-payment look first in source: that's the state every
+            // detour sees (the empty jar is the epilogue)
+            unless(readingStage >= 4) {
+                egoSay("A brass wind-up key in a glass jar, stenciled PROPERTY OF THE ORDER OF THE WIND-UP KEY.");
+                waitForMessage();
+                egoSay("The jar hums. Not the city's hum. A private one.");
+                return;
+            }
+            egoSay("Empty. The stencil stays. One absence, well documented.");
+            return;
+        case Open:
+        case Use:
+        case PickUp:
+            unless(readingStage >= 4) {
+                startSound(arcSnd);
+                egoSay("I reach. The jar reaches back.");
+                waitForMessage();
+                egoSay("'The deposit is charged,' she says. 'So is the jar.'");
+                return;
+            }
+            egoSay("Already mine. The jar and I are square.");
+            return;
+        case Smell:
+            egoSay("Glass, brass, and a hum I can taste in my teeth. I don't have teeth.");
+            return;
+        }
+    }
+
+    object cables {
+        x = 120;
+        y = 116;
+        w = 150;
+        h = 16;
+        dir = NORTH;
+        name = "cables";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Cables, braided like the city's worst haircut. Every one of them feeds the parlor.");
+            return;
+        case Use:
+        case Move:
+            egoSay("Each one is load-bearing. So is her patience.");
+            return;
+        case Smell:
+            egoSay("Warm rubber.");
+            return;
+        }
+    }
+
+}

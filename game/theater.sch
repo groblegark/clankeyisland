@@ -9,6 +9,7 @@ room TheaterRoom {
     bit spotAwake;
     bit wonShow;
     bit curtainUp;
+    bit voltinaGreeted;
 
     object doorLobby;
     object spotBooth;

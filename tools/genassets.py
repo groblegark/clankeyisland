@@ -992,6 +992,213 @@ def draw_theater(curtain="closed"):
     return im
 
 
+# --------------------------------------- backstage at the Grand Cog
+
+# Scene 06 geometry. These rects ARE the object rects in
+# game/backstage.scc — keep the two in sync. The reading-table rect
+# holds all five card states; the jar and the ghost light get 2-state
+# crops (the ghost light flickers: the N-A5 deadline texture).
+BACK_GEOM = {
+    # state-bearing rects (table, jar, ghost) are 8-multiple sized:
+    # SCUMM strips — "Image width and height must be multiples of 8"
+    "B_DOOR":     (0, 56, 24, 48),
+    "B_RACK":     (32, 36, 44, 60),
+    "B_GHOST":    (88, 48, 16, 56),
+    "B_VOLTINA":  (148, 28, 48, 52),
+    "B_TABLE":    (136, 80, 72, 32),
+    "B_CAROUSEL": (208, 64, 24, 32),
+    "B_JAR":      (240, 48, 32, 48),
+    "B_FUSE":     (296, 24, 18, 28),
+    "B_CABLES":   (120, 116, 150, 16),
+}
+
+# the three cards on the felt (12x10 each; all state crops share these).
+# Screenplay probe anchors derived from here: card I face (150, 90),
+# card II face (166, 89), card III back (183, 89), key stem (256, 68).
+BACK_CARDS = [(146, 88), (162, 88), (178, 88)]
+
+
+def draw_backstage(cards=0, jar="key", ghost="lit"):
+    """cards: 0 bare felt, 1 card I up, 2 +card II up, 3 +card III face
+    down, 4 card III turned. jar: "key"/"empty". ghost: "lit"/"dark"."""
+    im = new_img(W, H)
+    d = ImageDraw.Draw(im)
+    g = BACK_GEOM
+
+    # --- brick back wall: the unpainted side of showbiz
+    d.rectangle([0, 0, W, 104], fill=17)
+    for y in range(7, 104, 8):
+        d.line([(0, y), (W, y)], fill=16)
+        off = 8 if (y // 8) % 2 else 0
+        for x in range(off, W, 16):
+            d.line([(x, y - 7), (x, y)], fill=16)
+    # counterweight rail, ropes, sandbags (top-left)
+    d.rectangle([0, 4, 64, 6], fill=6)
+    for rx in (10, 22, 34):
+        d.line([(rx, 7), (rx, 30)], fill=65)
+        d.rectangle([rx - 3, 30, rx + 3, 42], fill=66)     # sandbag
+        d.line([(rx - 3, 36), (rx + 3, 36)], fill=64)
+
+    # --- wood floor (boards, not the house carpet)
+    d.rectangle([0, 105, W, H], fill=65)
+    for y in range(110, H, 7):
+        d.line([(0, y), (W, y)], fill=64)
+    for x in range(13, W, 26):
+        d.line([(x, 105), (x, H)], fill=64)
+
+    # --- the parlor: a half-shell of deep curtain where the fire exit
+    # should be (drawn first; the booth furniture sits on it)
+    d.rectangle([136, 16, 288, 86], fill=18)
+    for x in range(142, 288, 8):
+        d.line([(x, 20), (x, 86)], fill=20)
+    d.rectangle([136, 16, 288, 19], fill=24)               # pelmet
+    for x in range(141, 288, 12):
+        im.putpixel((x, 20), 24)
+
+    # --- stage door (back to the theater, west wall)
+    dx, dy, dw, dh = g["B_DOOR"]
+    d.rectangle([dx, dy - 3, dx + dw + 3, dy + dh], fill=19)
+    d.rectangle([dx, dy, dx + dw, dy + dh], fill=64)
+    d.rectangle([dx + 4, dy + 6, dx + dw - 4, dy + 12], fill=44)   # glow
+    d.rectangle([dx + dw - 8, dy + 24, dx + dw - 3, dy + 26], fill=11)
+
+    # --- costume rack: forty years of acts on hangers
+    rx, ry, rw, rh = g["B_RACK"]
+    d.line([(rx, ry + 4), (rx + rw, ry + 4)], fill=6)      # rail
+    d.rectangle([rx, ry + 4, rx + 2, ry + rh], fill=6)     # legs
+    d.rectangle([rx + rw - 2, ry + 4, rx + rw, ry + rh], fill=6)
+    d.rectangle([rx + 6, ry + 8, rx + 16, ry + 34], fill=66)   # bear suit
+    d.rectangle([rx + 8, ry + 5, rx + 14, ry + 10], fill=67)   # bear head
+    d.rectangle([rx + 20, ry + 8, rx + 30, ry + 32], fill=5)   # bot suit
+    d.rectangle([rx + 22, ry + 12, rx + 28, ry + 15], fill=2)  # visor
+    for i in range(8):                                          # the boa
+        im.putpixel((rx + 35 + (i % 2), ry + 8 + i * 3), 94)
+    for hx in (rx + 11, rx + 25, rx + 36):
+        d.line([(hx, ry + 4), (hx, ry + 8)], fill=11)      # hooks
+
+    # --- ghost light: theater law says it never goes out. It flickers.
+    gx, gy, gw, gh = g["B_GHOST"]
+    d.line([(gx + 8, gy + 16), (gx + 8, gy + gh - 4)], fill=6)   # pole
+    d.line([(gx + 3, gy + gh), (gx + 8, gy + gh - 4)], fill=6)   # tripod
+    d.line([(gx + 13, gy + gh), (gx + 8, gy + gh - 4)], fill=6)
+    if ghost == "lit":
+        d.ellipse([gx + 2, gy + 2, gx + 14, gy + 16], outline=44)
+        d.ellipse([gx + 4, gy + 4, gx + 12, gy + 14], fill=50)
+        im.putpixel((gx + 8, gy + 8), 51)
+    else:
+        d.ellipse([gx + 2, gy + 2, gx + 14, gy + 16], outline=6)
+        d.ellipse([gx + 4, gy + 4, gx + 12, gy + 14], fill=42)
+
+    # --- fuse box: every fuse labeled HER
+    fx, fy, fw, fh = g["B_FUSE"]
+    d.rectangle([fx, fy, fx + fw - 1, fy + fh], fill=6)
+    d.rectangle([fx + 2, fy + 2, fx + fw - 3, fy + 14], fill=5)
+    for i in range(3):
+        d.rectangle([fx + 4 + i * 4, fy + 5, fx + 5 + i * 4, fy + 10],
+                    fill=107)                              # the fuses
+    _neon_text(im, "HER", fx + 3, fy + 18, 107)
+
+    # --- cables: every one of them feeds the parlor, and glows
+    d.line([(fx + 8, fy + fh), (fx + 8, 118)], fill=9)     # down the wall
+    cx0, cy0, cw0, ch0 = g["B_CABLES"]
+    for i, yy in enumerate((118, 122, 126)):
+        d.line([(cx0 + 4, yy), (fx + 8, yy - i)], fill=9 if i % 2 else 1)
+    for x in range(cx0 + 8, cx0 + cw0 - 8, 12):            # the glow
+        im.putpixel((x, 120), 31)
+        im.putpixel((x + 6, 124), 31)
+
+    # --- Madame Voltina: a tesla coil in a shawl. She's the ball.
+    vx, vy, vw, vh = g["B_VOLTINA"]
+    vcx = vx + vw // 2                                     # 172
+    d.polygon([(vcx - 12, vy + vh), (vcx + 12, vy + vh),
+               (vcx + 8, vy + 18), (vcx - 8, vy + 18)], fill=19)   # shawl
+    for i, ry2 in enumerate(range(vy + 20, vy + 52, 8)):
+        d.ellipse([vcx - 9 + i, ry2, vcx + 9 - i, ry2 + 5],
+                  outline=46)                              # coil rings
+    im.putpixel((vcx - 7, vy + 24), 107)                   # fuse brooch
+    d.ellipse([vcx - 8, vy, vcx + 8, vy + 16], fill=29)    # the dome
+    d.ellipse([vcx - 8, vy, vcx + 8, vy + 16], outline=11)
+    d.line([(vcx - 3, vy + 11), (vcx, vy + 4), (vcx + 2, vy + 9),
+            (vcx + 4, vy + 5)], fill=39)                   # the filament
+    im.putpixel((vcx, vy + 4), 104)
+    im.putpixel((vcx - 10, vy + 14), 104)                  # insulator
+    im.putpixel((vcx + 10, vy + 14), 104)                  # earrings
+
+    # --- the reading table: green felt, scorch marks in threes
+    tx, ty, tw, th = g["B_TABLE"]
+    d.rectangle([tx + 4, ty + 4, tx + tw - 4, ty + 20], fill=80)   # felt
+    d.rectangle([tx + 2, ty + 2, tx + tw - 2, ty + 4], fill=66)    # edge
+    d.rectangle([tx + 4, ty + 20, tx + tw - 4, ty + 22], fill=64)
+    d.rectangle([tx + 6, ty + 22, tx + 10, ty + th], fill=64)      # legs
+    d.rectangle([tx + tw - 10, ty + 22, tx + tw - 6, ty + th], fill=64)
+    for sx in (tx + 14, tx + 34, tx + 54):                 # the scorches
+        for k in range(3):
+            im.putpixel((sx + k * 2, ty + 18), 77)
+
+    # the cards (cumulative: the reading's progress is the art state)
+    def card_up(pos, face):
+        ux, uy = pos
+        d.rectangle([ux, uy, ux + 11, uy + 9], fill=104)
+        d.rectangle([ux, uy, ux + 11, uy + 9], outline=6)
+        if face == "press":          # a printing press, smiling
+            d.rectangle([ux + 3, uy + 4, ux + 8, uy + 6], fill=1)
+            im.putpixel((ux + 4, uy + 8), 1)
+            im.putpixel((ux + 7, uy + 8), 1)
+        elif face == "hand":         # an open hand, palm up
+            d.rectangle([ux + 3, uy + 5, ux + 8, uy + 7], fill=1)
+            for fpx in range(ux + 3, ux + 9, 2):
+                im.putpixel((fpx, uy + 4), 1)
+        else:                        # a city upside down, being shaken
+            for cpx in range(ux + 3, ux + 10, 3):
+                d.line([(cpx, uy + 3), (cpx, uy + 5)], fill=1)
+            im.putpixel((ux + 5, uy + 7), 1)
+            im.putpixel((ux + 8, uy + 7), 1)
+
+    def card_down(pos):              # rust back, brass border
+        ux, uy = pos
+        d.rectangle([ux, uy, ux + 11, uy + 9], fill=20)
+        d.rectangle([ux, uy, ux + 11, uy + 9], outline=46)
+        d.line([(ux + 2, uy + 3), (ux + 9, uy + 7)], fill=24)
+        d.line([(ux + 9, uy + 3), (ux + 2, uy + 7)], fill=24)
+
+    if cards >= 1:
+        card_up(BACK_CARDS[0], "press")
+    if cards >= 2:
+        card_up(BACK_CARDS[1], "hand")
+    if cards == 3:
+        card_down(BACK_CARDS[2])
+    if cards >= 4:
+        card_up(BACK_CARDS[2], "city")
+
+    # --- the card carousel: it deals for her. It has seniority.
+    ax, ay, aw, ah = g["B_CAROUSEL"]
+    d.rectangle([ax + 8, ay + 18, ax + aw - 8, ay + ah], fill=64)  # stand
+    d.ellipse([ax + 2, ay + 4, ax + aw - 2, ay + 18], fill=46)     # drum
+    d.ellipse([ax + 2, ay + 4, ax + aw - 2, ay + 18], outline=9)
+    for px2 in range(ax + 6, ax + aw - 4, 4):
+        d.line([(px2, ay + 7), (px2, ay + 15)], fill=1)            # slots
+    d.line([(ax + aw - 3, ay + 7), (ax + aw + 1, ay + 3)], fill=11)
+
+    # --- the key in the jar (Key #2; the stencil matches the crate)
+    jx, jy, jw, jh = g["B_JAR"]
+    d.rectangle([jx + 6, jy + 36, jx + jw - 6, jy + jh], fill=66)  # plinth
+    d.rectangle([jx + 4, jy + 34, jx + jw - 4, jy + 36], fill=64)
+    d.rectangle([jx + 7, jy + 4, jx + jw - 7, jy + 34], fill=31)   # glass
+    d.rectangle([jx + 7, jy + 4, jx + jw - 7, jy + 34], outline=11)
+    d.rectangle([jx + 9, jy + 1, jx + jw - 9, jy + 4], fill=5)     # lid
+    if jar == "key":
+        d.ellipse([jx + 11, jy + 8, jx + 21, jy + 16], outline=46) # bow
+        d.rectangle([jx + 15, jy + 16, jx + 17, jy + 28], fill=46) # stem
+        d.rectangle([jx + 13, jy + 26, jx + 19, jy + 30], fill=47) # flag
+        im.putpixel((jx + 16, jy + 12), 39)                # arc shimmer
+    else:
+        im.putpixel((jx + 14, jy + 20), 39)                # residual arc
+    for sy in (jy + 31, jy + 33):                          # stencil bars
+        d.line([(jx + 10, sy), (jx + 16, sy)], fill=104)
+
+    return im
+
+
 # ----------------------------------------------------------- verb panel
 
 def draw_verb_panel():
@@ -1194,6 +1401,15 @@ def gen_inventory_icons():
     d.line([(16, 8), (24, 8)], fill=104)
     d.line([(16, 11), (22, 11)], fill=104)
     icons["inv_pass"] = im
+    # the second key: brass, jar-aged, never been on a marquee
+    im = new_img(40, 16)
+    d = ImageDraw.Draw(im)
+    d.rectangle([8, 4, 16, 12], outline=46, width=2)       # square bow
+    d.rectangle([16, 7, 28, 9], fill=45)                   # stem
+    d.rectangle([28, 4, 31, 12], fill=46)                  # flag
+    d.rectangle([29, 7, 31, 9], fill=0)                    # notch
+    im.putpixel((12, 8), 31)                               # ozone glint
+    icons["inv_voltkey"] = im
     return icons
 
 
@@ -1251,6 +1467,18 @@ GRAND_OBJECT_NAMES = {
     "G_BACKSTAGE":  "stage door",
 }
 
+BACK_OBJECT_NAMES = {
+    "B_DOOR":     "door to the stage",
+    "B_RACK":     "costume rack",
+    "B_GHOST":    "ghost light",
+    "B_VOLTINA":  "Madame Voltina",
+    "B_TABLE":    "reading table",
+    "B_CAROUSEL": "card carousel",
+    "B_JAR":      "key in a jar",
+    "B_FUSE":     "fuse box",
+    "B_CABLES":   "cables",
+}
+
 MIDTOWN_OBJECT_NAMES = {
     "M_STATION":   "funicular station",
     "M_LEFTYS":    "Lefty's Spare Parts",
@@ -1288,6 +1516,11 @@ GRAND_WALKBOXES = [
     ("greast", [(160, 112), (304, 112), (304, 140), (160, 140)]),
 ]
 
+BACK_WALKBOXES = [
+    ("backwest", [(8, 112), (160, 112), (160, 140), (8, 140)]),
+    ("backeast", [(160, 112), (304, 112), (304, 140), (160, 140)]),
+]
+
 # Verb anchors from game/verbs.scc (verbCenter() -> x is the center;
 # y is the text top, so the click point sits a few pixels lower).
 STAGE_VERBS = {
@@ -1323,6 +1556,10 @@ STAGE_PROBES = {
     "talk-2":    [106],
     "red":       [107],
     "sprocket-body": [COST + 2, COST + 3, COST + 4],
+    # Scene 06: the brass key in (and gone from) Voltina's jar, and the
+    # card faces on the felt (Scene 06 screenplay probes)
+    "brass":      [45, 46, 47],
+    "card-white": [104],
 }
 
 
@@ -1333,7 +1570,8 @@ def emit_stage(path):
                         (TAVERN_OBJECT_NAMES, TAVERN_GEOM),
                         (ALLEY_OBJECT_NAMES, ALLEY_GEOM),
                         (MIDTOWN_OBJECT_NAMES, MIDTOWN_GEOM),
-                        (GRAND_OBJECT_NAMES, GRAND_GEOM)]:
+                        (GRAND_OBJECT_NAMES, GRAND_GEOM),
+                        (BACK_OBJECT_NAMES, BACK_GEOM)]:
         for key, name in names.items():
             x, y, w, h = geom[key]
             hs = STAGE_HOTSPOT_OVERRIDES.get(key, (x + w // 2, y + h // 2))
@@ -1350,12 +1588,13 @@ def emit_stage(path):
         "walkboxes": [{"name": n, "points": [list(p) for p in pts]}
                       for n, pts in (WALKBOXES + TAVERN_WALKBOXES
                                      + ALLEY_WALKBOXES + MIDTOWN_WALKBOXES
-                                     + GRAND_WALKBOXES)],
+                                     + GRAND_WALKBOXES + BACK_WALKBOXES)],
         "walk_targets": {"center-west": [120, 126], "center-east": [250, 126],
                          "tavern-center": [150, 126],
                          "alley-center": [150, 126],
                          "midtown-center": [150, 126],
-                         "grand-center": [140, 126]},
+                         "grand-center": [140, 126],
+                         "backstage-center": [100, 126]},
     }
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
@@ -1433,6 +1672,32 @@ def main():
     save_bmp(gcrop(grand_open, "G_STAGE"), "rooms/curtain_open.bmp")
     write_box_file(os.path.join(OUT, "rooms", "theater.box"),
                    [Box(pts, name=n) for n, pts in GRAND_WALKBOXES])
+
+    # Scene 06: backstage — Madame Voltina
+    back = draw_backstage()
+
+    def bcrop(src, key):
+        x, y, w, h = BACK_GEOM[key]
+        return src.crop((x, y, x + w, y + h))
+
+    save_bmp(back, "rooms/backstage.bmp")
+    save_bmp(bcrop(back, "B_TABLE"), "rooms/table_bare.bmp")
+    save_bmp(bcrop(draw_backstage(cards=1), "B_TABLE"),
+             "rooms/table_card1.bmp")
+    save_bmp(bcrop(draw_backstage(cards=2), "B_TABLE"),
+             "rooms/table_card2.bmp")
+    save_bmp(bcrop(draw_backstage(cards=3), "B_TABLE"),
+             "rooms/table_card3down.bmp")
+    save_bmp(bcrop(draw_backstage(cards=4), "B_TABLE"),
+             "rooms/table_card3up.bmp")
+    save_bmp(bcrop(back, "B_JAR"), "rooms/jar_key.bmp")
+    save_bmp(bcrop(draw_backstage(jar="empty"), "B_JAR"),
+             "rooms/jar_empty.bmp")
+    save_bmp(bcrop(back, "B_GHOST"), "rooms/ghost_lit.bmp")
+    save_bmp(bcrop(draw_backstage(ghost="dark"), "B_GHOST"),
+             "rooms/ghost_dark.bmp")
+    write_box_file(os.path.join(OUT, "rooms", "backstage.box"),
+                   [Box(pts, name=n) for n, pts in BACK_WALKBOXES])
 
     # bolt sprite on dock floor (background-colored patch + bolt)
     bx, by, bw, bh = GEOM["BOLT"]
