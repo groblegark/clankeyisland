@@ -9,8 +9,8 @@ on Clankey Island — built to run in [ScummVM](https://www.scummvm.org/).
 
 *(recorded automatically by the [walk-through-er](docs/WALKTHROUGHER.md),
 which also gates deploys: if it can't finish the game, we don't ship.
-**[Watch the full Act One production with voice acting and music
-→](docs/media/walkthrough-act1.mp4)**)*
+**[Watch the full production — the story so far, with voice acting and
+music →](docs/media/walkthrough-story-so-far.mp4)**)*
 
 > *Deep in the Rust Belt Sea lies Clankey Island, home to Clanker City: a
 > sprawling metropolis of robots, where steam hisses from manhole covers,
@@ -82,3 +82,8 @@ one-line `tools/patches/0002-scummvm-configure-respect-datadir.patch`.
   (bolt → Gusket's servo → drink token → dart hustle → oil can → Betty
   → crate → the first wind-up key), validated end-to-end
 - [x] Scene 01 audio: 'Dockside' theme (tools/genmusic.py) + synthesized SFX (tools/genaudio.py), playing native and in-browser
+- [x] Scene 03: the Rustlers' alley — Rivet pays off the GDD's bolt
+  economy (dumpster magnet → fish the storm drain → nine bolts → riddle
+  duel for the tenth → pay the funicular fare), and the gate to Midtown
+  opens on the Act Two threshold
+- [ ] Scene 04: Midtown Gearworks (ride the funicular for real)

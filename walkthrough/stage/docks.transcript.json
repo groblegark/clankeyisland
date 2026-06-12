@@ -460,8 +460,6 @@
     "The funicular to Midtown takes ten bolts. Exact change. Gates can count \u2014 it's all they do.",
     "Second fact costs a bolt. He can see I don't have one. He mentions that for free too.",
     "Third freebie, out of pity: the harbor keeps everything this town drops, and that dumpster is \u2014 legally \u2014 his.",
-    "He waves. He's already sorting the bolts I fed the gate. I'm not asking how.",
-    "He nods at the gate. 'Ten bolts, exact change. It's all they do.'",
     "Nine bolts, I tell him. He appraises my pockets from four feet away. Correctly.",
     "He proposes a riddle duel. His bolt against my official city notice. The alley has rules, apparently.",
     "Rivet goes first: 'What has a hundred teeth and never bites?' A gear. In this town it's always a gear.",
@@ -469,7 +467,9 @@
     "He opens his mouth. He closes it. He looks uptown, at the Dynamo District.",
     "He pays the bolt without a word. The best riddles aren't funny.",
     "He says everything a bot needs is in that dumpster, and he says it as the dumpster's legal owner.",
-    "He eyes the magnet. He says the docks have a drain, the drain has a glint, and the glint has my name on it."
+    "He eyes the magnet. He says the docks have a drain, the drain has a glint, and the glint has my name on it.",
+    "He waves. He's already sorting the bolts I fed the gate. I'm not asking how.",
+    "He nods at the gate. 'Ten bolts, exact change. It's all they do.'"
    ],
    "Give": [
     "He appraises it, names a price, and the price is an insult. We're both happier keeping it."
@@ -497,29 +497,28 @@
   },
   "funicular gate": {
    "LookAt": [
+    "Gate's open, car's lit. Midtown keeps glittering like it doesn't know I'm coming.",
+    "Act Two will still be uptown tomorrow. Probably. If the Dynamo holds.",
     "A wrought-iron gate, a rail going up the cliff, and a sign: MIDTOWN. FARE, 10 BOLTS.",
-    "Uptown. Act Two. The future. It has a coin slot.",
-    "Gate's open, car's lit. Midtown keeps glittering like it doesn't know I'm coming."
+    "Uptown. Act Two. The future. It has a coin slot."
    ],
    "Open": [
-    "The fare box wants ten bolts. I have pockets, and ambition.",
-    "I feed it nine bolts. It counts them, blinks NINE at me, and gives them all back.",
-    "Smug, for a gate. Rivet would know where a tenth bolt grows.",
     "Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.",
     "The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.",
     "Act Two. I can hear the neon from here.",
-    "The car says it's boarding 'momentarily'. It's been a long momentarily.",
-    "Midtown will keep. Probably. If the Dynamo holds."
+    "The fare box wants ten bolts. I have pockets, and ambition.",
+    "I feed it nine bolts. It counts them, blinks NINE at me, and gives them all back.",
+    "Smug, for a gate. Rivet would know where a tenth bolt grows.",
+    "The car says it's boarding 'momentarily'. It's been a long momentarily."
    ],
    "Use": [
-    "The fare box wants ten bolts. I have pockets, and ambition.",
-    "I feed it nine bolts. It counts them, blinks NINE at me, and gives them all back.",
-    "Smug, for a gate. Rivet would know where a tenth bolt grows.",
     "Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.",
     "The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.",
     "Act Two. I can hear the neon from here.",
-    "The car says it's boarding 'momentarily'. It's been a long momentarily.",
-    "Midtown will keep. Probably. If the Dynamo holds."
+    "The fare box wants ten bolts. I have pockets, and ambition.",
+    "I feed it nine bolts. It counts them, blinks NINE at me, and gives them all back.",
+    "Smug, for a gate. Rivet would know where a tenth bolt grows.",
+    "The car says it's boarding 'momentarily'. It's been a long momentarily."
    ],
    "Smell": [
     "Ozone and altitude. The future smells expensive."

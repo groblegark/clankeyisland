@@ -11,7 +11,7 @@ cd game && make run                 # build + play natively
 cd game && make tentacle            # just build (build/tentacle.000/.001)
 ./tools/build-web.sh                # full web bundle -> web/dist
 python3 walkthrough/driver/walkthrough.py --serve \
-    walkthrough/screenplay/01-docks.play.yaml          # validate (gate)
+    walkthrough/screenplay/full-run.play.yaml          # validate (gate)
 python3 walkthrough/driver/walkthrough.py --mode perform --serve ...
 python3 walkthrough/post/render.py walkthrough/out/<take>   # film + gif
 python3 walkthrough/post/dub.py    walkthrough/out/<take>   # + voice/music
@@ -54,6 +54,17 @@ https://groblegark.github.io/clankeyisland/ about a minute later.
   LOOP_BEATS in tools/genmusic.py (16 bars × 4 + 1). A watchdog script
   in docks.scc restarts the theme if the loop falls off the end.
 - **ScummVM ini parser wants `#` comments**, not `;`.
+- **Object owners default to 0x0F, not 0**: sld fills unset owners with
+  0x0F (scc_ld.c), so `getObjectOwner(item)` is truthy for items the
+  player has never touched. "In my pocket" is `== VAR_EGO` (pickupObject
+  does putOwner(obj, VAR_EGO)); "consumed" is owner 0 via
+  setObjectOwner(x, 0). Cost a validate run: the dumpster skipped its
+  own loot and Rivet's riddle duel fired before the bolts existed.
+- **Walkthrough-path lines go FIRST in source** inside each verb
+  handler: transcript pairing hands out egoSay lines in source order
+  (tools/transcript.py), so guard/hint/repeat branches must sit
+  textually after the success path or the dub voices the wrong lines
+  (the gate narrated its own failure gag over the fare cutscene).
 - **ScummC verb ids are per-compilation-unit** (assigned in first-use
   order) and sld keeps each unit's baked constants — declare every
   shared verb with an explicit `@ id` in common.sch or units silently
@@ -93,10 +104,13 @@ https://groblegark.github.io/clankeyisland/ about a minute later.
 
 ## Next steps (in rough order)
 
-1. Scene 03: the Rustlers' alley (the knock-code is already learnable
-   at the rustlers' table; the back door answers "Act Three, buddy").
+1. Scene 04: Midtown Gearworks — ride the funicular for real (the gate
+   opens and the car is lit; stepping aboard still says "momentarily").
+   GDD Act 2: the Grand Cog talent show, Madame Voltina, Mayor Piston.
 2. Optional dub upgrades: funded TTS for real deadpan direction; the
    Suno music/foley arrangement pass over the emitted dub sheet.
 3. In-game speech (monster.sou via ScummC `voice` decls) — parked.
-(Scene 02, the start overlay, and the validate-gated deploy-web.sh all
-shipped 2026-06-11.)
+(Scene 03 — the Rustlers' alley with Rivet, the riddle duel, and the
+fare to Act Two — shipped 2026-06-11; the deploy gate is now the
+full-run screenplay. Scene 02, the start overlay, and the
+validate-gated deploy-web.sh shipped earlier the same day.)

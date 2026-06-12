@@ -241,39 +241,42 @@ room AlleyRoom {
                 }
                 return;
             }
-            if(riddleDone) {
-                if(fareDone) {
-                    egoSay("He waves. He's already sorting the bolts I fed the gate. I'm not asking how.");
+            // transcript pairing reads egoSay lines in SOURCE order, so
+            // the walkthrough-path branch (the duel) stays textually
+            // ahead of the hint/repeat branches (see tools/transcript.py)
+            unless(riddleDone) {
+                if(getObjectOwner(InventoryItems::boltStash) == VAR_EGO) {
+                    riddleDone = 1;
+                    cutscene(0) {
+                        egoSay("Nine bolts, I tell him. He appraises my pockets from four feet away. Correctly.");
+                        waitForMessage();
+                        egoSay("He proposes a riddle duel. His bolt against my official city notice. The alley has rules, apparently.");
+                        waitForMessage();
+                        egoSay("Rivet goes first: 'What has a hundred teeth and never bites?' A gear. In this town it's always a gear.");
+                        waitForMessage();
+                        egoSay("My turn. 'What winds down... but never winds up?'");
+                        waitForMessage();
+                        egoSay("He opens his mouth. He closes it. He looks uptown, at the Dynamo District.");
+                        waitForMessage();
+                        startSound(clinkSnd);
+                        pickupObject(InventoryItems::tenthBolt, InventoryItems);
+                        egoSay("He pays the bolt without a word. The best riddles aren't funny.");
+                        waitForMessage();
+                    }
                     return;
                 }
-                egoSay("He nods at the gate. 'Ten bolts, exact change. It's all they do.'");
-                return;
-            }
-            if(getObjectOwner(InventoryItems::boltStash) == VAR_EGO) {
-                riddleDone = 1;
-                cutscene(0) {
-                    egoSay("Nine bolts, I tell him. He appraises my pockets from four feet away. Correctly.");
-                    waitForMessage();
-                    egoSay("He proposes a riddle duel. His bolt against my official city notice. The alley has rules, apparently.");
-                    waitForMessage();
-                    egoSay("Rivet goes first: 'What has a hundred teeth and never bites?' A gear. In this town it's always a gear.");
-                    waitForMessage();
-                    egoSay("My turn. 'What winds down... but never winds up?'");
-                    waitForMessage();
-                    egoSay("He opens his mouth. He closes it. He looks uptown, at the Dynamo District.");
-                    waitForMessage();
-                    startSound(clinkSnd);
-                    pickupObject(InventoryItems::tenthBolt, InventoryItems);
-                    egoSay("He pays the bolt without a word. The best riddles aren't funny.");
-                    waitForMessage();
+                unless(getObjectOwner(InventoryItems::magnet) == VAR_EGO) {
+                    egoSay("He says everything a bot needs is in that dumpster, and he says it as the dumpster's legal owner.");
+                    return;
                 }
+                egoSay("He eyes the magnet. He says the docks have a drain, the drain has a glint, and the glint has my name on it.");
                 return;
             }
-            unless(getObjectOwner(InventoryItems::magnet) == VAR_EGO) {
-                egoSay("He says everything a bot needs is in that dumpster, and he says it as the dumpster's legal owner.");
+            if(fareDone) {
+                egoSay("He waves. He's already sorting the bolts I fed the gate. I'm not asking how.");
                 return;
             }
-            egoSay("He eyes the magnet. He says the docks have a drain, the drain has a glint, and the glint has my name on it.");
+            egoSay("He nods at the gate. 'Ten bolts, exact change. It's all they do.'");
             return;
         case Give:
         case UsedWith:
@@ -323,48 +326,52 @@ room AlleyRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
-            unless(fareDone) {
-                egoSay("A wrought-iron gate, a rail going up the cliff, and a sign: MIDTOWN. FARE, 10 BOLTS.");
+            // post-fare line first in source: that's the walkthrough's
+            // closing shot, and transcript pairing reads source order
+            if(fareDone) {
+                egoSay("Gate's open, car's lit. Midtown keeps glittering like it doesn't know I'm coming.");
                 waitForMessage();
-                egoSay("Uptown. Act Two. The future. It has a coin slot.");
+                egoSay("Act Two will still be uptown tomorrow. Probably. If the Dynamo holds.");
                 return;
             }
-            egoSay("Gate's open, car's lit. Midtown keeps glittering like it doesn't know I'm coming.");
+            egoSay("A wrought-iron gate, a rail going up the cliff, and a sign: MIDTOWN. FARE, 10 BOLTS.");
+            waitForMessage();
+            egoSay("Uptown. Act Two. The future. It has a coin slot.");
             return;
         case Open:
         case Use:
             unless(fareDone) {
+                // owning the tenth implies owning the nine: the duel
+                // requires the stash, and only the fare consumes it
+                if(getObjectOwner(InventoryItems::tenthBolt) == VAR_EGO) {
+                    fareDone = 1;
+                    setObjectOwner(InventoryItems::boltStash, 0);
+                    setObjectOwner(InventoryItems::tenthBolt, 0);
+                    cutscene(0) {
+                        startSound(clinkSnd);
+                        egoSay("Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.");
+                        waitForMessage();
+                        startSound(ratchetSnd);
+                        delay(30);
+                        setObjectState(gate, 2);
+                        startSound(thudSnd);
+                        egoSay("The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.");
+                        waitForMessage();
+                        egoSay("Act Two. I can hear the neon from here.");
+                        waitForMessage();
+                    }
+                    return;
+                }
                 unless(getObjectOwner(InventoryItems::boltStash) == VAR_EGO) {
                     egoSay("The fare box wants ten bolts. I have pockets, and ambition.");
                     return;
                 }
-                unless(getObjectOwner(InventoryItems::tenthBolt) == VAR_EGO) {
-                    egoSay("I feed it nine bolts. It counts them, blinks NINE at me, and gives them all back.");
-                    waitForMessage();
-                    egoSay("Smug, for a gate. Rivet would know where a tenth bolt grows.");
-                    return;
-                }
-                fareDone = 1;
-                setObjectOwner(InventoryItems::boltStash, 0);
-                setObjectOwner(InventoryItems::tenthBolt, 0);
-                cutscene(0) {
-                    startSound(clinkSnd);
-                    egoSay("Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.");
-                    waitForMessage();
-                    startSound(ratchetSnd);
-                    delay(30);
-                    setObjectState(gate, 2);
-                    startSound(thudSnd);
-                    egoSay("The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.");
-                    waitForMessage();
-                    egoSay("Act Two. I can hear the neon from here.");
-                    waitForMessage();
-                }
+                egoSay("I feed it nine bolts. It counts them, blinks NINE at me, and gives them all back.");
+                waitForMessage();
+                egoSay("Smug, for a gate. Rivet would know where a tenth bolt grows.");
                 return;
             }
             egoSay("The car says it's boarding 'momentarily'. It's been a long momentarily.");
-            waitForMessage();
-            egoSay("Midtown will keep. Probably. If the Dynamo holds.");
             return;
         case Smell:
             egoSay("Ozone and altitude. The future smells expensive.");
