@@ -294,14 +294,17 @@ class Performer:
         time.sleep(0.45)
         self.page.mouse.click(px, py)
 
-    def watch(self, until, timeout, lines=None, settle=0.0):
+    def watch(self, until, timeout, lines=None, settle=0.0, seg_start=0):
         """Poll the oracle; track talk segments; return (ok, frame).
 
         until(frame) -> bool decides success; success must then hold
         through `settle` seconds of continued quiet (no talking).
+        seg_start continues line pairing across a two-phase shot (the
+        dialog-choice shots watch twice; the second watch must not
+        restart pairing at lines[0]).
         """
         deadline = time.monotonic() + timeout
-        cur_sig, seg_count = None, 0
+        cur_sig, seg_count = None, seg_start
         ok_since = None
         frame = None
         while time.monotonic() < deadline:
@@ -323,6 +326,7 @@ class Performer:
             elif not talking and cur_sig is not None:
                 self.take.log("line_end", index=seg_count - 1)
             cur_sig = sig
+            self._last_segs = seg_count
             if until(frame) and not talking:
                 if ok_since is None:
                     ok_since = time.monotonic()
@@ -332,6 +336,23 @@ class Performer:
                 ok_since = None
             time.sleep(POLL)
         return False, frame
+
+    def dialog_open(self, frame):
+        """True when the dialog-choice list is on screen: option text in
+        the left margin of the panel area (x<64 — normal verbs start at
+        x~88, and the sentence line is centered) on 2+ distinct rows."""
+        colors = (self.stage.probes["verb"] + self.stage.probes["verb-hi"])
+        px = frame.load()
+        rows = set()
+        for d in range(5):
+            yy = 149 + 11 * d
+            if yy >= GAME_H:
+                break
+            for xx in range(8, 64, 2):
+                if any(near(px[xx, yy], c) for c in colors):
+                    rows.add(d)
+                    break
+        return len(rows) >= 2
 
     def expectations(self, expects, segments_seen):
         """Build an until() that checks all pixel expectations."""
@@ -415,6 +436,22 @@ class Performer:
         def segments_seen():
             return self.count_segments() > seg_base
 
+        seg_carry = 0
+        if "do" in shot and "choose" in shot["do"]:
+            # two-phase shot: the pre-dialog cutscene talks, then the
+            # option list appears; pick the option, then the outcome
+            # plays. Line pairing carries across both watches.
+            ok1, _ = self.watch(self.dialog_open,
+                                timeout=shot.get("timeout", 40),
+                                lines=lines)
+            if not ok1:
+                self.take.fail(name, "dialog list never appeared", None)
+                self.take.log("shot_end", shot=name, ok=False)
+                return False
+            seg_carry = getattr(self, "_last_segs", 0)
+            time.sleep(0.4)
+            self.click_game((80, 149 + 11 * shot["do"]["choose"]))
+
         if shot.get("cutscene") and self.mode == "validate":
             # let the first line land (proves the cutscene talks), then
             # skip the rest via the cutscene override
@@ -426,7 +463,8 @@ class Performer:
         # land mid-cutscene and race the story flags
         settle = 1.6
         ok, frame = self.watch(until, timeout=shot.get("timeout", 40),
-                               lines=lines, settle=settle)
+                               lines=lines, settle=settle,
+                               seg_start=seg_carry)
         if not ok:
             self.take.fail(name, "expectations not met before timeout", frame)
         if self.mode == "perform":

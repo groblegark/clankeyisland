@@ -9,6 +9,7 @@
 #include "common.sch"
 #include "verbs.sch"
 #include "inventoryitems.sch"
+#include "dialog.sch"
 #include "midtown.sch"
 #include "theater.sch"
 
@@ -28,6 +29,8 @@ room TheaterRoom {
     sound clinkSnd    = "clink.soun";
     sound ratchetSnd  = "ratchet.soun";
     sound creakSnd    = "creak.soun";
+
+    char* dlgStr;    // dialog-option scratch (openquest idiom)
 
     // ------------------------------------------------------------ music
 
@@ -261,12 +264,41 @@ room TheaterRoom {
             if(objB == InventoryItems::windupKey) {
                 if(spotAwake) {
                     unless(wonShow) {
+                        // THE ACT — playable (editorial B8): the player
+                        // picks the wind count. Under-winds flop funny
+                        // and retry free; the bold red number wins.
+                        unless(curtainUp) {
+                            curtainUp = 1;
+                            cutscene(0) {
+                                startSound(creakSnd);
+                                setObjectState(stage, 2);
+                                egoSay("The curtain opens. The house goes quiet the way a dropped wrench goes quiet. Mid-air.");
+                                waitForMessage();
+                                egoSay("The emcee leans in: how many turns? The manual mentions a number. In bold. In red.");
+                                waitForMessage();
+                            }
+                        }
+                        dlgStr[0] = "Three turns. A dignified minimum.";
+                        Dialog::dialogAdd(dlgStr);
+                        dlgStr = 0;
+                        dlgStr[0] = "Five turns. The regulation maximum.";
+                        Dialog::dialogAdd(dlgStr);
+                        dlgStr = 0;
+                        dlgStr[0] = "Eight turns. The bold red number.";
+                        Dialog::dialogAdd(dlgStr);
+                        dlgStr = 0;
+                        Dialog::dialogStart(0, 0);
+                        do breakScript() while(selectedSentence < 0);
+                        Dialog::dialogHide();
+                        Dialog::dialogClear(1);
+                        Dialog::dialogEnd();
+                        // winner branch first in SOURCE (dub pairing);
+                        // the flop branches sit after the whole win
+                        // cutscene below
+                        if(selectedSentence == 2) {
                         wonShow = 1;
+                        windTurns = 8;
                         cutscene(0) {
-                            startSound(creakSnd);
-                            setObjectState(stage, 2);
-                            egoSay("The curtain opens. The house goes quiet the way a dropped wrench goes quiet. Mid-air.");
-                            waitForMessage();
                             startSound(ratchetSnd);
                             egoSay("I wind myself. Eight full turns. Regulation maximum is five.");
                             waitForMessage();
@@ -315,6 +347,28 @@ room TheaterRoom {
                             putActorAt(VAR_EGO, 240, 120, TheaterRoom);
                             setCurrentActor(VAR_EGO);
                             setActorStanding();
+                        }
+                        return;
+                        }
+                        if(selectedSentence == 0) {
+                            windTurns = 3;
+                            cutscene(0) {
+                                startSound(ratchetSnd);
+                                egoSay("Three turns buys one hop and a curtsy. The house files it under 'juggler'.");
+                                waitForMessage();
+                                egoSay("The emcee mouths: the bold. red. number.");
+                                waitForMessage();
+                            }
+                            return;
+                        }
+                        windTurns = 5;
+                        cutscene(0) {
+                            startSound(ratchetSnd);
+                            startSound(boingSnd);
+                            egoSay("Five regulation turns: a clean cartwheel, a safe landing, a smattering.");
+                            waitForMessage();
+                            egoSay("'Safe,' says the emcee, like a diagnosis. The Grand Cog doesn't pay out for safe.");
+                            waitForMessage();
                         }
                         return;
                     }

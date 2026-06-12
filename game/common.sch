@@ -21,6 +21,9 @@ verb InventoryObject @ 13;
 bit verbsOn,cursorOn,cursorLoaded;
 int sntcVerb,sntcObjA,sntcObjADesc,sntcObjB,sntcObjBDesc;
 int* invObj;
+// how hard the player wound the act (talent night, 3/5/8); Voltina's
+// reading quotes it in Scene 06, so it lives here, cross-room
+int windTurns;
 
 // The sentence line
 verb SntcLine @ 14;
