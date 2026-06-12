@@ -6,6 +6,8 @@ room DockRoom {
     bit knowsAboutDynamo;
     bit signShookBolt;
     bit doneArrival;
+    bit bettyOiled;
+    bit crateOpened;
 
     object neonSign;
     object ferry;

@@ -139,18 +139,46 @@ class Oracle:
         self.stage = stage
         self.rect = None          # game area in page pixels (x, y, w, h)
         self.frozen = False       # set once the room is detected at rect
+        self.calibrated = False   # y-extent measured with verb panel shown
 
     def _frame(self):
         img = Image.open(BytesIO(self.page.screenshot())).convert("RGB")
-        if not self.frozen:
-            # keep re-deriving until boot confirms the room renders here
+        if not self.calibrated:
+            # provisional rect: x-extent over full height (good enough to
+            # track dialog during the arrival cutscene, ~1.5px y-drift)
             box = self._game_bbox(img)
-            if box is None:
+            if box is None and self.rect is None:
                 return None
-            self.rect = box
+            if box is not None:
+                self.rect = box
+            # once the verb panel is on screen the true y-extent is
+            # visible; lock the exact rect then (kills the y-drift that
+            # broke single-row pixel probes)
+            full = self._full_bbox(img)
+            if full and 1.2 < full[2] / full[3] < 1.5:
+                self.rect = full
+                self.calibrated = True
         x, y, w, h = self.rect
         return img.crop((x, y, x + w, y + h)).resize(
             (GAME_W, GAME_H), Image.NEAREST)
+
+    @staticmethod
+    def _full_bbox(img):
+        """x AND y extent of non-black pixels; trustworthy only when the
+        verb panel is visible (aspect check at the call site)."""
+        small = img.resize((img.width // 4, img.height // 4), Image.NEAREST)
+        px = small.load()
+        xs, ys = [], []
+        for yy in range(small.height):
+            for xx in range(small.width):
+                if sum(px[xx, yy]) > 24:
+                    xs.append(xx)
+                    ys.append(yy)
+        if not xs:
+            return None
+        x0, x1 = min(xs) * 4, (max(xs) + 1) * 4
+        y0, y1 = min(ys) * 4, (max(ys) + 1) * 4
+        return (x0, y0, x1 - x0, y1 - y0)
 
     @staticmethod
     def _game_bbox(img):
@@ -187,8 +215,10 @@ class Oracle:
 
     def talk_mask(self, frame):
         """Set of positions showing talk-colored text (room area only)."""
-        colors = self.stage.probes["talk"] + self.stage.probes["talk-2"] \
-            + self.stage.probes["white"]
+        # talk text is SPROCKET_COLOR (+ the secondary talk color) ONLY —
+        # white is also scenery (the tavern piano's keys read as "talking"
+        # forever if white counts)
+        colors = self.stage.probes["talk"] + self.stage.probes["talk-2"]
         px = frame.load()
         mask = []
         for yy in range(0, 104, 2):
@@ -249,11 +279,20 @@ class Performer:
 
     # ---------------------------------------------------------- helpers
 
-    def click_game(self, point):
+    def _page_xy(self, point):
         x, y = point
         rx, ry, rw, rh = self.oracle.rect
-        self.page.mouse.click(rx + (x + 0.5) * rw / GAME_W,
-                              ry + (y + 0.5) * rh / GAME_H)
+        return (rx + (x + 0.5) * rw / GAME_W, ry + (y + 0.5) * rh / GAME_H)
+
+    def click_game(self, point):
+        # hover first: the game's mouseWatch script binds the sentence
+        # object from the pointer position, and needs a few frames to see
+        # it before the click is processed (instant move+click loses the
+        # race and degrades "Use X with Y" into a walk)
+        px, py = self._page_xy(point)
+        self.page.mouse.move(px, py)
+        time.sleep(0.45)
+        self.page.mouse.click(px, py)
 
     def watch(self, until, timeout, lines=None, settle=0.0):
         """Poll the oracle; track talk segments; return (ok, frame).
@@ -354,6 +393,10 @@ class Performer:
             if "verb" in d:
                 self.click_game(tuple(self.stage.data["verbs"][d["verb"]]))
                 time.sleep(0.4)
+                if "with" in d:
+                    # "Use X with Y": verb, inventory item, then target
+                    self.click_game(self.stage.resolve(d["with"]))
+                    time.sleep(0.4)
                 self.click_game(self.stage.resolve(d["object"]))
             elif "walk" in d:
                 self.click_game(self.stage.resolve(d["walk"]))
@@ -370,7 +413,9 @@ class Performer:
             self.page.keyboard.press("Escape")
 
         until = self.expectations(shot.get("expect"), segments_seen)
-        settle = 1.2 if self.mode == "perform" else 0.6
+        # settle must outlast inter-line gaps, or the next shot's clicks
+        # land mid-cutscene and race the story flags
+        settle = 1.6
         ok, frame = self.watch(until, timeout=shot.get("timeout", 40),
                                lines=lines, settle=settle)
         if not ok:

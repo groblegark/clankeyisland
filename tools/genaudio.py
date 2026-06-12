@@ -137,12 +137,97 @@ def sfx_foghorn():
     return mix(out, breath)
 
 
+def sfx_ratchet():
+    """Gusket's stuck servo getting shimmed: three rising clicks and a
+    happy whirr of a glass finally set down."""
+    clicks = []
+    for i, f in enumerate((900, 1250, 1700)):
+        clicks.append(partials(0.05, [(f, 0.7, 60), (f * 2.1, 0.3, 80)]))
+        clicks.append(silence(0.07))
+    n = int(RATE * 0.35)
+    whirr = []
+    for i in range(n):
+        t = i / RATE
+        f = 220 + 340 * t / 0.35
+        sq = 1.0 if math.sin(2 * math.pi * f * t) >= 0 else -1.0
+        whirr.append(0.25 * sq * (1 - t / 0.4))
+    return concat(*clicks, silence(0.05), mix(whirr))
+
+
+def sfx_dart():
+    """One dart: short whoosh, then a cork-board thunk."""
+    n = int(RATE * 0.12)
+    seed, whoosh = 0x51, []
+    for i in range(n):
+        seed = (seed * 1103515245 + 12345) & 0x7FFFFFFF
+        r = (seed / 0x3FFFFFFF) - 1.0
+        env = math.sin(math.pi * i / n)
+        whoosh.append(0.35 * r * env)
+    thunk = mix(partials(0.09, [(210, 1.0, 40), (470, 0.4, 60)]),
+                noise_burst(0.02, 0.6, 200))
+    return concat(whoosh, thunk)
+
+
+def sfx_sizzle():
+    """A dockworker showing off until his arm servo overheats:
+    rising electrical sizzle, pop, sad descending whine."""
+    n = int(RATE * 0.7)
+    seed, fry = 0xA7, []
+    for i in range(n):
+        seed = (seed * 1103515245 + 12345) & 0x7FFFFFFF
+        r = (seed / 0x3FFFFFFF) - 1.0
+        env = (i / n) ** 2
+        buzz = math.sin(2 * math.pi * 110 * i / RATE)
+        fry.append((0.5 * r + 0.3 * buzz) * env * 0.8)
+    pop = noise_burst(0.04, 1.0, 90)
+    m = int(RATE * 0.5)
+    whine = []
+    for i in range(m):
+        t = i / RATE
+        f = 800 - 560 * t / 0.5
+        whine.append(0.3 * math.sin(2 * math.pi * f * t) * (1 - t / 0.55))
+    return concat(mix(fry), pop, whine)
+
+
+def sfx_clink():
+    """A drink token hitting the bar: two bright coin tinks."""
+    t1 = partials(0.1, [(2350, 0.8, 40), (3520, 0.5, 55), (5290, 0.3, 70)])
+    t2 = partials(0.07, [(2350, 0.4, 55), (3520, 0.25, 70)])
+    return concat(t1, silence(0.06), t2)
+
+
+def sfx_thud():
+    """A cargo crate meeting the dock from a moderate height,
+    with the planks complaining afterward."""
+    boom = partials(0.5, [(55, 1.0, 7), (82, 0.6, 10), (130, 0.3, 16)],
+                    attack=0.001)
+    crack = noise_burst(0.08, 0.9, 50)
+    rattle = partials(0.3, [(160, 0.25, 18), (245, 0.15, 22)])
+    return concat(mix(boom, crack), rattle)
+
+
+def sfx_plink():
+    """The player piano demonstrating its range: two honest notes,
+    then the third key that just... isn't."""
+    p1 = partials(0.28, [(523, 0.8, 8), (1046, 0.3, 14), (1569, 0.15, 20)])
+    p2 = partials(0.28, [(659, 0.8, 8), (1318, 0.3, 14), (1977, 0.15, 20)])
+    ghost = mix(partials(0.18, [(140, 0.3, 30)]),
+                noise_burst(0.03, 0.25, 150))   # felt thump, no string
+    return concat(p1, silence(0.02), p2, silence(0.02), ghost)
+
+
 EFFECTS = {
     "whack": sfx_whack,
     "bolt_drop": sfx_bolt_drop,
     "pickup": sfx_pickup,
     "knock": sfx_knock,
     "foghorn": sfx_foghorn,
+    "ratchet": sfx_ratchet,
+    "dart": sfx_dart,
+    "sizzle": sfx_sizzle,
+    "clink": sfx_clink,
+    "thud": sfx_thud,
+    "plink": sfx_plink,
 }
 
 

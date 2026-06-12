@@ -299,6 +299,12 @@ room ResRoom {
             unless(objB) {
                 if(getObjectVerbEntrypoint(objA,Preposition)) {
                     startObject2(objA,Preposition,[ vrb, objA ]);
+                    // give the Preposition script its tick — under the
+                    // wasm build's timing it doesn't always run nested,
+                    // and checking sntcPrepo too early degrades
+                    // "Use X with Y" into a plain Use
+                    breakScript();
+                    breakScript();
                     if(sntcPrepo) {
                         setCurrentVerb(SntcLine);
                         redrawVerb();
@@ -352,10 +358,14 @@ room ResRoom {
 
         // if the object implements the verb call that
         if(getObjectVerbEntrypoint(objA,vrb)) {
+            // walkthrougher instrumentation: engine truth of every
+            // executed sentence (console-only, needs --debuglevel=1)
+            dbgPrint("SNTC vrb=%i{vrb} objA=%i{objA} objB=%i{objB}");
             startObject(2,objA,vrb,[ vrb, objA, objB ]);
             // if the verb locked the cursor wait until it's unlocked
             do breakScript() until(cursorOn);
         } else {
+            dbgPrint("SNTC default vrb=%i{vrb} objA=%i{objA} objB=%i{objB}");
             // otherwise use our default
             defaultAction(vrb, act ? act : objA, objB);
         }
@@ -551,6 +561,10 @@ room ResRoom {
 
         loadRoom(DockRoom);
         lockRoom(DockRoom);
+
+        // keep inventory icon images resident across room changes
+        loadRoom(InventoryItems);
+        lockRoom(InventoryItems);
 
         // Initialize the graphic mode.
         // It needs to match the room image height otherwise

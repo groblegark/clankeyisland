@@ -1,0 +1,100 @@
+# Clanker City Chronicles — the complete Act One walkthrough.
+# Docks -> tavern (bolt shims Gusket's servo -> token -> darts -> oil can)
+# -> docks (oil Betty -> crate drops -> the first wind-up key).
+# This is the deploy gate: if this doesn't pass, the game doesn't ship.
+
+title: "Clanker City Chronicles — Act One"
+game: "--debuglevel=1 chronicles"
+stage: docks.stage.json
+transcript: docks.transcript.json
+
+shots:
+  # ------------------------------------------------ Scene 01: the Docks
+  - name: arrival
+    cutscene: DockRoom.entry
+    expect: [talking]
+    timeout: 60
+
+  - name: the-sign
+    do: {verb: Examine, object: neon sign}
+    expect: [talking]
+
+  - name: percussive-maintenance
+    do: {verb: Use, object: neon sign}
+    expect:
+      - talking
+      - pixel: {at: shiny bolt, is: bright-steel}
+
+  - name: legal-tender
+    do: {verb: Pick up, object: shiny bolt}
+    expect:
+      - talking
+      - pixel: {at: inventory.slot0, is: bright-steel}
+
+  - name: civic-duty
+    do: {verb: Examine, object: notice board}
+    expect: [talking]
+
+  - name: take-the-evidence
+    do: {verb: Pick up, object: official notice}
+    expect:
+      - pixel: {at: inventory.slot1, is: bright-steel}
+
+  - name: meet-betty
+    do: {verb: Talk to, object: Boom-Arm Betty}
+    expect: [talking]
+    hold: 1.5
+
+  # --------------------------------------- Scene 02: the Scrap & Barrel
+  - name: enter-the-tavern
+    do: {verb: Open, object: tavern door}
+    expect:
+      - pixel: {at: [88, 9], is: magenta}    # the bar sign's glow dots
+    timeout: 60
+
+  - name: the-piano
+    do: {verb: Examine, object: player piano}
+    expect: [talking]
+
+  - name: certified-maintenance
+    do: {verb: Use, object: Gusket, with: inventory.slot0}
+    expect:
+      - talking
+      # the token reuses the consumed bolt's slot (engine refills holes)
+      - pixel: {at: inventory.slot0, is: greens}
+    timeout: 60
+
+  - name: extremely-casual
+    only: perform
+    do: {verb: Talk to, object: "rustlers' table"}
+    expect: [talking]
+    hold: 1.5
+
+  - name: the-dart-hustle
+    do: {verb: Give, object: Flange, with: inventory.slot0}
+    expect:
+      - talking
+      - pixel: {at: [232, 175], is: red}     # oil can's red base, slot 0
+    timeout: 90
+
+  # ----------------------------------------- Scene 01 again: the payoff
+  - name: back-to-the-docks
+    do: {verb: Open, object: door to the docks}
+    expect:
+      - pixel: {at: [10, 4], is: sky}        # night sky = we're outside
+    timeout: 60
+
+  - name: doctors-orders
+    do: {verb: Use, object: Boom-Arm Betty, with: inventory.slot0}
+    expect:
+      - talking
+      - pixel: {at: [132, 56], is: sky}      # crate no longer hanging
+    timeout: 60
+
+  - name: the-first-key
+    do: {verb: Open, object: crate}
+    expect:
+      - talking
+      - pixel: {at: inventory.slot0, is: sodium}   # brass key in pocket
+    timeout: 60
+    hold: 2.0
