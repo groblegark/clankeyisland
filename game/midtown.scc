@@ -179,7 +179,7 @@ room MidtownRoom {
                 unless(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
                     egoSay("There it is. SPROCKET. On a marquee. In lights.");
                     waitForMessage();
-                    egoSay("Two of the bulbs are out. Forty-one of them aren't.");
+                    egoSay("Two of the bulbs are out. The rest are compensating.");
                     waitForMessage();
                     egoSay("Talent night. Tonight. No pressure. The marquee is the pressure.");
                     return;

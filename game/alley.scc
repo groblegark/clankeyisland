@@ -453,7 +453,7 @@ room AlleyRoom {
                 }
                 egoSay("I feed it ten. It counts ten, blinks NINE, and spits the dry one back stamped UNCIRCULATED.");
                 waitForMessage();
-                egoSay("The fare wants money that's suffered. The dry one has another appointment anyway.");
+                egoSay("The slot gauge is worn-bolt-sized. Money here has to have suffered. The dry one has another appointment anyway.");
                 return;
             }
             // all aboard — silently (room transitions say nothing: a

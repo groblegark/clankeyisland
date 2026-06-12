@@ -8,7 +8,7 @@
    "That clunk sounded expensive.",
    "That clunk sounded PERMANENT.",
    "Well. Guess I live here now.",
-   "The streetlights pick that moment to dim. All of them. Together. Like the city skipped a heartbeat.",
+   "The neon sign dips. The tavern window. The lit windows across the water. All together, like the city skipped a heartbeat.",
    "Nobody on the dock looks up. That's the part I don't like."
   ],
   "TavernRoom.entry": [
@@ -32,6 +32,30 @@
    "The house is packed. Forty bots, and not one of them came here to be impressed.",
    "And up on the catwalk: one more, with a spyglass. No ticket. No hurry.",
    "Somewhere past that curtain is backstage. And backstage, if the clerk is right, is Madame Voltina."
+  ],
+  "ResRoom.defaultAction": [
+   "Picking up citizens is how you get decommissioned.",
+   "My warranty specifically excludes that.",
+   "I can't just *use* a fellow robot. We have a union.",
+   "They look fully assembled already.",
+   "Those parts are not compatible.",
+   "My manual has no chapter on that.",
+   "Maybe later. It might be a collector's item.",
+   "I can't do that!",
+   "A fellow mechanical citizen.",
+   "Standard-issue municipal hardware.",
+   "Moving them would accomplish nothing.",
+   "It's bolted down. Everything here is bolted down. Except the bolts.",
+   "My screwdriver attachment is for personal use only.",
+   "That doesn't seem to open.",
+   "Smells like hard work and WD-40.",
+   "Nothing my scent library has a match for. Filing it under 'municipal'.",
+   "I don't know how to communicate with them.",
+   "It has nothing to say. Story of this whole town.",
+   "Hmm. No."
+  ],
+  "ResRoom.keyboardHandler": [
+   "Beep."
   ]
  },
  "objects": {
@@ -40,7 +64,7 @@
     "WELCOME TO CLANKER CITY. POP. 8,01,1.",
     "Population eight-oh-one-comma-one. The punctuation died first.",
     "Something inside it rattles on every flicker. Loose hardware. Practically an invoice.",
-    "POP. 8,011. The comma found its way home. You're welcome, city."
+    "Still POP. 8,01,1. The bolt wasn't load-bearing for the comma. Maintenance is iterative."
    ],
    "Use": [
     "Maybe a good honest whack will fix the display.",
@@ -125,12 +149,12 @@
   "crate": {
    "LookAt": [
     "Stenciled on the side: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
-    "Ominous AND conveniently plot-relevant. Also twenty feet up.",
+    "Ominous AND conveniently plot-relevant. Also up a crane.",
     "On the dock now, at a polite opening height.",
     "Empty, except for packing grease and destiny residue."
    ],
    "PickUp": [
-    "It's twenty feet up. My arms are stock parts.",
+    "It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.",
     "Betty could set it down, if anyone gave her a drink of oil.",
     "The lid argues. I argue back with a plank.",
     "A brass wind-up key the size of my forearm. Stenciled: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
@@ -138,7 +162,7 @@
     "Already opened. The destiny has been extracted."
    ],
    "Use": [
-    "It's twenty feet up. My arms are stock parts.",
+    "It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.",
     "Betty could set it down, if anyone gave her a drink of oil.",
     "The lid argues. I argue back with a plank.",
     "A brass wind-up key the size of my forearm. Stenciled: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
@@ -146,7 +170,7 @@
     "Already opened. The destiny has been extracted."
    ],
    "Move": [
-    "It's twenty feet up. My arms are stock parts.",
+    "It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.",
     "Betty could set it down, if anyone gave her a drink of oil.",
     "The lid argues. I argue back with a plank.",
     "A brass wind-up key the size of my forearm. Stenciled: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
@@ -154,7 +178,7 @@
     "Already opened. The destiny has been extracted."
    ],
    "Open": [
-    "It's twenty feet up. My arms are stock parts.",
+    "It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.",
     "Betty could set it down, if anyone gave her a drink of oil.",
     "The lid argues. I argue back with a plank.",
     "A brass wind-up key the size of my forearm. Stenciled: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
@@ -181,6 +205,8 @@
     "'DYNAMO MAINTENANCE: NOTHING IS WRONG. NOTHING HAS EVER BEEN WRONG.'",
     "'DO NOT STOCKPILE OIL. SIGNED, MAYOR PISTON.'",
     "The Great Dynamo powers every bot on this island. Including me, as of today.",
+    "Not wires \u2014 the hum. It keeps every mainspring on the island wound. Remotely. Steam bot, clockwork bot, engine bot: all spring-banked.",
+    "Hand-winding is the backup. Crude, short-burst, off-warranty.",
     "So that notice is the scariest thing I've ever read.",
     "Still nothing wrong. Officially."
    ]
@@ -204,7 +230,7 @@
   },
   "tavern door": {
    "LookAt": [
-    "The Scrap & Barrel. I can hear a player piano in there, missing several keys."
+    "The Scrap & Barrel. I can hear a player piano in there. There's a hole in the tune it keeps not noticing."
    ],
    "Move": [
     "Knock knock.",
@@ -405,12 +431,14 @@
    "Open": [
     "CLANG-CLANG. CLANG. CLANG-CLANG.",
     "A slot opens. An eye looks at me. A voice says: 'Act Three, buddy.' The slot closes.",
-    "Locked. From the sound of it, there's a knock-code. From the smell of it, I don't want to know."
+    "Locked. The plate beside it is dented at knuckle height. In a pattern.",
+    "Somebody knocks here in code. Somebody with standing."
    ],
    "Use": [
     "CLANG-CLANG. CLANG. CLANG-CLANG.",
     "A slot opens. An eye looks at me. A voice says: 'Act Three, buddy.' The slot closes.",
-    "Locked. From the sound of it, there's a knock-code. From the smell of it, I don't want to know."
+    "Locked. The plate beside it is dented at knuckle height. In a pattern.",
+    "Somebody knocks here in code. Somebody with standing."
    ],
    "Smell": [
     "Rust, secrets, and back-alley grease."
@@ -579,7 +607,7 @@
     "I feed it the lot. It counts, returns everything it doesn't honor, and blinks NINE.",
     "The hopper has no pity. Rivet might.",
     "I feed it ten. It counts ten, blinks NINE, and spits the dry one back stamped UNCIRCULATED.",
-    "The fare wants money that's suffered. The dry one has another appointment anyway."
+    "The slot gauge is worn-bolt-sized. Money here has to have suffered. The dry one has another appointment anyway."
    ],
    "Use": [
     "Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.",
@@ -589,7 +617,7 @@
     "I feed it the lot. It counts, returns everything it doesn't honor, and blinks NINE.",
     "The hopper has no pity. Rivet might.",
     "I feed it ten. It counts ten, blinks NINE, and spits the dry one back stamped UNCIRCULATED.",
-    "The fare wants money that's suffered. The dry one has another appointment anyway."
+    "The slot gauge is worn-bolt-sized. Money here has to have suffered. The dry one has another appointment anyway."
    ],
    "Give": [
     "I feed it the fistful. It counts, blinks NINE, and returns the lot.",
@@ -661,7 +689,7 @@
   "Grand Cog Theater": {
    "LookAt": [
     "There it is. SPROCKET. On a marquee. In lights.",
-    "Two of the bulbs are out. Forty-one of them aren't.",
+    "Two of the bulbs are out. The rest are compensating.",
     "Talent night. Tonight. No pressure. The marquee is the pressure.",
     "SPROCKET, still in lights. Winner, robbed mid-bow. The marquee doesn't mention that part.",
     "The Grand Cog Theater. TALENT NITE, says the marquee, with a line left blank underneath.",
@@ -794,7 +822,7 @@
   },
   "chandelier": {
    "LookAt": [
-    "Forty-one sockets, thirty-eight working. The rigging predates the building it hangs in."
+    "More sockets than the wall has switches, a few of them resting. The rigging predates the building it hangs in."
    ],
    "Use": [
     "Whatever swinging from it would prove, the insurance exclusions prove harder."
@@ -851,7 +879,8 @@
     "Silence. Then the house comes apart. The bots who can't stand wave their wheels.",
     "The emcee declares it the most honest act in Grand Cog history. I don't correct him.",
     "First prize: one oil voucher, and a backstage pass on a lanyard of bicycle chain.",
-    "I reach for the key, to take the bow with it. My hand closes on lanyard and applause.",
+    "The spring spat the key to the boards at launch. I go to collect it for the bow \u2014 my hand closes on applause.",
+    "A hook on a line whips up past the proscenium. Fishing tackle. Somebody else's magnet-on-a-string.",
     "Up on the catwalk, a hatch clicks shut. Two clangs. One. Two.",
     "The hats from the card table. The spyglass from the catwalk. I hand-delivered the thing \u2014 lit stage, my name in bulbs.",
     "Everyone in this house saw a triumph. I saw a hatch.",
@@ -870,7 +899,8 @@
     "Silence. Then the house comes apart. The bots who can't stand wave their wheels.",
     "The emcee declares it the most honest act in Grand Cog history. I don't correct him.",
     "First prize: one oil voucher, and a backstage pass on a lanyard of bicycle chain.",
-    "I reach for the key, to take the bow with it. My hand closes on lanyard and applause.",
+    "The spring spat the key to the boards at launch. I go to collect it for the bow \u2014 my hand closes on applause.",
+    "A hook on a line whips up past the proscenium. Fishing tackle. Somebody else's magnet-on-a-string.",
     "Up on the catwalk, a hatch clicks shut. Two clangs. One. Two.",
     "The hats from the card table. The spyglass from the catwalk. I hand-delivered the thing \u2014 lit stage, my name in bulbs.",
     "Everyone in this house saw a triumph. I saw a hatch.",

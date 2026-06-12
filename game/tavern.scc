@@ -413,7 +413,9 @@ room TavernRoom {
                 egoSay("A slot opens. An eye looks at me. A voice says: 'Act Three, buddy.' The slot closes.");
                 return;
             }
-            egoSay("Locked. From the sound of it, there's a knock-code. From the smell of it, I don't want to know.");
+            egoSay("Locked. The plate beside it is dented at knuckle height. In a pattern.");
+            waitForMessage();
+            egoSay("Somebody knocks here in code. Somebody with standing.");
             return;
         case Smell:
             egoSay("Rust, secrets, and back-alley grease.");

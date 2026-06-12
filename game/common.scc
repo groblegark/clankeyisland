@@ -271,7 +271,7 @@ room ResRoom {
             if(objA is Person)
                 egoSay("Smells like hard work and WD-40.");
             else
-                egoSay("My olfactory sensor only detects rust. It is very happy here.");
+                egoSay("Nothing my scent library has a match for. Filing it under 'municipal'.");
             break;
 
         case TalkTo:

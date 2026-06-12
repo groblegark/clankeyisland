@@ -116,9 +116,12 @@ room DockRoom {
                 waitForActor(sprocket);
                 egoSay("Well. Guess I live here now.");
                 waitForMessage();
-                // the premise, unskippably (editorial B4)
-                egoSay("The streetlights pick that moment to dim. All of them. Together. Like the city skipped a heartbeat.");
+                // the premise, unskippably (editorial B4) — and the
+                // screen dims with the line (embodiment sweep)
+                setObjectState(neonSign, 2);
+                egoSay("The neon sign dips. The tavern window. The lit windows across the water. All together, like the city skipped a heartbeat.");
                 waitForMessage();
+                setObjectState(neonSign, 1);
                 egoSay("Nobody on the dock looks up. That's the part I don't like.");
                 waitForMessage();
             }
@@ -160,7 +163,7 @@ room DockRoom {
                 egoSay("Something inside it rattles on every flicker. Loose hardware. Practically an invoice.");
                 return;
             }
-            egoSay("POP. 8,011. The comma found its way home. You're welcome, city.");
+            egoSay("Still POP. 8,01,1. The bolt wasn't load-bearing for the comma. Maintenance is iterative.");
             return;
         case Use:
         case Move:
@@ -331,7 +334,7 @@ room DockRoom {
             egoSay("Stenciled on the side: PROPERTY OF THE ORDER OF THE WIND-UP KEY.");
             waitForMessage();
             unless(bettyOiled) {
-                egoSay("Ominous AND conveniently plot-relevant. Also twenty feet up.");
+                egoSay("Ominous AND conveniently plot-relevant. Also up a crane.");
                 return;
             }
             unless(crateOpened) {
@@ -345,7 +348,7 @@ room DockRoom {
         case Move:
         case Open:
             unless(bettyOiled) {
-                egoSay("It's twenty feet up. My arms are stock parts.");
+                egoSay("It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.");
                 waitForMessage();
                 egoSay("Betty could set it down, if anyone gave her a drink of oil.");
                 return;
@@ -416,6 +419,10 @@ room DockRoom {
                     waitForMessage();
                     egoSay("The Great Dynamo powers every bot on this island. Including me, as of today.");
                     waitForMessage();
+                    egoSay("Not wires — the hum. It keeps every mainspring on the island wound. Remotely. Steam bot, clockwork bot, engine bot: all spring-banked.");
+                    waitForMessage();
+                    egoSay("Hand-winding is the backup. Crude, short-burst, off-warranty.");
+                    waitForMessage();
                     egoSay("So that notice is the scariest thing I've ever read.");
                     waitForMessage();
                 }
@@ -476,7 +483,7 @@ room DockRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
-            egoSay("The Scrap & Barrel. I can hear a player piano in there, missing several keys.");
+            egoSay("The Scrap & Barrel. I can hear a player piano in there. There's a hole in the tune it keeps not noticing.");
             return;
         case Open:
         case Use:

@@ -145,7 +145,7 @@ room TheaterRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
-            egoSay("Forty-one sockets, thirty-eight working. The rigging predates the building it hangs in.");
+            egoSay("More sockets than the wall has switches, a few of them resting. The rigging predates the building it hangs in.");
             return;
         case Use:
         case PickUp:
@@ -301,7 +301,9 @@ room TheaterRoom {
                             // the heist (editorial B3): the spyglass on
                             // the docks finally cashes its check
                             setObjectOwner(InventoryItems::windupKey, 0);
-                            egoSay("I reach for the key, to take the bow with it. My hand closes on lanyard and applause.");
+                            egoSay("The spring spat the key to the boards at launch. I go to collect it for the bow — my hand closes on applause.");
+                            waitForMessage();
+                            egoSay("A hook on a line whips up past the proscenium. Fishing tackle. Somebody else's magnet-on-a-string.");
                             waitForMessage();
                             startSound(knockSnd);
                             egoSay("Up on the catwalk, a hatch clicks shut. Two clangs. One. Two.");

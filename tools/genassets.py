@@ -937,8 +937,17 @@ def draw_theater(curtain="closed"):
     d.rectangle([ex + 8, ey + 40, ex + 11, ey + 48], fill=6)      # legs
     d.rectangle([ex + 13, ey + 40, ex + 16, ey + 48], fill=6)
 
-    # --- the stage
+    # --- the catwalk over the stage (where the act's witnesses perch)
     tx, ty, tw, th = g["G_STAGE"]
+    d.rectangle([tx + 8, ty - 8, tx + tw - 8, ty - 4], fill=6)    # walkway
+    for x in range(tx + 12, tx + tw - 8, 8):
+        d.line([(x, ty - 4), (x, ty - 1)], fill=6)                # rail dots
+    d.rectangle([tx + 70, ty - 8, tx + 82, ty - 6], fill=1)       # the hatch
+    d.rectangle([tx + 44, ty - 16, tx + 52, ty - 8], fill=1)      # a watcher
+    im.putpixel((tx + 46, ty - 13), 107)                          # the eye
+    d.line([(tx + 52, ty - 12), (tx + 58, ty - 14)], fill=1)      # spyglass
+
+    # --- the stage
     d.rectangle([tx, ty + th - 16, tx + tw, ty + th], fill=66)    # apron
     for x in range(tx + 4, tx + tw, 12):
         d.line([(x, ty + th - 16), (x, ty + th)], fill=64)
