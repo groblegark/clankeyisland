@@ -8,6 +8,7 @@ room TheaterRoom {
     bit metEmcee;
     bit spotAwake;
     bit wonShow;
+    bit curtainUp;
 
     object doorLobby;
     object spotBooth;

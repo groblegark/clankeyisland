@@ -9,6 +9,7 @@
 #include "common.sch"
 #include "verbs.sch"
 #include "inventoryitems.sch"
+#include "dialog.sch"
 #include "docks.sch"
 #include "midtown.sch"
 #include "alley.sch"
@@ -28,6 +29,8 @@ room AlleyRoom {
     sound clinkSnd   = "clink.soun";
     sound ratchetSnd = "ratchet.soun";
     sound thudSnd    = "thud.soun";
+
+    char* dlgStr;    // dialog-option scratch (openquest idiom)
 
     // ------------------------------------------------------------ music
 
@@ -270,7 +273,10 @@ room AlleyRoom {
                  if(getObjectOwner(InventoryItems::windupKey) == VAR_EGO) {
                   if(getObjectOwner(InventoryItems::poster) == VAR_EGO) {
                    if(gateNined) {
-                    riddleDone = 1;
+                    // THE RIDDLE DUEL — playable (editorial B2): the
+                    // player picks Sprocket's riddle; two flop funny
+                    // with a free rematch, one wins. Winner lines stay
+                    // first in source after the shared intro (dub).
                     cutscene(0) {
                         egoSay("Nine bolts, I tell him. He appraises my pockets from four feet away. Correctly.");
                         waitForMessage();
@@ -278,13 +284,50 @@ room AlleyRoom {
                         waitForMessage();
                         egoSay("Rivet goes first: 'What has a hundred teeth and never bites?' A gear. In this town it's always a gear.");
                         waitForMessage();
-                        egoSay("My turn. 'What winds down... but never winds up?'");
+                        egoSay("My turn. One riddle. Alley rules.");
                         waitForMessage();
-                        egoSay("He opens his mouth. He closes it. He looks uptown, at the Dynamo District.");
+                    }
+                    dlgStr[0] = "What's the loudest part of a foghorn?";
+                    Dialog::dialogAdd(dlgStr);
+                    dlgStr = 0;
+                    dlgStr[0] = "How many bolts make a fortune?";
+                    Dialog::dialogAdd(dlgStr);
+                    dlgStr = 0;
+                    dlgStr[0] = "What winds down, but never winds up?";
+                    Dialog::dialogAdd(dlgStr);
+                    dlgStr = 0;
+                    Dialog::dialogStart(0, 0);
+                    do breakScript() while(selectedSentence < 0);
+                    Dialog::dialogHide();
+                    Dialog::dialogClear(1);
+                    Dialog::dialogEnd();
+                    if(selectedSentence == 2) {
+                        riddleDone = 1;
+                        cutscene(0) {
+                            egoSay("'What winds down... but never winds up?'");
+                            waitForMessage();
+                            egoSay("He opens his mouth. He closes it. He looks uptown, at the Dynamo District.");
+                            waitForMessage();
+                            startSound(clinkSnd);
+                            pickupObject(InventoryItems::tenthBolt, InventoryItems);
+                            egoSay("He pays the bolt without a word.");
+                            waitForMessage();
+                        }
+                        return;
+                    }
+                    if(selectedSentence == 0) {
+                        cutscene(0) {
+                            egoSay("'What's the loudest part of a foghorn?' He doesn't blink: 'The regret.'");
+                            waitForMessage();
+                            egoSay("Correct, somehow. He offers a rematch. He's enjoying this.");
+                            waitForMessage();
+                        }
+                        return;
+                    }
+                    cutscene(0) {
+                        egoSay("'How many bolts make a fortune?' He counts my pockets from across the alley: 'Nine short of one.'");
                         waitForMessage();
-                        startSound(clinkSnd);
-                        pickupObject(InventoryItems::tenthBolt, InventoryItems);
-                        egoSay("He pays the bolt without a word.");
+                        egoSay("Correct, insultingly. Rematch on the house.");
                         waitForMessage();
                     }
                     return;

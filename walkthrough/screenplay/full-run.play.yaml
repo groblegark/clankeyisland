@@ -161,9 +161,9 @@ shots:
     timeout: 60
 
   - name: the-riddle-duel
-    do: {verb: Talk to, object: Rivet}
+    do: {verb: Talk to, object: Rivet, choose: 2}
     expect: [talking]
-    timeout: 90
+    timeout: 120
 
   - name: pay-the-fare
     do: {verb: Use, object: funicular gate}
@@ -243,7 +243,7 @@ shots:
     timeout: 60
 
   - name: the-amazing-sprocket
-    do: {verb: Use, object: the stage, with: inventory.slot1}
+    do: {verb: Use, object: the stage, with: inventory.slot1, choose: 2}
     expect:
       - talking
       - pixel: {at: [220, 40], is: teal}     # curtain open: the backdrop
