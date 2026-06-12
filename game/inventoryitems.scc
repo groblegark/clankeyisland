@@ -30,6 +30,17 @@ room InventoryItems {
             egoSay("Mmm. Zinc-plated.");
             return;
         case Use:
+            if(objB) {
+                // route "Use me with/on X" to X's UsedWith — the engine
+                // dispatches to OUR script (objA), so a bare Use gag
+                // here would swallow every two-object sentence
+                if(getObjectVerbEntrypoint(objB, UsedWith)) {
+                    startObject2(objB, UsedWith, [ UsedWith, objB, objA ]);
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
             egoSay("I'm saving it. It's one ninth of a fortune.");
             return;
         }
@@ -81,6 +92,17 @@ room InventoryItems {
             egoSay("One genuine Scrap & Barrel drink token. Redeemable for one drink, zero refunds, unlimited regret.");
             return;
         case Use:
+            if(objB) {
+                // route "Use me with/on X" to X's UsedWith — the engine
+                // dispatches to OUR script (objA), so a bare Use gag
+                // here would swallow every two-object sentence
+                if(getObjectVerbEntrypoint(objB, UsedWith)) {
+                    startObject2(objB, UsedWith, [ UsedWith, objB, objA ]);
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
             egoSay("Gusket said Flange takes these as table stakes. At the dartboard.");
             return;
         case Smell:
@@ -110,6 +132,17 @@ room InventoryItems {
             egoSay("Small-batch, dock-aged 10W-40. The good stuff.");
             return;
         case Use:
+            if(objB) {
+                // route "Use me with/on X" to X's UsedWith — the engine
+                // dispatches to OUR script (objA), so a bare Use gag
+                // here would swallow every two-object sentence
+                if(getObjectVerbEntrypoint(objB, UsedWith)) {
+                    startObject2(objB, UsedWith, [ UsedWith, objB, objA ]);
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
             egoSay("I'm not drinking it. It's medicine. For someone with a boom arm.");
             return;
         case Smell:
@@ -141,6 +174,17 @@ room InventoryItems {
             egoSay("The legends say so. The legends are a stencil on a crate. Still counts.");
             return;
         case Use:
+            if(objB) {
+                // route "Use me with/on X" to X's UsedWith — the engine
+                // dispatches to OUR script (objA), so a bare Use gag
+                // here would swallow every two-object sentence
+                if(getObjectVerbEntrypoint(objB, UsedWith)) {
+                    startObject2(objB, UsedWith, [ UsedWith, objB, objA ]);
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
             egoSay("It wants a keyhole the size of a manhole. I'll know it when I see it.");
             return;
         case Smell:

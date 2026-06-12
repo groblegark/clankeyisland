@@ -223,6 +223,11 @@ room ResRoom {
 
        case Give:
            if(objB && objB is Person) {
+               // route to the recipient's Give handler if they have one
+               if(getObjectVerbEntrypoint(objB,Give)) {
+                   startObject2(objB,Give,[ Give, objB, objA ]);
+                   break;
+               }
                egoSay("Maybe later. It might be a collector's item.");
                break;
            }

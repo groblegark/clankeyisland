@@ -60,8 +60,9 @@ shots:
     do: {verb: Use, object: Gusket, with: inventory.slot0}
     expect:
       - talking
-      # the token reuses the consumed bolt's slot (engine refills holes)
-      - pixel: {at: inventory.slot0, is: greens}
+      # consumption compacts the inventory: poster shifts to slot0,
+      # each new item appends at slot1
+      - pixel: {at: inventory.slot1, is: greens}
     timeout: 60
 
   - name: extremely-casual
@@ -71,10 +72,10 @@ shots:
     hold: 1.5
 
   - name: the-dart-hustle
-    do: {verb: Give, object: Flange, with: inventory.slot0}
+    do: {verb: Give, object: Flange, with: inventory.slot1}
     expect:
       - talking
-      - pixel: {at: [232, 175], is: red}     # oil can's red base, slot 0
+      - pixel: {at: [284, 175], is: red}     # oil can's red base, slot 1
     timeout: 90
 
   # ----------------------------------------- Scene 01 again: the payoff
@@ -85,7 +86,7 @@ shots:
     timeout: 60
 
   - name: doctors-orders
-    do: {verb: Use, object: Boom-Arm Betty, with: inventory.slot0}
+    do: {verb: Use, object: Boom-Arm Betty, with: inventory.slot1}
     expect:
       - talking
       - pixel: {at: [132, 56], is: sky}      # crate no longer hanging
@@ -95,6 +96,6 @@ shots:
     do: {verb: Open, object: crate}
     expect:
       - talking
-      - pixel: {at: inventory.slot0, is: sodium}   # brass key in pocket
+      - pixel: {at: inventory.slot1, is: sodium}   # brass key in pocket
     timeout: 60
     hold: 2.0
