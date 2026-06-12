@@ -1,8 +1,9 @@
-# Clanker City Chronicles — the full run, boot to the Act Two threshold.
+# Clanker City Chronicles — the full run, boot into Act Two.
 # Docks (bolt, poster) -> tavern (servo -> token -> darts -> oil can)
 # -> docks (Betty -> crate -> the first wind-up key) -> the alley
 # (Rivet -> dumpster magnet) -> docks (fish the drain: nine bolts)
-# -> alley (riddle duel: the tenth -> pay the funicular fare).
+# -> alley (riddle duel: the tenth -> pay the funicular fare)
+# -> Midtown (case the street -> sign up for talent night).
 # This is the deploy gate: if this doesn't pass, the game doesn't ship.
 
 title: "Clanker City Chronicles — The Story So Far"
@@ -165,6 +166,47 @@ shots:
 
   - name: now-boarding
     do: {verb: Examine, object: funicular gate}
+    expect: [talking]
+    timeout: 60
+    hold: 2.0
+
+  # -------------------------------------- Scene 04: Midtown Gearworks
+  - name: ride-uptown
+    do: {verb: Use, object: funicular gate}
+    expect:
+      - talking                              # the Midtown entry cutscene
+      - pixel: {at: [180, 30], is: sodium}   # GRAND COG in lights
+    timeout: 90
+
+  - name: meet-the-clerk
+    do: {verb: Talk to, object: box office}
+    expect: [talking]
+    timeout: 60
+
+  - name: the-dynamo
+    only: perform
+    do: {verb: Examine, object: the Great Dynamo}
+    expect: [talking]
+
+  - name: nothing-is-wrong
+    only: perform
+    do: {verb: Examine, object: City Hall}
+    expect: [talking]
+
+  - name: nine-degrees
+    only: perform
+    do: {verb: Open, object: City Hall}
+    expect: [talking]
+
+  - name: the-act
+    do: {verb: Use, object: box office, with: inventory.slot1}
+    expect:
+      - talking
+      - pixel: {at: [182, 50], is: sodium}   # SPROCKET, in lights
+    timeout: 90
+
+  - name: in-lights
+    do: {verb: Examine, object: Grand Cog Theater}
     expect: [talking]
     timeout: 60
     hold: 2.0
