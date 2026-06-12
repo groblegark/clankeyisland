@@ -67,9 +67,14 @@ sed "s|@SITE_PATH@|$SITE_PATH|g" "$ROOT/web/scummvm.ini.in" > "$OUT/scummvm.ini"
 python3 "$SVM/dists/emscripten/build-make_http_index.py" "$OUT/data"
 
 # Landing page: scummvm.html with the game target pre-set in the fragment
-# (custom_shell-pre.js turns the fragment into argv) and our title.
+# (custom_shell-pre.js turns the fragment into argv), our title, and a
+# click-to-start overlay so the AudioContext is unlocked before the
+# arrival cutscene — otherwise the browser mutes the theme until the
+# first click (docs/research/AUDIO.md risk #2).
+OVERLAY='<style>#start{position:fixed;inset:0;z-index:99;background:#0a0a0e;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-family:monospace}#start h1{color:#ffbe50;letter-spacing:.3em}#start p{color:#78eba0;letter-spacing:.2em}</style><div id="start" onclick="this.remove()"><h1>CLANKER CITY CHRONICLES</h1><p>&#9654; CLICK TO START</p></div>'
 sed -e 's|<head>|<head>\n  <script>if (!location.hash) location.hash = "chronicles";</script>|' \
     -e 's|<title>ScummVM</title>|<title>Clanker City Chronicles</title>|' \
+    -e "s|<body>|<body>$OVERLAY|" \
     "$OUT/scummvm.html" > "$OUT/index.html"
 
 touch "$OUT/.nojekyll"

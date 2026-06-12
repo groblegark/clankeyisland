@@ -85,6 +85,7 @@ def main():
     ap.add_argument("take")
     ap.add_argument("--gif-shot", default="percussive-maintenance")
     ap.add_argument("--gif-out", default=None)
+    ap.add_argument("--subtitle", default="SCENE 01  THE DOCKS")
     args = ap.parse_args()
 
     take = args.take.rstrip("/")
@@ -112,7 +113,7 @@ def main():
     title_png = os.path.join(tmp, "title.png")
     end_png = os.path.join(tmp, "end.png")
     make_card([("CLANKER CITY CHRONICLES", 12, 105),
-               ("SCENE 01  THE DOCKS", 6, 100)], title_png)
+               (args.subtitle, 6, 100)], title_png)
     make_card([("TO BE CONTINUED", 10, 105),
                ("IN ACT TWO", 8, 100)], end_png)
     title_mp4 = os.path.join(tmp, "title.mp4")

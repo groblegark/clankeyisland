@@ -25,6 +25,11 @@ import subprocess
 import sys
 import tempfile
 
+# talk-text colors from the master palette (tools/genassets.py):
+# SPROCKET_COLOR 105 + secondary 106. Same oracle as the driver.
+TALK_COLORS = ((255, 190, 80), (140, 220, 255))
+TOL = 16
+
 VOICE = "en_US-lessac-medium"
 VOICE_DATA = os.path.expanduser("~/.local/share/piper-voices")
 CACHE = os.path.expanduser("~/.cache/clankey-voices")
@@ -67,6 +72,56 @@ def speak(text):
     return fx
 
 
+def detect_line_times(take, edit):
+    """Frame-accurate talk segments from the recorded video itself.
+
+    The driver's live line timestamps lag the screen by up to ~0.5s
+    (screenshot-poll latency), which made the first dub audibly loose.
+    The recording is the truth: scan it at 10fps, find talk-colored
+    text in the room area, split segments when the text mask changes.
+    Returns [(t_start, t_end), ...] in video time.
+    """
+    x, y, w, h = edit["rect"]
+    fps = 10
+    cmd = ["ffmpeg", "-loglevel", "error",
+           "-i", os.path.join(take, "take.webm"),
+           "-vf", f"crop={w}:{h}:{x}:{y},scale=320:200:flags=neighbor,"
+                  f"fps={fps}",
+           "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    frame_bytes = 320 * 200 * 3
+    segments = []
+    cur_sig, seg_start = None, None
+    n = 0
+    while True:
+        buf = proc.stdout.read(frame_bytes)
+        if len(buf) < frame_bytes:
+            break
+        t = n / fps
+        n += 1
+        mask = []
+        for yy in range(0, 104, 2):
+            row = yy * 960
+            for xx in range(0, 320, 2):
+                i = row + xx * 3
+                r, g, b = buf[i], buf[i + 1], buf[i + 2]
+                for cr, cg, cb in TALK_COLORS:
+                    if (abs(r - cr) <= TOL and abs(g - cg) <= TOL
+                            and abs(b - cb) <= TOL):
+                        mask.append((xx, yy))
+                        break
+        sig = hash(tuple(mask)) if len(mask) >= 6 else None
+        if sig != cur_sig:
+            if cur_sig is not None:
+                segments.append((seg_start, t))
+            seg_start = t if sig is not None else None
+            cur_sig = sig
+    if cur_sig is not None:
+        segments.append((seg_start, n / fps))
+    proc.wait()
+    return segments
+
+
 def main():
     take = sys.argv[1].rstrip("/")
     with open(os.path.join(take, "timeline.json")) as f:
@@ -86,6 +141,26 @@ def main():
     lines = [e for e in events
              if e["type"] == "line_start" and e.get("text")
              and e["text"].strip(". ")]
+
+    # snap each live-observed line to its frame-accurate video segment:
+    # match by order against segments detected in the recording, pairing
+    # each line with the nearest unclaimed segment start
+    segs = detect_line_times(take, edit)
+    if segs:
+        used = set()
+        snapped = 0
+        for e in lines:
+            best, best_d = None, 1.5   # only snap within 1.5s
+            for i, (t0, _) in enumerate(segs):
+                d = abs(t0 - e["t"])
+                if i not in used and d < best_d:
+                    best, best_d = i, d
+            if best is not None:
+                used.add(best)
+                e["t"] = segs[best][0]
+                snapped += 1
+        print(f"  sync: {snapped}/{len(lines)} lines snapped to video "
+              f"frames ({len(segs)} segments detected)")
 
     # --- render voices, fit each to its slot --------------------------------
     clips = []   # (path, film_time)

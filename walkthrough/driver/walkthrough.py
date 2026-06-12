@@ -365,6 +365,15 @@ class Performer:
                     timeout=60000)
             except Exception:
                 pass
+            # the public site has a click-to-start overlay (audio
+            # unlock); the driver runs with autoplay allowed, so just
+            # dismiss it
+            try:
+                self.page.evaluate(
+                    "document.getElementById('start') && "
+                    "document.getElementById('start').remove()")
+            except Exception:
+                pass
             time.sleep(1.0)
             ok, frame = self.watch(self.oracle.room_ready, timeout=45)
             if ok:
