@@ -10,6 +10,7 @@ room AlleyRoom {
     bit riddleDone;
     bit fareDone;
     bit gateNined;
+    bit enteredViaLoft;  // Scene 09: transient routing flag (loft arrival)
 
     object wayOut;
     object hideoutDoor;

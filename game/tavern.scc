@@ -10,6 +10,8 @@
 #include "inventoryitems.sch"
 #include "docks.sch"
 #include "tavern.sch"
+#include "cityhall.sch"
+#include "hideout.sch"
 
 room TavernRoom {
 
@@ -27,6 +29,7 @@ room TavernRoom {
     sound plinkSnd   = "plink.soun";
     sound knockSnd   = "knock.soun";
     sound codedKnockSnd = "coded_knock.soun";   // the 2-1-2 motif knock
+    sound barliftSnd = "barlift.soun";          // Scene 09: the door bar lifts
     sound pickupSnd  = "pickup.soun";
 
     // ------------------------------------------------------------ music
@@ -281,6 +284,13 @@ room TavernRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
+            // Act 3: the game moved somewhere with a door policy (FIRST)
+            if(CityHallRoom::act3Started) {
+                egoSay("The table's empty. Cards racked, washers gone, chairs squared away.");
+                waitForMessage();
+                egoSay("Wherever the game moved, it moved somewhere with a door policy.");
+                return;
+            }
             // post-heist (N-A16): they robbed me and we both know it
             if(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
                 egoSay("Same three. Same hat. One of them is dealing with my key for a card weight, and we are all pretending otherwise.");
@@ -291,6 +301,13 @@ room TavernRoom {
             egoSay("One of them insists washers are 'post-bolt currency'. The other two are holding washers, so they're not arguing hard.");
             return;
         case TalkTo:
+            // Act 3: nobody left to talk to (FIRST in source)
+            if(CityHallRoom::act3Started) {
+                egoSay("The table's empty. Cards racked, washers gone, chairs squared away.");
+                waitForMessage();
+                egoSay("Wherever the game moved, it moved somewhere with a door policy.");
+                return;
+            }
             // the lean-in is keyed on its own flag: the reading
             // force-feeds heardKnockCode, and this scene must not
             // vanish for players who learn the code from Voltina
@@ -420,6 +437,40 @@ room TavernRoom {
             return;
         case Open:
         case Use:
+            // Act 3: the same three words become a ticket (FIRST in source)
+            if(heardKnockCode && CityHallRoom::act3Started) {
+                // already opened once -> silent transition into the den
+                if(doorBackOpen && !HideoutRoom::keyByTheft) {
+                    putActorAt(VAR_EGO, 28, 118, HideoutRoom);
+                    startRoom(HideoutRoom);
+                    return;
+                }
+                // post-theft: the door's a runner now, not a route
+                if(HideoutRoom::keyByTheft) {
+                    cutscene(0) {
+                        startSound(codedKnockSnd);
+                        egoSay("CLANG-CLANG. CLANG. CLANG-CLANG.");
+                        waitForMessage();
+                        egoSay("The slot opens. The eye looks at me for a long time.");
+                        waitForMessage();
+                        egoSay("'Intermission, buddy.' The slot closes. Fair.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                doorBackOpen = 1;                 // flag before speech
+                cutscene(0) {
+                    startSound(codedKnockSnd);
+                    egoSay("CLANG-CLANG. CLANG. CLANG-CLANG.");
+                    waitForMessage();
+                    egoSay("The slot opens. The eye looks at me. For a long time.");
+                    waitForMessage();
+                    startSound(barliftSnd);
+                    egoSay("'Act Three, buddy.' The bar lifts. The same three words, and this time they're a ticket.");
+                    waitForMessage();
+                }
+                return;
+            }
             if(heardKnockCode) {
                 startSound(codedKnockSnd);
                 egoSay("CLANG-CLANG. CLANG. CLANG-CLANG.");

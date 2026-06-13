@@ -668,3 +668,91 @@ shots:
     detour: {verb: Talk to, object: Caliper}
   - name: official-twice
     detour: {verb: Examine, object: inventory.slot<poster>}  # TODO(slot): the VOIDed notice
+
+  # --------------------------------- Scene 09: the Rustlers' hideout
+  # Act 3 opens. Canonical validate films the PARLEY path (the face, the
+  # want, the contest); the stealth path is proved by hideout-stealth
+  # detours below. Both routes recover Key #1 (windupKey back to VAR_EGO).
+  - name: the-empty-table          # breadcrumb: the game moved
+    do: {verb: Examine, object: "rustlers' table"}
+    expect: [talking]
+  - name: the-code-pays            # 2-1-2, and the same three words open it
+    do: {verb: Open, object: back door}
+    expect: [talking]
+    timeout: 60
+    hold: 1.5
+  - name: walk-in                  # silent transition (second click)
+    do: {verb: Open, object: back door}
+    expect:
+      - pixel: {at: [70, 80], is: den-lamplight}   # den palette probe
+    timeout: 60
+  - name: the-management           # Capstan dictating; guest rule; her name
+    cutscene: HideoutRoom.entry
+    expect: [talking]
+    timeout: 60
+  - name: still-on-the-hook        # the key, filed where it landed
+    do: {verb: Examine, object: key on a line}
+    expect: [talking]
+  - name: the-going-rate           # parley opens; the six-digit draft
+    do: {verb: Talk to, object: Captain Capstan}
+    expect: [talking]
+    timeout: 60
+  - name: who-winds-the-winders    # stage-1 winner
+    choose: "Who pays a ransom after the city stops?"
+    expect: [talking]
+    hold: 1.5
+    timeout: 90
+  - name: the-going-rate-again     # tree re-opens at stage 2 (opening replays)
+    do: {verb: Talk to, object: Captain Capstan}
+    expect: [talking]
+    timeout: 60
+  - name: in-writing               # stage-2 winner; the key comes down
+    choose: "Wind the Dynamo with me. On the books."
+    expect:
+      - talking
+      - pixel: {at: inventory.slot<windupKey>, is: bright-brass}  # TODO(slot): Key #1 returns
+    timeout: 120
+    hold: 2
+  - name: the-emergency-exit       # unbarred now; silent out to the alley
+    do: {verb: Open, object: steel door}
+    expect:
+      - pixel: {at: [88, 30], is: alley-sky}
+    timeout: 60
+
+  # ---- Scene 09 stealth-path detours (the inverted heist -- second gate
+  # run hideout-stealth.play.yaml diverges here; kept inline as detours so
+  # the canonical film proves both routes stay playable)
+  - name: oiled-rungs                                     # the security feature died of convenience
+    detour: {verb: Examine, object: fire escape}
+  - name: little-pitchers                                 # open hatch: the overheard rates
+    detour: {verb: Open, object: loft hatch}
+  - name: anchors-or-laundry                              # cleat through the shut hatch (fair-play)
+    detour: {verb: Examine, object: brass cleat}
+
+  # ---- Scene 09 streamer-mode detours & mistakes (try sneaky, fail funny,
+  # walk in the front like an adult)
+  - name: front-doors-the-front                           # knock the alley steel door first
+    detour: {verb: Open, object: steel door}
+  - name: exhibit-a-dusted                                # the framed cease-and-desist
+    detour: {verb: Examine, object: framed notice}
+  - name: the-chalk-tally                                 # WRONG vs RIGHT
+    detour: {verb: Examine, object: door station}
+  - name: the-crew-photo                                  # the Old Crank plant (theft-path source)
+    detour: {verb: Examine, object: trophy wall}
+  - name: a-stew-with-a-past                              # smell the stove
+    detour: {verb: Smell, object: pot-belly stove}
+  - name: four-chairs-scrape                              # reach for the key from the floor
+    mistake: {verb: Pick up, object: key on a line}
+    line: "It hangs at exactly cutlass height. The geometry is a contract clause."
+  - name: the-magnet-flop                                 # Use hatch with magnet -- the washers sing
+    mistake: {verb: Use, object: loft hatch, with: inventory.slot<magnet>}  # TODO(slot): magnet
+    line: "The pot sings. Four heads come up in close harmony. 'Loft.'"
+  - name: the-receipts-drawer                             # parley flop 1
+    mistake: {choose: "The city needs that key back."}
+    line: "She points at a drawer. The drawer is labeled RECEIPTS, GRIEVANCE, MIXED."
+  - name: the-framed-flop                                 # parley flop 2 (the gag pays on film)
+    mistake: {choose: "City Hall will hear about this."}
+    line: "'His last cease-and-desist is over the stove. Framed.' It is. They dusted it."
+  - name: the-pass-flop                                   # stage-2 flop (tempting, the act not the access)
+    mistake: {choose: "One backstage pass, barely used."}
+    line: "'Tempting. The act, not the access.' She's heard about the act. Everyone has heard about the act."

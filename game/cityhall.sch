@@ -9,6 +9,8 @@ room CityHallRoom {
     bit visitedCityHall;
     int pistonRound;     // 0 none / 1 / 2 / 3 / 4 cracked
     bit pistonCracked;   // == (pistonRound 4); EXPORTED to Scene 09
+    bit act3Started;     // set at the close of the confession; EXPORTED:
+                         // gates Scene 09's door + alley/loft addenda
     bit posterVoided;
     bit curtainsOpen;
     bit metCaliper;      // first TalkTo done; second+ fires the R3 plant

@@ -472,6 +472,69 @@ def sfx_whistle():
     return partials(0.4, [(932, 0.6, 4), (988, 0.5, 4)])
 
 
+def sfx_barlift():
+    """The hideout's door bar lifting on the right knock (Scene 09): a
+    metal scrape, then a heavy thunk as the bar clears its keepers. The
+    refusal-becomes-admission beat -- it should sound like weight moving,
+    not a latch clicking."""
+    scrape = noise_burst(0.35, 0.45, 9)
+    thunk = partials(0.4, [(82, 1.0, 7), (164, 0.55, 9), (247, 0.3, 12)],
+                     attack=0.001)
+    return concat(scrape, thunk)
+
+
+def sfx_reel():
+    """The stealth steal: a fishing reel paid out carefully, 14 clicks
+    with gaps shrinking 0.09s -> 0.04s (reeling like you're nobody,
+    quarter-turn at a time between shanty beats)."""
+    out = []
+    for i in range(14):
+        gap = 0.09 - (0.09 - 0.04) * (i / 13.0)
+        click = partials(0.03, [(2300, 0.6, 90), (1150, 0.3, 70)],
+                         attack=0.0005)
+        out = concat(out, click, silence(gap))
+    return out
+
+
+def sfx_winch():
+    """Capstan paying the key down on her own crank (Scene 09 parley):
+    6 slow clicks at 0.16s intervals over a low-amp drum rumble -- a
+    rated winch easing a load, smooth as a tide chart."""
+    rumble = partials(0.16 * 6, [(70, 0.18, 1.2), (105, 0.1, 1.4)],
+                      attack=0.01)
+    clicks = []
+    for i in range(6):
+        click = partials(0.05, [(1400, 0.7, 60), (700, 0.4, 40)],
+                         attack=0.0005)
+        clicks = concat(clicks, click, silence(0.16 - 0.05))
+    return mix(clicks, rumble)
+
+
+def sfx_washers():
+    """The magnet flop: a pot of steel washers singing as the magnet
+    finds them through the hatch -- 6 staggered bright bursts, 2.8-5.2
+    kHz, mixed so they ring over each other (four heads come up in close
+    harmony)."""
+    freqs = [2800, 3300, 3900, 4400, 4800, 5200]
+    decays = [20, 23, 26, 29, 32, 35]
+    onsets = [0.0, 0.04, 0.07, 0.10, 0.14, 0.18]
+    tracks = []
+    for f, dc, on in zip(freqs, decays, onsets):
+        burst = partials(0.5, [(f, 0.7, dc), (f * 1.5, 0.3, dc + 10)],
+                         attack=0.0005)
+        tracks.append(concat(silence(on), burst))
+    return mix(*tracks)
+
+
+def sfx_scribble():
+    """The work order: a quill scratching the ransom note over into a
+    contract -- three short dry noise bursts with small gaps (same
+    numbers, fewer threats)."""
+    s = noise_burst(0.08, 0.35, 45)
+    gap = silence(0.05)
+    return concat(s, gap, s, gap, s)
+
+
 EFFECTS = {
     "whack": sfx_whack,
     "bolt_drop": sfx_bolt_drop,
@@ -499,6 +562,11 @@ EFFECTS = {
     "creak9": sfx_creak9,
     "sag": sfx_sag,
     "whistle": sfx_whistle,
+    "barlift": sfx_barlift,
+    "reel": sfx_reel,
+    "winch": sfx_winch,
+    "washers": sfx_washers,
+    "scribble": sfx_scribble,
 }
 
 
