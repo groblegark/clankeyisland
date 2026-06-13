@@ -847,6 +847,7 @@ def draw_midtown(marquee="blank"):
 # (closed -> open mid-performance) stays inside the object rect.
 GRAND_GEOM = {
     "G_DOOR_OUT":   (0, 56, 24, 48),
+    "G_CATWALK":    (168, 0, 104, 16),
     "G_SPOT":       (32, 8, 32, 32),
     "G_CHANDELIER": (88, 0, 48, 24),
     "G_AUDIENCE":   (24, 88, 96, 32),
@@ -856,7 +857,7 @@ GRAND_GEOM = {
 }
 
 
-def draw_theater(curtain="closed"):
+def draw_theater(curtain="closed", watcher=True):
     im = new_img(W, H)
     d = ImageDraw.Draw(im)
     g = GRAND_GEOM
@@ -943,9 +944,10 @@ def draw_theater(curtain="closed"):
     for x in range(tx + 12, tx + tw - 8, 8):
         d.line([(x, ty - 4), (x, ty - 1)], fill=6)                # rail dots
     d.rectangle([tx + 70, ty - 8, tx + 82, ty - 6], fill=1)       # the hatch
-    d.rectangle([tx + 44, ty - 16, tx + 52, ty - 8], fill=1)      # a watcher
-    im.putpixel((tx + 46, ty - 13), 107)                          # the eye
-    d.line([(tx + 52, ty - 12), (tx + 58, ty - 14)], fill=1)      # spyglass
+    if watcher:
+        d.rectangle([tx + 44, ty - 16, tx + 52, ty - 8], fill=1)  # a watcher
+        im.putpixel((tx + 46, ty - 13), 107)                      # the eye
+        d.line([(tx + 52, ty - 12), (tx + 58, ty - 14)], fill=1)  # spyglass
 
     # --- the stage
     d.rectangle([tx, ty + th - 16, tx + tw, ty + th], fill=66)    # apron
@@ -1459,6 +1461,7 @@ ALLEY_OBJECT_NAMES = {
 
 GRAND_OBJECT_NAMES = {
     "G_DOOR_OUT":   "lobby doors",
+    "G_CATWALK":    "catwalk",
     "G_SPOT":       "spotlight booth",
     "G_CHANDELIER": "chandelier",
     "G_AUDIENCE":   "the audience",
@@ -1670,6 +1673,9 @@ def main():
     save_bmp(grand, "rooms/theater.bmp")
     save_bmp(gcrop(grand, "G_STAGE"), "rooms/curtain_closed.bmp")
     save_bmp(gcrop(grand_open, "G_STAGE"), "rooms/curtain_open.bmp")
+    save_bmp(gcrop(grand, "G_CATWALK"), "rooms/catwalk_watch.bmp")
+    save_bmp(gcrop(draw_theater(watcher=False), "G_CATWALK"),
+             "rooms/catwalk_empty.bmp")
     write_box_file(os.path.join(OUT, "rooms", "theater.box"),
                    [Box(pts, name=n) for n, pts in GRAND_WALKBOXES])
 

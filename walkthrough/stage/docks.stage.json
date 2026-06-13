@@ -450,6 +450,18 @@
     80
    ]
   },
+  "catwalk": {
+   "rect": [
+    168,
+    0,
+    104,
+    16
+   ],
+   "hotspot": [
+    220,
+    8
+   ]
+  },
   "spotlight booth": {
    "rect": [
     32,

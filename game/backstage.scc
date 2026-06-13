@@ -197,7 +197,7 @@ room BackstageRoom {
             egoSay("Twice. Once. Twice. I've got it.");
             return;
         }
-        egoSay("'The cards answer that one. Place them.'");
+        egoSay("'The cards answer that one. Tell it to the table. The felt notarizes.'");
         waitForMessage();
         egoSay("The felt is greener on the business side of the table.");
     }
@@ -342,6 +342,8 @@ room BackstageRoom {
                     waitForMessage();
                     egoSay("I ask how she follows my career. 'The theater is wired. I am the wiring.'");
                     waitForMessage();
+                    egoSay("The coil drinks mains. The bot under the shawl is wound like the rest of us. The readings are the expensive part.");
+                    waitForMessage();
                     egoSay("'You came for the one in the jar.'");
                     waitForMessage();
                     egoSay("There's a jar. In it: a brass key the size of my forearm.");
@@ -365,6 +367,13 @@ room BackstageRoom {
                     egoSay("'The past,' she says. 'Place the lie this city printed you.'");
                     waitForMessage();
                 }
+                return;
+            }
+            // B11: at stage 3 both hints send the player here -- her
+            // question, her parlor. Route to the Card III dialog; bare
+            // Use on the table stays the alias.
+            if(readingStage == 3) {
+                startObject2(readingTable, Use, [ Use, readingTable, 0 ]);
                 return;
             }
             // the hub (one pick per ask; option scripts carry the lines)
@@ -534,7 +543,8 @@ room BackstageRoom {
                 return;
             }
             if(readingStage == 3) {
-                egoSay("Card three is face down and done with objects. It wants an answer, out loud.");
+                startSound(fizzleSnd);
+                egoSay("The arc nudges it back without tasting it. 'The future,' she says, 'is spoken.'");
                 return;
             }
             if(readingStage >= 4) {
@@ -581,7 +591,7 @@ room BackstageRoom {
                         waitForMessage();
                         egoSay("'The Rustlers don't want a dark city. They want one that pays to stay lit.'");
                         waitForMessage();
-                        egoSay("'Wind it down. Ransom the rewind. Salvage rates.' Their words, says the card.");
+                        egoSay("'They don't wind a thing. The city winds down for free. They mean to own the rewind.' Their words, says the card.");
                         waitForMessage();
                         egoSay("Piracy, with invoices.");
                         waitForMessage();
@@ -597,6 +607,8 @@ room BackstageRoom {
                             egoSay("Twice. Once. Twice. I file the rhythm somewhere fireproof.");
                             waitForMessage();
                         }
+                        egoSay("'It answers when they want something walking through it,' she adds. 'They will.'");
+                        waitForMessage();
                         egoSay("'The reading is paid,' she says. 'Ground yourself.'");
                         waitForMessage();
                         startSound(jarSnd);

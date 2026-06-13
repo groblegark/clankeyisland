@@ -201,7 +201,7 @@ room TavernRoom {
                     delay(40);
                     egoSay("The bolt slots into the ratchet. The servo unwinds. The glass, at long last, comes down.");
                     waitForMessage();
-                    egoSay("My fortune. Reduced to eight thousand and nine.");
+                    egoSay("My fortune. Back up to eight thousand and eleven to go. Investing is brutal.");
                     waitForMessage();
                     startSound(clinkSnd);
                     pickupObject(InventoryItems::token, InventoryItems);
@@ -211,6 +211,10 @@ room TavernRoom {
                 return;
             }
             if(objB == InventoryItems::boltStash) {
+                if(servoFixed) {
+                    egoSay("Brined. He'd sooner drink them. Rivet sells facts for the dry kind.");
+                    return;
+                }
                 egoSay("Harbor bolts. Brined stiff. The shim wants one dry and dock-fresh, he says.");
                 waitForMessage();
                 unless(getObjectOwner(InventoryItems::bolt) == VAR_EGO) {
@@ -276,12 +280,21 @@ room TavernRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
+            // post-heist (N-A16): they robbed me and we both know it
+            if(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
+                egoSay("Same three. Same hat. One of them is dealing with my key for a card weight, and we are all pretending otherwise.");
+                return;
+            }
             egoSay("Three corroded pirate-bots playing cards for washers.");
             waitForMessage();
             egoSay("One of them insists washers are 'post-bolt currency'. The other two are holding washers, so they're not arguing hard.");
             return;
         case TalkTo:
-            unless(heardKnockCode) {
+            // the lean-in is keyed on its own flag: the reading
+            // force-feeds heardKnockCode, and this scene must not
+            // vanish for players who learn the code from Voltina
+            unless(sawTableArgument) {
+                sawTableArgument = 1;
                 heardKnockCode = 1;
                 egoSay("I lean in casually. Extremely casually. Nobody has ever leaned this casually.");
                 waitForMessage();
@@ -410,6 +423,12 @@ room TavernRoom {
                 startSound(knockSnd);
                 egoSay("CLANG-CLANG. CLANG. CLANG-CLANG.");
                 waitForMessage();
+                if(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
+                    egoSay("A slot opens. The eye checks me twice. 'Right knock. Wrong appointment.' The slot closes.");
+                    waitForMessage();
+                    egoSay("It knows my knock now. That's not a refusal. That's a booking.");
+                    return;
+                }
                 egoSay("A slot opens. An eye looks at me. A voice says: 'Act Three, buddy.' The slot closes.");
                 return;
             }

@@ -212,11 +212,20 @@ room AlleyRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
+            // post-heist (N-A16): the lookout's job changed and shows it
+            if(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
+                egoSay("The spyglass isn't pointed at the docks anymore. It's pointed at me. I've been promoted.");
+                return;
+            }
             egoSay("A fire escape, and on it a Rustler with a spyglass, pointed at the docks.");
             waitForMessage();
             egoSay("He's taking notes. I'm in the notes.");
             return;
         case TalkTo:
+            if(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
+                egoSay("I don't wave this time. He notes that too.");
+                return;
+            }
             egoSay("I wave up at him. He writes that down too.");
             return;
         case PickUp:
@@ -389,10 +398,22 @@ room AlleyRoom {
                         waitForMessage();
                     }
                     if(gateNined) {
-                        egoSay("'Stakes, riddle, notary. Talk to me when you're holding paper worth wanting.'");
-                        waitForMessage();
+                        unless(riddleDone) {
+                            egoSay("'Stakes, riddle, notary. Talk to me when you're holding paper worth wanting.'");
+                            waitForMessage();
+                        }
+                        if(riddleDone) {
+                            egoSay("'You've got the paper AND my bolt. The shop is closed to you, champ.'");
+                            waitForMessage();
+                        }
                     }
                 }
+                return;
+            }
+            if(objB == InventoryItems::tenthBolt) {
+                egoSay("He won't appraise his own bolt. Conflict of interest. The fact comes free:");
+                waitForMessage();
+                egoSay("'Ten go in the gate. All at once. It likes the drama.'");
                 return;
             }
             if(objB == InventoryItems::poster) {
@@ -496,7 +517,7 @@ room AlleyRoom {
                 }
                 egoSay("I feed it ten. It counts ten, blinks NINE, and spits the dry one back stamped UNCIRCULATED.");
                 waitForMessage();
-                egoSay("The slot gauge is worn-bolt-sized. Money here has to have suffered. The dry one has another appointment anyway.");
+                egoSay("The slot gauge is worn-bolt-sized. The dry one has another appointment anyway.");
                 return;
             }
             // all aboard -- silently (room transitions say nothing: a
@@ -527,6 +548,13 @@ room AlleyRoom {
                 return;
             }
             if(objB == InventoryItems::tenthBolt) {
+                if(getObjectOwner(InventoryItems::boltStash) == VAR_EGO) {
+                    unless(fareDone) {
+                        // both in hand: paying is paying
+                        startObject2(gate, Use, [ Use, gate, 0 ]);
+                        return;
+                    }
+                }
                 egoSay("It blinks ONE and waits. Bulk payments only.");
                 return;
             }

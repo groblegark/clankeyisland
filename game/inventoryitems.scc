@@ -350,7 +350,7 @@ room InventoryItems {
             egoSay("I'm saving it for somewhere with a rope to get past.");
             return;
         case Smell:
-            egoSay("Thermal paper. It's already fading. Spend it.");
+            egoSay("Thermal paper. Already fading. Somebody prints these expecting them not to be honored.");
             return;
         }
     }

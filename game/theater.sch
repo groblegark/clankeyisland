@@ -12,6 +12,7 @@ room TheaterRoom {
     bit voltinaGreeted;
 
     object doorLobby;
+    object catwalk;
     object spotBooth;
     object chandelier;
     object audience;

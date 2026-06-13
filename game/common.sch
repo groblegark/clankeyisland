@@ -29,6 +29,7 @@ int windTurns;
 // the hideout door in Act 3. Read AND written cross-room, so it lives
 // here — room bits are room-local (docs/NOTES.md).
 bit heardKnockCode;
+bit sawTableArgument;   // the lean-in scene at the rustlers' table
 
 // The sentence line
 verb SntcLine @ 14;
