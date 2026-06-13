@@ -1,4 +1,4 @@
-All required reading done (PRODUCTION-PLAN, GDD, NOTES, CHARTER + all three editorial reports, NPC-DIALOG, NARRATION, WALKTHROUGHER, genmusic/genaudio, tavern.scc, theater.scc, midtown.scc, alley.scc, inventoryitems.scc, common.sch, full-run screenplay). Here is the complete design doc.
+All required reading done (PRODUCTION-PLAN, GDD, NOTES, CHARTER + all three editorial reports, NPC-DIALOG, NARRATION, WALKTHROUGHER, genmusic/genaudio, tavern.scc, theater.scc, midtown.scc, alley.scc, inventoryitems.scc, common.sch, full-run screenplay). **B12 RIDER (third desk pass): backstage.scc is REQUIRED READING — Card II of the shipped reading needs the UNSPENT voucher, and this brief's original draft would have soft-locked Key #2.** Here is the complete design doc.
 
 ---
 
@@ -20,8 +20,8 @@ All required reading done (PRODUCTION-PLAN, GDD, NOTES, CHARTER + all three edit
 **Spine advancement.** No key changes hands here — Scene 07 is the cover-up rail, and the cover-up rail is how the player reaches Key #3:
 
 - **Key #1** (stolen, Scene 05) — untouched; recovery is Scene 09 (knock-code).
-- **Key #2** (Voltina) — untouched; Scene 06 is a parallel Act-2 branch off the same prize cutscene (pass → backstage, voucher → here; no ordering gate between 06 and 07, both converge on 08).
-- **Key #3 / Old Crank** — this scene puts the name **O. CRANK** on screen for the first time in the whole game, printed on the evidence itself ("Technician of record: O. CRANK"). This discharges the desk's standing N-A10 duty (every scene plants the twist) with a plant the player literally pockets.
+- **Key #2** (Voltina) — REQUIRED FIRST (B12, third desk pass): Card II of her reading takes the voucher and hands it back uncashed; spending it here before the reading would kill the game. SHIPPED FIX: the rope refuses until `getObjectOwner(InventoryItems::voltKey) == VAR_EGO` (midtown.scc already implements the pre/post branches — 'Madame's night' / 'after hours, like somebody told him to say it'). P1 below MUST keep that guard: the voucher-on-rope success branch only fires with voltKey in pocket. 06-before-07 is the only order.
+- **Key #3 / Old Crank** — STALE CLAIM CORRECTED (desk NIT, third pass): backstage.scc:optCrank already speaks the name Old Crank on the validate path. This scene's real distinction: the first WRITTEN, POCKETED Crank plant ("Technician of record: O. CRANK" on the cancelled work order) — evidence, not hearsay. Still discharges N-A10; re-audit every other 'first time' claim in this brief against backstage.scc before implementation.
 - **Scene 08 lever:** the work order is the evidence the player will *act on* at City Hall — the aide says so on screen ("Take it to him. Aides can't. Aides file."). Exposing Piston is what opens the Dynamo District fence (Scene 10), where Key #3 lives.
 
 **Canon obligations honored:** City Hall's aides drink here and talk (booth eavesdrop + the frightened aide from the nine-degree door); uptown society comedy (the bouncer, the sommelier of crude); evidence the player ACTS on (a dialog contest the player can flub funny, then a theft the player performs); N-M4's promise ("tonight it's at capacity") is confronted and defeated, not waved away.
@@ -36,8 +36,11 @@ All required reading done (PRODUCTION-PLAN, GDD, NOTES, CHARTER + all three edit
                          [Scene 05: oilVoucher won]
                                    |
    P1. OPEN THE ROPE  (midtown, outside)
-       lock:   the velvet rope ("at capacity"; the bouncer admits the
-               voucher is valid — the ROPE is the obstacle)
+       lock:   the velvet rope (pre-reading: "Madame's night. The rope
+               respects her appointments." — B12 gate, SHIPPED; post-
+               reading: "after hours" — the obstacle this scene opens)
+       gate:   voltKey owned (Scene 06 done) — already enforced in
+               midtown.scc; the P1 success branch must keep it
        key:    Use oilVoucher WITH the velvet rope (not the bar, not
                the bouncer): the voucher is "valid at participating
                establishments"; the rope's own plaque says THE ROPE.
