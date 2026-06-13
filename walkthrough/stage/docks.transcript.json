@@ -351,6 +351,30 @@
     "text": "And alone at the bar: a fresh civic crest on an old chassis, folded over a glass like a memo nobody filed.",
     "speaker": "sprocket"
    }
+  ],
+  "CityHallRoom.entry": [
+   {
+    "text": "City Hall, inside. Marble paint over sheet metal. The echo is load-bearing.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "A hallway of portraits, a desk of stamps, and at the end: the Mayor.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "You can hear him from here. He sounds like a kettle that won committee.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Caliper follows at exactly arm's length. He measured.",
+    "speaker": "sprocket"
+   }
+  ],
+  "CityHallRoom.brownout": [
+   {
+    "text": "The hum sags. The gauge needle leans. His hand drifts toward the crank dock.",
+    "speaker": "sprocket"
+   }
   ]
  },
  "objects": {
@@ -382,6 +406,14 @@
   },
   "official notice": {
    "LookAt": [
+    {
+     "text": "\\\"DYNAMO MAINTENANCE: NOTHING IS WRONG.\\\" Now with a VOID stamp.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Denied, then voided. The most official object I own.",
+     "speaker": "sprocket"
+    },
     {
      "text": "\\\"DYNAMO MAINTENANCE: NOTHING IS WRONG. - Mayor Piston.\\\"",
      "speaker": "sprocket"
@@ -682,6 +714,62 @@
    "Smell": [
     {
      "text": "Municipal toner, then two centuries of bar grease. In that order.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "Oil Bar tab": {
+   "LookAt": [
+    {
+     "text": "An Oil Bar tab. Four single-origin rounds, charged to DYNAMO MAINT. -- CONTINGENCY.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Signed: Caliper, in a hand that measures its angles.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It's a City Hall expense. Somebody at City Hall should really see it.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Single-origin crude, four glasses deep.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "ransom note": {
+   "LookAt": [
+    {
+     "text": "WINDING IS A SERVICE NOW. WE HAVE THE FIRST KEY. RATES ON REQUEST.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Below that, the knock, notated. Two. One. Two. Sheet music for a door.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It's an invitation. The dress code is 'expendable'.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Salt corrosion. Postmarked the harbor.",
      "speaker": "sprocket"
     }
    ]
@@ -2715,6 +2803,18 @@
   "City Hall": {
    "LookAt": [
     {
+     "text": "City Hall. The banner still says NOTHING IS WRONG.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It's true now, in the sense that it's a work order.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The door stands open. The banner over it hasn't been told.",
+     "speaker": "sprocket"
+    },
+    {
      "text": "City Hall. The banner says NOTHING IS WRONG. It's brand new.",
      "speaker": "sprocket"
     },
@@ -2724,6 +2824,14 @@
     }
    ],
    "Open": [
+    {
+     "text": "The gap is one degree now. Through it: lamplight, and single-origin crude.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Municipal aides drinking the good stuff. On whose tab, I wonder.",
+     "speaker": "sprocket"
+    },
     {
      "text": "An aide opens the door exactly nine degrees. The Mayor is not seeing anyone.",
      "speaker": "sprocket"
@@ -2735,6 +2843,14 @@
    ],
    "Use": [
     {
+     "text": "The gap is one degree now. Through it: lamplight, and single-origin crude.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Municipal aides drinking the good stuff. On whose tab, I wonder.",
+     "speaker": "sprocket"
+    },
+    {
      "text": "An aide opens the door exactly nine degrees. The Mayor is not seeing anyone.",
      "speaker": "sprocket"
     },
@@ -2744,6 +2860,38 @@
     }
    ],
    "Give": [
+    {
+     "text": "It already opened the door. Now it has an appointment upstairs.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "...",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I post the bar tab through the gap, signature side first.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Silence. Then the sound of a door rethinking its angle.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The door opens the other eighty-one degrees.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Caliper, from the gap: I never showed him that.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Shown, he means, to the Mayor. We understand each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I take the tab back. Evidence keeps.",
+     "speaker": "sprocket"
+    },
     {
      "text": "I show the official notice through the gap. The aide identifies it as 'official' and 'correct'.",
      "speaker": "sprocket"
@@ -2762,6 +2910,38 @@
     }
    ],
    "UsedWith": [
+    {
+     "text": "It already opened the door. Now it has an appointment upstairs.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "...",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I post the bar tab through the gap, signature side first.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Silence. Then the sound of a door rethinking its angle.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The door opens the other eighty-one degrees.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Caliper, from the gap: I never showed him that.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Shown, he means, to the Mayor. We understand each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I take the tab back. Evidence keeps.",
+     "speaker": "sprocket"
+    },
     {
      "text": "I show the official notice through the gap. The aide identifies it as 'official' and 'correct'.",
      "speaker": "sprocket"
@@ -3893,7 +4073,7 @@
   "door to the street": {
    "LookAt": [
     {
-     "text": "The way back to the street. Frosted glass keeps the neon out and the amber in.",
+     "text": "The way back to the street. The marble paint stops at the jamb. Honest of it.",
      "speaker": "sprocket"
     }
    ]
@@ -4564,6 +4744,574 @@
    "Smell": [
     {
      "text": "Cool air through the seams. Down there it's still last century.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "Caliper": {
+   "LookAt": [
+    {
+     "text": "Caliper. The aide who rations doors by the degree.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "His lapel pin is a protractor. Of course it is.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "He's drafting the next notice. The word NOTHING is doing a lot of work in it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask how a bot ends up dispensing angles for a living.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Doors are budget items, he says. Every degree has a cost center.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask about the Mayor. He says the Mayor has never lost an argument.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Caliper, evenly: arguments need a second participant.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "His protractor pin catches the light.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "He's seen it. Eight degrees' worth.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He looks at the signature, then at the middle distance, where his career is.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He files it under RETURNED, UNFILED, and returns it.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "He's seen it. Eight degrees' worth.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He looks at the signature, then at the middle distance, where his career is.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He files it under RETURNED, UNFILED, and returns it.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Ink pads. Three colors. All of them red.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "aide's desk": {
+   "LookAt": [
+    {
+     "text": "A desk defended by rubber stamps. RECEIVED. DECLINED. DECLINED HARDER.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "I reach for a stamp. Caliper produces a form for requesting forms.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Endorsing ink. The desk has opinions it's allowed to publish.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "portrait gallery": {
+   "LookAt": [
+    {
+     "text": "Mayors Piston the First through Fourth. The same boiler, different dents.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Four portraits, one paint job between them. Municipal continuity.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "Bolted to the wall. Somebody anticipated me, four mayors ago.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Bolted to the wall. Somebody anticipated me, four mayors ago.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Varnish. Recent. History gets refreshed here on a schedule.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "spare banners": {
+   "LookAt": [
+    {
+     "text": "Spare banners, rolled and racked. NOTHING IS WRONG, in every size down to lapel.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "There's a fresh crate of them. Confidence has a reorder point.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "The small ones are lapel-sized. My lapel declines.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "I don't need a banner. I'm carrying the rebuttal.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Fresh ink. The same suspicious vintage as my notice.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "curtained window": {
+   "LookAt": [
+    {
+     "text": "The Dynamo fills the window. From this office you can't not see it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "One window, floor to ceiling, curtained shut. It faces the Dynamo District.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Dust on the velvet. None on the pull cord. Somebody checks, then closes them again.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "It's seen. That was the whole job.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I pull the cord. The Dynamo, up the hill, framed like a portrait nobody commissioned.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "It's seen. That was the whole job.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I pull the cord. The Dynamo, up the hill, framed like a portrait nobody commissioned.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Velvet. Underneath it, ozone off the hill.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "civic gauge": {
+   "LookAt": [
+    {
+     "text": "Relabeled in pencil: RESERVE. The needle has stopped pretending.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A brass gauge on the desk, labeled CIVIC OPTIMISM. The needle says plenty.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The dial behind the label is graduated in mainspring turns.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Wired through the desk and into the Mayor's chair.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Move": [
+    {
+     "text": "Wired through the desk and into the Mayor's chair.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Brass polish and pencil shavings.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "the Mayor's desk": {
+   "LookAt": [
+    {
+     "text": "A desk you could dock a ferry at. One blotter, one stamp, one crank dock on the side.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The crank handle is worn shiny.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "The stamp says VOID. A whole desk, organized around one word.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Warm metal. The desk sits downwind of a boiler.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "Mayor Piston": {
+   "LookAt": [
+    {
+     "text": "He's down to working pressure. It suits him.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Mayor Piston. A boiler in a sash. The pressure does his gesturing for him.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The hum winds him like everybody. The steam is just the oratory.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "He's mid-speech when I reach the desk. There's no audience. He doesn't need one.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He greets me: ah, the talent. Tremendous act. The city thanks me.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I mention the robbery. He calls that 'the magic of live theater'.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I put it to him straight: the Dynamo is dying and the city is lying.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Nothing is wrong, he says. It's on every banner.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He asks, off the record, how the maintenance business is.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Booming, I tell him. Also off the record.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I unfold the official notice on his blotter. NOTHING IS WRONG. His signature.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Standard reassurance, he says. We issue them on a schedule.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask what the schedule reassures us about, if nothing is wrong.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Steam escapes from somewhere official.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Caliper, he says. The stamp.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He stamps my notice VOID, with feeling. Now it's official twice.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Maintenance is budgeted at zero, he adds. Because nothing needs maintaining.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I tell him the hum is flat. By half a step.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Retuned, he says. By request. The city prefers a softer key.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The city is built in C. I let it go. For now.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I cite my source: Rivet. Knows everything, sells most of it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Rivet, he says, once sold this office its own staplers.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I don't doubt it. I still don't doubt him either.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I withdraw to regroup. The banners watch me go.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I lay the Oil Bar tab on the blotter, next to my voided notice.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Four rounds of single-origin crude. Charged to DYNAMO MAINT. -- CONTINGENCY. Signed: Caliper.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Caliper offers to explain the signature.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He cannot, the Mayor says. It's a very good signature.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The boiler drops a register. The room gets one degree more honest.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The Dynamo is fine, he says. I have never felt better.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I mention the curtains. Dust on the velvet, none on the cord.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He enjoys the view, he says. Briefly. In private.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "That one was true. I bank it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Zero, I observe, is a very round number for a machine that size.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Zero, he says, is the most honest number we publish.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I believe that more than he wants me to.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I withdraw to regroup. The banners watch me go.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I say nothing. I'm a maintenance-bot. We're comfortable around things that wind down.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The needle does the talking.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Oh, hang the banners, he says.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He docks the crank and winds himself, right there, in front of a maintenance-bot.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Eight turns. The maximum is five. He signs the maximums.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It's been sagging since spring, he says. The engineers gave it three days.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "That was two days ago.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask about the Order. The bots who built the thing.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Wound down, he says. One by one. Pensioned off the books.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "One name left on the list. Deliveries go up the hill.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Up the hill is the Dynamo District. Behind the fence with opinions.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Then he opens a drawer and slides a letter across. Crumpled and uncrumpled. Repeatedly.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "WINDING IS A SERVICE NOW, it says. WE HAVE THE FIRST KEY. RATES ON REQUEST.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Terms of contact: the Scrap & Barrel back door. Knock twice, once, twice.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I know that knock. I've been on the wrong side of it twice.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The city cannot pay, he says.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The city cannot be seen refusing to pay.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I, fortunately, am not the city.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I get the letter, the knock, and the deniability. The city gets to be fine.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Nothing is wrong, son, he says. Go fix it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I offer a courtesy wind. Free estimate. No appointment necessary.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The Mayor does not receive maintenance during office hours.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He says it with his hand still on the crank. We both notice.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He finds one more pound of pressure somewhere.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I point at the gauge. The needle, the pencil line, the math.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "That gauge measures optimism, he says. Optimism varies.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He turns it face-down. The needle scrapes the blotter on the way.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I step out. Behind me, a ratchet, briskly. We'll both pretend otherwise.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "Already stamped. The desk only escalates to ignoring.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He waves it at the visitor's chair. Appointments are conducted seated.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Fine. We'll do this with words first.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Paper goes through channels. The channel is me, talking. So: talking.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He takes nothing by hand. Hands are for gesturing.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "Already stamped. The desk only escalates to ignoring.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He waves it at the visitor's chair. Appointments are conducted seated.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Fine. We'll do this with words first.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Paper goes through channels. The channel is me, talking. So: talking.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He takes nothing by hand. Hands are for gesturing.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Coal smoke. He precedes himself.",
      "speaker": "sprocket"
     }
    ]

@@ -19,6 +19,7 @@ SRCS = common.scc \
        theater.scc \
        backstage.scc \
        oilbar.scc \
+       cityhall.scc \
 
 REPO_ROOT  := $(abspath ..)
 SCUMMC_DIR := $(REPO_ROOT)/vendor/scummc
@@ -73,8 +74,8 @@ CHARSETS = $(BUILD)/vera.char $(BUILD)/vera-small.char $(BUILD)/vera-gui.char
 AUDIO_DIR := $(ASSET_DIR)/audio
 SFX = whack bolt_drop pickup knock foghorn ratchet dart sizzle clink \
       thud plink splash creak boing clunk clunk_dead coded_knock applause \
-      steam crowd drip
-MUSIC = dockside scrapnbarrel backalley shuffle vamp
+      steam manhole crowd drip stamp creak9 sag whistle
+MUSIC = dockside scrapnbarrel backalley shuffle vamp cityhall
 SOUNS = $(SFX:%=$(BUILD)/%.soun) $(MUSIC:%=$(BUILD)/%.soun)
 
 $(BUILD)/%.soun: $(AUDIO_DIR)/%.voc | $(BUILD)
@@ -109,6 +110,7 @@ $(BUILD)/midtown.roobj: $(SOUNS)
 $(BUILD)/theater.roobj: $(SOUNS)
 $(BUILD)/backstage.roobj: $(SOUNS)
 $(BUILD)/oilbar.roobj: $(SOUNS)
+$(BUILD)/cityhall.roobj: $(SOUNS)
 
 $(BUILD)/$(GAME_NAME).000: $(OBJS)
 	cd $(BUILD) && $(SLD) -o $(GAME_NAME) $(SLD_FLAGS) $(notdir $^)

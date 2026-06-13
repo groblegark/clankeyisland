@@ -30,6 +30,10 @@ int windTurns;
 // here — room bits are room-local (docs/NOTES.md).
 bit heardKnockCode;
 bit sawTableArgument;   // the lean-in scene at the rustlers' table
+// Sprocket overheard City Hall's aides talking inside the Oil Bar
+// (Scene 07 interface -> Scene 08). Set when the aide is met in the bar,
+// read by midtown's City Hall breadcrumb. Cross-room, so it lives here.
+bit heardAides;
 
 // The sentence line
 verb SntcLine @ 14;

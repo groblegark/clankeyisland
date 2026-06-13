@@ -310,7 +310,7 @@ def sfx_coded_knock():
                   clang(), intra, clang())           # CLANG-CLANG.
 
 
-def sfx_steam():
+def sfx_manhole():
     """Midtown's manholes hissing 'in a higher register' (the entry line
     names it; nothing played). A faint pressurized hiss that fades in,
     holds, and tapers -- band-passed pseudo-noise sitting ABOVE the
@@ -417,6 +417,61 @@ def sfx_applause():
     return [s * 0.8 / peak for s in out]
 
 
+def sfx_steam():
+    """Pressure-relief hiss: a kettle conceding a point (Scene 08, R1
+    win + flavor vents). Filtered noise + a thin resonance at the relief
+    valve's pitch."""
+    return mix(noise_burst(0.55, 0.75, 7),
+               partials(0.55, [(3800, 0.15, 10)]))
+
+
+def sfx_stamp():
+    """The VOID stamp: a felt-padded thunk + a click (Scene 08)."""
+    return mix(partials(0.09, [(150, 0.9, 40), (90, 0.7, 30)]),
+               noise_burst(0.03, 0.6, 90))
+
+
+def sfx_creak9():
+    """A door surrendering degree by degree -- nine short ticks with
+    shrinking silences between them (0.14s -> 0.04s, an accelerando), the
+    81-degree opening (Scene 08)."""
+    tick = lambda: partials(0.05, [(620, 0.5, 50), (1240, 0.3, 60)])
+    gaps = [0.14, 0.125, 0.11, 0.095, 0.08, 0.065, 0.05, 0.04]
+    parts = []
+    for i in range(9):
+        parts.append(tick())
+        if i < 8:
+            parts.append(silence(gaps[i]))
+    return concat(*parts)
+
+
+def sfx_sag():
+    """The Round 3 brownout: a two-block glide from A down to A-flat (the
+    half-step made audible), overall amplitude sagging then half-
+    recovering (Scene 08)."""
+    a = partials(0.6, [(220, 0.5, 1.2)])      # A
+    ab = partials(0.7, [(207, 0.5, 1.0)])     # A-flat, a half-step under
+    glide = concat(a, ab)
+    # amplitude envelope: sag through the dip, half-recover at the tail
+    n = len(glide)
+    out = []
+    for i, s in enumerate(glide):
+        t = i / n
+        if t < 0.5:
+            env = 1.0 - 0.7 * (t / 0.5)        # sag to 0.3
+        else:
+            env = 0.3 + 0.25 * ((t - 0.5) / 0.5)  # half-recover to 0.55
+        out.append(s * env)
+    peak = max(1e-9, max(abs(s) for s in out))
+    return [s * 0.8 / peak for s in out]
+
+
+def sfx_whistle():
+    """A strained boiler whistle: two close partials beating (Scene 08,
+    Piston's bluster peaks)."""
+    return partials(0.4, [(932, 0.6, 4), (988, 0.5, 4)])
+
+
 EFFECTS = {
     "whack": sfx_whack,
     "bolt_drop": sfx_bolt_drop,
@@ -437,8 +492,13 @@ EFFECTS = {
     "coded_knock": sfx_coded_knock,
     "applause": sfx_applause,
     "steam": sfx_steam,
+    "manhole": sfx_manhole,
     "crowd": sfx_crowd,
     "drip": sfx_drip,
+    "stamp": sfx_stamp,
+    "creak9": sfx_creak9,
+    "sag": sfx_sag,
+    "whistle": sfx_whistle,
 }
 
 

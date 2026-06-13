@@ -12,6 +12,7 @@
 #include "alley.sch"
 #include "theater.sch"
 #include "oilbar.sch"
+#include "cityhall.sch"
 #include "midtown.sch"
 
 room MidtownRoom {
@@ -26,9 +27,10 @@ room MidtownRoom {
     sound ratchetSnd = "ratchet.soun";
     sound pickupSnd  = "pickup.soun";
     sound creakSnd   = "creak.soun";
+    sound creak9Snd  = "creak9.soun";   // Scene 08: the door surrendering 81 deg
     sound plinkSnd   = "plink.soun";
     sound clinkSnd   = "clink.soun";
-    sound steamSnd   = "steam.soun";   // ambient: the manholes' high hiss
+    sound manholeSnd = "manhole.soun";   // ambient: the manholes' high hiss
 
     // ------------------------------------------------------------ music
 
@@ -61,7 +63,7 @@ room MidtownRoom {
                 // the hiss the line names -- it LEADS the words (foley
                 // rule: sound, then the line that reacts to it). Faint,
                 // brief one-shot so it can't muddy the Shuffle's brass.
-                startSound(steamSnd);
+                startSound(manholeSnd);
                 egoSay("Midtown Gearworks. The neon is louder, the streets are cleaner, and the manholes hiss in a higher register.");
                 waitForMessage();
                 egoSay("City Hall says NOTHING IS WRONG in letters you can read from the harbor.");
@@ -443,19 +445,71 @@ room MidtownRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
+            if(CityHallRoom::pistonCracked) {
+                egoSay("City Hall. The banner still says NOTHING IS WRONG.");
+                waitForMessage();
+                egoSay("It's true now, in the sense that it's a work order.");
+                return;
+            }
+            if(cityHallOpen) {
+                egoSay("The door stands open. The banner over it hasn't been told.");
+                return;
+            }
             egoSay("City Hall. The banner says NOTHING IS WRONG. It's brand new.");
             waitForMessage();
             egoSay("They replaced the old banner. The old one said the same thing, smaller.");
             return;
         case Open:
         case Use:
+            // silent transition -- FIRST in source (docs/NOTES.md)
+            if(cityHallOpen) {
+                putActorAt(VAR_EGO, 24, 120, CityHallRoom);
+                startRoom(CityHallRoom);
+                return;
+            }
+            if(showedNotice) {
+                egoSay("The gap is one degree now. Through it: lamplight, and single-origin crude.");
+                waitForMessage();
+                egoSay("Municipal aides drinking the good stuff. On whose tab, I wonder.");
+                return;
+            }
             egoSay("An aide opens the door exactly nine degrees. The Mayor is not seeing anyone.");
             waitForMessage();
             egoSay("Especially, he adds, anyone holding paper.");
             return;
         case Give:
         case UsedWith:
+            // the bar tab opens the door -- walkthrough path FIRST
+            if(objB == InventoryItems::barTab) {
+                if(cityHallOpen) {
+                    egoSay("It already opened the door. Now it has an appointment upstairs.");
+                    return;
+                }
+                cityHallOpen = 1;   // flag before speech (story-flags rule)
+                // park Caliper in this room before his one line: actorTalk
+                // drops/mis-renders lines for actors not in the room.
+                // TODO(actorSay): when the costumed-NPC pipeline lands,
+                // putActorAt(caliper_a, ...) here and split his quote out
+                // of the egoSay below into actorSay(caliper_a, "...").
+                cutscene(0) {
+                    egoSay("I post the bar tab through the gap, signature side first.");
+                    waitForMessage();
+                    egoSay("Silence. Then the sound of a door rethinking its angle.");
+                    waitForMessage();
+                    startSound(creak9Snd);
+                    egoSay("The door opens the other eighty-one degrees.");
+                    waitForMessage();
+                    egoSay("Caliper, from the gap: I never showed him that.");
+                    waitForMessage();
+                    egoSay("Shown, he means, to the Mayor. We understand each other.");
+                    waitForMessage();
+                    egoSay("I take the tab back. Evidence keeps.");
+                    waitForMessage();
+                }
+                return;
+            }
             if(objB == InventoryItems::poster) {
+                showedNotice = 1;   // flag before speech
                 egoSay("I show the official notice through the gap. The aide identifies it as 'official' and 'correct'.");
                 waitForMessage();
                 egoSay("Then he closes the door eight of the nine degrees.");

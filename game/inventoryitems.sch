@@ -15,4 +15,6 @@ room InventoryItems {
     object backstagePass;
     object voltKey;
     object workOrder;
+    object barTab;          // Scene 08: door key + Round 2 evidence
+    object ransomNote;      // Scene 08 -> 09: 2-1-2 knock + "WE HAVE THE FIRST KEY"
 }
