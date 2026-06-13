@@ -218,14 +218,20 @@ class Oracle:
         # talk text is SPROCKET_COLOR (+ the secondary talk color) ONLY —
         # white is also scenery (the tavern piano's keys read as "talking"
         # forever if white counts)
-        colors = self.stage.probes["talk"] + self.stage.probes["talk-2"]
+        fams = [("sprocket", self.stage.probes["talk"]
+                 + self.stage.probes["talk-2"])]
+        fams += [(name[5:], cols) for name, cols in
+                 self.stage.probes.items()
+                 if name.startswith("talk-") and name != "talk-2"]
         px = frame.load()
         mask = []
         for yy in range(0, 104, 2):
             for xx in range(0, GAME_W, 2):
                 p = px[xx, yy]
-                if any(near(p, c) for c in colors):
-                    mask.append((xx, yy))
+                for fam, colors in fams:
+                    if any(near(p, c) for c in colors):
+                        mask.append((xx, yy, fam))
+                        break
         return frozenset(mask)
 
     def room_ready(self, frame):
@@ -318,10 +324,25 @@ class Performer:
             if talking and sig != cur_sig:
                 if cur_sig is not None:
                     self.take.log("line_end", index=seg_count - 1)
-                text = None
+                text, scripted = None, None
                 if lines and seg_count < len(lines):
-                    text = lines[seg_count]
-                self.take.log("line_start", index=seg_count, text=text)
+                    entry = lines[seg_count]
+                    if isinstance(entry, dict):
+                        text = entry.get("text")
+                        scripted = entry.get("speaker")
+                    else:
+                        text = entry
+                fam_counts = {}
+                for m_px in mask:
+                    fam = m_px[2] if len(m_px) > 2 else "sprocket"
+                    fam_counts[fam] = fam_counts.get(fam, 0) + 1
+                seen = max(fam_counts, key=fam_counts.get) \
+                    if fam_counts else None
+                if scripted and seen and scripted != seen:
+                    self.take.log("speaker_mismatch", index=seg_count,
+                                  scripted=scripted, seen=seen)
+                self.take.log("line_start", index=seg_count, text=text,
+                              speaker=seen)
                 seg_count += 1
             elif not talking and cur_sig is not None:
                 self.take.log("line_end", index=seg_count - 1)

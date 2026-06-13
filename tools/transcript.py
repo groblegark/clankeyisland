@@ -24,7 +24,30 @@ import json
 import re
 import sys
 
-EGOSAY = re.compile(r'egoSay\(\s*"((?:[^"\\]|\\.)*)"')
+SAY = re.compile(
+    r'(?:egoSay\(\s*|actorSay\(\s*(\w+)\s*,\s*)"((?:[^"\\]|\\.)*)"')
+
+# actor variable -> canonical speaker (shared with the stage probes:
+# probe "talk-<speaker>" is the same name)
+SPEAKERS = {
+    "gusket_a": "gusket",
+    "voltina_a": "voltina",
+    "emcee_a": "emcee",
+    "rivet_a": "rivet",
+    "extra_a": "extra",
+}
+
+
+def say_lines(body):
+    """Speaker-tagged lines in source order: egoSay -> sprocket."""
+    out = []
+    for m in SAY.finditer(body):
+        actor, text = m.group(1), m.group(2)
+        if actor == "0xFF" or not text:
+            continue
+        out.append({"text": text,
+                    "speaker": SPEAKERS.get(actor, "sprocket")})
+    return out
 OBJECT = re.compile(r'^\s*object\s+(\w+)\s*\{', re.M)
 NAME = re.compile(r'name\s*=\s*"([^"]*)"')
 SCRIPT = re.compile(r'^\s*(?:local\s+)?script\s+(\w+)\s*\(', re.M)
@@ -57,7 +80,7 @@ def verb_lines(body):
             i += 1
             labels.append(matches[i].group(1))
         end = matches[i + 1].start() if i + 1 < len(matches) else len(body)
-        lines = EGOSAY.findall(body[matches[i].end():end])
+        lines = say_lines(body[matches[i].end():end])
         if lines:
             for label in labels:
                 out[label] = lines
@@ -87,7 +110,7 @@ def extract(src, result):
         if brace < 0:
             continue
         body, _ = block(src, brace)
-        lines = EGOSAY.findall(body)
+        lines = say_lines(body)
         # only scripts that actually talk (entry cutscenes etc.);
         # keyed by room to keep the two rooms' entry scripts apart
         if lines and m.group(1) not in result["objects"]:

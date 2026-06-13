@@ -28,6 +28,29 @@ room Actors {
         // set VAR_EGO so we can use the *Ego* functions
         VAR_EGO = sprocket;
 
+        // the NPC cast: costume-less talkers (NPC-DIALOG.md Tier A).
+        // Rooms putActorAt each speaker before its first line.
+        setCurrentActor(gusket_a);
+        initActor();
+        setActorName("Gusket");
+        setActorTalkColor(GUSKET_COLOR);
+        setCurrentActor(voltina_a);
+        initActor();
+        setActorName("Madame Voltina");
+        setActorTalkColor(VOLTINA_COLOR);
+        setCurrentActor(emcee_a);
+        initActor();
+        setActorName("the emcee");
+        setActorTalkColor(EMCEE_COLOR);
+        setCurrentActor(rivet_a);
+        initActor();
+        setActorName("Rivet");
+        setActorTalkColor(RIVET_COLOR);
+        setCurrentActor(extra_a);
+        initActor();
+        setActorName("voice");
+        setActorTalkColor(EXTRA_COLOR);
+
         invOffset = 0;
 
         setCurrentActor(VAR_EGO);

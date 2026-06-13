@@ -58,6 +58,13 @@ PAL[104] = (235, 240, 245)   # white / narrator
 PAL[105] = (255, 190, 80)    # SPROCKET_COLOR (talk text)
 PAL[106] = (140, 220, 255)   # secondary talk color
 PAL[107] = (255, 110, 110)   # warning red
+# per-NPC talk colors (NPC-DIALOG.md item 1) -- spread in hue AND luma:
+# the dub reads VP8 4:2:0 footage, not lossless screenshots
+PAL[108] = (120, 255, 120)   # GUSKET_COLOR  (bartender green)
+PAL[109] = (255, 140, 220)   # VOLTINA_COLOR (tesla pink)
+PAL[110] = (255, 255, 120)   # EMCEE_COLOR   (footlight yellow)
+PAL[111] = (170, 150, 255)   # RIVET_COLOR   (back-alley violet)
+PAL[112] = (255, 170, 90)    # EXTRA_COLOR   (clerk/bouncer/heckler pool)
 
 # 224-255: costume window. 224 must be the transparent marker.
 COST = 224
@@ -1557,6 +1564,13 @@ STAGE_PROBES = {
     "white":     [104],
     "talk":      [105],   # SPROCKET_COLOR — egoSay text
     "talk-2":    [106],
+    # per-NPC talk colors: the driver classifies talk pixels by nearest
+    # color to attribute segments to speakers (NPC-DIALOG.md item 3)
+    "talk-gusket":  [108],
+    "talk-voltina": [109],
+    "talk-emcee":   [110],
+    "talk-rivet":   [111],
+    "talk-extra":   [112],
     "red":       [107],
     "sprocket-body": [COST + 2, COST + 3, COST + 4],
     # Scene 06: the brass key in (and gone from) Voltina's jar, and the
