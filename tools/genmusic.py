@@ -599,6 +599,174 @@ def build_vamp():
     return mid
 
 
+# ----------------------------------------------- Nothing Is Wrong (March)
+
+# Scene 08: City Hall. A civic march -- straight, not swung (Midtown
+# swings, City Hall marches). 16 bars, 4/4, Bb major, 96 BPM. The joke is
+# structural: bars 1-8 are pure confidence (fanfare up the Bb triad);
+# bars 9-16 the bass starts resting on beat 3 (the march checking its own
+# gauge) while the lead keeps going as if nothing is wrong. Underneath the
+# whole form, a pedal A1 -- a half-step under the tonic's root -- holds at
+# low velocity: the Dynamo's hum, flat by half a step (the N-A5 detuning
+# motif's first scored appearance).
+MARCH_BPM = 96
+MARCH_BARS = 16
+MARCH_LOOP_BEATS = MARCH_BARS * 4 + 1   # 65
+
+# I -- IV -- V -- I civic changes, two 8-bar passes
+MARCH_PROG = ["Bb", "Bb", "Eb", "Bb", "F", "F", "Bb", "Bb",
+              "Bb", "Eb", "Bb", "F", "Eb", "Bb", "F", "Bb"]
+MARCH_CHORDS = {
+    "Bb": [n("Bb", 3), n("D", 4), n("F", 4)],
+    "Eb": [n("Eb", 3), n("G", 3), n("Bb", 3)],
+    "F":  [n("F", 3), n("A", 3), n("C", 4)],
+}
+MARCH_ROOTS = {"Bb": n("Bb", 2), "Eb": n("Eb", 2), "F": n("F", 2)}
+MARCH_FIFTH = {"Bb": n("F", 2), "Eb": n("Bb", 2), "F": n("C", 3)}
+
+CH_PEDAL = 3                                  # the flat hum
+PRG_TRUMPET = 56                              # canonical lead (fallback 80)
+PRG_PEDAL = 38
+
+# the lead: a fanfare that squares its shoulders and never sits down.
+# straight quarters/eighths (slots here are STRAIGHT eighths, 8 per bar)
+RM = []
+def march_phrase(bar, notes):
+    for slot, pitch, ln in notes:
+        RM.append((bar, slot, pitch, ln))
+
+march_phrase(1,  [(0, n("Bb", 4), 2), (2, n("D", 5), 2), (4, n("F", 5), 4)])
+march_phrase(2,  [(0, n("F", 5), 2), (2, n("D", 5), 2), (4, n("Bb", 4), 4)])
+march_phrase(3,  [(0, n("Eb", 5), 2), (2, n("G", 5), 2), (4, n("Bb", 5), 4)])
+march_phrase(4,  [(0, n("Bb", 5), 2), (2, n("G", 5), 2), (4, n("D", 5), 4)])
+march_phrase(5,  [(0, n("C", 5), 2), (2, n("F", 5), 2), (4, n("A", 5), 4)])
+march_phrase(6,  [(0, n("A", 5), 2), (2, n("F", 5), 2), (4, n("C", 5), 4)])
+march_phrase(7,  [(0, n("Bb", 4), 2), (2, n("F", 5), 2), (4, n("D", 5), 2),
+                  (6, n("Bb", 4), 2)])
+march_phrase(8,  [(0, n("Bb", 4), 8)])
+march_phrase(9,  [(0, n("Bb", 4), 2), (2, n("D", 5), 2), (4, n("F", 5), 4)])
+march_phrase(10, [(0, n("Bb", 5), 2), (2, n("G", 5), 2), (4, n("Eb", 5), 4)])
+march_phrase(11, [(0, n("D", 5), 2), (2, n("F", 5), 2), (4, n("Bb", 5), 4)])
+march_phrase(12, [(0, n("C", 5), 2), (2, n("A", 5), 2), (4, n("F", 5), 4)])
+march_phrase(13, [(0, n("Eb", 5), 2), (2, n("G", 5), 2), (4, n("Bb", 5), 4)])
+march_phrase(14, [(0, n("Bb", 5), 2), (2, n("F", 5), 2), (4, n("D", 5), 4)])
+march_phrase(15, [(0, n("F", 5), 2), (2, n("A", 5), 2), (4, n("C", 6), 4)])
+march_phrase(16, [(0, n("Bb", 5), 8)])
+
+
+def march_slot_time(bar, slot):
+    """Absolute ticks of a STRAIGHT-eighth slot (8 per bar)."""
+    return (bar - 1) * 4 * PPQ + slot * (PPQ // 2)
+
+
+def build_march():
+    ev = []
+
+    def add(tick, msg, order=1):
+        ev.append((tick, order, msg))
+
+    for ch, prg, vol in [(CH_LEAD, PRG_TRUMPET, 96), (CH_BASS, PRG_BASS, 100),
+                         (CH_EP, PRG_EP, 64), (CH_PEDAL, PRG_PEDAL, 28),
+                         (CH_DRUM, 0, 96)]:
+        add(0, mido.Message("program_change", channel=ch, program=prg), 0)
+        add(0, mido.Message("control_change", channel=ch, control=7,
+                            value=vol), 0)
+
+    # the flat hum: a continuous pedal A1, low and underneath everything,
+    # re-struck each bar so AdLib voices don't time out
+    PEDAL = n("A", 1)
+    for bar in range(1, MARCH_BARS + 1):
+        t0 = (bar - 1) * 4 * PPQ
+        add(t0, mido.Message("note_on", channel=CH_PEDAL,
+                             note=PEDAL, velocity=28))
+        add(t0 + 4 * PPQ - 10, mido.Message(
+            "note_off", channel=CH_PEDAL, note=PEDAL, velocity=0))
+
+    for bar in range(1, MARCH_BARS + 1):
+        chord = MARCH_PROG[bar - 1]
+        t0 = (bar - 1) * 4 * PPQ
+        second_half = bar > 8         # the march starts checking its gauge
+
+        # bass: oom on 1 and 3 (root), pah-fifth on 2 and 4 -- but in the
+        # second half the beat-3 oom RESTS (the march checking its gauge)
+        for beat in range(4):
+            if second_half and beat == 2:
+                continue              # the dropped beat-3 root
+            if beat % 2 == 0:
+                pitch = MARCH_ROOTS[chord]
+            else:
+                pitch = MARCH_FIFTH[chord]
+            t = t0 + beat * PPQ
+            add(t, mido.Message("note_on", channel=CH_BASS,
+                                note=pitch, velocity=90))
+            add(t + PPQ * 3 // 5, mido.Message(
+                "note_off", channel=CH_BASS, note=pitch, velocity=0))
+
+        # e-piano: block chords on the off-beats (2 and 4)
+        for beat in (1, 3):
+            t = t0 + beat * PPQ
+            for pitch in MARCH_CHORDS[chord]:
+                add(t, mido.Message("note_on", channel=CH_EP,
+                                    note=pitch, velocity=52))
+                add(t + PPQ // 2, mido.Message(
+                    "note_off", channel=CH_EP, note=pitch, velocity=0))
+
+        # drums: kick on 1/3, light hat on every eighth, parade snare with
+        # a 16th-note pickup roll into bars 1 and 9
+        for slot in range(8):
+            t = march_slot_time(bar, slot)
+            add(t, mido.Message("note_on", channel=CH_DRUM, note=HAT,
+                                velocity=44 if slot % 2 else 56))
+            add(t + 30, mido.Message("note_off", channel=CH_DRUM,
+                                     note=HAT, velocity=0))
+        for beat in (0, 2):
+            t = t0 + beat * PPQ
+            add(t, mido.Message("note_on", channel=CH_DRUM, note=KICK,
+                                velocity=96))
+            add(t + 50, mido.Message("note_off", channel=CH_DRUM,
+                                     note=KICK, velocity=0))
+        for beat in (1, 3):
+            t = t0 + beat * PPQ
+            add(t, mido.Message("note_on", channel=CH_DRUM, note=SNARE,
+                                velocity=80))
+            add(t + 50, mido.Message("note_off", channel=CH_DRUM,
+                                     note=SNARE, velocity=0))
+
+    # snare pickup rolls (16ths) into the downbeat of bars 1 and 9
+    for downbar in (1, 9):
+        t0 = (downbar - 1) * 4 * PPQ
+        for k in range(1, 5):
+            t = t0 - k * (PPQ // 4)
+            if t < 0:
+                continue
+            add(t, mido.Message("note_on", channel=CH_DRUM, note=SNARE,
+                                velocity=48 + (4 - k) * 8))
+            add(t + 24, mido.Message("note_off", channel=CH_DRUM,
+                                     note=SNARE, velocity=0))
+
+    # the lead fanfare
+    for bar, slot, pitch, ln in RM:
+        t = march_slot_time(bar, slot)
+        dur = ln * (PPQ // 2)
+        add(t, mido.Message("note_on", channel=CH_LEAD, note=pitch,
+                            velocity=92))
+        add(t + dur - 30, mido.Message(
+            "note_off", channel=CH_LEAD, note=pitch, velocity=0))
+
+    mid = mido.MidiFile(type=0, ticks_per_beat=PPQ)
+    track = mido.MidiTrack()
+    track.append(mido.MetaMessage("set_tempo",
+                                  tempo=mido.bpm2tempo(MARCH_BPM), time=0))
+    last = 0
+    for tick, _, msg in sorted(ev, key=lambda e: (e[0], e[1])):
+        track.append(msg.copy(time=tick - last))
+        last = tick
+    track.append(mido.MetaMessage("end_of_track",
+                                  time=MARCH_BARS * 4 * PPQ - last))
+    mid.tracks.append(track)
+    return mid
+
+
 def main():
     os.makedirs(OUTDIR, exist_ok=True)
     for name, build, bars, bpm, loop in [
@@ -608,7 +776,9 @@ def main():
              ALLEY_LOOP_BEATS),
             ("shuffle", build_shuffle, SHUF_BARS, SHUF_BPM,
              SHUF_LOOP_BEATS),
-            ("vamp", build_vamp, VAMP_BARS, VAMP_BPM, VAMP_LOOP_BEATS)]:
+            ("vamp", build_vamp, VAMP_BARS, VAMP_BPM, VAMP_LOOP_BEATS),
+            ("cityhall", build_march, MARCH_BARS, MARCH_BPM,
+             MARCH_LOOP_BEATS)]:
         path = os.path.join(OUTDIR, f"{name}.mid")
         build().save(path)
         print(f"{path}  ({bars} bars, {bars * 4 * 60 / bpm:.0f}s, "

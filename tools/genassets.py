@@ -66,6 +66,8 @@ PAL[109] = (255, 140, 220)   # VOLTINA_COLOR (tesla pink)
 PAL[110] = (255, 255, 120)   # EMCEE_COLOR   (footlight yellow)
 PAL[111] = (170, 150, 255)   # RIVET_COLOR   (back-alley violet)
 PAL[112] = (140, 220, 255)   # EXTRA_COLOR (took the retired talk-2 cyan; old orange was 4 over driver TOL from SPROCKET under VP8 -- art doctor SYS-2)
+PAL[113] = (235, 175, 40)    # PISTON_COLOR  (brass gold) -- Scene 08, reserved for actorSay
+PAL[114] = (150, 175, 200)   # CALIPER_COLOR (cool slate) -- Scene 08, reserved for actorSay
 
 # 224-255: costume window. 224 must be the transparent marker.
 COST = 224
@@ -1252,6 +1254,161 @@ OILBAR_GEOM = {
 }
 
 
+CITYHALL_GEOM = {
+    "C_DOOR":    (4, 56, 24, 48),
+    "C_CALIPER": (48, 52, 20, 44),
+    "C_AIDEDESK":(40, 84, 48, 28),
+    "C_PORTRAITS":(96, 8, 72, 40),
+    "C_BANNERS": (104, 96, 40, 24),
+    "C_WINDOW":  (176, 8, 40, 48),    # 8-aligned (stated object)
+    "C_GAUGE":   (216, 28, 24, 24),   # 8-aligned (stated object)
+    "C_MAYORDESK":(196, 84, 92, 36),
+    "C_PISTON":  (240, 40, 48, 56),   # 8-aligned (stated object)
+}
+
+
+def draw_cityhall(window="closed", gauge="high", puff=0):
+    """window: "closed"/"open" (open paints the Dynamo small + distant).
+    gauge: "high"/"low" (needle, the brownout + post-crack state).
+    puff: 0/1 (Piston's stovepipe stack -- the room's animating element).
+    Marble paint over sheet metal: the seams stay visible (the entry line
+    is checkable). Talk colors (108-114) are kept OFF the walls."""
+    im = new_img(W, H)
+    d = ImageDraw.Draw(im)
+    g = CITYHALL_GEOM
+
+    # --- ceiling: dark coffered
+    d.rectangle([0, 0, W, 8], fill=1)
+
+    # --- walls: marble paint (light steel) over sheet metal, seams shown
+    d.rectangle([0, 8, W, 104], fill=11)              # marble field
+    for y in range(8, 104, 12):                       # horizontal seams
+        d.line([(0, y), (W, y)], fill=8)              # sheet-metal seam
+    for x in range(0, W, 40):                         # vertical seams
+        d.line([(x, 8), (x, 104)], fill=8)
+    # faint marble veining (steel mid), sparse so no talk-color smear
+    for vx in range(12, W, 53):
+        d.line([(vx, 14), (vx + 16, 40)], fill=9)
+        d.line([(vx + 30, 50), (vx + 40, 78)], fill=9)
+    d.line([(0, 104), (W, 104)], fill=6)              # baseboard
+
+    # --- floor: polished, a load-bearing echo
+    d.rectangle([0, 105, W, H], fill=64)
+    for y in range(109, H, 6):
+        d.line([(0, y), (W, y)], fill=65)
+    d.line([(0, 106), (W, 106)], fill=46)             # the polish line
+
+    # --- door to the street (marble paint stops at the jamb)
+    dx, dy, dw, dh = g["C_DOOR"]
+    d.rectangle([dx - 3, dy - 3, dx + dw + 3, dy + dh], fill=6)   # sheet jamb
+    d.rectangle([dx, dy, dx + dw, dy + dh], fill=5)
+    d.rectangle([dx + 4, dy + 6, dx + dw - 4, dy + 28], fill=53)  # frosted
+    d.ellipse([dx + dw - 8, dy + 30, dx + dw - 4, dy + 34], outline=46)
+
+    # --- portrait gallery: four mayors, same boiler, different dents
+    px, py, pw, ph = g["C_PORTRAITS"]
+    for i in range(4):
+        fx = px + i * (pw // 4)
+        fw = pw // 4 - 2
+        d.rectangle([fx + 1, py + 2, fx + fw, py + ph - 4], fill=64)  # frame
+        d.rectangle([fx + 1, py + 2, fx + fw, py + ph - 4], outline=46)
+        d.rectangle([fx + 4, py + 6, fx + fw - 3, py + 16], fill=5)   # boiler
+        im.putpixel((fx + 6, py + 9), 44)                            # eye
+        im.putpixel((fx + fw - 5, py + 9), 44)
+        d.rectangle([fx + 4 + i, py + 12, fx + 5 + i, py + 14], fill=16)  # dent
+
+    # --- banner stack: NOTHING IS WRONG, racked, every size
+    bx, by, bw, bh = g["C_BANNERS"]
+    d.rectangle([bx, by, bx + bw, by + bh], fill=18)               # crate
+    for i, ry in enumerate(range(by + 3, by + bh - 2, 5)):         # rolls
+        d.rectangle([bx + 3, ry, bx + bw - 3 - i * 4, ry + 3], fill=31)
+        im.putpixel((bx + 4, ry + 1), 104)                         # text glint
+
+    # --- curtained window onto the Dynamo District
+    wx, wy, ww, wh = g["C_WINDOW"]
+    d.rectangle([wx - 2, wy - 2, wx + ww + 2, wy + wh + 1], fill=6)  # frame
+    if window == "open":
+        # the Dynamo, small and distant, framed like a portrait
+        d.rectangle([wx, wy, wx + ww, wy + wh], fill=53)            # sky
+        for sy in range(wy, wy + 16):
+            d.line([(wx, sy), (wx + ww, sy)],
+                   fill=52 + min(11, (sy - wy) // 2))
+        # the hill + the Dynamo
+        d.rectangle([wx + 2, wy + wh - 14, wx + ww - 2, wy + wh], fill=64)
+        d.rectangle([wx + ww // 2 - 6, wy + wh - 26,
+                     wx + ww // 2 + 6, wy + wh - 12], fill=46)      # dynamo
+        d.ellipse([wx + ww // 2 - 5, wy + wh - 30,
+                   wx + ww // 2 + 5, wy + wh - 22], fill=31)        # the glow
+        im.putpixel((wx + ww // 2, wy + wh - 26), 47)
+    else:
+        # velvet curtains, dust on the velvet, none on the cord
+        d.rectangle([wx, wy, wx + ww, wy + wh], fill=89)           # velvet
+        for cx in range(wx + 3, wx + ww - 2, 5):                   # folds
+            d.line([(cx, wy + 2), (cx, wy + wh - 2)], fill=88)
+        d.line([(wx + ww - 4, wy), (wx + ww - 4, wy + wh)], fill=46)  # cord
+        for du in range(wx + 6, wx + ww - 6, 7):                   # dust
+            im.putpixel((du, wy + 6), 11)
+
+    # --- civic gauge, on the desk, wired to the chair
+    gx, gy, gw, gh = g["C_GAUGE"]
+    d.ellipse([gx + 2, gy + 2, gx + gw - 2, gy + gh - 4], fill=104)  # dial
+    d.ellipse([gx + 2, gy + 2, gx + gw - 2, gy + gh - 4], outline=46)
+    cxp, cyp = gx + gw // 2, gy + (gh - 4) // 2 + 1
+    if gauge == "low":
+        d.line([(cxp, cyp), (cxp - 5, cyp + 4)], fill=107)         # needle low
+        im.putpixel((gx + 3, gy + gh - 2), 6)                      # pencil mark
+    else:
+        d.line([(cxp, cyp), (cxp + 5, cyp - 5)], fill=107)         # needle high
+    im.putpixel((cxp, cyp), 6)
+    d.line([(gx + gw // 2, gy + gh - 4), (gx + gw // 2, gy + gh)], fill=6)  # wire
+
+    # --- the aide's desk + the Mayor's desk (crank dock + VOID stamp)
+    ax, ay, aw, ah = g["C_AIDEDESK"]
+    d.rectangle([ax, ay, ax + aw, ay + ah], fill=64)
+    d.rectangle([ax, ay, ax + aw, ay + 3], fill=46)               # brass top
+    for sx2 in range(ax + 6, ax + aw - 6, 12):                    # stamps
+        d.rectangle([sx2, ay + 6, sx2 + 6, ay + 12], fill=107)
+
+    mx, my, mw, mh = g["C_MAYORDESK"]
+    d.rectangle([mx, my, mx + mw, my + mh], fill=64)
+    d.rectangle([mx, my, mx + mw, my + 3], fill=46)               # brass edge
+    d.rectangle([mx + 8, my + 6, mx + 30, my + 16], fill=104)     # blotter
+    d.rectangle([mx + 34, my + 7, mx + 42, my + 13], fill=107)    # VOID stamp
+    # crank dock on the side, handle worn shiny
+    d.rectangle([mx + mw - 10, my + 8, mx + mw - 4, my + 22], fill=6)
+    d.ellipse([mx + mw - 12, my + 4, mx + mw - 2, my + 12], outline=47)
+    im.putpixel((mx + mw - 7, my + 8), 47)                        # the shine
+
+    # --- Caliper (stateless figure; the protractor pin)
+    clx, cly = g["C_CALIPER"][0], g["C_CALIPER"][1]
+    d.rectangle([clx + 4, cly + 14, clx + 16, cly + 40], fill=2)  # chassis
+    d.rectangle([clx + 6, cly + 2, clx + 14, cly + 14], fill=2)   # head
+    d.rectangle([clx + 7, cly + 6, clx + 9, cly + 8], fill=44)    # eyes
+    d.rectangle([clx + 11, cly + 6, clx + 13, cly + 8], fill=44)
+    im.putpixel((clx + 6, cly + 18), 107)                         # protractor pin
+    d.arc([clx + 4, cly + 16, clx + 9, cly + 21], 180, 360, fill=107)
+
+    # --- Mayor Piston: a boiler in a sash, with a stovepipe stack that
+    # puffs (the 2-state animating element). painted figure shared by both
+    # states; only the puff above the stack changes.
+    ix, iy, iw, ih = g["C_PISTON"]
+    d.rectangle([ix + 8, iy + 18, ix + iw - 8, iy + ih - 2], fill=5)   # boiler
+    d.rectangle([ix + 8, iy + 18, ix + iw - 8, iy + 22], fill=11)
+    d.rectangle([ix + 10, iy + 30, ix + iw - 10, iy + 36], fill=107)   # the sash
+    d.rectangle([ix + 12, iy + 6, ix + iw - 12, iy + 18], fill=6)      # head
+    d.rectangle([ix + 14, iy + 10, ix + 16, iy + 12], fill=44)         # eyes
+    d.rectangle([ix + iw - 16, iy + 10, ix + iw - 14, iy + 12], fill=44)
+    d.rectangle([ix + iw - 14, iy + 0, ix + iw - 8, iy + 8], fill=1)   # stack
+    # the puff (2 frames: small/high)
+    if puff == 0:
+        d.ellipse([ix + iw - 16, iy - 2, ix + iw - 8, iy + 4], outline=11)
+    else:
+        d.ellipse([ix + iw - 18, iy - 6, ix + iw - 6, iy + 2], outline=11)
+        im.putpixel((ix + iw - 12, iy - 4), 8)
+
+    return im
+
+
 def draw_oilbar(somm="post", spike="full", spin=0):
     """somm: "post"/"cellar". spike: "full"/"taken". spin: 0/1 (the
     centrifuge's two rotation frames — the room's animating element)."""
@@ -1649,6 +1806,25 @@ def gen_inventory_icons():
     d.rectangle([28, 10, 31, 13], fill=31)                 # banner swatch
     im.putpixel((29, 10), 1)                               # the staple
     icons["inv_workorder"] = im
+    # the Oil Bar tab: parchment-yellow slip so pixel probes distinguish
+    # it from the white poster/note; four tally rounds + a signature
+    im = new_img(40, 16)
+    d = ImageDraw.Draw(im)
+    d.rectangle([10, 3, 30, 13], fill=44)                  # parchment yellow
+    d.rectangle([10, 3, 30, 13], outline=46)
+    for tx in (13, 16, 19, 22):                            # four rounds
+        d.line([(tx, 5), (tx, 8)], fill=1)
+    d.line([(13, 11), (27, 10)], fill=6)                   # the signature
+    icons["inv_bartab"] = im
+    # the ransom note: white with a red smudge -- probe-distinct
+    im = new_img(40, 16)
+    d = ImageDraw.Draw(im)
+    d.rectangle([9, 3, 31, 13], fill=104)                  # white page
+    for ty in (5, 7, 9):                                   # ransom-cut lines
+        d.line([(12, ty), (28, ty)], fill=1)
+    d.line([(13, 11), (20, 11)], fill=1)
+    d.ellipse([24, 9, 28, 13], fill=107)                   # the red smudge
+    icons["inv_ransom"] = im
     return icons
 
 
@@ -1730,6 +1906,18 @@ MIDTOWN_OBJECT_NAMES = {
     "M_DYNAMO":    "the Great Dynamo",
 }
 
+CITYHALL_OBJECT_NAMES = {
+    "C_DOOR":      "door to the street",
+    "C_CALIPER":   "Caliper",
+    "C_AIDEDESK":  "aide's desk",
+    "C_PORTRAITS": "portrait gallery",
+    "C_BANNERS":   "spare banners",
+    "C_WINDOW":    "curtained window",
+    "C_GAUGE":     "civic gauge",
+    "C_MAYORDESK": "the Mayor's desk",
+    "C_PISTON":    "Mayor Piston",
+}
+
 OILBAR_OBJECT_NAMES = {
     "O_DOOR":     "door to the street",
     "O_BACKBAR":  "back bar",
@@ -1789,6 +1977,13 @@ OILBAR_WALKBOXES = [
     ("oilfloor", [(8, 112), (304, 112), (304, 140), (8, 140)]),
 ]
 
+# one wide floor box (the oilbar lesson: a shared-edge seam wedges the
+# actor when a contest beat walks west<->east; City Hall walks the ego
+# from the door to the Mayor's desk for the duel)
+CITYHALL_WALKBOXES = [
+    ("hallfloor", [(8, 108), (304, 108), (304, 140), (8, 140)]),
+]
+
 # Verb anchors from game/verbs.scc (verbCenter() -> x is the center;
 # y is the text top, so the click point sits a few pixels lower).
 STAGE_VERBS = {
@@ -1838,6 +2033,9 @@ STAGE_PROBES = {
     # the sommelier's black chassis (Scene 07 screenplay probes)
     "amber":      list(range(40, 52)),
     "somm-black": [1],
+    # Scene 08: City Hall's marble paint (the wall field is bright steel;
+    # the screenplay probes [160,80] for marble-paint after the door opens)
+    "marble-paint": [11, 9, 8],
 }
 
 
@@ -1853,7 +2051,7 @@ def assert_no_talk_collisions():
             if name.startswith("talk")}
     rooms = [os.path.join(OUT, "rooms", f"{r}.bmp")
              for r in ("docks", "tavern", "alley", "midtown",
-                       "theater", "backstage")]
+                       "theater", "backstage", "oilbar", "cityhall")]
     bad = []
     for path in rooms:
         if not os.path.exists(path):
@@ -1887,7 +2085,8 @@ def emit_stage(path):
                         (MIDTOWN_OBJECT_NAMES, MIDTOWN_GEOM),
                         (GRAND_OBJECT_NAMES, GRAND_GEOM),
                         (BACK_OBJECT_NAMES, BACK_GEOM),
-                        (OILBAR_OBJECT_NAMES, OILBAR_GEOM)]:
+                        (OILBAR_OBJECT_NAMES, OILBAR_GEOM),
+                        (CITYHALL_OBJECT_NAMES, CITYHALL_GEOM)]:
         for key, name in names.items():
             x, y, w, h = geom[key]
             hs = STAGE_HOTSPOT_OVERRIDES.get(key, (x + w // 2, y + h // 2))
@@ -1905,14 +2104,16 @@ def emit_stage(path):
                       for n, pts in (WALKBOXES + TAVERN_WALKBOXES
                                      + ALLEY_WALKBOXES + MIDTOWN_WALKBOXES
                                      + GRAND_WALKBOXES + BACK_WALKBOXES
-                                     + OILBAR_WALKBOXES)],
+                                     + OILBAR_WALKBOXES
+                                     + CITYHALL_WALKBOXES)],
         "walk_targets": {"center-west": [120, 126], "center-east": [250, 126],
                          "tavern-center": [150, 126],
                          "alley-center": [150, 126],
                          "midtown-center": [150, 126],
                          "grand-center": [140, 126],
                          "backstage-center": [100, 126],
-                         "oilbar-center": [120, 126]},
+                         "oilbar-center": [120, 126],
+                         "cityhall-center": [120, 126]},
     }
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
@@ -2041,6 +2242,26 @@ def main():
     save_bmp(ocrop(draw_oilbar(spin=1), "O_CFUGE"), "rooms/cfuge_b.bmp")
     write_box_file(os.path.join(OUT, "rooms", "oilbar.box"),
                    [Box(pts, name=n) for n, pts in OILBAR_WALKBOXES])
+
+    # Scene 08: City Hall / Mayor Piston
+    hall = draw_cityhall()
+
+    def hcrop(src, key):
+        x, y, w, h = CITYHALL_GEOM[key]
+        return src.crop((x, y, x + w, y + h))
+
+    save_bmp(hall, "rooms/cityhall.bmp")
+    save_bmp(hcrop(hall, "C_WINDOW"), "rooms/window_closed.bmp")
+    save_bmp(hcrop(draw_cityhall(window="open"), "C_WINDOW"),
+             "rooms/window_open.bmp")
+    save_bmp(hcrop(hall, "C_GAUGE"), "rooms/gauge_high.bmp")
+    save_bmp(hcrop(draw_cityhall(gauge="low"), "C_GAUGE"),
+             "rooms/gauge_low.bmp")
+    save_bmp(hcrop(hall, "C_PISTON"), "rooms/piston_puff0.bmp")
+    save_bmp(hcrop(draw_cityhall(puff=1), "C_PISTON"),
+             "rooms/piston_puff1.bmp")
+    write_box_file(os.path.join(OUT, "rooms", "cityhall.box"),
+                   [Box(pts, name=n) for n, pts in CITYHALL_WALKBOXES])
 
     # bolt sprite on dock floor (background-colored patch + bolt)
     bx, by, bw, bh = GEOM["BOLT"]

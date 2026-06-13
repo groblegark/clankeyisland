@@ -519,6 +519,7 @@ room OilBarRoom {
             // window -> hint (off-path branches textually last).
             unless(metAide) {
                 metAide = 1;
+                heardAides = 1;     // Scene 08 interface: aides overheard here
                 cutscene(0) {
                     egoSay("I take the stool one over. Bar protocol: close enough to talk, far enough to deny it.");
                     waitForMessage();

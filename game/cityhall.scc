@@ -1,0 +1,722 @@
+/* Clanker City Chronicles — Scene 08: City Hall / Mayor Piston.
+ * "The Denial Duel." Sprocket walks in with paper (the official notice
+ * from Scene 01 + the Oil Bar tab from Scene 07) and walks out with the
+ * Rustlers' ransom note -- the letter that turns the locked tavern back
+ * door into a destination. The confrontation is a three-round dialog
+ * contest (the dialog.scc UI, the riddle-duel idiom): each round has one
+ * evidence/answer that wins and two flops that loop funny. The final
+ * round's winning move is silence.
+ * NPC dialog is reported secondhand by Sprocket -- one voice, deadpan.
+ * Walkthrough-path lines go FIRST in source per handler (dub pairing).
+ *
+ * TODO(actorSay): the costumed-NPC pipeline is being built on another
+ * branch; until it lands every NPC line ships as Sprocket-reported
+ * speech (the Voltina convention, backstage.scc). When it lands, split
+ * each egoSay below at its quoted span: the quote becomes
+ * actorSay(<actor>, "..."), the frame stays Sprocket's, source order per
+ * handler must not change (dub pairing). SWAP MAP:
+ *   piston_a (talk color 113, en_GB-alan-medium, --length-scale 1.12,
+ *     pitched down, low-shelf + plate): every Piston quote in
+ *     piston:TalkTo (intro, all three rounds, the confession, post-crack)
+ *     and the piston item-verb lines.
+ *   caliper_a (talk color 114, en_US-joe-medium, --length-scale 0.92,
+ *     dry + high-pass): caliper:TalkTo (the Round-3 plant), the bar-tab
+ *     door line in midtown.scc, and the Round-2 "I can explain" line.
+ *   Both need putActorAt in CityHallRoom.entry on EVERY entry (Piston
+ *     262,96; Caliper 58,96), and caliper_a also putActorAt in
+ *     MidtownRoom before his door line, BEFORE any line (off-room
+ *     actorTalk drops lines).
+ */
+
+#include <scummVars6.s>
+#include "common.sch"
+#include "verbs.sch"
+#include "inventoryitems.sch"
+#include "dialog.sch"
+#include "midtown.sch"
+#include "cityhall.sch"
+
+room CityHallRoom {
+
+    image = "rooms/cityhall.bmp";
+    boxd = "rooms/cityhall.box";
+    trans = 0;
+
+    // ------------------------------------------------------------ sounds
+
+    sound marchSnd   = "cityhall.soun";     // "Nothing Is Wrong (March)"
+    sound steamSnd   = "steam.soun";
+    sound stampSnd   = "stamp.soun";
+    sound sagSnd     = "sag.soun";
+    sound creak9Snd  = "creak9.soun";
+    sound creakSnd   = "creak.soun";
+    sound ratchetSnd = "ratchet.soun";
+    sound pickupSnd  = "pickup.soun";
+
+    char* dlgStr;       // dialog-option scratch (openquest idiom)
+
+    // ------------------------------------------------------------ music
+
+    local script musicLoop() {
+        // "Nothing Is Wrong (March)" -- 16 bars, MARCH_LOOP_BEATS = 65
+        // (tools/genmusic.py). The watchdog restarts it if the loop
+        // falls off the end (the docks.scc idiom).
+        stopMusic();
+        startMusic(marchSnd);
+        imPlayerSetLoop(marchSnd, 999, 1, 0, 65, 0);
+        while(1) {
+            delay(120);
+            unless(isSoundRunning(marchSnd)) {
+                startMusic(marchSnd);
+                imPlayerSetLoop(marchSnd, 999, 1, 0, 65, 0);
+            }
+        }
+    }
+
+    // Piston's stovepipe stack puffs: the room's animating element, a
+    // 2-state setObjectState loop (signFlicker pattern). Confession and
+    // the brownout beat do not reposition the painted figure, so the loop
+    // can run for the whole room; it dies with the room (local script),
+    // so no explicit stop is needed on exit (the oilbar centrifuge model).
+    local script stackPuff() {
+        while(1) {
+            delay(40);
+            setObjectState(piston, 2);
+            delay(40);
+            setObjectState(piston, 1);
+        }
+    }
+
+    // ------------------------------------------------------- room entry
+
+    local script entry() {
+        startScript(1, musicLoop, []);
+        startScript(1, stackPuff, []);
+        // TODO(actorSay): putActorAt(piston_a, 262, 96, CityHallRoom) and
+        // putActorAt(caliper_a, 58, 96, CityHallRoom) here, every entry,
+        // before any of their lines.
+        unless(visitedCityHall) {
+            visitedCityHall = 1;
+            cutscene(2) {
+                putActorAt(VAR_EGO, 24, 120, CityHallRoom);
+                walkActorTo(VAR_EGO, 70, 124);
+                waitForActor(VAR_EGO);
+                egoSay("City Hall, inside. Marble paint over sheet metal. The echo is load-bearing.");
+                waitForMessage();
+                egoSay("A hallway of portraits, a desk of stamps, and at the end: the Mayor.");
+                waitForMessage();
+                egoSay("You can hear him from here. He sounds like a kettle that won committee.");
+                waitForMessage();
+                egoSay("Caliper follows at exactly arm's length. He measured.");
+                waitForMessage();
+            }
+        }
+    }
+
+    // ----------------------------------------------- the round-3 brownout
+    // Its own local script so transcript.py buckets the lines under a
+    // pairable name. Fires when Round 3 opens and on each re-entry.
+
+    local script brownout() {
+        startSound(sagSnd);
+        setObjectState(gauge, 2);                    // needle drops
+        cutscene(0) {
+            egoSay("The hum sags. The gauge needle leans. His hand drifts toward the crank dock.");
+            waitForMessage();
+        }
+    }
+
+    // -------------------------------------------------------- the menus
+    // Rebuilt each round (don't mutate in place); flop picks re-add the
+    // same menu (no loss state -- the menu never shrinks).
+
+    local script round1Menu() {
+        dlgStr[0] = "The Dynamo is flat by half a step.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "Show him his own notice.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "Rivet says otherwise.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "I withdraw to regroup.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        Dialog::dialogStart(0, 0);
+        do breakScript() while(selectedSentence < 0);
+        Dialog::dialogHide();
+        Dialog::dialogClear(1);
+        Dialog::dialogEnd();
+    }
+
+    local script round2Menu() {
+        dlgStr[0] = "The curtains disagree.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "Show him the bar tab.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "Zero is a suspicious number.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "I withdraw to regroup.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        Dialog::dialogStart(0, 0);
+        do breakScript() while(selectedSentence < 0);
+        Dialog::dialogHide();
+        Dialog::dialogClear(1);
+        Dialog::dialogEnd();
+    }
+
+    local script round3Menu() {
+        dlgStr[0] = "Offer him a wind. Professionally.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "Point at the gauge.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "Say nothing.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "I withdraw to regroup.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        Dialog::dialogStart(0, 0);
+        do breakScript() while(selectedSentence < 0);
+        Dialog::dialogHide();
+        Dialog::dialogClear(1);
+        Dialog::dialogEnd();
+    }
+
+    // ---------------------------------------------------------- objects
+
+    object doorOut {
+        x = 4;
+        y = 56;
+        w = 24;
+        h = 48;
+        dir = EAST;
+        name = "door to the street";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The way back to the street. The marble paint stops at the jamb. Honest of it.");
+            return;
+        case Open:
+        case Use:
+            // room transitions say NOTHING (docs/NOTES.md)
+            putActorAt(VAR_EGO, 276, 120, MidtownRoom);
+            startRoom(MidtownRoom);
+            return;
+        }
+    }
+
+    object caliper {
+        x = 48;
+        y = 52;
+        w = 20;
+        h = 44;
+        dir = SOUTH;
+        name = "Caliper";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Caliper. The aide who rations doors by the degree.");
+            waitForMessage();
+            egoSay("His lapel pin is a protractor. Of course it is.");
+            return;
+        case TalkTo:
+            // intro first, then THE ROUND-3 PLANT (validate path), then
+            // post-crack -- branch order = dub order.
+            if(pistonCracked) {
+                egoSay("He's drafting the next notice. The word NOTHING is doing a lot of work in it.");
+                return;
+            }
+            unless(metCaliper) {
+                metCaliper = 1;
+                cutscene(0) {
+                    egoSay("I ask how a bot ends up dispensing angles for a living.");
+                    waitForMessage();
+                    egoSay("Doors are budget items, he says. Every degree has a cost center.");
+                    waitForMessage();
+                }
+                return;
+            }
+            // second+ contact, pre-crack: the silence-wins hint, promoted
+            // onto the validate path (B9-style)
+            cutscene(0) {
+                egoSay("I ask about the Mayor. He says the Mayor has never lost an argument.");
+                waitForMessage();
+                egoSay("Caliper, evenly: arguments need a second participant.");
+                waitForMessage();
+                egoSay("His protractor pin catches the light.");
+                waitForMessage();
+            }
+            return;
+        case Give:
+        case UsedWith:
+            if(objB == InventoryItems::poster) {
+                egoSay("He's seen it. Eight degrees' worth.");
+                return;
+            }
+            if(objB == InventoryItems::barTab) {
+                egoSay("He looks at the signature, then at the middle distance, where his career is.");
+                return;
+            }
+            egoSay("He files it under RETURNED, UNFILED, and returns it.");
+            return;
+        case Smell:
+            egoSay("Ink pads. Three colors. All of them red.");
+            return;
+        }
+    }
+
+    object aideDesk {
+        x = 40;
+        y = 84;
+        w = 48;
+        h = 28;
+        dir = NORTH;
+        name = "aide's desk";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A desk defended by rubber stamps. RECEIVED. DECLINED. DECLINED HARDER.");
+            return;
+        case Use:
+            egoSay("I reach for a stamp. Caliper produces a form for requesting forms.");
+            return;
+        case Smell:
+            egoSay("Endorsing ink. The desk has opinions it's allowed to publish.");
+            return;
+        }
+    }
+
+    object portraits {
+        x = 96;
+        y = 8;
+        w = 72;
+        h = 40;
+        dir = NORTH;
+        name = "portrait gallery";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Mayors Piston the First through Fourth. The same boiler, different dents.");
+            waitForMessage();
+            egoSay("Four portraits, one paint job between them. Municipal continuity.");
+            return;
+        case PickUp:
+        case Use:
+            egoSay("Bolted to the wall. Somebody anticipated me, four mayors ago.");
+            return;
+        case Smell:
+            egoSay("Varnish. Recent. History gets refreshed here on a schedule.");
+            return;
+        }
+    }
+
+    object bannerStack {
+        x = 104;
+        y = 96;
+        w = 40;
+        h = 24;
+        dir = NORTH;
+        name = "spare banners";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Spare banners, rolled and racked. NOTHING IS WRONG, in every size down to lapel.");
+            waitForMessage();
+            egoSay("There's a fresh crate of them. Confidence has a reorder point.");
+            return;
+        case PickUp:
+            egoSay("The small ones are lapel-sized. My lapel declines.");
+            return;
+        case Use:
+            egoSay("I don't need a banner. I'm carrying the rebuttal.");
+            return;
+        case Smell:
+            egoSay("Fresh ink. The same suspicious vintage as my notice.");
+            return;
+        }
+    }
+
+    object windowDynamo {
+        x = 176;
+        y = 8;
+        w = 40;
+        h = 48;          // 8-aligned: state BMP dims must be mult of 8
+        dir = NORTH;
+        name = "curtained window";
+        class = { Openable };
+        states = {
+            { 0, 0, "rooms/window_closed.bmp" },
+            { 0, 0, "rooms/window_open.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            if(curtainsOpen) {
+                egoSay("The Dynamo fills the window. From this office you can't not see it.");
+                return;
+            }
+            egoSay("One window, floor to ceiling, curtained shut. It faces the Dynamo District.");
+            waitForMessage();
+            egoSay("Dust on the velvet. None on the pull cord. Somebody checks, then closes them again.");
+            return;
+        case Open:
+        case Use:
+            if(curtainsOpen) {
+                egoSay("It's seen. That was the whole job.");
+                return;
+            }
+            curtainsOpen = 1;       // flag before speech
+            setObjectState(windowDynamo, 2);
+            startSound(creakSnd);
+            egoSay("I pull the cord. The Dynamo, up the hill, framed like a portrait nobody commissioned.");
+            return;
+        case Smell:
+            egoSay("Velvet. Underneath it, ozone off the hill.");
+            return;
+        }
+    }
+
+    object gauge {
+        x = 216;
+        y = 28;
+        w = 24;          // 8-aligned: state BMP dims must be mult of 8
+        h = 24;
+        dir = NORTH;
+        name = "civic gauge";
+        states = {
+            { 0, 0, "rooms/gauge_high.bmp" },
+            { 0, 0, "rooms/gauge_low.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            if(pistonCracked) {
+                egoSay("Relabeled in pencil: RESERVE. The needle has stopped pretending.");
+                return;
+            }
+            egoSay("A brass gauge on the desk, labeled CIVIC OPTIMISM. The needle says plenty.");
+            waitForMessage();
+            egoSay("The dial behind the label is graduated in mainspring turns.");
+            return;
+        case Use:
+        case Move:
+            egoSay("Wired through the desk and into the Mayor's chair.");
+            return;
+        case Smell:
+            egoSay("Brass polish and pencil shavings.");
+            return;
+        }
+    }
+
+    object mayorDesk {
+        x = 196;
+        y = 84;
+        w = 92;
+        h = 36;
+        dir = NORTH;
+        name = "the Mayor's desk";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A desk you could dock a ferry at. One blotter, one stamp, one crank dock on the side.");
+            waitForMessage();
+            egoSay("The crank handle is worn shiny.");
+            return;
+        case Use:
+            egoSay("The stamp says VOID. A whole desk, organized around one word.");
+            return;
+        case Smell:
+            egoSay("Warm metal. The desk sits downwind of a boiler.");
+            return;
+        }
+    }
+
+    object piston {
+        x = 240;
+        y = 40;
+        w = 48;          // 8-aligned: state BMP dims must be mult of 8
+        h = 56;
+        dir = SOUTH;
+        name = "Mayor Piston";
+        class = { Person };
+        states = {
+            { 0, 0, "rooms/piston_puff0.bmp" },
+            { 0, 0, "rooms/piston_puff1.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            if(pistonCracked) {
+                egoSay("He's down to working pressure. It suits him.");
+                return;
+            }
+            egoSay("Mayor Piston. A boiler in a sash. The pressure does his gesturing for him.");
+            waitForMessage();
+            egoSay("The hum winds him like everybody. The steam is just the oratory.");
+            return;
+
+        case TalkTo:
+            // ===== the confrontation: walkthrough path FIRST in source.
+            // intro -> Round 1 -> Round 2 -> Round 3 -> confession, with
+            // each round's WINNER branch textually before its flops
+            // (dub pairing). Flops loop the same round (no loss state).
+
+            // ---- intro cutscene (round 0 -> 1) ----
+            unless(pistonRound) {
+                pistonRound = 1;            // flag before speech
+                cutscene(0) {
+                    egoSay("He's mid-speech when I reach the desk. There's no audience. He doesn't need one.");
+                    waitForMessage();
+                    egoSay("He greets me: ah, the talent. Tremendous act. The city thanks me.");
+                    waitForMessage();
+                    egoSay("I mention the robbery. He calls that 'the magic of live theater'.");
+                    waitForMessage();
+                    egoSay("I put it to him straight: the Dynamo is dying and the city is lying.");
+                    waitForMessage();
+                    egoSay("Nothing is wrong, he says. It's on every banner.");
+                    waitForMessage();
+                }
+                // fall through to Round 1 menu below
+            }
+
+            // ---- post-crack ----
+            if(pistonCracked) {
+                cutscene(0) {
+                    egoSay("He asks, off the record, how the maintenance business is.");
+                    waitForMessage();
+                    egoSay("Booming, I tell him. Also off the record.");
+                    waitForMessage();
+                }
+                return;
+            }
+
+            // ---- ROUND 1 ----
+            if(pistonRound == 1) {
+                round1Menu();
+                // WINNER first in source: option 1 (the notice)
+                if(selectedSentence == 1) {
+                    posterVoided = 1;       // flag before speech
+                    pistonRound = 2;
+                    cutscene(0) {
+                        egoSay("I unfold the official notice on his blotter. NOTHING IS WRONG. His signature.");
+                        waitForMessage();
+                        egoSay("Standard reassurance, he says. We issue them on a schedule.");
+                        waitForMessage();
+                        egoSay("I ask what the schedule reassures us about, if nothing is wrong.");
+                        waitForMessage();
+                        startSound(steamSnd);
+                        egoSay("Steam escapes from somewhere official.");
+                        waitForMessage();
+                        egoSay("Caliper, he says. The stamp.");
+                        waitForMessage();
+                        startSound(stampSnd);
+                        egoSay("He stamps my notice VOID, with feeling. Now it's official twice.");
+                        waitForMessage();
+                        egoSay("Maintenance is budgeted at zero, he adds. Because nothing needs maintaining.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                if(selectedSentence == 0) {
+                    cutscene(0) {
+                        egoSay("I tell him the hum is flat. By half a step.");
+                        waitForMessage();
+                        egoSay("Retuned, he says. By request. The city prefers a softer key.");
+                        waitForMessage();
+                        egoSay("The city is built in C. I let it go. For now.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                if(selectedSentence == 2) {
+                    cutscene(0) {
+                        egoSay("I cite my source: Rivet. Knows everything, sells most of it.");
+                        waitForMessage();
+                        egoSay("Rivet, he says, once sold this office its own staplers.");
+                        waitForMessage();
+                        egoSay("I don't doubt it. I still don't doubt him either.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                // withdraw
+                egoSay("I withdraw to regroup. The banners watch me go.");
+                return;
+            }
+
+            // ---- ROUND 2 ----
+            if(pistonRound == 2) {
+                round2Menu();
+                // WINNER first in source: option 1 (the bar tab)
+                if(selectedSentence == 1) {
+                    pistonRound = 3;        // flag before speech
+                    cutscene(0) {
+                        egoSay("I lay the Oil Bar tab on the blotter, next to my voided notice.");
+                        waitForMessage();
+                        egoSay("Four rounds of single-origin crude. Charged to DYNAMO MAINT. -- CONTINGENCY. Signed: Caliper.");
+                        waitForMessage();
+                        egoSay("Caliper offers to explain the signature.");
+                        waitForMessage();
+                        egoSay("He cannot, the Mayor says. It's a very good signature.");
+                        waitForMessage();
+                        egoSay("The boiler drops a register. The room gets one degree more honest.");
+                        waitForMessage();
+                        egoSay("The Dynamo is fine, he says. I have never felt better.");
+                        waitForMessage();
+                    }
+                    // the pronoun slip ("I", for "it") is the round's hinge
+                    return;
+                }
+                if(selectedSentence == 0) {
+                    cutscene(0) {
+                        egoSay("I mention the curtains. Dust on the velvet, none on the cord.");
+                        waitForMessage();
+                        egoSay("He enjoys the view, he says. Briefly. In private.");
+                        waitForMessage();
+                        egoSay("That one was true. I bank it.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                if(selectedSentence == 2) {
+                    cutscene(0) {
+                        egoSay("Zero, I observe, is a very round number for a machine that size.");
+                        waitForMessage();
+                        egoSay("Zero, he says, is the most honest number we publish.");
+                        waitForMessage();
+                        egoSay("I believe that more than he wants me to.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                // withdraw
+                egoSay("I withdraw to regroup. The banners watch me go.");
+                return;
+            }
+
+            // ---- ROUND 3 ----
+            if(pistonRound == 3) {
+                brownout();         // the scripted dip, on open AND re-entry
+                round3Menu();
+                // WINNER first in source: option 2 (say nothing) -> the
+                // confession cutscene
+                if(selectedSentence == 2) {
+                    pistonRound = 4;        // flags before speech
+                    pistonCracked = 1;
+                    setObjectState(gauge, 2);
+                    pickupObject(InventoryItems::ransomNote, InventoryItems);
+                    cutscene(0) {
+                        egoSay("I say nothing. I'm a maintenance-bot. We're comfortable around things that wind down.");
+                        waitForMessage();
+                        egoSay("The needle does the talking.");
+                        waitForMessage();
+                        egoSay("Oh, hang the banners, he says.");
+                        waitForMessage();
+                        startSound(ratchetSnd);
+                        egoSay("He docks the crank and winds himself, right there, in front of a maintenance-bot.");
+                        waitForMessage();
+                        egoSay("Eight turns. The maximum is five. He signs the maximums.");
+                        waitForMessage();
+                        egoSay("It's been sagging since spring, he says. The engineers gave it three days.");
+                        waitForMessage();
+                        egoSay("That was two days ago.");
+                        waitForMessage();
+                        egoSay("I ask about the Order. The bots who built the thing.");
+                        waitForMessage();
+                        egoSay("Wound down, he says. One by one. Pensioned off the books.");
+                        waitForMessage();
+                        egoSay("One name left on the list. Deliveries go up the hill.");
+                        waitForMessage();
+                        egoSay("Up the hill is the Dynamo District. Behind the fence with opinions.");
+                        waitForMessage();
+                        egoSay("Then he opens a drawer and slides a letter across. Crumpled and uncrumpled. Repeatedly.");
+                        waitForMessage();
+                        egoSay("WINDING IS A SERVICE NOW, it says. WE HAVE THE FIRST KEY. RATES ON REQUEST.");
+                        waitForMessage();
+                        egoSay("Terms of contact: the Scrap & Barrel back door. Knock twice, once, twice.");
+                        waitForMessage();
+                        egoSay("I know that knock. I've been on the wrong side of it twice.");
+                        waitForMessage();
+                        egoSay("The city cannot pay, he says.");
+                        waitForMessage();
+                        egoSay("The city cannot be seen refusing to pay.");
+                        waitForMessage();
+                        egoSay("I, fortunately, am not the city.");
+                        waitForMessage();
+                        startSound(pickupSnd);
+                        egoSay("I get the letter, the knock, and the deniability. The city gets to be fine.");
+                        waitForMessage();
+                        egoSay("Nothing is wrong, son, he says. Go fix it.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                if(selectedSentence == 0) {
+                    cutscene(0) {
+                        egoSay("I offer a courtesy wind. Free estimate. No appointment necessary.");
+                        waitForMessage();
+                        egoSay("The Mayor does not receive maintenance during office hours.");
+                        waitForMessage();
+                        egoSay("He says it with his hand still on the crank. We both notice.");
+                        waitForMessage();
+                        egoSay("He finds one more pound of pressure somewhere.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                if(selectedSentence == 1) {
+                    cutscene(0) {
+                        egoSay("I point at the gauge. The needle, the pencil line, the math.");
+                        waitForMessage();
+                        egoSay("That gauge measures optimism, he says. Optimism varies.");
+                        waitForMessage();
+                        egoSay("He turns it face-down. The needle scrapes the blotter on the way.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                // withdraw
+                egoSay("I step out. Behind me, a ratchet, briskly. We'll both pretend otherwise.");
+                return;
+            }
+            return;
+
+        case Give:
+        case UsedWith:
+            if(objB == InventoryItems::poster) {
+                if(posterVoided) {
+                    egoSay("Already stamped. The desk only escalates to ignoring.");
+                    return;
+                }
+                egoSay("He waves it at the visitor's chair. Appointments are conducted seated.");
+                waitForMessage();
+                egoSay("Fine. We'll do this with words first.");
+                return;
+            }
+            if(objB == InventoryItems::barTab) {
+                egoSay("Paper goes through channels. The channel is me, talking. So: talking.");
+                return;
+            }
+            egoSay("He takes nothing by hand. Hands are for gesturing.");
+            return;
+
+        case Smell:
+            egoSay("Coal smoke. He precedes himself.");
+            return;
+        }
+    }
+
+}

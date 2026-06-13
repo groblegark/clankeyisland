@@ -3,6 +3,7 @@
 #include <scummVars6.s>
 #include "common.sch"
 #include "inventoryitems.sch"
+#include "cityhall.sch"
 
 room InventoryItems {
 
@@ -61,6 +62,12 @@ room InventoryItems {
             sntcPrepo[0] = "to";
             return;
         case LookAt:
+            if(CityHallRoom::posterVoided) {
+                egoSay("\"DYNAMO MAINTENANCE: NOTHING IS WRONG.\" Now with a VOID stamp.");
+                waitForMessage();
+                egoSay("Denied, then voided. The most official object I own.");
+                return;
+            }
             egoSay("\"DYNAMO MAINTENANCE: NOTHING IS WRONG. - Mayor Piston.\"");
             waitForMessage();
             egoSay("Nothing says 'something is wrong' like an official notice that nothing is wrong.");
@@ -478,6 +485,90 @@ room InventoryItems {
             return;
         case Smell:
             egoSay("Municipal toner, then two centuries of bar grease. In that order.");
+            return;
+        }
+    }
+
+    object barTab {
+        w = 40;
+        h = 16;
+        x = 0;
+        name = "Oil Bar tab";
+        states = {
+            { 0, 0, "inventory/inv_bartab.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case Preposition:
+            if(vrb == Give)
+                sntcPrepo[0] = "to";
+            else
+                sntcPrepo[0] = "with";
+            return;
+        case LookAt:
+            egoSay("An Oil Bar tab. Four single-origin rounds, charged to DYNAMO MAINT. -- CONTINGENCY.");
+            waitForMessage();
+            egoSay("Signed: Caliper, in a hand that measures its angles.");
+            return;
+        case Use:
+            if(objB) {
+                // route "Use me with/on X" to X's UsedWith -- the engine
+                // dispatches to OUR script (objA), so a bare Use gag
+                // here would swallow every two-object sentence
+                if(getObjectVerbEntrypoint(objB, UsedWith)) {
+                    startObject2(objB, UsedWith, [ UsedWith, objB, objA ]);
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
+            egoSay("It's a City Hall expense. Somebody at City Hall should really see it.");
+            return;
+        case Smell:
+            egoSay("Single-origin crude, four glasses deep.");
+            return;
+        }
+    }
+
+    object ransomNote {
+        w = 40;
+        h = 16;
+        x = 0;
+        name = "ransom note";
+        states = {
+            { 0, 0, "inventory/inv_ransom.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case Preposition:
+            if(vrb == Give)
+                sntcPrepo[0] = "to";
+            else
+                sntcPrepo[0] = "with";
+            return;
+        case LookAt:
+            egoSay("WINDING IS A SERVICE NOW. WE HAVE THE FIRST KEY. RATES ON REQUEST.");
+            waitForMessage();
+            egoSay("Below that, the knock, notated. Two. One. Two. Sheet music for a door.");
+            return;
+        case Use:
+            if(objB) {
+                // route "Use me with/on X" to X's UsedWith -- the engine
+                // dispatches to OUR script (objA), so a bare Use gag
+                // here would swallow every two-object sentence
+                if(getObjectVerbEntrypoint(objB, UsedWith)) {
+                    startObject2(objB, UsedWith, [ UsedWith, objB, objA ]);
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
+            egoSay("It's an invitation. The dress code is 'expendable'.");
+            return;
+        case Smell:
+            egoSay("Salt corrosion. Postmarked the harbor.");
             return;
         }
     }

@@ -9,6 +9,8 @@ room MidtownRoom {
     bit signedUp;
     bit ropeOpen;        // Scene 07: the voucher beat the velvet rope
     bit voucherShown;    // first post-reading presentation to the bouncer
+    bit cityHallOpen;    // Scene 08: the bar tab opened the door's other 81 deg
+    bit showedNotice;    // Scene 08: poster shown at the gap (post-poster beat)
 
     object station;
     object leftys;

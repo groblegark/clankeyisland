@@ -584,3 +584,87 @@ shots:
       - pixel: {at: [180, 30], is: sodium}       # GRAND COG in lights
     timeout: 60
     hold: 2.0
+
+  # --------------------------------- Scene 08: City Hall, Mayor Piston
+  # NOTE: choose: shots depend on the B2+B8 walkthrougher dialog-option
+  # support (the oilbar contest still rides only:perform for the same
+  # reason). The duel here is the dialog.scc UI; until the driver clicks
+  # options, the choose: shots below are the canonical spec and may need
+  # only:perform when integrated, mirroring the oilbar contest shots.
+  # TODO(slot): every inventory.slot<...> below is a placeholder --
+  # ScummVM compacts inventory on removal; compute the real slot index at
+  # integration against the Act 2 held set (poster, magnet, backstage
+  # pass, barTab, +/- voucher per Scene 07).
+  - name: paper-trail
+    do: {verb: Use, object: City Hall, with: inventory.slot<barTab>}  # TODO(slot)
+    expect: [talking]            # the 81-degrees cutscene
+    timeout: 60
+  - name: the-other-eighty-one-degrees
+    do: {verb: Open, object: City Hall}
+    expect:
+      - pixel: {at: [160, 80], is: marble-paint}    # CityHallRoom probe
+    timeout: 60
+  - name: marble-paint                                # entry cutscene
+    cutscene: CityHallRoom.entry
+    expect: [talking]
+    timeout: 60
+  - name: civic-optimism                              # R3 plant 1 (fair-play, forced)
+    do: {verb: Examine, object: civic gauge}
+    expect: [talking]
+  - name: an-argument-of-one                          # R3 KEY HINT (B9-style promotion)
+    do: {verb: Talk to, object: Caliper}
+    expect: [talking]
+  - name: the-second-participant                      # second TalkTo carries the hint line
+    do: {verb: Talk to, object: Caliper}
+    expect: [talking]
+    hold: 1.5
+  - name: the-confrontation
+    do: {verb: Talk to, object: Mayor Piston}
+    expect: [talking, dialog-open]                    # dialog verbs visible at y>=145
+    timeout: 90
+  - name: exhibit-a
+    choose: "Show him his own notice."
+    expect: [talking]                                 # VOID stamp beat
+    timeout: 90
+  - name: exhibit-b
+    choose: "Show him the bar tab."
+    expect: [talking]
+    timeout: 90
+  - name: say-nothing
+    choose: "Say nothing."
+    expect:
+      - talking
+      - pixel: {at: inventory.slot<ransomNote>, is: white}   # TODO(slot): the note lands
+    timeout: 120
+    hold: 2
+
+  # ---- Scene 08 streamer-mode detours & mistakes (the film's screenplay)
+  - name: four-mayors-one-boiler
+    detour: {verb: Examine, object: portrait gallery}
+  - name: confidence-reorder-point
+    detour: {verb: Examine, object: spare banners}
+  - name: the-dust-tells
+    detour: {verb: Examine, object: curtained window}
+  - name: pull-the-cord
+    detour: {verb: Open, object: curtained window}        # curtains open, Dynamo framed
+  - name: he-precedes-himself
+    detour: {verb: Smell, object: Mayor Piston}
+  - name: paper-through-channels                          # wrong-but-reasonable first move
+    mistake: {verb: Give, object: Mayor Piston, with: inventory.slot<poster>}  # TODO(slot)
+    line: "He waves it at the visitor's chair. Appointments are conducted seated."
+  - name: half-a-step-flat                                # R1 flop, played first
+    mistake: {choose: "The Dynamo is flat by half a step."}
+    line: "Retuned, he says. By request. The city prefers a softer key."
+  - name: the-staplers                                    # R1 flop two -- the gag mine
+    mistake: {choose: "Rivet says otherwise."}
+    line: "Rivet, he says, once sold this office its own staplers."
+  - name: the-curtains-disagree                           # R2 flop that rewards the detour
+    mistake: {choose: "The curtains disagree."}
+    line: "He enjoys the view, he says. Briefly. In private."
+  - name: courtesy-wind                                   # R3 near-miss before the win
+    mistake: {choose: "Offer him a wind. Professionally."}
+    line: "The Mayor does not receive maintenance during office hours."
+  - name: aftermath                                       # post-crack mop-up
+    detour: {verb: Talk to, object: Caliper}
+  - name: official-twice
+    detour: {verb: Examine, object: inventory.slot<poster>}  # TODO(slot): the VOIDed notice
