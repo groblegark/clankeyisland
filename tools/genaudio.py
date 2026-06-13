@@ -310,6 +310,85 @@ def sfx_coded_knock():
                   clang(), intra, clang())           # CLANG-CLANG.
 
 
+def sfx_steam():
+    """Midtown's manholes hissing 'in a higher register' (the entry line
+    names it; nothing played). A faint pressurized hiss that fades in,
+    holds, and tapers -- band-passed pseudo-noise sitting ABOVE the
+    Shuffle's brass so it reads as escaping steam, not a rumble. Low
+    amp (~0.16) and brief: it's a breath the street takes, not a leak.
+    One-shot on room entry -- no loop, so it can't fight the music."""
+    dur, n = 1.1, int(RATE * 1.1)
+    seed, out = 0x3C, []
+    prev = 0.0
+    for i in range(n):
+        t = i / RATE
+        seed = (seed * 1103515245 + 12345) & 0x7FFFFFFF
+        r = (seed / 0x3FFFFFFF) - 1.0
+        # one-pole high-pass: keep the airy top, drop the rumble so it
+        # sits clear of the walking bass
+        hp = r - prev
+        prev = r
+        # swell in over 0.18s, hold, taper from 0.7s -- a sighed breath
+        env = min(1.0, t / 0.18) * (1.0 if t < 0.7
+                                    else max(0.0, 1.0 - (t - 0.7) / 0.4))
+        # a faint whistle riding the noise: the 'higher register'
+        whistle = 0.18 * math.sin(2 * math.pi * 2300 * t)
+        out.append((0.85 * hp + whistle) * env * 0.16)
+    return out
+
+
+def sfx_crowd():
+    """The Grand Cog's packed house before the act -- 'forty bots, and
+    not one of them came here to be impressed.' A low murmur bed: many
+    overlapping slow vowel-ish swells (idling engines, fans, the room
+    holding its breath) under a soft noise floor. Deliberately dull and
+    dark so it sits UNDER the brass vamp, never on top of it. One-shot
+    on entry; low amp (~0.18)."""
+    dur, n = 2.0, int(RATE * 2.0)
+    # a handful of detuned low formants, each wandering, summed: the
+    # texture of a crowd murmuring without any one voice resolving
+    voices = [(196, 0.7, 0.13), (233, 0.6, 0.19), (262, 0.55, 0.11),
+              (311, 0.5, 0.23), (175, 0.6, 0.17)]
+    out = []
+    for i in range(n):
+        t = i / RATE
+        s = 0.0
+        for f, a, rate in voices:
+            # slow amplitude wander per voice (different rates = no beat)
+            wob = 0.5 + 0.5 * math.sin(2 * math.pi * rate * t)
+            s += a * wob * math.sin(2 * math.pi * f * t)
+        # gentle swell in/out so the room arrives and settles
+        env = min(1.0, t / 0.4) * (1.0 if t < 1.4
+                                   else max(0.0, 1.0 - (t - 1.4) / 0.6))
+        out.append(s * env)
+    floor = noise_burst(dur, 0.10, 0.3)     # the HVAC of forty bots
+    murmur = mix(out, floor)
+    return [s * 0.18 for s in murmur]       # sit it under the vamp
+
+
+def sfx_drip():
+    """The Rustlers' alley, 'where the city keeps its rough drafts' --
+    damp brick behind the tavern. A cluster of irregular water drips
+    into a shallow puddle: each a short tuned plink with a noise plop,
+    spaced unevenly (LCG) so it reads as a leak, not a metronome. The
+    Back-Alley Blues is the sparsest score in the game, so a few drips
+    sit in its silences. One-shot on entry; low amp."""
+    def drip(f):
+        plink = partials(0.07, [(f, 0.7, 55), (f * 1.5, 0.3, 70)])
+        plop = noise_burst(0.015, 0.25, 180)
+        return mix(plink, plop)
+    # uneven spacing + pitch from the LCG: a leak keeping no time
+    seed = 0x6D
+    parts, pitches = [], (1150, 1480, 980, 1320)
+    for k in range(4):
+        seed = (seed * 1103515245 + 12345) & 0x7FFFFFFF
+        gap = 0.16 + (seed >> 7) % 220 / 1000.0    # 0.16..0.38s
+        parts.append(drip(pitches[k]))
+        if k < 3:
+            parts.append(silence(gap))
+    return [s * 0.5 for s in concat(*parts)]        # keep it faint
+
+
 def sfx_applause():
     """A full house coming apart: dense little claps with a swell,
     deterministic like everything else in this town."""
@@ -357,6 +436,9 @@ EFFECTS = {
     "clunk_dead": sfx_clunk_dead,
     "coded_knock": sfx_coded_knock,
     "applause": sfx_applause,
+    "steam": sfx_steam,
+    "crowd": sfx_crowd,
+    "drip": sfx_drip,
 }
 
 

@@ -30,6 +30,7 @@ room TheaterRoom {
     sound clinkSnd    = "clink.soun";
     sound ratchetSnd  = "ratchet.soun";
     sound creakSnd    = "creak.soun";
+    sound crowdSnd    = "crowd.soun";   // ambient: the packed house's murmur
 
     char* dlgStr;    // dialog-option scratch (openquest idiom)
 
@@ -65,6 +66,10 @@ room TheaterRoom {
                 waitForActor(VAR_EGO);
                 egoSay("The Grand Cog, inside. Red velvet, brass rails, and a chandelier assembled from smaller, defeated chandeliers.");
                 waitForMessage();
+                // the packed house, heard before it's named (foley rule):
+                // a low murmur bed pitched UNDER the brass vamp, faint and
+                // one-shot so it never fights the music.
+                startSound(crowdSnd);
                 egoSay("The house is packed. Forty bots, and not one of them came here to be impressed.");
                 waitForMessage();
                 egoSay("And up on the catwalk: one more, with a spyglass. No ticket. No hurry.");

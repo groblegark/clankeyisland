@@ -29,6 +29,7 @@ room AlleyRoom {
     sound clinkSnd   = "clink.soun";
     sound ratchetSnd = "ratchet.soun";
     sound thudSnd    = "thud.soun";
+    sound dripSnd    = "drip.soun";   // ambient: damp brick, a leak keeping no time
 
     char* dlgStr;    // dialog-option scratch (openquest idiom)
 
@@ -60,6 +61,11 @@ room AlleyRoom {
                 putActorAt(VAR_EGO, 24, 120, AlleyRoom);
                 walkActorTo(VAR_EGO, 70, 126);
                 waitForActor(VAR_EGO);
+                // damp brick, heard before it's described (foley rule):
+                // a faint cluster of irregular drips in the Back-Alley
+                // Blues' silences. One-shot -- the sparsest score in the
+                // game, but a loop would still risk colliding on the beat.
+                startSound(dripSnd);
                 egoSay("The alley behind the Scrap & Barrel. Where the city keeps its rough drafts.");
                 waitForMessage();
                 egoSay("There's a gate at the end marked MIDTOWN, going up.");

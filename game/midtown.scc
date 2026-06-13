@@ -28,6 +28,7 @@ room MidtownRoom {
     sound creakSnd   = "creak.soun";
     sound plinkSnd   = "plink.soun";
     sound clinkSnd   = "clink.soun";
+    sound steamSnd   = "steam.soun";   // ambient: the manholes' high hiss
 
     // ------------------------------------------------------------ music
 
@@ -57,6 +58,10 @@ room MidtownRoom {
                 putActorAt(VAR_EGO, 28, 120, MidtownRoom);
                 walkActorTo(VAR_EGO, 80, 126);
                 waitForActor(VAR_EGO);
+                // the hiss the line names -- it LEADS the words (foley
+                // rule: sound, then the line that reacts to it). Faint,
+                // brief one-shot so it can't muddy the Shuffle's brass.
+                startSound(steamSnd);
                 egoSay("Midtown Gearworks. The neon is louder, the streets are cleaner, and the manholes hiss in a higher register.");
                 waitForMessage();
                 egoSay("City Hall says NOTHING IS WRONG in letters you can read from the harbor.");
