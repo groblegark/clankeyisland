@@ -2755,11 +2755,7 @@
    ],
    "TalkTo": [
     {
-     "text": "Sprocket. The wind-up act. You're on next.",
-     "speaker": "emcee"
-    },
-    {
-     "text": "He read the marquee off my face. I didn't know faces leaked.",
+     "text": "Sprocket, he says, reading the marquee off my face. The wind-up act. You're on next.",
      "speaker": "sprocket"
     },
     {
@@ -2767,20 +2763,12 @@
      "speaker": "sprocket"
     },
     {
-     "text": "House rule. No spot, no act.",
-     "speaker": "emcee"
-    },
-    {
-     "text": "He says it like the rule has a plaque somewhere.",
+     "text": "House rule: no spot, no act. He says it like the rule has a plaque somewhere.",
      "speaker": "sprocket"
     },
     {
-     "text": "He looks from my key to the dark booth and back.",
+     "text": "He looks from my key to the dark booth and back. He likes my chances, he says. Conditionally.",
      "speaker": "sprocket"
-    },
-    {
-     "text": "I like your chances. Conditionally.",
-     "speaker": "emcee"
     },
     {
      "text": "He points his mic arm at the booth. No spot, no act. The plaque is implied.",
