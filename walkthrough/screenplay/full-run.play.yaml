@@ -668,3 +668,96 @@ shots:
     detour: {verb: Talk to, object: Caliper}
   - name: official-twice
     detour: {verb: Examine, object: inventory.slot<poster>}  # TODO(slot): the VOIDed notice
+
+  # ----------------------------------- Scene 10: Dynamo District / Old Crank
+  # The twist scene: Key #3 is a person. Validate path = enter, read the
+  # plaque, win the governor (the playable beat), meet Crank, look at the
+  # Dynamo, the dry run (two keys -> half-step lift), earn the reveal, the
+  # give (Crank winds down -> the third key). Reported-speech throughout.
+  - name: up-the-hill
+    cutscene: DynamoRoom.entry
+    expect: [talking]
+    timeout: 60
+
+  - name: the-plaque                   # fair-play: read KEEP TIME first
+    do: {verb: Examine, object: plaque}
+    expect: [talking]
+
+  - name: the-governor                 # PLAYABLE BEAT: open the gate tree
+    do: {verb: Use, object: gate}
+    expect: [talking]                  # setup + Crank's offscreen hint, options
+    timeout: 60
+  - name: match-the-hum                # the winning pick
+    choose: "Match the hum."
+    expect:
+      - talking
+      - pixel: {at: [80, 60], is: sky} # turnstile open: yard/sky through the gate
+    timeout: 60
+
+  - name: meet-old-crank
+    do: {verb: Talk to, object: Old Crank}
+    expect: [talking]
+    timeout: 60
+    hold: 1.5
+
+  - name: the-dynamo-up-close
+    do: {verb: Examine, object: the Great Dynamo}
+    expect: [talking]
+
+  - name: the-dry-run                  # inventory-combination beat (Key #1)
+    do: {verb: Use, object: the Great Dynamo, with: inventory.slot<windupKey>}  # TODO(slot): compute at integration
+    expect: [talking]
+    timeout: 60
+    hold: 2.0
+
+  - name: the-reveal                   # Crank: "I'm the third key."
+    do: {verb: Talk to, object: Old Crank}
+    choose: "What did the Order leave you up here to do?"
+    expect: [talking]
+    timeout: 60
+    hold: 2.0
+
+  - name: the-cost                     # the give: Crank winds down, Key #3
+    do: {verb: Talk to, object: Old Crank}
+    choose: "Thank you."
+    expect:
+      - talking
+      - pixel: {at: inventory.slot<crankKey>, is: sodium}   # TODO(slot): the third key (brass) in pocket
+    timeout: 120
+    hold: 2.5
+
+  # ---- Scene 10 streamer-mode detours & mistakes (the film's screenplay)
+  - name: m-crank-it-hard              # mistake: brute force first (the instinct)
+    mistake: {verb: Use, object: gate}
+    line: "I take the crank. The governor lurches, fights me, locks."
+  - name: crank-it-hard-flop           # the over-speed gag: handle launches
+    mistake: {choose: "Crank it hard."}
+    line: "I commit. The governor overspeeds, throws a weight, and bites down harder."
+  - name: crank-it-gently-flop         # over-correct: the pawl never catches
+    mistake: {choose: "Crank it gently."}
+    line: "I coax it. The pawl never catches. The gate waits for me to mean it."
+  - name: shove-the-gate-flop          # the one sanctioned "with opinions" payoff
+    mistake: {choose: "Just shove the gate."}
+    line: "I put a shoulder into it. The fence shares a second opinion. Same as the first."
+
+  - name: d-the-fence                  # detour: the reserved phrase, leaned on
+    detour: {verb: Examine, object: fence}
+  - name: d-the-governor               # detour: the out-of-time flyweights
+    detour: {verb: Examine, object: governor}
+  - name: d-the-overlook               # detour: the city dimming (finale seed)
+    detour: {verb: Examine, object: overlook}
+  - name: d-the-workbench              # detour: the "spare" plant
+    detour: {verb: Examine, object: workbench}
+
+  - name: m-key-on-fence               # mistake: wrong target for the keys
+    mistake: {verb: Use, object: fence, with: inventory.slot<windupKey>}  # TODO(slot)
+    line: "Rust held together by paint held together by rust."
+  - name: m-one-key-dynamo             # mistake: try the Dynamo before meeting Crank
+    mistake: {verb: Use, object: the Great Dynamo, with: inventory.slot<windupKey>}  # TODO(slot)
+    line: "I could start turning keys in the city's heart unsupervised. I could also wait the one minute."
+  - name: m-take-cranks-key            # mistake: yank his key with mine, pre-reveal
+    mistake: {verb: Use, object: Old Crank, with: inventory.slot<windupKey>}  # TODO(slot)
+    line: "I'm not winding a stranger with my key. That's how you end up in his stories."
+  - name: m-third-key-now              # mistake: rush the finale with the third key
+    mistake: {verb: Use, object: the Great Dynamo, with: inventory.slot<crankKey>}  # TODO(slot)
+    line: "Not yet. All three at once, or it's just noise and grief. That's the finale's problem."
