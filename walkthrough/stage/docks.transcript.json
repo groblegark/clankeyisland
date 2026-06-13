@@ -86,14 +86,6 @@
   ],
   "DockRoom.entry": [
    {
-    "text": "TEST NPC LINE. TWELVE WORDS OF DIAGNOSTIC YELLOW-ORANGE TEXT GO HERE NOW.",
-    "speaker": "extra"
-   },
-   {
-    "text": "SECOND TEST. EMCEE ACTOR SPEAKING IN FOOTLIGHT YELLOW FROM THE DOCKS.",
-    "speaker": "emcee"
-   },
-   {
     "text": "Clanker City! The big smoke! The city of ten thousand gears!",
     "speaker": "sprocket"
    },
