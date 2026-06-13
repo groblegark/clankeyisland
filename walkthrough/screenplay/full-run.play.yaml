@@ -4,7 +4,8 @@
 # (Rivet -> dumpster magnet) -> docks (fish the drain: nine bolts)
 # -> alley (riddle duel: the tenth -> pay the funicular fare)
 # -> Midtown (case the street -> sign up for talent night)
-# -> the Grand Cog (wake the spotlight -> the act -> backstage pass).
+# -> the Grand Cog (wake the spotlight -> the act -> backstage pass)
+# -> backstage (Voltina's three-card reading -> the truth -> Key #2).
 # This is the deploy gate: if this doesn't pass, the game doesn't ship.
 
 title: "Clanker City Chronicles — The Story So Far"
@@ -255,5 +256,110 @@ shots:
   - name: stage-door
     do: {verb: Open, object: stage door}
     expect: [talking]
+    timeout: 60
+    hold: 2.0
+  # ------------------------------- Scene 06: the reading
+  - name: mind-the-cables
+    do: {verb: Open, object: stage door}        # 2nd Open: silent transition
+    cutscene: BackstageRoom.entry
+    expect:
+      - talking                                 # the robbed-arrival beat
+      - pixel: {at: [256, 68], is: brass}       # Key #2, in its jar
+    timeout: 90
+
+  - name: the-parlor
+    only: perform
+    do: {verb: Examine, object: Madame Voltina}
+    expect: [talking]
+
+  - name: the-jar
+    only: perform
+    do: {verb: Examine, object: key in a jar}
+    expect: [talking]
+
+  - name: grabby                                # mistake: grab the prize
+    only: perform
+    do: {verb: Use, object: key in a jar}       # "The deposit is charged."
+    expect: [talking]
+    hold: 1.5
+
+  - name: the-price
+    do: {verb: Talk to, object: Madame Voltina} # intro: Card I dealt
+    expect:
+      - talking
+      - pixel: {at: [155, 90], is: card-white}  # Card I (right edge: ego occludes x<154)
+    timeout: 150
+
+  - name: wrong-past                            # mistake: true, not printed
+    only: perform                               # (dub label knowingly off:
+    do: {verb: Use, object: reading table, with: inventory.slot1}
+    expect: [talking]                           # shares card I's bucket)
+    hold: 1.5
+
+  - name: card-one
+    do: {verb: Use, object: reading table, with: inventory.slot0}
+    expect:
+      - talking
+      - pixel: {at: [166, 89], is: card-white}  # Card II dealt
+    timeout: 90
+
+  - name: card-two
+    do: {verb: Use, object: reading table, with: inventory.slot2}
+    cutscene: BackstageRoom.cardTwo
+    expect:
+      - talking
+      - pixel: {at: [183, 89], is: rust}        # Card III, face down
+    timeout: 90
+
+  - name: the-bluff                             # mistake: lie to the psychic
+    only: perform
+    do: {verb: Use, object: reading table, choose: 1}
+    cutscene: BackstageRoom.cardThreeBluff      # the zap gag
+    expect: [talking]
+    hold: 2.0
+
+  - name: the-truth                             # the climax: motive, knock
+    do: {verb: Use, object: reading table, choose: 2}   # echo, Key #2
+    expect:
+      - talking
+      - pixel: {at: [256, 68], is: teal}        # jar EMPTY: brass gone
+    timeout: 180
+
+  - name: the-key-that-winds-itself             # the Old Crank plant
+    do: {verb: Talk to, object: Madame Voltina, choose: 0}
+    cutscene: BackstageRoom.optCrank
+    expect: [talking]
+    timeout: 90
+
+  - name: occupational-hazards                  # her want (N-A6)
+    only: perform
+    do: {verb: Talk to, object: Madame Voltina, choose: 2}
+    cutscene: BackstageRoom.optWant
+    expect: [talking]
+
+  - name: ghost-light                           # the clock beat (N-A5)
+    only: perform
+    do: {verb: Examine, object: ghost light}
+    expect: [talking]
+
+  - name: wardrobe
+    only: perform
+    do: {verb: Examine, object: costume rack}
+    expect: [talking]
+
+  - name: haircut
+    only: perform
+    do: {verb: Examine, object: cables}
+    expect: [talking]
+
+  - name: her-fuses
+    only: perform
+    do: {verb: Examine, object: fuse box}
+    expect: [talking]
+
+  - name: back-through-the-curtain
+    do: {verb: Open, object: door to the stage} # silent; flavor stays put
+    expect:
+      - pixel: {at: [110, 12], is: sodium}      # the chandelier again
     timeout: 60
     hold: 2.0

@@ -11,6 +11,19 @@ export const meta = {
 
 const REPO = '/Users/matthewbaker/clankeyisland'
 
+// Parameterized per pass: Workflow args = { newScene, rooms, chain }.
+// Defaults reproduce the Scene-05 pass.
+const NEW = (typeof args === 'object' && args && args.newScene) ||
+  'Scene 05 (theater.scc)'
+const ROOMS = (typeof args === 'object' && args && args.rooms) ||
+  'docks.scc, tavern.scc, alley.scc, midtown.scc, theater.scc, inventoryitems.scc'
+const CHAIN = (typeof args === 'object' && args && args.chain) || `docks (bolt, poster) -> tavern (bolt shims servo -> token -> darts ->
+oil can) -> docks (oil Betty -> crate -> wind-up key) -> alley (dumpster
+magnet -> fish 9 bolts -> gate blinks NINE -> riddle duel -> 10th bolt ->
+funicular fare) -> Midtown (sign up for talent night, key as the act) ->
+the Grand Cog (wake the spotlight operator -> perform -> win voucher +
+backstage pass -> the Rustlers steal the key mid-ovation -> stage door)`
+
 const NOTES_SCHEMA = {
   type: 'object',
   required: ['notes'],
@@ -73,15 +86,9 @@ const critics = [
 You are THE PUZZLE CRITIC. Attack the puzzle design: fair-play
 signposting, motivation, economy, moon logic, lock-and-key fatigue,
 sameness of shape across scenes. The implemented chain so far:
-docks (bolt, poster) -> tavern (bolt shims servo -> token -> darts ->
-oil can) -> docks (oil Betty -> crate -> wind-up key) -> alley (dumpster
-magnet -> fish 9 bolts -> gate blinks NINE -> riddle duel -> 10th bolt ->
-funicular fare) -> Midtown (sign up for talent night, key as the act) ->
-the Grand Cog (wake the spotlight operator -> perform -> win voucher +
-backstage pass -> the Rustlers steal the key mid-ovation -> stage door).
-Scene 05 (theater.scc) is NEW since the last report — weigh it hardest.
-Read ${REPO}/game/docks.scc, tavern.scc, alley.scc, midtown.scc,
-theater.scc, inventoryitems.scc, ${REPO}/docs/GDD.md and
+${CHAIN}.
+${NEW} is NEW since the last report — weigh it hardest.
+Read ${ROOMS} in ${REPO}/game/, ${REPO}/docs/GDD.md and
 ${REPO}/walkthrough/screenplay/full-run.play.yaml. Return your notes.`,
   },
   {
@@ -92,10 +99,8 @@ ${REPO}/docs/research/NARRATION.md, repeated joke shapes (flag any
 construction used 3+ times across files — e.g. "X. The Y of Z.",
 "Noted. Filed.", personified objects, "...That feels thematically
 significant"), jokes that explain themselves, gags that are really
-exposition, and lines the author obviously loves. Scene 05
-(theater.scc) is NEW since the last report — weigh it hardest. Read
-every egoSay in ${REPO}/game/docks.scc, tavern.scc, alley.scc,
-midtown.scc, theater.scc, inventoryitems.scc, common.scc. Quote
+exposition, and lines the author obviously loves. ${NEW} is NEW since the last report — weigh it hardest. Read
+every egoSay in ${ROOMS} and common.scc, all in ${REPO}/game/. Quote
 offending lines exactly. Return your notes.`,
   },
   {
@@ -108,8 +113,7 @@ Rustlers stole Key #1, Rivet's hint economy, the Dynamo going flat) and
 flag plants with no scheduled payoff or payoffs with no plant. Check
 GDD drift: ${REPO}/docs/GDD.md vs the implemented scenes (both were
 revised after the last report — verify they now agree, especially the
-Key #1 theft at the Grand Cog). Check stakes and escalation. Scene 05
-(theater.scc) is NEW since the last report — weigh it hardest,
+Key #1 theft at the Grand Cog). Check stakes and escalation. ${NEW} is NEW since the last report — weigh it hardest,
 including whether the heist beat is earned and what it does to
 Sprocket's goal structure. Read the GDD, ${REPO}/game/*.scc room
 files, and ${REPO}/docs/NOTES.md. Return your notes.`,
@@ -132,8 +136,7 @@ lead, what is visible from where, the funicular's geography, where the
 catwalk hatch goes), and anthropomorphism drift (each line inventing
 new biology). The world MAY have rules a human world doesn't — your
 job is to force it to have THE SAME rules twice. Read
-${REPO}/game/docks.scc, tavern.scc, alley.scc, midtown.scc,
-theater.scc, inventoryitems.scc, common.scc, ${REPO}/docs/GDD.md, and
+${ROOMS} and common.scc, all in ${REPO}/game/, ${REPO}/docs/GDD.md, and
 the geometry in tools/genassets.py. Quote offending lines exactly.
 Return your notes.`,
   },

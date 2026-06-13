@@ -144,9 +144,18 @@ room MidtownRoom {
         case Give:
         case UsedWith:
             if(objB == InventoryItems::oilVoucher) {
+                // B12: the voucher is Card II's only key. The rope
+                // holds until the reading is done (voltKey in pocket),
+                // so Scene 07 can never spend the debt early.
+                if(getObjectOwner(InventoryItems::voltKey) == VAR_EGO) {
+                    egoSay("He reads it again. Valid, he repeats. After hours, he says, like somebody told him to say it.");
+                    waitForMessage();
+                    egoSay("The rope stays up. But now it's a door with a schedule instead of a wall with a manner.");
+                    return;
+                }
                 egoSay("The bouncer reads it. Valid, he admits. The rope, he explains, is a separate financial instrument.");
                 waitForMessage();
-                egoSay("Tonight it's at capacity. The rope. Is at capacity.");
+                egoSay("Madame's night, he says. The rope respects her appointments.");
                 return;
             }
             egoSay("He doesn't hold things. Holding things is a different department.");
@@ -179,7 +188,7 @@ room MidtownRoom {
                 unless(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
                     egoSay("There it is. SPROCKET. On a marquee. In lights.");
                     waitForMessage();
-                    egoSay("Two of the bulbs are out. The rest are compensating.");
+                    egoSay("A third of the bulbs are out. The rest are compensating.");
                     waitForMessage();
                     egoSay("Talent night. Tonight. No pressure. The marquee is the pressure.");
                     return;
@@ -246,7 +255,7 @@ room MidtownRoom {
                 egoSay("He says doors at eight, performers at seven, panicking at six. I'm ahead of schedule.");
                 return;
             }
-            egoSay("He says I'm the first winner in Grand Cog history to get robbed mid-bow and take it professionally.");
+            egoSay("He says I'm the first winner in Grand Cog history to leave lighter than I arrived.");
             return;
         case Give:
         case UsedWith:
@@ -305,6 +314,7 @@ room MidtownRoom {
             waitForMessage();
             egoSay("Especially, he adds, anyone holding paper.");
             return;
+        case Give:
         case UsedWith:
             if(objB == InventoryItems::poster) {
                 egoSay("I show the official notice through the gap. The aide identifies it as 'official' and 'correct'.");

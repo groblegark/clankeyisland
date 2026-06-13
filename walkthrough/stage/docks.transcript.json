@@ -33,6 +33,55 @@
    "And up on the catwalk: one more, with a spyglass. No ticket. No hurry.",
    "Somewhere past that curtain is backstage. And backstage, if the clerk is right, is Madame Voltina."
   ],
+  "BackstageRoom.entry": [
+   "Backstage. Rope, sandbags, and a fortune-teller's parlor where the fire exit should be.",
+   "Three keys wind this city back up. As of the ovation, I hold none of them.",
+   "The cables on the floor all run one direction. The direction glows.",
+   "A voice from the parlor: 'Mind the cables.'",
+   "I mind the cables."
+  ],
+  "BackstageRoom.cardTwo": [
+   "The arc tastes the voucher. 'One free oil. Redeemable where the rope is velvet.'",
+   "She taps it twice with an arc and hands it back uncashed.",
+   "'Cash it where City Hall drinks. Debts talk after hours.'",
+   "Card three lands face down. The first two didn't do that.",
+   "'The future,' she says. 'Place the key.'",
+   "The table waits. My pockets hold a notice, a magnet, a voucher, and a pass. Notably: no key."
+  ],
+  "BackstageRoom.cardThreePass": [
+   "I deal the pass onto the felt with intent.",
+   "'That opens one door. The future has more doors.'"
+  ],
+  "BackstageRoom.cardThreeBluff": [
+   "I explain that the key is in my other chassis.",
+   "The arc that finds me is small, educational, and extremely specific.",
+   "'The coil bills for lies.'"
+  ],
+  "BackstageRoom.optCrank": [
+   "I ask about the key that winds itself. As instructed.",
+   "'Old Crank,' she says. 'Up the hill, behind the fence. Older than the hum.'",
+   "'He was winding himself before the city needed winding.'",
+   "'When you hold two keys, ask him where the third one stands.'",
+   "A hermit, a fence, and a riddle with posture.",
+   "'Old Crank,' she says again. 'Up the hill. He keeps.'"
+  ],
+  "BackstageRoom.optWhoTook": [
+   "'Their door answers to the knock,' she says. 'Doors are not loyal.'",
+   "Twice. Once. Twice. I've got it.",
+   "'The cards answer that one. Place them.'",
+   "The felt is greener on the business side of the table."
+  ],
+  "BackstageRoom.optWant": [
+   "I ask what she gets out of vetting key-bearers.",
+   "'A city with one future puts fortune-tellers out of work.'",
+   "'Everyone stopping is not a fortune. It's a schedule.'",
+   "She wants tomorrow back on the table. Professionally.",
+   "'Same answer,' she says. 'A negotiable tomorrow.'"
+  ],
+  "BackstageRoom.optLater": [
+   "'Mind the cables.'",
+   "I'm learning."
+  ],
   "ResRoom.defaultAction": [
    "Picking up citizens is how you get decommissioned.",
    "My warranty specifically excludes that.",
@@ -958,6 +1007,190 @@
     "Ozone and incense, from under the door. That combination has never once meant something normal."
    ]
   },
+  "door to the stage": {
+   "LookAt": [
+    "Back to the stage. The confetti should be settling by now."
+   ]
+  },
+  "costume rack": {
+   "LookAt": [
+    "Forty years of acts on hangers. A bear suit for a bot. A bot suit for, presumably, a bear."
+   ],
+   "Use": [
+    "Nothing in my size. Everything in my price range."
+   ],
+   "Smell": [
+    "Mothballs, losing."
+   ]
+  },
+  "ghost light": {
+   "LookAt": [
+    "A bare bulb on a stand, center backstage. Theater law: it never goes out.",
+    "It's flickering."
+   ],
+   "Use": [
+    "Not my circuit. Some maintenance is above my pay grade, which is zero."
+   ]
+  },
+  "fuse box": {
+   "LookAt": [
+    "The theater's fuse box. Somebody has labeled every single fuse HER."
+   ],
+   "Open": [
+    "I leave it shut. The wiring outranks me, and the wiring is a person."
+   ],
+   "Use": [
+    "I leave it shut. The wiring outranks me, and the wiring is a person."
+   ]
+  },
+  "Madame Voltina": {
+   "LookAt": [
+    "A tesla coil in a shawl. Her head is a glass dome with weather inside.",
+    "There's no crystal ball on the table. She's the ball."
+   ],
+   "TalkTo": [
+    "'Sprocket,' says the parlor. 'Late of the docks, lately of the stage.'",
+    "I ask how she follows my career. 'The theater is wired. I am the wiring.'",
+    "'You came for the one in the jar.'",
+    "There's a jar. In it: a brass key the size of my forearm.",
+    "The stencil on the glass matches the crate my luck came in.",
+    "'The Order left it with me. I vet the bearer.'",
+    "I ask what the vetting costs. 'A reading. Yours.'",
+    "'Used to be I'd read you cold. The brownouts ended cold reads.'",
+    "'Three cards. Past, present, future. Answer each with what you carry.'",
+    "'Carried things remember. Lie, and the coil bills you.'",
+    "A card snaps onto the felt. A woodcut of a printing press, smiling.",
+    "'The past,' she says. 'Place the lie this city printed you.'"
+   ],
+   "Smell": [
+    "Ozone at a concentration my manual files under 'leave'."
+   ]
+  },
+  "reading table": {
+   "LookAt": [
+    "Card one, face up: a printing press, smiling. The felt waits.",
+    "Card two, face up: an open hand, palm up. Municipal.",
+    "Card three, face down. The first two didn't do that.",
+    "Three cards spent, one key paid. The felt looks satisfied. For felt.",
+    "Green felt, scorch marks in threes. The scorches are tidy. The felt has accepted its life."
+   ],
+   "Give": [
+    "The arc hits the notice and goes the color of a courtroom.",
+    "'NOTHING IS WRONG,' she reads. 'Issued in bulk. Believed by no one.'",
+    "'You pried it off a public board. Past, verified.'",
+    "She slides it back across the felt. The past is mine to keep.",
+    "Card two: a woodcut of an open hand, palm up. Municipal.",
+    "'The present,' she says. 'Place the debt this city owes you.'",
+    "'It fished nine bolts out of a drain,' she reads. 'True. Not printed.'",
+    "The coil reads by touch, and everything I've carried is a diary.",
+    "'Ink so fresh it's still deciding. That isn't past. That's Tuesday.'",
+    "'You earned that an hour ago. The past takes longer to print.'",
+    "'The card is patient.'",
+    "'That's what the city owes itself. Pockets again.'",
+    "'The harbor paid that one. Nine bolts, settled.'",
+    "'You won that at eight turns. Regulation is five.'",
+    "The coil watched my act. Everyone's a critic with provenance.",
+    "'Square winnings. A pass is permission, not debt.'",
+    "'The card is patient.'",
+    "Card three is face down and done with objects. It wants an answer, out loud.",
+    "The reading is over. The felt is off the clock.",
+    "She hasn't dealt yet. Cards first, business after."
+   ],
+   "UsedWith": [
+    "The arc hits the notice and goes the color of a courtroom.",
+    "'NOTHING IS WRONG,' she reads. 'Issued in bulk. Believed by no one.'",
+    "'You pried it off a public board. Past, verified.'",
+    "She slides it back across the felt. The past is mine to keep.",
+    "Card two: a woodcut of an open hand, palm up. Municipal.",
+    "'The present,' she says. 'Place the debt this city owes you.'",
+    "'It fished nine bolts out of a drain,' she reads. 'True. Not printed.'",
+    "The coil reads by touch, and everything I've carried is a diary.",
+    "'Ink so fresh it's still deciding. That isn't past. That's Tuesday.'",
+    "'You earned that an hour ago. The past takes longer to print.'",
+    "'The card is patient.'",
+    "'That's what the city owes itself. Pockets again.'",
+    "'The harbor paid that one. Nine bolts, settled.'",
+    "'You won that at eight turns. Regulation is five.'",
+    "The coil watched my act. Everyone's a critic with provenance.",
+    "'Square winnings. A pass is permission, not debt.'",
+    "'The card is patient.'",
+    "Card three is face down and done with objects. It wants an answer, out loud.",
+    "The reading is over. The felt is off the clock.",
+    "She hasn't dealt yet. Cards first, business after."
+   ],
+   "Use": [
+    "The truth, then. I put my name in bulbs and the key on a lit stage. A hook took it at the bow.",
+    "'Truth.' The arc doesn't flinch. Neither of us mentions whose idea the bulbs were.",
+    "She turns the card with an arc. A woodcut of a city, held upside down, being shaken.",
+    "'The Rustlers don't want a dark city. They want one that pays to stay lit.'",
+    "'Wind it down. Ransom the rewind. Salvage rates.' Their words, says the card.",
+    "Piracy, with invoices.",
+    "'Your future knocks,' she says. 'Twice. Once. Twice.'",
+    "I know that knock. It plays cards in the Scrap & Barrel.",
+    "Twice. Once. Twice. I file the rhythm somewhere fireproof.",
+    "'The reading is paid,' she says. 'Ground yourself.'",
+    "She earths the jar with a rod the size of a baton. The lid gives a small, ceremonial pop.",
+    "'Key the second,' she says. 'Lose it slower.'",
+    "One key in hand, one behind a knock, one still a rumor that winds itself. The math is moving again.",
+    "'Make tomorrow negotiable again. I have appointments.'",
+    "I step back. The card stays face down. It has nowhere better to be.",
+    "The reading is over. The felt is off the clock.",
+    "It's her table. I've seen what the coil does to volunteers."
+   ],
+   "Smell": [
+    "Ozone. Old felt. More ozone."
+   ]
+  },
+  "card carousel": {
+   "LookAt": [
+    "A brass carousel of punch-cards. The holes are the fortunes. The cards are just chaperones."
+   ],
+   "PickUp": [
+    "It deals for her. It has seniority."
+   ],
+   "Use": [
+    "It deals for her. It has seniority."
+   ]
+  },
+  "key in a jar": {
+   "LookAt": [
+    "A brass wind-up key in a glass jar, stenciled PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
+    "The jar hums. Not the city's hum. A private one.",
+    "Empty. The stencil stays. One absence, well documented."
+   ],
+   "Open": [
+    "I reach. The jar reaches back.",
+    "'The deposit is charged,' she says. 'So is the jar.'",
+    "Already mine. The jar and I are square."
+   ],
+   "Use": [
+    "I reach. The jar reaches back.",
+    "'The deposit is charged,' she says. 'So is the jar.'",
+    "Already mine. The jar and I are square."
+   ],
+   "PickUp": [
+    "I reach. The jar reaches back.",
+    "'The deposit is charged,' she says. 'So is the jar.'",
+    "Already mine. The jar and I are square."
+   ],
+   "Smell": [
+    "Glass, brass, and a hum I can taste in my teeth. I don't have teeth."
+   ]
+  },
+  "cables": {
+   "LookAt": [
+    "Cables, braided like the city's worst haircut. Every one of them feeds the parlor."
+   ],
+   "Use": [
+    "Each one is load-bearing. So is her patience."
+   ],
+   "Move": [
+    "Each one is load-bearing. So is her patience."
+   ],
+   "Smell": [
+    "Warm rubber."
+   ]
+  },
   "drink token": {
    "LookAt": [
     "One genuine Scrap & Barrel drink token. Redeemable for one drink, zero refunds, unlimited regret."
@@ -1054,6 +1287,19 @@
    ],
    "Smell": [
     "Chain grease. The lanyard has a past."
+   ]
+  },
+  "the second key": {
+   "LookAt": [
+    "Brass, forearm-sized, second of three. This one has never been on a marquee.",
+    "We're keeping it that way."
+   ],
+   "Use": [
+    "Those two things politely decline each other.",
+    "It wants the Dynamo. The Dynamo wants its siblings first."
+   ],
+   "Smell": [
+    "Ozone. It kept the jar's accent."
    ]
   }
  }

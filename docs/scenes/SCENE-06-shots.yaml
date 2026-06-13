@@ -1,0 +1,144 @@
+# Scene 06 — Backstage: Madame Voltina. Shot-list fragment.
+# APPEND the `shots:` entries below to walkthrough/screenplay/
+# full-run.play.yaml (after the scene-05 "stage-door" shot, which plays
+# the greeting; this list opens with the SECOND click on that door).
+#
+# Schema notes (matches walkthrough/driver/walkthrough.py as shipped):
+#   - dialog picks use the existing two-phase `choose:` key on a `do:`
+#     (zero-based option index; the driver clicks 80, 149 + 11*choose).
+#     There is no standalone `dialog:` primitive — Card III's tree is
+#     opened by `Use reading table` at readingStage 3 and re-opened the
+#     same way after a flop, so every pick is a fresh Use+choose shot.
+#   - `cutscene:` keys point at transcript buckets for beats whose
+#     lines live in local scripts (BackstageRoom.entry, cardTwo, the
+#     hub options, the Card III flops). Beats with lines inline in the
+#     handler (the intro, card I, the truth) pair from their
+#     (object,verb) bucket front and need no key.
+#   - mistakes/detours are `only: perform` (streamer cut). The two
+#     wrong-offer mistakes pair against the canonical front lines of
+#     their shared bucket, so their dub labels are knowingly off —
+#     same caveat as every repeat-branch in the repo (transcript.py
+#     header). The bluff and grabby mistakes pair correctly (own
+#     script bucket / own verb front).
+#
+# Inventory model (compaction, docs/NOTES.md): entering the scene the
+# pockets are poster=slot0, magnet=slot1, oilVoucher=slot2,
+# backstagePass=slot3 (windupKey owner==0 since the heist compacted
+# the list). NOTHING is consumed in this scene — the notice and
+# voucher are explicitly handed back — so slots never shift. voltKey
+# appends as the 5th item -> slot4, OFF-PAGE on the 2x2 panel: do NOT
+# probe an inventory slot for it; the jar-empty pixel is the pickup
+# assertion (plus the SNTC/owner console oracle in validate mode).
+#
+# Pixel anchors (from tools/genassets.py BACK_GEOM/BACK_CARDS):
+#   key stem in the jar   (256, 68)  brass -> teal when grounded
+#   card I face           (150, 90)  card-white
+#   card II face          (166, 89)  card-white
+#   card III back         (183, 89)  rust (face-down state)
+#   theater chandelier    (110, 12)  sodium (the return shot)
+
+  # ------------------------------- Scene 06: the reading
+  - name: mind-the-cables
+    do: {verb: Open, object: stage door}        # 2nd Open: silent transition
+    cutscene: BackstageRoom.entry
+    expect:
+      - talking                                 # the robbed-arrival beat
+      - pixel: {at: [256, 68], is: brass}       # Key #2, in its jar
+    timeout: 90
+
+  - name: the-parlor
+    only: perform
+    do: {verb: Examine, object: Madame Voltina}
+    expect: [talking]
+
+  - name: the-jar
+    only: perform
+    do: {verb: Examine, object: key in a jar}
+    expect: [talking]
+
+  - name: grabby                                # mistake: grab the prize
+    only: perform
+    do: {verb: Use, object: key in a jar}       # "The deposit is charged."
+    expect: [talking]
+    hold: 1.5
+
+  - name: the-price
+    do: {verb: Talk to, object: Madame Voltina} # intro: Card I dealt
+    expect:
+      - talking
+      - pixel: {at: [155, 90], is: card-white}  # Card I (right edge: ego occludes x<154)
+    timeout: 150
+
+  - name: wrong-past                            # mistake: true, not printed
+    only: perform                               # (dub label knowingly off:
+    do: {verb: Use, object: reading table, with: inventory.slot1}
+    expect: [talking]                           # shares card I's bucket)
+    hold: 1.5
+
+  - name: card-one
+    do: {verb: Use, object: reading table, with: inventory.slot0}
+    expect:
+      - talking
+      - pixel: {at: [166, 89], is: card-white}  # Card II dealt
+    timeout: 90
+
+  - name: card-two
+    do: {verb: Use, object: reading table, with: inventory.slot2}
+    cutscene: BackstageRoom.cardTwo
+    expect:
+      - talking
+      - pixel: {at: [183, 89], is: rust}        # Card III, face down
+    timeout: 90
+
+  - name: the-bluff                             # mistake: lie to the psychic
+    only: perform
+    do: {verb: Use, object: reading table, choose: 1}
+    cutscene: BackstageRoom.cardThreeBluff      # the zap gag
+    expect: [talking]
+    hold: 2.0
+
+  - name: the-truth                             # the climax: motive, knock
+    do: {verb: Use, object: reading table, choose: 2}   # echo, Key #2
+    expect:
+      - talking
+      - pixel: {at: [256, 68], is: teal}        # jar EMPTY: brass gone
+    timeout: 180
+
+  - name: the-key-that-winds-itself             # the Old Crank plant
+    do: {verb: Talk to, object: Madame Voltina, choose: 0}
+    cutscene: BackstageRoom.optCrank
+    expect: [talking]
+    timeout: 90
+
+  - name: occupational-hazards                  # her want (N-A6)
+    only: perform
+    do: {verb: Talk to, object: Madame Voltina, choose: 2}
+    cutscene: BackstageRoom.optWant
+    expect: [talking]
+
+  - name: ghost-light                           # the clock beat (N-A5)
+    only: perform
+    do: {verb: Examine, object: ghost light}
+    expect: [talking]
+
+  - name: wardrobe
+    only: perform
+    do: {verb: Examine, object: costume rack}
+    expect: [talking]
+
+  - name: haircut
+    only: perform
+    do: {verb: Examine, object: cables}
+    expect: [talking]
+
+  - name: her-fuses
+    only: perform
+    do: {verb: Examine, object: fuse box}
+    expect: [talking]
+
+  - name: back-through-the-curtain
+    do: {verb: Open, object: door to the stage} # silent; flavor stays put
+    expect:
+      - pixel: {at: [110, 12], is: sodium}      # the chandelier again
+    timeout: 60
+    hold: 2.0

@@ -70,3 +70,18 @@ finish, plus the three pillars Matt set for the final product:
 
 The validate gate stays the law: nothing merges red, and the desk
 reviews every scene's text before it ships.
+
+
+## Standing editorial debt (third desk pass, 2026-06-12)
+
+Deferred WITH OWNERS -- the desk caught two "marked fixed, never landed"
+items this pass; this table is the fix for that failure mode.
+
+| Item | What | Lands with |
+|------|------|-----------|
+| N-A11 + N-TH7 | Contest variety: one contest charges for flops, one needs cross-room recall (plant the 8 in the dumpster's grease manual), vary winner slots | Before the next contest ships (Scene 08+) |
+| N-A12/A13/A14 | Punch-noun ration ("Growth." etc.), town-aphorism ration, refusal-grammar variety (desk keeper lists in NOTES-2026-06-12-scene06.md) | Next punch-up sweep |
+| N-TH9 | Win-cutscene pacing: flatten 3-4 beats, dead air after the hook | Film/streamer pass |
+| N-A17 | Magnet/string split (DECIDED: ships, GDD updated) | Scene 09 prep |
+| Player NIT | only:perform flop shots for the wind-count + "one act per night" line | Streamer screenplay |
+| B12 rider | SCENE-07 brief: add backstage.scc to required reading; voucher gate is the rope (voltKey-keyed); fix stale "first Crank mention" claim | Scene 07 build pass, FIRST |

@@ -54,7 +54,7 @@ A robot metropolis stacked in three tiers:
 ## Core Mechanics
 
 - Nine-verb SCUMM v6 interface (ScummC), Day-of-the-Tentacle style.
-- Inventory combination puzzles (oil can + everything, ideally).
+- One inventory combination puzzle, minimum: the dumpster magnet splits into bare magnet + string in the Scene 09 prep pass (string from Rivet's junk heap; the tackle reused for the hideout stealth route). Decided 2026-06-12, third desk pass (N-A17) -- no more 'ideally'.
 - **Bolts** as currency for a small economy in Act 1.
 - Dialog trees with insult-fencing-style riddle duel vs. Rivet.
 

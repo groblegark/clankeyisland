@@ -12,6 +12,7 @@
 #include "dialog.sch"
 #include "midtown.sch"
 #include "theater.sch"
+#include "backstage.sch"
 
 room TheaterRoom {
 
@@ -53,6 +54,8 @@ room TheaterRoom {
 
     local script entry() {
         startScript(1, musicLoop, []);
+        // the perch empties when the heist happens (N-TH11)
+        if(wonShow) setObjectState(catwalk, 2);
 
         unless(visitedTheater) {
             visitedTheater = 1;
@@ -111,7 +114,7 @@ room TheaterRoom {
                 egoSay("The brownouts reach everywhere.");
                 return;
             }
-            egoSay("The operator's awake and tracking the stage like it owes him money.");
+            egoSay("The operator's awake, tracking the stage at full amber. Somebody is getting lit tonight whether they like it or not.");
             return;
         case Use:
         case TalkTo:
@@ -191,6 +194,44 @@ room TheaterRoom {
         }
     }
 
+    object catwalk {
+        x = 168;
+        y = 0;
+        w = 104;
+        h = 16;
+        dir = SOUTH;
+        name = "catwalk";
+        states = {
+            { 0, 0, "rooms/catwalk_watch.bmp" },
+            { 0, 0, "rooms/catwalk_empty.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            if(wonShow) {
+                egoSay("The catwalk is empty now. It looks innocent. Catwalks always do.");
+                waitForMessage();
+                egoSay("The hatch is shut, and the bolt is on their side. Somebody up there respects maintenance.");
+                return;
+            }
+            egoSay("A catwalk over the stage. Walkway, rail, hatch -- and a silhouette doing audience research with a spyglass.");
+            return;
+        case Open:
+        case Use:
+        case PickUp:
+            if(wonShow) {
+                egoSay("Out of reach, and bolted from the far side. The scene of the crime, sealed by the criminals.");
+                return;
+            }
+            egoSay("Out of reach. And occupied. The house's rigging belongs to whoever is already in it.");
+            return;
+        case Smell:
+            egoSay("Rope, dust, and altitude.");
+            return;
+        }
+    }
+
     object emcee {
         x = 128;
         y = 56;
@@ -255,7 +296,7 @@ room TheaterRoom {
                 egoSay("Confetti on the boards and a spotlight with nothing left to prove.");
                 return;
             }
-            egoSay("The stage. Behind that curtain, forty years of acts have died and three have lived.");
+            egoSay("The stage. Tonight it gets a maintenance-bot and a very large key.");
             waitForMessage();
             egoSay("Tonight it gets a maintenance-bot and a very large key.");
             return;
@@ -338,9 +379,10 @@ room TheaterRoom {
                             egoSay("A hook on a line whips up past the proscenium. Fishing tackle. Somebody else's magnet-on-a-string.");
                             waitForMessage();
                             startSound(knockSnd);
-                            egoSay("Up on the catwalk, a hatch clicks shut. Two clangs. One. Two.");
+                            setObjectState(catwalk, 2);
+                            egoSay("The hatch clicks shut. Then, from the far side, knuckles: two. One. Two. They sign their work.");
                             waitForMessage();
-                            egoSay("The hats from the card table. The spyglass from the catwalk. I hand-delivered the thing -- lit stage, my name in bulbs.");
+                            egoSay("The hat from the card table. The spyglass from the catwalk.");
                             waitForMessage();
                             egoSay("Everyone in this house saw a triumph. I saw a hatch.");
                             waitForMessage();
@@ -356,7 +398,7 @@ room TheaterRoom {
                                 startSound(ratchetSnd);
                                 egoSay("Three turns buys one hop and a curtsy. The house files it under 'juggler'.");
                                 waitForMessage();
-                                egoSay("The emcee mouths: the bold. red. number.");
+                                egoSay("The emcee mouths: the bold red number.");
                                 waitForMessage();
                             }
                             return;
@@ -411,8 +453,17 @@ room TheaterRoom {
             return;
         case Open:
         case Use:
+            // post-greeting: the door just opens — SILENTLY (room
+            // transitions say nothing, docs/NOTES.md; the arrival
+            // flavor lives in BackstageRoom.entry)
+            if(voltinaGreeted) {
+                putActorAt(VAR_EGO, 30, 120, BackstageRoom);
+                startRoom(BackstageRoom);
+                return;
+            }
             // walkthrough-path branch first in source (dub pairing)
             if(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
+                voltinaGreeted = 1;             // flag before speech
                 cutscene(0) {
                     egoSay("I flash the pass. The stagehand reads it twice. Nothing in his build explains how he steps aside, but he does.");
                     waitForMessage();
@@ -422,13 +473,15 @@ room TheaterRoom {
                     waitForMessage();
                     egoSay("Madame Voltina. I'm going to need a minute, and possibly a will.");
                     waitForMessage();
+                    egoSay("She'll keep. The door is mine to open when the minute's over.");
+                    waitForMessage();
                 }
                 return;
             }
             egoSay("A stagehand the shape of a filing cabinet fills the doorway. Pass-holders only.");
             return;
         case Smell:
-            egoSay("Ozone and incense, from under the door. That combination has never once meant something normal.");
+            egoSay("Incense. Through steel. That has never once meant something normal.");
             return;
         }
     }

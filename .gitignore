@@ -19,3 +19,4 @@ game/build/
 web/dist/
 walkthrough/out/
 __pycache__/
+.claude/worktrees/
