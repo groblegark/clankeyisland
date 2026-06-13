@@ -72,7 +72,7 @@ CHARSETS = $(BUILD)/vera.char $(BUILD)/vera-small.char $(BUILD)/vera-gui.char
 # one .soun = one thing: VOC sfx or MIDI music, never both)
 AUDIO_DIR := $(ASSET_DIR)/audio
 SFX = whack bolt_drop pickup knock foghorn ratchet dart sizzle clink \
-      thud plink splash creak boing applause
+      thud plink splash creak boing clunk clunk_dead coded_knock applause
 MUSIC = dockside scrapnbarrel backalley shuffle vamp
 SOUNS = $(SFX:%=$(BUILD)/%.soun) $(MUSIC:%=$(BUILD)/%.soun)
 

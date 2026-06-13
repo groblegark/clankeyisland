@@ -255,6 +255,61 @@ def sfx_boing():
     return mix(concat(twang, []), out)
 
 
+def sfx_clunk():
+    """The S.S. Eventually's engine giving out -- the 'expensive' clunk.
+    A heavy low seizure with one bright partial that snaps off early
+    (the last fixable thing in the engine, dying mid-ring), settling
+    into a dead boiler boom. No clean ring sustains: this is machinery
+    losing an argument with physics."""
+    # the seizure: a struck flywheel that should ring, but the ring is
+    # killed fast by the decay -- 'expensive', not yet 'permanent'
+    seize = partials(0.55, [(58, 1.0, 6), (87, 0.7, 9), (131, 0.45, 13),
+                            (640, 0.4, 40), (910, 0.25, 55)], attack=0.001)
+    grind = noise_burst(0.10, 0.85, 28)          # metal-on-metal scrape
+    # a single failing piston knock partway through, off-beat
+    knock = partials(0.12, [(140, 0.8, 26), (220, 0.4, 34)], attack=0.001)
+    return concat(mix(seize, grind), silence(0.04),
+                  mix(knock, noise_burst(0.04, 0.5, 60)))
+
+
+def sfx_clunk_dead():
+    """The same engine's SECOND clunk -- the 'PERMANENT' one. Heavier,
+    lower, no bright partials at all (nothing left to fix), a longer
+    dead tail that just... stops. A mainspring's last unwind into a
+    boiler going cold. The comedy is the deadness."""
+    # pure low mass, no upper partials -- the brightness that meant
+    # 'fixable' is gone. Slow attack so it lands like a body, not a hit.
+    boom = partials(0.85, [(46, 1.0, 4.5), (69, 0.6, 7), (104, 0.3, 11)],
+                    attack=0.004)
+    thud = noise_burst(0.14, 0.7, 18)            # muffled, low-energy
+    # one final sub-drop: the mainspring slack going to zero
+    n = int(RATE * 0.45)
+    drop = []
+    for i in range(n):
+        t = i / RATE
+        f = 95 * math.exp(-3.0 * t) + 38         # glides down to a floor
+        env = math.exp(-3.5 * t)
+        drop.append(0.55 * env * math.sin(2 * math.pi * f * t))
+    return concat(mix(boom, thud), mix(drop))
+
+
+def sfx_coded_knock():
+    """The Rustlers' password knock, the 2-1-2 the whole game keeps
+    echoing: CLANG-CLANG. CLANG. CLANG-CLANG. Five strikes on a metal
+    door in two-one-two rhythm -- close within a group, a beat between
+    groups -- so the motif is recognizable by ear, not just on screen.
+    Bright inharmonic clang (it's struck plate, not a polite thud)."""
+    def clang():
+        return mix(partials(0.16, [(430, 0.9, 16), (970, 0.6, 22),
+                                   (1640, 0.4, 30), (2510, 0.22, 40)],
+                            attack=0.001),
+                   noise_burst(0.02, 0.5, 110))
+    intra, inter = silence(0.05), silence(0.20)    # within-group / between
+    return concat(clang(), intra, clang(), inter,   # CLANG-CLANG.
+                  clang(), inter,                    # CLANG.
+                  clang(), intra, clang())           # CLANG-CLANG.
+
+
 def sfx_applause():
     """A full house coming apart: dense little claps with a swell,
     deterministic like everything else in this town."""
@@ -298,6 +353,9 @@ EFFECTS = {
     "splash": sfx_splash,
     "creak": sfx_creak,
     "boing": sfx_boing,
+    "clunk": sfx_clunk,
+    "clunk_dead": sfx_clunk_dead,
+    "coded_knock": sfx_coded_knock,
     "applause": sfx_applause,
 }
 

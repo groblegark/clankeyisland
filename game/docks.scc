@@ -35,6 +35,8 @@ room DockRoom {
     sound ratchetSnd  = "ratchet.soun";
     sound splashSnd   = "splash.soun";
     sound clinkSnd    = "clink.soun";
+    sound clunkSnd     = "clunk.soun";
+    sound clunkDeadSnd = "clunk_dead.soun";
 
     // -------------------------------------------------- ambient scripts
 
@@ -103,13 +105,18 @@ room DockRoom {
                 actorFace(sprocket,ferry);
                 egoSay("Thanks for the ride! I'll catch the return ferry once I'm rich and famous.");
                 waitForMessage();
-                // the ferry dies on cue
+                // the ferry dies on cue: the engine seizes first (the
+                // 'expensive' clunk), Sprocket turns, then it lets go
+                // for good (the deader 'PERMANENT' clunk). Each sound
+                // LEADS the line that reacts to it.
                 setCurrentActor(sprocket);
                 setActorStanding();
+                startSound(clunkSnd);
                 egoSay("...");
                 waitForMessage();
                 egoSay("That clunk sounded expensive.");
                 waitForMessage();
+                startSound(clunkDeadSnd);
                 egoSay("That clunk sounded PERMANENT.");
                 waitForMessage();
                 walkActorTo(sprocket,110,124);

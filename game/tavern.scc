@@ -26,6 +26,7 @@ room TavernRoom {
     sound clinkSnd   = "clink.soun";
     sound plinkSnd   = "plink.soun";
     sound knockSnd   = "knock.soun";
+    sound codedKnockSnd = "coded_knock.soun";   // the 2-1-2 motif knock
     sound pickupSnd  = "pickup.soun";
 
     // ------------------------------------------------------------ music
@@ -420,7 +421,7 @@ room TavernRoom {
         case Open:
         case Use:
             if(heardKnockCode) {
-                startSound(knockSnd);
+                startSound(codedKnockSnd);
                 egoSay("CLANG-CLANG. CLANG. CLANG-CLANG.");
                 waitForMessage();
                 if(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
