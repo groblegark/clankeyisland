@@ -59,16 +59,23 @@ def dur_of(path):
     return float(out)
 
 
-def speak(text):
-    """Render one robotized line, cached by content hash."""
+def speak(text, voice=None, fx_chain=None):
+    """Render one robotized line, cached by content hash.
+
+    voice/fx_chain default to Sprocket's (lessac + ROBOT_FX); the NPC
+    cast passes its own (tools/genvoice.py CAST). The cache key format
+    is load-bearing: f"{voice}|{fx}|{text}" keeps every pre-cast
+    Sprocket clip hot."""
+    voice = voice or VOICE
+    fx_chain = fx_chain or ROBOT_FX
     os.makedirs(CACHE, exist_ok=True)
-    key = hashlib.sha1(f"{VOICE}|{ROBOT_FX}|{text}".encode()).hexdigest()[:16]
+    key = hashlib.sha1(f"{voice}|{fx_chain}|{text}".encode()).hexdigest()[:16]
     fx = os.path.join(CACHE, f"{key}.wav")
     if not os.path.exists(fx):
         raw = os.path.join(CACHE, f"{key}-raw.wav")
         run([sys.executable, "-m", "piper", "--data-dir", VOICE_DATA,
-             "-m", VOICE, "-f", raw], input=text.encode())
-        run(["ffmpeg", "-y", "-i", raw, "-af", ROBOT_FX, fx])
+             "-m", voice, "-f", raw], input=text.encode())
+        run(["ffmpeg", "-y", "-i", raw, "-af", fx_chain, fx])
         os.unlink(raw)
     return fx
 

@@ -40,7 +40,34 @@ import dub  # speak(): cached piper + robot FX render
 # pitch shift is inaudible under the FX chain.
 VOICE_RATE = 11025
 
-SAY = re.compile(r'(egoSay\(\s*")((?:[^"\\]|\\.)*)("\s*)(?=[,)])')
+SAY = re.compile(
+    r'((?:egoSay\(\s*|actorSay\(\s*(\w+)\s*,\s*)")'
+    r'((?:[^"\\]|\\.)*)("\s*)(?=[,)])')
+
+# The NPC cast (NPC-DIALOG.md item 6): per-speaker piper voice + FX.
+# Cheap tinny NPC voices are sanctioned characterization
+# (NARRATION.md). Sprocket stays lessac + ROBOT_FX (dub.py defaults).
+NPC_FX_BASE = ("silenceremove=start_periods=1:start_threshold=-45dB,"
+               "areverse,silenceremove=start_periods=1:"
+               "start_threshold=-45dB,areverse,"
+               "loudnorm=I=-17:TP=-1.5,"
+               "aformat=sample_rates=48000:channel_layouts=mono")
+CAST = {
+    # actor symbol -> (piper voice, fx chain)
+    "gusket_a": ("en_US-ryan-high",
+                 "asetrate=48000*0.82,aresample=48000,atempo=1.22,"
+                 "acrusher=bits=8:mode=log:mix=0.35," + NPC_FX_BASE),
+    "voltina_a": ("en_US-kristin-medium",
+                  "aecho=0.7:0.5:120:0.3,chorus=0.6:0.9:55:0.4:0.25:2,"
+                  "lowpass=f=5000," + NPC_FX_BASE),
+    "emcee_a": ("en_GB-cori-high",
+                "aecho=0.7:0.6:60:0.25,highpass=f=200," + NPC_FX_BASE),
+    "rivet_a": ("en_US-bryce-medium",
+                "atempo=1.12,acrusher=bits=9:mode=log:mix=0.25,"
+                + NPC_FX_BASE),
+    "extra_a": ("en_US-joe-medium",
+                "highpass=f=300,lowpass=f=3400," + NPC_FX_BASE),
+}
 ROOM = re.compile(r'^room\s+\w+\s*\{', re.M)
 
 
@@ -61,11 +88,12 @@ def write_voc(path, u8data):
         f.write(hdr + block + b"\x00")
 
 
-def render_voc(text, voices_dir, sym):
+def render_voc(text, voices_dir, sym, actor=None):
     out = os.path.join(voices_dir, sym + ".voc")
     if os.path.exists(out):
         return
-    fx = dub.speak(text)
+    voice, fx_chain = CAST.get(actor, (None, None))
+    fx = dub.speak(text, voice=voice, fx_chain=fx_chain)
     raw = subprocess.run(
         ["ffmpeg", "-y", "-loglevel", "error", "-i", fx,
          "-ar", str(VOICE_RATE), "-ac", "1", "-f", "u8", "pipe:1"],
@@ -88,7 +116,8 @@ def main():
     src = open(args.source).read()
     # adjacent-literal concatenation after an egoSay string would hide
     # part of the line from the renderer — refuse rather than mis-voice
-    for m in re.finditer(r'egoSay\(\s*"(?:[^"\\]|\\.)*"\s*"', src):
+    for m in re.finditer(
+            r'(?:ego|actor)Say\([^)"]*"(?:[^"\\]|\\.)*"\s*"', src):
         line = src[:m.start()].count("\n") + 1
         sys.exit(f"{args.source}:{line}: adjacent string literals in "
                  "egoSay not supported by genvoice.py — join them first")
@@ -96,14 +125,19 @@ def main():
     syms = {}  # sym -> voc relpath (decl order = first appearance)
 
     def voice_sub(m):
-        text = m.group(2)
+        actor, text = m.group(2), m.group(3)
         if not re.search(r"[A-Za-z]", text) or "%V{" in text:
             return m.group(0)
-        sym = "vx_" + hashlib.sha1(text.encode()).hexdigest()[:10]
+        if actor == "0xFF":
+            return m.group(0)
+        # speaker is part of the identity: the same words in another
+        # mouth are another clip
+        key = f"{actor or 'ego'}|{text}"
+        sym = "vx_" + hashlib.sha1(key.encode()).hexdigest()[:10]
         if sym not in syms:
-            render_voc(unescape(text), voices_dir, sym)
+            render_voc(unescape(text), voices_dir, sym, actor=actor)
             syms[sym] = f"voices/{sym}.voc"
-        return f'{m.group(1)}%V{{{sym}}}{text}{m.group(3)}'
+        return f'{m.group(1)}%V{{{sym}}}{text}{m.group(4)}'
 
     out = SAY.sub(voice_sub, src)
 

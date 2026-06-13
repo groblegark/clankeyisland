@@ -117,7 +117,14 @@ $(BUILD)/tentacle.000: $(OBJS)
 	cd $(BUILD) && $(SLD) -o tentacle $(SLD_FLAGS) $(notdir $^)
 	cp $(BUILD)/tentacle.sou $(BUILD)/monster.sou 2>/dev/null || true
 
-tentacle: $(BUILD)/tentacle.000
+# the walkthrougher's line labels come from the sources -- regenerate
+# with every build so they can never go stale (the 2026-06-12 emcee
+# pilot shipped against a stale transcript)
+TRANSCRIPT = $(REPO_ROOT)/walkthrough/stage/docks.transcript.json
+$(TRANSCRIPT): $(SRCS) $(REPO_ROOT)/tools/transcript.py
+	python3 $(REPO_ROOT)/tools/transcript.py $@ $(SRCS)
+
+tentacle: $(BUILD)/tentacle.000 $(TRANSCRIPT)
 
 run: tentacle
 	scummvm -p $(BUILD) scumm:tentacle

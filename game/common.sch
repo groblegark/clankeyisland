@@ -67,8 +67,23 @@ int  *actorObject;
 
 // define actors
 actor sprocket;
+// costume-less NPC actors (NPC-DIALOG.md Tier A): actorSay positions
+// text overhead and uses the actor's talk color; no costume = no
+// animation, no crash. EVERY speaker must be putActorAt into the room
+// before its first line (off-room actorTalk drops lines).
+actor gusket_a;
+actor voltina_a;
+actor emcee_a;
+actor rivet_a;
+actor extra_a;     // shared: clerk, bouncer, heckler, slot-eye
 #define SPROCKET_COLOR  105
-#define BETTY_COLOR     106
+#define BETTY_COLOR     106   // RETIRED (vestigial; RGB reassigned to EXTRA_COLOR -- art doctor SYS-2)
+// per-NPC talk colors (PAL 108-112, tools/genassets.py)
+#define GUSKET_COLOR    108
+#define VOLTINA_COLOR   109
+#define EMCEE_COLOR     110
+#define RIVET_COLOR     111
+#define EXTRA_COLOR     112
 
 room ResRoom {
 

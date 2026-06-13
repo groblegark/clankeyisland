@@ -249,6 +249,11 @@ room TheaterRoom {
             unless(metEmcee) {
                 metEmcee = 1;
                 cutscene(0) {
+                    // NPC-speech pipeline is in place (actors/colors/
+                    // driver/genvoice) but actorSay-then-dialog corrupts
+                    // the openquest dialog UI across shots; emcee ships
+                    // as reported speech until that interaction is
+                    // debugged. TODO(actorSay): restore direct lines.
                     egoSay("Sprocket, he says, reading the marquee off my face. The wind-up act. You're on next.");
                     waitForMessage();
                     egoSay("One problem: the spotlight operator went into low-power mode during the juggler. The juggler had that effect.");
