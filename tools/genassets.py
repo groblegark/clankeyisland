@@ -1234,7 +1234,9 @@ def draw_backstage(cards=0, jar="key", ghost="lit"):
 # them — Scene 06's probe-vs-walk-target lesson):
 #   back-bar backlight   (100, 30)  sodium — the room-is-amber probe
 #   sommelier head       (92, 60)   somm-black at post / dock-wood away
-#   spike top page       (146, 73)  white when full / dock-wood taken
+#   spike inner page     (148, 74)  white when full / dock-wood taken
+#     (deep in the stack: at (146,73) the radius-2 window catches the
+#      spike's dock-wood edge in BOTH states, so it can't discriminate)
 OILBAR_GEOM = {
     "O_DOOR":     (8, 56, 24, 48),
     "O_BACKBAR":  (36, 24, 96, 32),
@@ -1778,9 +1780,13 @@ BACK_WALKBOXES = [
     ("backeast", [(160, 112), (304, 112), (304, 140), (160, 140)]),
 ]
 
+# one floor box, not two: the sommelier sits west and the aide east, so
+# every contest beat walks the ego oileast<->oilwest. A shared-edge box
+# pair makes that boundary crossing wedge the actor (waitForActor never
+# returns -> the sommelier TalkTo never dispatches). One wide box removes
+# the seam so the whole bar floor is a single reachable region.
 OILBAR_WALKBOXES = [
-    ("oilwest", [(8, 112), (160, 112), (160, 140), (8, 140)]),
-    ("oileast", [(160, 112), (304, 112), (304, 140), (160, 140)]),
+    ("oilfloor", [(8, 112), (304, 112), (304, 140), (8, 140)]),
 ]
 
 # Verb anchors from game/verbs.scc (verbCenter() -> x is the center;
