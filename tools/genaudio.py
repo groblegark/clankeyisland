@@ -533,6 +533,80 @@ def sfx_scribble():
     s = noise_burst(0.08, 0.35, 45)
     gap = silence(0.05)
     return concat(s, gap, s, gap, s)
+def sfx_governor():
+    """The clockwork governor on the gate post (Scene 10): a regular train
+    of short high metallic escapement ticks over a low whirring undertone --
+    a speed-regulator turning. The gate puzzle's timing source made audible
+    (it 'only answers the hum')."""
+    whir = partials(0.9, [(180, 0.4, 3), (360, 0.25, 4)])
+    tick = lambda: partials(0.03, [(2600, 0.6, 80), (3900, 0.3, 100)])
+    gap = silence(0.09)                       # ~120ms tick interval
+    train_parts = []
+    for i in range(7):                        # ~0.9s of ticks
+        train_parts.append(tick())
+        if i < 6:
+            train_parts.append(gap)
+    train = concat(*train_parts)
+    return mix(whir, train)
+
+
+def sfx_winddown():
+    """Old Crank pulling his own key and winding down (Scene 10, the cost):
+    a descending square sweep ~600->80Hz with falling amplitude (the reverse
+    of sfx_pickup's hopeful rising chirp), plus a DECELERATING tick train
+    that thins to silence -- a mainspring giving up the last of its turn."""
+    n = int(RATE * 1.3)
+    sweep = []
+    for i in range(n):
+        t = i / RATE
+        f = 600 - (600 - 80) * (t / 1.3)
+        phase = 2 * math.pi * (600 * t - (600 - 80) * t * t / (2 * 1.3))
+        square = 1.0 if math.sin(phase) >= 0 else -1.0
+        sweep.append(0.4 * square * (1.0 - t / 1.35))
+    tick = lambda: partials(0.025, [(1700, 0.5, 90), (2550, 0.25, 110)])
+    # decelerating gaps: 90ms growing toward 260ms, then nothing
+    gaps = [0.09, 0.115, 0.145, 0.18, 0.22, 0.26]
+    train_parts = []
+    for i, gp in enumerate(gaps):
+        train_parts.append(tick())
+        train_parts.append(silence(gp))
+    train = concat(*train_parts)
+    return mix(sweep, train)
+
+
+def sfx_humlift():
+    """The dry run catching (Scene 10, two keys turned): a swelling chord
+    rising a semitone -- two partial stacks a half-step apart, the upper
+    fading in over ~0.7s, a soft harmonic shimmer on top. Short, hopeful,
+    then cut (it stalls). Db -> D, the N-A5 detuning reversed for one beat."""
+    # the flat chord already sounding (Db) -- steady
+    flat = partials(0.9, [(277, 0.45, 1.0), (415, 0.3, 1.2), (554, 0.2, 1.4)])
+    # the lifted chord (D, a semitone up) fading IN over 0.7s
+    n = len(flat)
+    lifted = []
+    for i in range(n):
+        t = i / RATE
+        env_in = min(1.0, t / 0.7)
+        s = (0.45 * math.sin(2 * math.pi * 294 * t)
+             + 0.3 * math.sin(2 * math.pi * 440 * t)
+             + 0.2 * math.sin(2 * math.pi * 587 * t))
+        decay = math.exp(-0.8 * t)
+        lifted.append(s * env_in * decay)
+    shimmer = partials(0.9, [(1175, 0.12, 3), (1760, 0.08, 4)], attack=0.4)
+    return mix(flat, lifted, shimmer)
+
+
+def sfx_keyturn():
+    """A heavy brass key seating and turning in a big lock (Scene 10): a
+    lower, slower ratchet variant -- a few deep brass clicks ending in a
+    detent clunk. Bigger than sfx_ratchet; it's the Dynamo's collar."""
+    clicks = []
+    for f in (240, 360, 520):
+        clicks.append(partials(0.07, [(f, 0.7, 30), (f * 1.8, 0.3, 45)]))
+        clicks.append(silence(0.1))
+    clunk = mix(partials(0.16, [(120, 0.9, 22), (200, 0.5, 30)]),
+                noise_burst(0.03, 0.5, 90))
+    return concat(*clicks, silence(0.04), clunk)
 
 
 EFFECTS = {
@@ -567,6 +641,10 @@ EFFECTS = {
     "winch": sfx_winch,
     "washers": sfx_washers,
     "scribble": sfx_scribble,
+    "governor": sfx_governor,
+    "winddown": sfx_winddown,
+    "humlift": sfx_humlift,
+    "keyturn": sfx_keyturn,
 }
 
 

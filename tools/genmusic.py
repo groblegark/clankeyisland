@@ -899,6 +899,143 @@ def emit_den():
           f"{DEN_BARS * 4 * 60 / DEN_BPM:.0f}s, loop at beat {DEN_LOOP_BEATS})")
 
 
+# ------------------------------------------------ The Dynamo's Hum (N-A5)
+
+# Scene 10: the Dynamo District. Not a tune -- a drone that is winding down
+# and detuned. The GDD's designed clock, finally diegetic and central: it is
+# this room's music, the gate puzzle's timing source, and audibly FLAT by a
+# half-step up close. Two act-flag states so the dry run can audibly reverse
+# it (the N-A5 pitch-drift, scoped to this room):
+#   dynamohum (default): the hum nearly gone, voiced a semitone LOW -- the
+#     drone sits on Db where D belongs (a real semitone, GM-on-AdLib safe).
+#   dynamohum_lift (dry-run cue): the same 8 bars transposed up to D, fuller
+#     (lead drops fewer notes, EP swells, +6 on cc7) -- the half-step lift.
+# 8 bars, 50 BPM (a dying machine), 4/4. Sparse, three voices, no drums.
+DHUM_BPM = 50
+DHUM_BARS = 8
+DHUM_LOOP_BEATS = DHUM_BARS * 4 + 1     # 33
+
+PRG_DRONE = 38    # synth bass (the sustained low drone)
+PRG_PAD = 4       # e-piano (the slow pulsing mid cluster)
+PRG_HUMLEAD = 80  # square (the faltering lead that drops notes)
+
+# the faltering lead: a slow line that should hold the hum's pitch but
+# keeps losing beats as the machine fails. (bar, slot[0..7], scale-degree
+# offset from the drone root, len-slots). The MISSING set silences ~1 in 3.
+DHUM_LEAD = [
+    (1, 0, 12, 4), (1, 4, 19, 4),
+    (2, 0, 15, 2), (2, 2, 12, 2), (2, 4, 12, 4),
+    (3, 0, 19, 4), (3, 4, 15, 4),
+    (4, 0, 12, 8),
+    (5, 0, 12, 4), (5, 4, 19, 4),
+    (6, 0, 15, 2), (6, 2, 17, 2), (6, 4, 12, 4),
+    (7, 0, 19, 4), (7, 4, 15, 4),
+    (8, 0, 12, 8),
+]
+# notes that "drop out" -- silenced as the hum misses beats (~1 in 3)
+DHUM_MISSING = {(2, 2), (3, 4), (5, 4), (6, 2), (7, 4)}
+
+
+def _build_dynamohum(transpose, lifted):
+    """transpose: semitone shift of the whole drone (0 = Db home; +1 = D).
+    lifted: the dry-run version -- fuller, fewer dropped notes, louder."""
+    ev = []
+
+    def add(tick, msg, order=1):
+        ev.append((tick, order, msg))
+
+    # the drone root: Db1 at home (the flat), D1 when lifted. fifth above.
+    root = n("Db", 1) + transpose
+    fifth = n("Ab", 1) + transpose
+    cluster = [n("Db", 3) + transpose, n("E", 3) + transpose,
+               n("Ab", 3) + transpose]      # a Db-minor-ish breathing cluster
+
+    bump = 6 if lifted else 0
+    for ch, prg, vol in [(CH_LEAD, PRG_HUMLEAD, 44 + bump),
+                         (CH_BASS, PRG_DRONE, 52 + bump),
+                         (CH_EP, PRG_PAD, 40 + bump)]:
+        add(0, mido.Message("program_change", channel=ch, program=prg), 0)
+        add(0, mido.Message("control_change", channel=ch, control=7,
+                            value=vol), 0)
+
+    # the sustained low drone: root + fifth, re-struck each bar so AdLib
+    # voices don't time out. low velocity (a machine, barely turning).
+    for bar in range(1, DHUM_BARS + 1):
+        t0 = (bar - 1) * 4 * PPQ
+        for p in (root, fifth):
+            add(t0, mido.Message("note_on", channel=CH_BASS, note=p,
+                                 velocity=48 + bump))
+            add(t0 + 4 * PPQ - 8, mido.Message(
+                "note_off", channel=CH_BASS, note=p, velocity=0))
+
+    # the slow pulsing mid: the cluster breathes once per bar (swells more
+    # when lifted -- a longer, fuller bloom)
+    cl_len = (PPQ * 3) if lifted else (PPQ * 2)
+    for bar in range(1, DHUM_BARS + 1):
+        t0 = (bar - 1) * 4 * PPQ + PPQ      # land it on beat 2
+        for p in cluster:
+            add(t0, mido.Message("note_on", channel=CH_EP, note=p,
+                                 velocity=40 + bump))
+            add(t0 + cl_len, mido.Message(
+                "note_off", channel=CH_EP, note=p, velocity=0))
+
+    # the faltering lead: drops notes as it fails. when lifted, fewer drop
+    # (the hum catching) -- skip only every OTHER missing note.
+    drop_idx = 0
+    for bar, slot, deg, ln in DHUM_LEAD:
+        is_missing = (bar, slot) in DHUM_MISSING
+        if is_missing:
+            drop_idx += 1
+            if not lifted:
+                continue                    # flat: all missing notes silent
+            if drop_idx % 2 == 0:
+                continue                    # lifted: only half still drop
+        pitch = root + 12 + deg            # an octave + scale degree up
+        t = (bar - 1) * 4 * PPQ + slot * (PPQ // 2)
+        dur = ln * (PPQ // 2)
+        add(t, mido.Message("note_on", channel=CH_LEAD, note=pitch,
+                            velocity=50 + bump))
+        add(t + dur - 20, mido.Message(
+            "note_off", channel=CH_LEAD, note=pitch, velocity=0))
+
+    mid = mido.MidiFile(type=0, ticks_per_beat=PPQ)
+    track = mido.MidiTrack()
+    track.append(mido.MetaMessage("set_tempo",
+                                  tempo=mido.bpm2tempo(DHUM_BPM), time=0))
+    last = 0
+    for tick, _, msg in sorted(ev, key=lambda e: (e[0], e[1])):
+        track.append(msg.copy(time=tick - last))
+        last = tick
+    track.append(mido.MetaMessage("end_of_track",
+                                  time=DHUM_BARS * 4 * PPQ - last))
+    mid.tracks.append(track)
+    return mid
+
+
+def build_dynamohum():
+    return _build_dynamohum(transpose=0, lifted=False)
+
+
+def build_dynamohum_lift():
+    return _build_dynamohum(transpose=1, lifted=True)
+
+
+def emit_dynamohum():
+    """Scene 10's two MIDIs, emitted directly (builder + save), WITHOUT
+    running main() -- main()'s build_rag path has a pre-existing crash on
+    some mido versions (NOTES.md). This writes ONLY dynamohum*.mid and
+    touches no other song. (Mirrors how Scene 08 added cityhall.mid.)"""
+    os.makedirs(OUTDIR, exist_ok=True)
+    for name, build in [("dynamohum", build_dynamohum),
+                        ("dynamohum_lift", build_dynamohum_lift)]:
+        path = os.path.join(OUTDIR, f"{name}.mid")
+        build().save(path)
+        print(f"{path}  ({DHUM_BARS} bars, "
+              f"{DHUM_BARS * 4 * 60 / DHUM_BPM:.0f}s, "
+              f"loop at beat {DHUM_LOOP_BEATS})")
+
+
+
 def main():
     os.makedirs(OUTDIR, exist_ok=True)
     for name, build, bars, bpm, loop in [
@@ -923,5 +1060,7 @@ if __name__ == "__main__":
     # main()'s pre-existing build_rag crash (mido negative-delta bug).
     if len(sys.argv) > 1 and sys.argv[1] == "den":
         emit_den()
+    elif len(sys.argv) > 1 and sys.argv[1] == "emit-dynamo":
+        emit_dynamohum()
     else:
         main()
