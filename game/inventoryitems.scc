@@ -437,4 +437,47 @@ room InventoryItems {
         }
     }
 
+    object workOrder {
+        w = 40;
+        h = 16;
+        x = 0;
+        name = "cancelled work order";
+        states = {
+            { 0, 0, "inventory/inv_workorder.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case Preposition:
+            sntcPrepo[0] = "to";
+            return;
+        case LookAt:
+            egoSay("DYNAMO MAINTENANCE -- STANDING ORDER. Weekly, by the barrel, two hundred years.");
+            waitForMessage();
+            egoSay("Stamped: CANCELLED BY ORDER OF THE MAYOR. Signed in steam-pressed ink, M. PISTON.");
+            waitForMessage();
+            egoSay("Funds reallocated to CIVIC REASSURANCE. There's a banner swatch stapled to the corner.");
+            waitForMessage();
+            egoSay("Technician of record: O. CRANK. No forwarding address.");
+            return;
+        case Use:
+            if(objB) {
+                // route "Use me with/on X" to X's UsedWith — the engine
+                // dispatches to OUR script (objA), so a bare Use gag
+                // here would swallow every two-object sentence
+                if(getObjectVerbEntrypoint(objB, UsedWith)) {
+                    startObject2(objB, UsedWith, [ UsedWith, objB, objA ]);
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
+            egoSay("Paper this heavy wants a desk to land on. There's one at City Hall, nine degrees open.");
+            return;
+        case Smell:
+            egoSay("Municipal toner, then two centuries of bar grease. In that order.");
+            return;
+        }
+    }
+
 }

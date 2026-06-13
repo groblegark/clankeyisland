@@ -14,4 +14,5 @@ room InventoryItems {
     object oilVoucher;
     object backstagePass;
     object voltKey;
+    object workOrder;
 }
