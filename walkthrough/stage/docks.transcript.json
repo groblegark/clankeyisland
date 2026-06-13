@@ -333,6 +333,24 @@
     "text": "I'm learning.",
     "speaker": "sprocket"
    }
+  ],
+  "OilBarRoom.entry": [
+   {
+    "text": "The Oil Bar, inside. Everything is amber: the light, the bottles, the prices.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "A ceiling centrifuge spins the house pour to a shine. The music is what a tuxedo would hum.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "In the corner booth, City Hall aides are drinking lunch at nine in the evening.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "And alone at the bar: a fresh civic crest on an old chassis, folded over a glass like a memo nobody filed.",
+    "speaker": "sprocket"
+   }
   ]
  },
  "objects": {
@@ -624,6 +642,42 @@
    "Smell": [
     {
      "text": "Ozone. It kept the jar's accent.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "cancelled work order": {
+   "LookAt": [
+    {
+     "text": "DYNAMO MAINTENANCE -- STANDING ORDER. Weekly, by the barrel, two hundred years.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Stamped: CANCELLED BY ORDER OF THE MAYOR. Signed in steam-pressed ink, M. PISTON.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Funds reallocated to CIVIC REASSURANCE. There's a banner swatch stapled to the corner.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Technician of record: O. CRANK. No forwarding address.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Paper this heavy wants a desk to land on. There's one at City Hall, nine degrees open.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Municipal toner, then two centuries of bar grease. In that order.",
      "speaker": "sprocket"
     }
    ]
@@ -2219,6 +2273,24 @@
      "speaker": "sprocket"
     }
    ],
+   "TalkTo": [
+    {
+     "text": "'The rope remembers you fondly,' says the bouncer.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "We've all grown.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask about the rope's hours. The rope keeps its own counsel, he says. He interprets.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The rope sees everyone. Eventually.'",
+     "speaker": "sprocket"
+    }
+   ],
    "Give": [
     {
      "text": "He reads it again. Valid, he repeats. After hours, he says, like somebody told him to say it.",
@@ -2229,11 +2301,47 @@
      "speaker": "sprocket"
     },
     {
+     "text": "He reads it once more. Still valid. The rope, he repeats, is a separate financial instrument.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Separate instruments get redeemed separately.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He says it slowly, like directions to a window.",
+     "speaker": "sprocket"
+    },
+    {
      "text": "The bouncer reads it. Valid, he admits. The rope, he explains, is a separate financial instrument.",
      "speaker": "sprocket"
     },
     {
      "text": "Madame's night, he says. The rope respects her appointments.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I show him ALL ACCESS, over my own startled face.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'That opens a door. This is a rope.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The pass goes back in my pocket, access intact.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I hold up the official notice. NOTHING IS WRONG.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Agreed.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Professionally, nothing ever is.",
      "speaker": "sprocket"
     },
     {
@@ -2251,11 +2359,47 @@
      "speaker": "sprocket"
     },
     {
+     "text": "He reads it once more. Still valid. The rope, he repeats, is a separate financial instrument.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Separate instruments get redeemed separately.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He says it slowly, like directions to a window.",
+     "speaker": "sprocket"
+    },
+    {
      "text": "The bouncer reads it. Valid, he admits. The rope, he explains, is a separate financial instrument.",
      "speaker": "sprocket"
     },
     {
      "text": "Madame's night, he says. The rope respects her appointments.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I show him ALL ACCESS, over my own startled face.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'That opens a door. This is a rope.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The pass goes back in my pocket, access intact.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I hold up the official notice. NOTHING IS WRONG.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Agreed.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Professionally, nothing ever is.",
      "speaker": "sprocket"
     },
     {
@@ -2266,6 +2410,146 @@
    "Smell": [
     {
      "text": "Single-origin crude. The good stuff. The unaffordable stuff.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "velvet rope": {
+   "Give": [
+    {
+     "text": "Valid at participating establishments, says the voucher. ESTABLISHED, says the rope's own plaque.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I present the voucher to the rope. Formally. The bouncer watches me do the paperwork.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He reads the voucher. He reads the plaque. Somewhere in there, a precedent forms.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The rope participates,' he rules.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He unhooks the rope and folds it over his arm like a sommelier's towel.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Capacity was the rope's grievance,' he says. 'The rope has been compensated.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "One premium oil service, spent on a length of velvet.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The rope is on Madame's clock tonight, says the bouncer. Her appointments outrank its receipts.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The rope refers it to the bouncer. The rope has people.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "Valid at participating establishments, says the voucher. ESTABLISHED, says the rope's own plaque.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I present the voucher to the rope. Formally. The bouncer watches me do the paperwork.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He reads the voucher. He reads the plaque. Somewhere in there, a precedent forms.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The rope participates,' he rules.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He unhooks the rope and folds it over his arm like a sommelier's towel.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Capacity was the rope's grievance,' he says. 'The rope has been compensated.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "One premium oil service, spent on a length of velvet.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The rope is on Madame's clock tonight, says the bouncer. Her appointments outrank its receipts.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The rope refers it to the bouncer. The rope has people.",
+     "speaker": "sprocket"
+    }
+   ],
+   "LookAt": [
+    {
+     "text": "The rope hangs from one post, off duty.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Velvet over steel cable, slung between two brass posts. The posts get polished. The street doesn't.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A plaque on the near post: THE ROPE. ESTABLISHED. No date. Established as a concept.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Unhooked. The rope and I are past it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I test the rope. The bouncer tests me back.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Touching the rope is a service. It's not included.'",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "Unhooked. The rope and I are past it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I test the rope. The bouncer tests me back.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Touching the rope is a service. It's not included.'",
+     "speaker": "sprocket"
+    }
+   ],
+   "Move": [
+    {
+     "text": "Unhooked. The rope and I are past it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I test the rope. The bouncer tests me back.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Touching the rope is a service. It's not included.'",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Velvet. Under the velvet, cable. Under the cable, I suspect more velvet.",
      "speaker": "sprocket"
     }
    ]
@@ -3598,6 +3882,692 @@
    "Smell": [
     {
      "text": "Warm rubber.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "door to the street": {
+   "LookAt": [
+    {
+     "text": "The way back to the street. Frosted glass keeps the neon out and the amber in.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "back bar": {
+   "LookAt": [
+    {
+     "text": "Single-origin crudes, racked by derrick. Each bottle has a little biography.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The bottom shelf is dark glass and no biographies. Working oil. Visitors don't ask.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "The sommelier doesn't move. The shelf is somehow already between us.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "The sommelier doesn't move. The shelf is somehow already between us.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Crude, in seventeen accents.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "oil sommelier": {
+   "LookAt": [
+    {
+     "text": "Not at his post. From below the floor: the sound of a bottle being judged.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Back at his post, towel refolded. The cellar dust didn't dare follow him up.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The sommelier. White towel, black chassis, a decanting arm with more joints than I have parts.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He's listening to a thimble of crude. The crude is apparently confiding in him.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "He pours a thimble of crude, swirls it, and holds it up to where an ear would be.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Derrick Nine,' he says. 'A confident year.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask if anyone in this room could tell it from the house pour.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'No.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He pours it back. Gently. So the bottle doesn't hear.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask about the old days. This bar oiled the Great Dynamo, he says. Two hundred years. By the barrel. By appointment.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Never late. Never tipped. Never complained.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Then, last spring, it stopped. He won't say more. Grief, or a nondisclosure.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He asks, with ceremony, what the gentleman at the end will be having.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The towel stops moving.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He looks at me the way appraisers look at paperwork that might be real.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The sommelier ascends three emotional registers and decants Derrick Nine like a christening.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The aide takes one nose of it and slides it back, untouched. 'Too educated.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Refused,' the sommelier says. 'Derrick Nine, refused. I'll be closing early.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'He has one,' the sommelier says. 'He hasn't touched it in an hour.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The glass is full. The glass has been full all night.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Dock-aged,' he says, with the towel at half-mast. 'And this is billed to?'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'That account is closed,' he says.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Then it can stand one last round, I say. For two hundred years of never complaining.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'...Decanted under protest.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He folds the towel like a flag and opens the floor.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The cellar takes him. The bar is suddenly very unattended.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Tabs here are inherited, not opened.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I have no ancestors. It's a known gap.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'City Hall settles in banners now,' he says. 'We have enough banners.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The booth in the corner drinks to that without hearing it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "From under the floor, the sound of a vintage being forgiven.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He's re-alphabetizing the derricks, west to east. The evening took something out of him.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He asks what the bot at the end is having. Nothing, currently. It worries us both.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "He receives it on the towel, inspects it, and returns it. The towel forgives everything.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "He receives it on the towel, inspects it, and returns it. The towel forgives everything.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Nothing. He out-clean-rooms my sensor.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "bar counter": {
+   "LookAt": [
+    {
+     "text": "Amber-lit steel with a mahogany opinion of itself. You could land small aircraft on the polish.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "I order nothing. The stool and I are both here in a professional capacity.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Nothing escapes the polish. Including smells.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "cellar list": {
+   "LookAt": [
+    {
+     "text": "The cellar list. Single-origins by derrick, vintages by viscosity, prices by audacity.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "At the bottom, in older type: DYNAMO MAINTENANCE -- STANDING ORDER.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Someone has stamped CANCELLED across it. The stamp is the freshest ink on the page.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Nothing on it is for me. My warranty cites statutes, and the statutes cite my warranty.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Nothing. It's laminated against exactly me.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "receipt spike": {
+   "Use": [
+    {
+     "text": "The cellar is still sighing under the floor. I perform some quiet, certified archival work.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Bottom of the spike: the Dynamo standing order. Two hundred years of weekly oil.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Across it, a stamp: CANCELLED BY ORDER OF THE MAYOR. Signed in steam-pressed ink: M. PISTON.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The floor opens. The sommelier surfaces with a dusty bottle and a look of moral exemption.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Your harbor sludge, sir. Decanted.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He pours it the way you'd lower a casket. The aide takes the glass with both hands.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I have the page that matters. The rest is beverage history.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "His eye is on the pour, the door, and the spike. All three. I've counted.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "The cellar is still sighing under the floor. I perform some quiet, certified archival work.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Bottom of the spike: the Dynamo standing order. Two hundred years of weekly oil.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Across it, a stamp: CANCELLED BY ORDER OF THE MAYOR. Signed in steam-pressed ink: M. PISTON.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The floor opens. The sommelier surfaces with a dusty bottle and a look of moral exemption.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Your harbor sludge, sir. Decanted.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He pours it the way you'd lower a casket. The aide takes the glass with both hands.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I have the page that matters. The rest is beverage history.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "His eye is on the pour, the door, and the spike. All three. I've counted.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "The cellar is still sighing under the floor. I perform some quiet, certified archival work.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Bottom of the spike: the Dynamo standing order. Two hundred years of weekly oil.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Across it, a stamp: CANCELLED BY ORDER OF THE MAYOR. Signed in steam-pressed ink: M. PISTON.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The floor opens. The sommelier surfaces with a dusty bottle and a look of moral exemption.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Your harbor sludge, sir. Decanted.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He pours it the way you'd lower a casket. The aide takes the glass with both hands.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I have the page that matters. The rest is beverage history.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "His eye is on the pour, the door, and the spike. All three. I've counted.",
+     "speaker": "sprocket"
+    }
+   ],
+   "LookAt": [
+    {
+     "text": "The spike, minus one municipal document. The grease thumbprints kept their counsel.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Unguarded paper. The rarest vintage in the building.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A brass spike by the till, impaling the bar's paper history. Oldest at the bottom.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The bottom page has a municipal seal and two centuries of grease thumbprints.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Two centuries of bar air, pressed flat.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "centrifuge": {
+   "LookAt": [
+    {
+     "text": "The house centrifuge, spinning the evening's pour to a shine.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Round and round goes the sediment, learning nothing.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "It's at speed. Anything I added would be redistributed. Widely.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Warm crude on a carousel.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "the aide": {
+   "TalkTo": [
+    {
+     "text": "I take the stool one over. Bar protocol: close enough to talk, far enough to deny it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He clocks me, and something behind his face files itself.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'You're the one with the paper.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The door at City Hall. Nine degrees of daylight, one eye. His.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I mention the Mayor. He develops a deep professional interest in his coaster.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'I file things. I don't say them.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I mention the oil instead. He looks at his glass like it's a co-worker.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The oil up here is too educated.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Homesick. For the harbor, and for oil that argues back.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He drinks like the harbor's in the glass. For one minute he's a dock bot somebody painted a crest on.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Ask it quiet.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask, quiet, who cancelled the Dynamo's maintenance.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Who signs everything?'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I don't say the name. The paper in my pocket says it in steam-press.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'He cancelled the rewind to pay for reassurance. Then needed more.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Bigger banners, flatter hum. The budget and the Dynamo, winding down together.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Take it to him. Aides can't. Aides file.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He goes back to his glass. I leave him the rest of the harbor.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He tips the glass at me a quarter inch. Maximum legal gratitude, for an aide.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He's watching the cellar door the way dock bots watch a ferry.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Bars keep paper. Bars always do.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He's tilting the house pour and watching it not move. Wrong viscosity. Wrong everything.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'You can't get an honest 10W-40 above the funicular.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He's reached the bottom of the coaster. Both sides.",
+     "speaker": "sprocket"
+    }
+   ],
+   "LookAt": [
+    {
+     "text": "He's reading the coaster like it's mail from home.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Working oil in an uptown glass. He looks like a bot whose feet finally reach the floor.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A City Hall aide, off the clock. The crest on his chest is fresher than the chassis under it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He has the house pour and isn't drinking it. His eye keeps sliding to the dark end of the shelf.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "I slide the official notice along the bar. NOTHING IS WRONG.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He goes still the way filing cabinets are still.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Put it away. Walls have aides.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He drains half the house pour anyway. The half he's been avoiding all night.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'I never saw that.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He says it with his eyes shut.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He won't take anything with a paper trail. Filing it would be a confession.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "I slide the official notice along the bar. NOTHING IS WRONG.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He goes still the way filing cabinets are still.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Put it away. Walls have aides.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He drains half the house pour anyway. The half he's been avoiding all night.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'I never saw that.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He says it with his eyes shut.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He won't take anything with a paper trail. Filing it would be a confession.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Primer, and under it, salt. Harbor primer.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "booth of aides": {
+   "LookAt": [
+    {
+     "text": "A corner booth of City Hall aides, drinking in formation.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Every chassis the same civic grey. The paint chart probably calls it Plausible.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "I lean on the rail nearby. Casually. The lean has become a discipline.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "They're toasting the new banner. The big one. Readable from the harbor.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A young one asks which line item the banners come out of. The booth goes quiet on schedule.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Civic reassurance.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "They drink at once, in formation. The question retires.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "They've moved on to whether NOTHING IS WRONG needs a comma. Careers are riding on the comma.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Civic grey doesn't smell. It's in the spec.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "portrait of the Mayor": {
+   "LookAt": [
+    {
+     "text": "Mayor Piston, in oils. Recently enlarged.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The frame didn't keep up. He continues some distance onto the wall.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "It's bolted to the wall. The wall seems resigned.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "It's bolted to the wall. The wall seems resigned.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Oil paint. The one oil in the building nobody will pour.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "cellar hatch": {
+   "LookAt": [
+    {
+     "text": "A floor hatch behind the bar, brass-hinged. The cellar: where oil goes to think.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "Occupied by management. I'd be interrupting a communion.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Staff only. The hinges would report me.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Occupied by management. I'd be interrupting a communion.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Staff only. The hinges would report me.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Cool air through the seams. Down there it's still last century.",
      "speaker": "sprocket"
     }
    ]

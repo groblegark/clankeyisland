@@ -5,7 +5,8 @@
 # -> alley (riddle duel: the tenth -> pay the funicular fare)
 # -> Midtown (case the street -> sign up for talent night)
 # -> the Grand Cog (wake the spotlight -> the act -> backstage pass)
-# -> backstage (Voltina's three-card reading -> the truth -> Key #2).
+# -> backstage (Voltina's three-card reading -> the truth -> Key #2)
+# -> the Oil Bar (the rope falls -> the work order -> O. CRANK).
 # This is the deploy gate: if this doesn't pass, the game doesn't ship.
 
 title: "Clanker City Chronicles — The Story So Far"
@@ -361,5 +362,182 @@ shots:
     do: {verb: Open, object: door to the stage} # silent; flavor stays put
     expect:
       - pixel: {at: [110, 12], is: sodium}      # the chandelier again
+    timeout: 60
+    hold: 2.0
+  - name: out-of-the-wings                      # leave the theater first
+    do: {verb: Open, object: lobby doors}       # silent transition
+    expect:
+      - pixel: {at: [180, 30], is: sodium}      # GRAND COG in lights
+    timeout: 60
+
+  - name: the-list-is-a-door                    # mistake: pre-rope Open
+    only: perform
+    do: {verb: Open, object: the Oil Bar}       # picture-of-the-door gag
+    expect: [talking]
+    hold: 1.5
+
+  - name: a-separate-financial-instrument       # post-reading presentation
+    do: {verb: Use, object: the Oil Bar, with: inventory.slot2}
+    expect: [talking]                           # "after hours" (shipped B12)
+    timeout: 60
+
+  - name: redeemed-separately                   # detour: the escalation
+    only: perform
+    do: {verb: Use, object: the Oil Bar, with: inventory.slot2}
+    expect: [talking]
+    hold: 1.5
+
+  - name: all-access-meets-rope                 # mistake: wrong paper
+    only: perform
+    do: {verb: Use, object: the Oil Bar, with: inventory.slot3}
+    expect: [talking]                           # "That opens a door."
+    hold: 1.5
+
+  - name: professionally-agreed                 # mistake: the poster
+    only: perform
+    do: {verb: Use, object: the Oil Bar, with: inventory.slot0}
+    expect: [talking]                           # "Agreed."
+    hold: 1.5
+
+  - name: established-as-a-concept              # the keystone inference
+    do: {verb: Examine, object: velvet rope}
+    expect: [talking]
+    timeout: 60
+
+  - name: velvet-all-the-way-down
+    only: perform
+    do: {verb: Smell, object: velvet rope}
+    expect: [talking]
+
+  - name: the-rope-participates                 # P1: the voucher, spent
+    do: {verb: Use, object: velvet rope, with: inventory.slot2}
+    expect:
+      - talking
+      - pixel: {at: [112, 95], is: red}         # state 2: coiled on post
+    timeout: 120
+    hold: 2.0
+    # NOTE: voucher consumed -> inventory compacts; pass is slot2 now
+
+  - name: oil-bar-arrival                       # silent door + entry
+    do: {verb: Open, object: the Oil Bar}
+    cutscene: OilBarRoom.entry
+    expect:
+      - talking
+      - pixel: {at: [100, 30], is: amber}       # everything is amber
+    timeout: 90
+
+  - name: the-house-portrait
+    only: perform
+    do: {verb: Examine, object: portrait of the Mayor}
+    expect: [talking]
+
+  - name: learning-nothing
+    only: perform
+    do: {verb: Examine, object: centrifuge}
+    expect: [talking]
+
+  - name: drinking-in-formation                 # the booth toast
+    only: perform
+    do: {verb: Talk to, object: booth of aides}
+    expect: [talking]
+    timeout: 90
+
+  - name: the-comma
+    only: perform
+    do: {verb: Talk to, object: booth of aides}
+    expect: [talking]
+
+  - name: the-folded-memo                       # aide intro (metAide)
+    do: {verb: Talk to, object: the aide}
+    expect: [talking]
+    timeout: 120
+
+  - name: walls-have-aides-early                # productive mistake
+    only: perform
+    do: {verb: Use, object: the aide, with: inventory.slot0}
+    expect: [talking]                           # "Walls have aides."
+    hold: 1.5
+
+  - name: the-sommelier-of-crude                # somm intro (forced story)
+    do: {verb: Talk to, object: oil sommelier}
+    expect: [talking]
+    timeout: 120
+
+  - name: too-educated                          # mistake: round-1 flop
+    only: perform
+    do: {verb: Talk to, object: oil sommelier, choose: 0}
+    expect: [talking]                           # Derrick Nine, refused
+    timeout: 90
+    hold: 1.5
+
+  - name: not-touching-it                       # mistake: round-1 flop
+    only: perform
+    do: {verb: Talk to, object: oil sommelier, choose: 2}
+    expect: [talking]                           # full all night
+    timeout: 90
+    hold: 1.5
+
+  - name: the-order-pour                        # round 1 WIN (slot 1)
+    do: {verb: Talk to, object: oil sommelier, choose: 1}
+    expect: [talking]                           # the towel stops moving
+    timeout: 90
+
+  - name: no-ancestors                          # mistake: round-2 flop
+    only: perform
+    do: {verb: Talk to, object: oil sommelier, choose: 1}
+    expect: [talking]                           # tabs are inherited
+    timeout: 90
+    hold: 1.5
+
+  - name: settles-in-banners                    # mistake: the motive leak
+    only: perform
+    do: {verb: Talk to, object: oil sommelier, choose: 2}
+    expect: [talking]
+    timeout: 90
+    hold: 1.5
+
+  - name: all-three-counted                     # mistake: spike, guarded
+    only: perform
+    do: {verb: Use, object: receipt spike}
+    expect: [talking]                           # pour, door, spike
+    hold: 1.5
+
+  - name: the-order-billing                     # round 2 WIN (slot 0)
+    do: {verb: Talk to, object: oil sommelier, choose: 0}
+    expect:
+      - talking
+      - pixel: {at: [92, 60], is: dock-wood}    # the figure is gone
+    timeout: 120
+    hold: 1.5
+
+  - name: staff-only
+    only: perform
+    do: {verb: Open, object: cellar hatch}
+    expect: [talking]                           # occupied by management
+
+  - name: certified-archival-work               # P5: the grab + the serve
+    do: {verb: Use, object: receipt spike}
+    expect:
+      - talking
+      - pixel: {at: [146, 73], is: dock-wood}   # minus one document
+      - pixel: {at: [92, 60], is: somm-black}   # he's back at his post
+    timeout: 150
+    hold: 1.5
+
+  - name: ask-it-quiet                          # P6: the expose
+    do: {verb: Talk to, object: the aide}
+    expect: [talking]
+    timeout: 150
+    hold: 2.0
+
+  - name: maximum-legal-gratitude
+    only: perform
+    do: {verb: Talk to, object: the aide}
+    expect: [talking]
+
+  - name: back-to-the-street
+    do: {verb: Open, object: door to the street} # silent; flavor stays put
+    expect:
+      - pixel: {at: [180, 30], is: sodium}       # GRAND COG in lights
     timeout: 60
     hold: 2.0
