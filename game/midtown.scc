@@ -241,7 +241,14 @@ room MidtownRoom {
                 if(getObjectOwner(InventoryItems::voltKey) == VAR_EGO) {
                     unless(ropeOpen) {
                         ropeOpen = 1;           // flag before speech
+                        // open the rope + spend the voucher UP FRONT, before
+                        // any egoSay: the validate gate's red-coil pixel must
+                        // hold even if the long voiced cutscene stalls between
+                        // lines (state set early survives the stall).
+                        setObjectState(velvetRope, 2);
+                        setObjectOwner(InventoryItems::oilVoucher, 0);
                         cutscene(0) {
+                            startSound(clinkSnd);
                             egoSay("Valid at participating establishments, says the voucher. ESTABLISHED, says the rope's own plaque.");
                             waitForMessage();
                             egoSay("I present the voucher to the rope. Formally. The bouncer watches me do the paperwork.");
@@ -250,9 +257,6 @@ room MidtownRoom {
                             waitForMessage();
                             egoSay("'The rope participates,' he rules.");
                             waitForMessage();
-                            startSound(clinkSnd);
-                            setObjectState(velvetRope, 2);
-                            setObjectOwner(InventoryItems::oilVoucher, 0);
                             egoSay("He unhooks the rope and folds it over his arm like a sommelier's towel.");
                             waitForMessage();
                             egoSay("'Capacity was the rope's grievance,' he says. 'The rope has been compensated.'");

@@ -469,7 +469,11 @@
   "wind-up key": {
    "LookAt": [
     {
-     "text": "A brass wind-up key the size of my forearm. Somebody polished it for years. Somebody is going to want it back.",
+     "text": "A brass wind-up key the size of my forearm. A red 8 is stamped under the bow -- somebody's idea of a redline.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Somebody polished it for years. Somebody is going to want it back.",
      "speaker": "sprocket"
     }
    ],
@@ -671,7 +675,7 @@
      "speaker": "sprocket"
     },
     {
-     "text": "Paper this heavy wants a desk to land on. There's one at City Hall, nine degrees open.",
+     "text": "Technician of record: O. CRANK. They cancelled the rewind and fired the bot who logged it. This paper is his name, cleared.",
      "speaker": "sprocket"
     }
    ],
@@ -2317,7 +2321,7 @@
      "speaker": "sprocket"
     },
     {
-     "text": "Madame's night, he says. The rope respects her appointments.",
+     "text": "Madame's night, he says. And the rope's the establishment here, not him -- take it up with the velvet.",
      "speaker": "sprocket"
     },
     {
@@ -2375,7 +2379,7 @@
      "speaker": "sprocket"
     },
     {
-     "text": "Madame's night, he says. The rope respects her appointments.",
+     "text": "Madame's night, he says. And the rope's the establishment here, not him -- take it up with the velvet.",
      "speaker": "sprocket"
     },
     {
@@ -2863,7 +2867,7 @@
    ],
    "Use": [
     {
-     "text": "I rap on the booth. HOUSE LIGHTS, BUDDY. SHOWTIME.",
+     "text": "I rap on the booth. HOUSE LIGHTS. We're past call.",
      "speaker": "sprocket"
     },
     {
@@ -2881,7 +2885,7 @@
    ],
    "TalkTo": [
     {
-     "text": "I rap on the booth. HOUSE LIGHTS, BUDDY. SHOWTIME.",
+     "text": "I rap on the booth. HOUSE LIGHTS. We're past call.",
      "speaker": "sprocket"
     },
     {
@@ -2899,7 +2903,7 @@
    ],
    "Move": [
     {
-     "text": "I rap on the booth. HOUSE LIGHTS, BUDDY. SHOWTIME.",
+     "text": "I rap on the booth. HOUSE LIGHTS. We're past call.",
      "speaker": "sprocket"
     },
     {
@@ -3043,7 +3047,7 @@
      "speaker": "sprocket"
     },
     {
-     "text": "One problem: the spotlight operator went into low-power mode during the juggler. The juggler had that effect.",
+     "text": "One problem: the brownout caught the spotlight operator mid-juggler. He's down to a polite ember.",
      "speaker": "sprocket"
     },
     {
@@ -3085,7 +3089,7 @@
      "speaker": "sprocket"
     },
     {
-     "text": "Tonight it gets a maintenance-bot and a very large key.",
+     "text": "The key is the act. The maintenance-bot is the optimism.",
      "speaker": "sprocket"
     }
    ],
@@ -3135,7 +3139,7 @@
      "speaker": "sprocket"
     },
     {
-     "text": "A hook on a line whips up past the proscenium. Fishing tackle. Somebody else's magnet-on-a-string.",
+     "text": "A hook on a line whips up past the proscenium, and is gone.",
      "speaker": "sprocket"
     },
     {
@@ -3163,7 +3167,7 @@
      "speaker": "sprocket"
     },
     {
-     "text": "'Safe,' says the emcee, like a diagnosis. The Grand Cog doesn't pay out for safe.",
+     "text": "'Safe,' says the emcee, the word landing like a coat-check ticket. The Grand Cog doesn't pay out for safe.",
      "speaker": "sprocket"
     },
     {
@@ -3229,7 +3233,7 @@
      "speaker": "sprocket"
     },
     {
-     "text": "A hook on a line whips up past the proscenium. Fishing tackle. Somebody else's magnet-on-a-string.",
+     "text": "A hook on a line whips up past the proscenium, and is gone.",
      "speaker": "sprocket"
     },
     {
@@ -3257,7 +3261,7 @@
      "speaker": "sprocket"
     },
     {
-     "text": "'Safe,' says the emcee, like a diagnosis. The Grand Cog doesn't pay out for safe.",
+     "text": "'Safe,' says the emcee, the word landing like a coat-check ticket. The Grand Cog doesn't pay out for safe.",
      "speaker": "sprocket"
     },
     {
@@ -3977,10 +3981,6 @@
      "speaker": "sprocket"
     },
     {
-     "text": "He asks, with ceremony, what the gentleman at the end will be having.",
-     "speaker": "sprocket"
-    },
-    {
      "text": "The towel stops moving.",
      "speaker": "sprocket"
     },
@@ -4006,10 +4006,6 @@
     },
     {
      "text": "The glass is full. The glass has been full all night.",
-     "speaker": "sprocket"
-    },
-    {
-     "text": "'Dock-aged,' he says, with the towel at half-mast. 'And this is billed to?'",
      "speaker": "sprocket"
     },
     {
@@ -4347,7 +4343,7 @@
      "speaker": "sprocket"
     },
     {
-     "text": "'Take it to him. Aides can't. Aides file.'",
+     "text": "'Take it to the bot it clears. Aides can't. Aides file.'",
      "speaker": "sprocket"
     },
     {

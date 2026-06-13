@@ -76,10 +76,13 @@ room OilBarRoom {
     // (ghostFlicker pattern, backstage.scc — local scripts die with
     // the room, so no explicit stop is needed on exit)
     local script centrifugeSpin() {
+        // gentle two-frame spin (was delay(9), ~6x/sec). The ceaseless
+        // mid-room repaint kept the screen from settling between voiced
+        // lines; slowed to the backstage ghost-light cadence.
         while(1) {
-            delay(9);
+            delay(48);
             setObjectState(centrifuge, 2);
-            delay(9);
+            delay(48);
             setObjectState(centrifuge, 1);
         }
     }
@@ -220,11 +223,9 @@ room OilBarRoom {
             // re-TalkTo reopens the round you're on.
             if(metAide && !pourOrdered) {
                 unless(orderRound) {
-                    // round 1 — the pour
-                    cutscene(0) {
-                        egoSay("He asks, with ceremony, what the gentleman at the end will be having.");
-                        waitForMessage();
-                    }
+                    // round 1 — the pour. Open the option list directly: a
+                    // blocking pre-dialog cutscene can stall on its
+                    // waitForMessage and then the dialog never appears.
                     dlgStr[0] = "Your finest single-origin.";
                     Dialog::dialogAdd(dlgStr);
                     dlgStr = 0;
@@ -269,11 +270,8 @@ room OilBarRoom {
                     }
                     return;
                 }
-                // round 2 — the billing
-                cutscene(0) {
-                    egoSay("'Dock-aged,' he says, with the towel at half-mast. 'And this is billed to?'");
-                    waitForMessage();
-                }
+                // round 2 — the billing. Open the option list directly (see
+                // round 1): no blocking pre-dialog cutscene to stall on.
                 dlgStr[0] = "The Dynamo maintenance account.";
                 Dialog::dialogAdd(dlgStr);
                 dlgStr = 0;
@@ -291,7 +289,13 @@ room OilBarRoom {
                 // winner branch first in SOURCE (dub pairing)
                 if(selectedSentence == 0) {
                     pourOrdered = 1;            // flag before speech
+                    // sommelier to the cellar UP FRONT, before any egoSay:
+                    // the gate's "figure is gone" pixel must hold even if
+                    // the voiced cutscene stalls between lines.
+                    setObjectState(sommelier, 2);
                     cutscene(0) {
+                        startSound(creakSnd);
+                        startSound(stepsSnd);
                         egoSay("'That account is closed,' he says.");
                         waitForMessage();
                         egoSay("Then it can stand one last round, I say. For two hundred years of never complaining.");
@@ -300,9 +304,6 @@ room OilBarRoom {
                         waitForMessage();
                         egoSay("He folds the towel like a flag and opens the floor.");
                         waitForMessage();
-                        startSound(creakSnd);
-                        startSound(stepsSnd);
-                        setObjectState(sommelier, 2);
                         egoSay("The cellar takes him. The bar is suddenly very unattended.");
                         waitForMessage();
                     }
@@ -413,20 +414,23 @@ room OilBarRoom {
             // walkthrough path FIRST: the grab (dub pairing)
             if(pourOrdered && !aideServed) {
                 aideServed = 1;                 // flag before speech
+                // grab the page + resurface the sommelier UP FRONT, before
+                // any egoSay: the gate's spike-taken and somm-at-post pixels
+                // must hold even if the voiced cutscene stalls between lines.
+                setObjectState(receiptSpike, 2);
+                pickupObject(InventoryItems::workOrder, InventoryItems);
+                setObjectState(sommelier, 1);
                 cutscene(0) {
+                    startSound(paperSnd);
+                    startSound(pickupSnd);
                     egoSay("The cellar is still sighing under the floor. I perform some quiet, certified archival work.");
                     waitForMessage();
-                    startSound(paperSnd);
-                    setObjectState(receiptSpike, 2);
-                    startSound(pickupSnd);
-                    pickupObject(InventoryItems::workOrder, InventoryItems);
                     egoSay("Bottom of the spike: the Dynamo standing order. Two hundred years of weekly oil.");
                     waitForMessage();
                     egoSay("Across it, a stamp: CANCELLED BY ORDER OF THE MAYOR. Signed in steam-pressed ink: M. PISTON.");
                     waitForMessage();
                     startSound(stepsSnd);
                     startSound(creakSnd);
-                    setObjectState(sommelier, 1);
                     egoSay("The floor opens. The sommelier surfaces with a dusty bottle and a look of moral exemption.");
                     waitForMessage();
                     egoSay("'Your harbor sludge, sir. Decanted.'");
