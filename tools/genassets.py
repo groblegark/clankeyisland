@@ -688,11 +688,14 @@ def draw_alley(gate="closed", lid="closed"):
 
 # Scene 04 geometry. The theater rect covers the marquee (its state
 # change is Sprocket's name going up in lights); the box office sits
-# below it, non-overlapping.
+# below it, non-overlapping. The oil bar facade gives its bottom strip
+# to the velvet rope (Scene 07: 2-state, hung/unhooked) so the two
+# hotspots never overlap; the rope rect is 8-multiple sized (strips).
 MIDTOWN_GEOM = {
     "M_STATION":   (0, 48, 32, 56),
     "M_LEFTYS":    (40, 40, 56, 64),
-    "M_OILBAR":    (104, 48, 48, 56),
+    "M_OILBAR":    (104, 48, 48, 40),
+    "M_ROPE":      (104, 88, 48, 16),
     "M_THEATER":   (160, 24, 72, 48),
     "M_BOXOFFICE": (184, 72, 24, 32),
     "M_CITYHALL":  (240, 32, 72, 72),
@@ -700,7 +703,7 @@ MIDTOWN_GEOM = {
 }
 
 
-def draw_midtown(marquee="blank"):
+def draw_midtown(marquee="blank", rope="hung"):
     im = new_img(W, H)
     d = ImageDraw.Draw(im)
     g = MIDTOWN_GEOM
@@ -755,23 +758,36 @@ def draw_midtown(marquee="blank"):
     d.rectangle([lx + 42, ly + 30, lx + 50, ly + 36], fill=1)     # CLOSED
     _neon_text(im, "NO", lx + 43, ly + 31, 107)
 
-    # --- the Oil Bar, uptown filtered
-    ox, oy, ow, oh = g["M_OILBAR"]
-    d.rectangle([ox, oy, ox + ow, oy + oh], fill=1)               # facade
-    for y in range(oy + 4, oy + oh, 6):
+    # --- the Oil Bar, uptown filtered (the painted facade runs the
+    # full 56px down to the street; the OBJECT rect stops at y88 so
+    # the velvet rope strip below it owns its own clicks)
+    ox, oy, ow = g["M_OILBAR"][0], g["M_OILBAR"][1], g["M_OILBAR"][2]
+    fb = oy + 56                                                  # base
+    d.rectangle([ox, oy, ox + ow, fb], fill=1)                    # facade
+    for y in range(oy + 4, fb, 6):
         d.line([(ox, y), (ox + ow, y)], fill=5)
-    d.rectangle([ox + 14, oy + 26, ox + 34, oy + oh], fill=5)     # door
+    d.rectangle([ox + 14, oy + 26, ox + 34, fb], fill=5)          # door
     d.rectangle([ox + 16, oy + 30, ox + 32, oy + 44], fill=53)    # smoked
     # neon oil-can glyph, cocktail style
     d.rectangle([ox + 14, oy + 6, ox + 26, oy + 16], outline=94)
     d.line([(ox + 26, oy + 8), (ox + 34, oy + 4)], fill=94)
     im.putpixel((ox + 35, oy + 4), 95)
     _neon_text(im, "OIL", ox + 16, oy + 8, 94)
-    # velvet rope: two brass posts, one standard
+    # velvet rope: two brass posts, one standard (M_ROPE covers this
+    # strip — keep all rope paint inside y 88..104). M_OILBAR ends at
+    # y88, so oy + oh below means the facade base at y104.
+    rope_b = oy + 56                                       # facade base
     for rx2 in (ox + 6, ox + 42):
-        d.rectangle([rx2, oy + oh - 14, rx2 + 2, oy + oh], fill=45)
-        im.putpixel((rx2 + 1, oy + oh - 15), 47)
-    d.arc([ox + 8, oy + oh - 18, ox + 42, oy + oh - 4], 0, 180, fill=107)
+        d.rectangle([rx2, rope_b - 14, rx2 + 2, rope_b], fill=45)
+        im.putpixel((rx2 + 1, rope_b - 15), 47)
+    if rope == "hung":
+        d.arc([ox + 8, rope_b - 18, ox + 42, rope_b - 4], 0, 180, fill=107)
+    else:
+        # unhooked: coiled over the left post, off duty
+        # (screenplay probe: (112, 95) red only in this state)
+        d.rectangle([ox + 5, rope_b - 14, ox + 11, rope_b - 2], fill=107)
+        for ly in (rope_b - 11, rope_b - 7):
+            d.line([(ox + 5, ly), (ox + 11, ly)], fill=18)
 
     # --- the Grand Cog Theater
     tx, ty, tw, th = g["M_THEATER"]
@@ -1201,6 +1217,206 @@ def draw_backstage(cards=0, jar="key", ghost="lit"):
     return im
 
 
+# ------------------------------------------------ the Oil Bar, inside
+
+# Scene 07 geometry. These rects ARE the object rects in
+# game/oilbar.scc — keep the two in sync. State-bearing rects
+# (sommelier, spike, centrifuge) are 8-multiple sized (SCUMM strips).
+# Screenplay probe anchors (all y<=75 so the ego can never occlude
+# them — Scene 06's probe-vs-walk-target lesson):
+#   back-bar backlight   (100, 30)  sodium — the room-is-amber probe
+#   sommelier head       (92, 60)   somm-black at post / dock-wood away
+#   spike top page       (146, 73)  white when full / dock-wood taken
+OILBAR_GEOM = {
+    "O_DOOR":     (8, 56, 24, 48),
+    "O_BACKBAR":  (36, 24, 96, 32),
+    "O_SOMM":     (80, 52, 24, 48),
+    "O_COUNTER":  (32, 84, 128, 26),
+    "O_LIST":     (40, 72, 16, 16),
+    "O_SPIKE":    (140, 64, 16, 24),
+    "O_CFUGE":    (152, 4, 40, 16),
+    "O_AIDE":     (172, 56, 24, 48),
+    "O_BOOTH":    (216, 76, 64, 40),
+    "O_PORTRAIT": (224, 16, 36, 40),
+    "O_HATCH":    (148, 104, 24, 16),
+}
+
+
+def draw_oilbar(somm="post", spike="full", spin=0):
+    """somm: "post"/"cellar". spike: "full"/"taken". spin: 0/1 (the
+    centrifuge's two rotation frames — the room's animating element)."""
+    im = new_img(W, H)
+    d = ImageDraw.Draw(im)
+    g = OILBAR_GEOM
+
+    # --- ceiling: dark, with the centrifuge's amber halo
+    d.rectangle([0, 0, W, 22], fill=1)
+    d.ellipse([140, 2, 204, 26], outline=42)
+
+    # --- walls: mahogany panels, amber-lit
+    d.rectangle([0, 22, W, 104], fill=65)
+    for y in range(28, 104, 10):
+        d.line([(0, y), (W, y)], fill=64)
+    for x in range(0, W, 44):
+        d.line([(x, 22), (x, 104)], fill=64)
+    d.line([(0, 104), (W, 104)], fill=46)             # brass baseboard
+    # amber sconces
+    for sx in (24, 208, 296):
+        d.ellipse([sx - 4, 30, sx + 4, 38], fill=44)
+        im.putpixel((sx, 33), 47)
+
+    # --- floor: parquet with a polish you could land on
+    d.rectangle([0, 105, W, H], fill=66)
+    for y in range(109, H, 6):
+        d.line([(0, y), (W, y)], fill=64)
+    for x in range(0, W, 24):
+        off = 3 if (x // 24) % 2 else 0
+        for y in range(105 + off, H, 6):
+            d.line([(x, y), (x, y + 5)], fill=65)
+    d.line([(0, 106), (W, 106)], fill=47)             # the polish
+
+    # --- cellar hatch (painted floor fixture; never opens on screen)
+    hx, hy, hw, hh = g["O_HATCH"]
+    d.rectangle([hx + 2, hy + 2, hx + hw - 2, hy + hh - 2], fill=64)
+    d.rectangle([hx + 2, hy + 2, hx + hw - 2, hy + hh - 2], outline=9)
+    for px2 in (hx + 4, hx + hw - 5):                 # brass hinges
+        im.putpixel((px2, hy + 3), 46)
+    d.ellipse([hx + hw // 2 - 2, hy + 6, hx + hw // 2 + 2, hy + 10],
+              outline=46)                             # lift ring
+
+    # --- frosted door to the street (teal neon leaking through)
+    dx, dy, dw, dh = g["O_DOOR"]
+    d.rectangle([dx - 3, dy - 3, dx + dw + 3, dy + dh], fill=64)
+    d.rectangle([dx, dy, dx + dw, dy + dh], fill=5)
+    d.rectangle([dx + 4, dy + 6, dx + dw - 4, dy + 28], fill=53)  # frosted
+    for fy in range(dy + 9, dy + 26, 5):
+        d.line([(dx + 6, fy), (dx + dw - 6, fy)], fill=31)        # neon leak
+    d.ellipse([dx + dw - 8, dy + 30, dx + dw - 4, dy + 34], outline=46)
+
+    # --- back bar: biographies up top, working oil below
+    bx, by, bw, bh = g["O_BACKBAR"]
+    d.rectangle([bx, by, bx + bw, by + bh], fill=64)
+    d.rectangle([bx + 2, by + 2, bx + bw - 2, by + 13], fill=42)  # backlight
+    d.rectangle([bx, by + 13, bx + bw, by + 15], fill=70)         # shelf
+    for i, ox2 in enumerate(range(bx + 6, bx + bw - 6, 11)):      # top row
+        col = [45, 24, 47, 44, 27, 46][i % 6]
+        d.rectangle([ox2, by + 4, ox2 + 5, by + 13], fill=col)
+        d.rectangle([ox2 + 1, by + 3, ox2 + 4, by + 4], fill=6)   # cap
+        im.putpixel((ox2 + 1, by + 6), 104)                       # glint
+        im.putpixel((ox2 + 3, by + 11), 1)                        # biography
+    d.rectangle([bx, by + 28, bx + bw, by + 30], fill=70)         # low shelf
+    for ox2 in range(bx + 8, bx + bw - 6, 13):                    # dark row
+        d.rectangle([ox2, by + 18, ox2 + 5, by + 28], fill=52)
+        d.rectangle([ox2 + 1, by + 17, ox2 + 4, by + 18], fill=1)
+    # (no glints, no biographies: working oil)
+
+    # --- portrait of Mayor Piston, recently enlarged
+    px, py, pw, ph = g["O_PORTRAIT"]
+    d.rectangle([px + 2, py + 2, px + pw - 2, py + ph - 2], fill=20)
+    d.rectangle([px + 8, py + 8, px + pw - 8, py + 22], fill=5)   # the face
+    d.rectangle([px + 10, py + 12, px + 12, py + 14], fill=44)    # eyes
+    d.rectangle([px + 16, py + 12, px + 18, py + 14], fill=44)
+    d.rectangle([px + 8, py + 22, px + pw - 8, py + ph - 6], fill=18)
+    d.rectangle([px, py, px + pw, py + ph], outline=46)           # frame
+    d.rectangle([px + 1, py + 1, px + pw - 1, py + ph - 1], outline=46)
+    # the frame didn't keep up: he continues onto the wall
+    d.rectangle([px + pw + 1, py + 12, px + pw + 6, py + 20], fill=5)
+    d.rectangle([px + pw + 2, py + 14, px + pw + 4, py + 16], fill=44)
+
+    # --- ceiling centrifuge (2-frame spin)
+    cx, cy, cw, ch = g["O_CFUGE"]
+    for hx2 in (cx + 8, cx + cw - 8):
+        d.line([(hx2, 0), (hx2, cy + 4)], fill=6)                 # hangers
+    d.ellipse([cx + 2, cy + 2, cx + cw - 2, cy + ch - 2], fill=46)
+    d.ellipse([cx + 2, cy + 2, cx + cw - 2, cy + ch - 2], outline=9)
+    marks = (cx + 8, cx + 18, cx + 28) if spin == 0 else \
+            (cx + 13, cx + 23, cx + 33)
+    for mx in marks:                                              # streaks
+        d.line([(mx, cy + 5), (mx + 3, cy + ch - 5)], fill=24)
+    im.putpixel((cx + cw // 2, cy + ch - 2), 47)                  # the shine
+
+    # --- the sommelier (behind the counter; absence is a painted
+    # state, not a vanishing — the cellar trip has a body to miss)
+    sx2, sy2 = g["O_SOMM"][0], g["O_SOMM"][1]
+    if somm == "post":
+        d.rectangle([sx2 + 6, sy2 + 14, sx2 + 18, sy2 + 40], fill=1)  # chassis
+        d.rectangle([sx2 + 8, sy2 + 2, sx2 + 16, sy2 + 14], fill=1)   # head
+        d.rectangle([sx2 + 9, sy2 + 6, sx2 + 11, sy2 + 8], fill=44)   # eyes
+        d.rectangle([sx2 + 13, sy2 + 6, sx2 + 15, sy2 + 8], fill=44)
+        im.putpixel((sx2 + 12, sy2 + 15), 107)                        # bow tie
+        d.rectangle([sx2 + 18, sy2 + 18, sx2 + 23, sy2 + 26],
+                    fill=104)                                     # the towel
+        d.line([(sx2 + 6, sy2 + 18), (sx2, sy2 + 24)], fill=6)    # decant arm
+        d.line([(sx2, sy2 + 24), (sx2 + 4, sy2 + 30)], fill=6)
+        im.putpixel((sx2, sy2 + 24), 11)                          # a joint
+        im.putpixel((sx2 + 4, sy2 + 30), 11)                      # another
+
+    # --- bar counter (painted to x208 so the aide sits AT it; the
+    # object rect stops at x160 per OILBAR_GEOM)
+    kx2, ky2 = g["O_COUNTER"][0], g["O_COUNTER"][1]
+    bar_r = 208
+    d.rectangle([kx2, ky2, bar_r, ky2 + 5], fill=68)              # top
+    d.line([(kx2, ky2), (bar_r, ky2)], fill=47)                   # amber edge
+    d.rectangle([kx2, ky2 + 5, bar_r, ky2 + 25], fill=66)         # front
+    for x in range(kx2 + 8, bar_r - 12, 20):
+        d.rectangle([x, ky2 + 9, x + 12, ky2 + 21], fill=64)      # panels
+    d.line([(kx2, ky2 + 23), (bar_r, ky2 + 23)], fill=46)         # brass rail
+
+    # --- the cellar list, standing on the counter
+    lx2, ly2 = g["O_LIST"][0], g["O_LIST"][1]
+    d.rectangle([lx2 + 2, ly2 + 2, lx2 + 14, ly2 + 14], fill=104)
+    d.rectangle([lx2 + 2, ly2 + 2, lx2 + 14, ly2 + 14], outline=6)
+    for ty2 in (ly2 + 5, ly2 + 7, ly2 + 9):
+        d.line([(lx2 + 4, ty2), (lx2 + 12, ty2)], fill=6)
+    d.line([(lx2 + 4, ly2 + 11), (lx2 + 12, ly2 + 11)], fill=107)  # CANCELLED
+
+    # --- the receipt spike (the bar's paper history, oldest at the
+    # bottom; state 2 is minus one municipal document)
+    qx, qy = g["O_SPIKE"][0], g["O_SPIKE"][1]
+    d.rectangle([qx + 7, qy + 2, qx + 9, qy + 20], fill=46)       # the spike
+    im.putpixel((qx + 8, qy + 1), 47)                             # the tip
+    if spike == "full":
+        d.rectangle([qx + 2, qy + 8, qx + 14, qy + 19], fill=104)  # the stack
+        d.line([(qx + 2, qy + 12), (qx + 14, qy + 12)], fill=2)
+        d.line([(qx + 2, qy + 16), (qx + 14, qy + 16)], fill=2)
+        im.putpixel((qx + 11, qy + 17), 107)                      # the seal
+        im.putpixel((qx + 4, qy + 18), 64)                        # thumbprint
+    else:
+        d.rectangle([qx + 2, qy + 12, qx + 14, qy + 18], fill=104)
+        d.line([(qx + 2, qy + 15), (qx + 14, qy + 15)], fill=2)
+
+    # --- the aide, alone at the bar (folded over a glass like a memo
+    # nobody filed; drawn over the counter front)
+    ax2, ay2 = g["O_AIDE"][0], g["O_AIDE"][1]
+    d.rectangle([ax2 + 8, ay2 + 40, ax2 + 16, ay2 + 44], fill=64)  # stool
+    d.rectangle([ax2 + 11, ay2 + 44, ax2 + 13, ay2 + 54], fill=6)
+    d.rectangle([ax2 + 5, ay2 + 16, ax2 + 17, ay2 + 40], fill=5)   # chassis
+    d.rectangle([ax2 + 5, ay2 + 16, ax2 + 17, ay2 + 18], fill=11)
+    d.rectangle([ax2 + 8, ay2 + 20, ax2 + 13, ay2 + 26], fill=31)  # the crest
+    d.rectangle([ax2 + 6, ay2 + 6, ax2 + 15, ay2 + 16], fill=6)    # head, low
+    d.rectangle([ax2 + 8, ay2 + 9, ax2 + 10, ay2 + 11], fill=44)   # eyes
+    d.rectangle([ax2 + 12, ay2 + 9, ax2 + 14, ay2 + 11], fill=44)
+    d.line([(ax2 + 5, ay2 + 22), (ax2 - 4, ay2 + 28)], fill=6)     # arm
+    d.rectangle([ax2 - 6, ay2 + 20, ax2 - 2, ay2 + 28], fill=11)   # the glass
+    d.rectangle([ax2 - 5, ay2 + 22, ax2 - 3, ay2 + 28], fill=45)   # untouched
+
+    # --- the corner booth: drinking in formation
+    bx2, by2, bw2, bh2 = g["O_BOOTH"]
+    d.rectangle([bx2 + 2, by2, bx2 + bw2 - 2, by2 + 30], fill=18)  # bench
+    d.rectangle([bx2 + 2, by2, bx2 + bw2 - 2, by2 + 4], fill=24)
+    for hx3 in (bx2 + 10, bx2 + 28, bx2 + 46):                    # the aides
+        d.rectangle([hx3, by2 + 6, hx3 + 10, by2 + 14], fill=6)   # heads
+        d.rectangle([hx3 + 2, by2 + 9, hx3 + 3, by2 + 10], fill=44)
+        d.rectangle([hx3 + 6, by2 + 9, hx3 + 7, by2 + 10], fill=44)
+        d.rectangle([hx3 - 1, by2 + 14, hx3 + 11, by2 + 26], fill=5)
+    d.ellipse([bx2 + 8, by2 + 24, bx2 + bw2 - 8, by2 + 36], fill=68)
+    for gx in (bx2 + 16, bx2 + 30, bx2 + 44):                     # in step
+        d.rectangle([gx, by2 + 20, gx + 3, by2 + 26], fill=11)
+        d.rectangle([gx + 1, by2 + 22, gx + 2, by2 + 26], fill=45)
+
+    return im
+
+
 # ----------------------------------------------------------- verb panel
 
 def draw_verb_panel():
@@ -1412,6 +1628,17 @@ def gen_inventory_icons():
     d.rectangle([29, 7, 31, 9], fill=0)                    # notch
     im.putpixel((12, 8), 31)                               # ozone glint
     icons["inv_voltkey"] = im
+    # the cancelled work order: municipal paper, red stamp, banner swatch
+    im = new_img(40, 16)
+    d = ImageDraw.Draw(im)
+    d.rectangle([9, 3, 31, 13], fill=104)                  # the page
+    d.line([(12, 5), (28, 5)], fill=6)
+    d.line([(12, 7), (26, 7)], fill=6)
+    d.line([(12, 9), (24, 9)], fill=6)
+    d.line([(13, 11), (27, 6)], fill=107)                  # CANCELLED
+    d.rectangle([28, 10, 31, 13], fill=31)                 # banner swatch
+    im.putpixel((29, 10), 1)                               # the staple
+    icons["inv_workorder"] = im
     return icons
 
 
@@ -1486,10 +1713,25 @@ MIDTOWN_OBJECT_NAMES = {
     "M_STATION":   "funicular station",
     "M_LEFTYS":    "Lefty's Spare Parts",
     "M_OILBAR":    "the Oil Bar",
+    "M_ROPE":      "velvet rope",
     "M_THEATER":   "Grand Cog Theater",
     "M_BOXOFFICE": "box office",
     "M_CITYHALL":  "City Hall",
     "M_DYNAMO":    "the Great Dynamo",
+}
+
+OILBAR_OBJECT_NAMES = {
+    "O_DOOR":     "door to the street",
+    "O_BACKBAR":  "back bar",
+    "O_SOMM":     "oil sommelier",
+    "O_COUNTER":  "bar counter",
+    "O_LIST":     "cellar list",
+    "O_SPIKE":    "receipt spike",
+    "O_CFUGE":    "centrifuge",
+    "O_AIDE":     "the aide",
+    "O_BOOTH":    "booth of aides",
+    "O_PORTRAIT": "portrait of the Mayor",
+    "O_HATCH":    "cellar hatch",
 }
 
 # rect centers make bad click targets for a few objects
@@ -1497,6 +1739,10 @@ STAGE_HOTSPOT_OVERRIDES = {
     "CRATE":      (132, 110),  # click low: works hanging or grounded
     "A_DUMPSTER": (108, 94),   # click the body, not the open-lid air
     "A_GATE":     (288, 96),   # click the gate, not the sign
+    # click the rope's right end: the ego walks to the click, and the
+    # unhooked-coil probe lives on the LEFT post (112, 95) — keep the
+    # ego's 20px span clear of it (Scene 06 probe-occlusion lesson)
+    "M_ROPE":     (146, 98),
 }
 
 TAVERN_WALKBOXES = [
@@ -1522,6 +1768,11 @@ GRAND_WALKBOXES = [
 BACK_WALKBOXES = [
     ("backwest", [(8, 112), (160, 112), (160, 140), (8, 140)]),
     ("backeast", [(160, 112), (304, 112), (304, 140), (160, 140)]),
+]
+
+OILBAR_WALKBOXES = [
+    ("oilwest", [(8, 112), (160, 112), (160, 140), (8, 140)]),
+    ("oileast", [(160, 112), (304, 112), (304, 140), (160, 140)]),
 ]
 
 # Verb anchors from game/verbs.scc (verbCenter() -> x is the center;
@@ -1563,6 +1814,10 @@ STAGE_PROBES = {
     # card faces on the felt (Scene 06 screenplay probes)
     "brass":      [45, 46, 47],
     "card-white": [104],
+    # Scene 07: the amber room glow (back-bar backlight + bottles) and
+    # the sommelier's black chassis (Scene 07 screenplay probes)
+    "amber":      list(range(40, 52)),
+    "somm-black": [1],
 }
 
 
@@ -1574,7 +1829,8 @@ def emit_stage(path):
                         (ALLEY_OBJECT_NAMES, ALLEY_GEOM),
                         (MIDTOWN_OBJECT_NAMES, MIDTOWN_GEOM),
                         (GRAND_OBJECT_NAMES, GRAND_GEOM),
-                        (BACK_OBJECT_NAMES, BACK_GEOM)]:
+                        (BACK_OBJECT_NAMES, BACK_GEOM),
+                        (OILBAR_OBJECT_NAMES, OILBAR_GEOM)]:
         for key, name in names.items():
             x, y, w, h = geom[key]
             hs = STAGE_HOTSPOT_OVERRIDES.get(key, (x + w // 2, y + h // 2))
@@ -1591,13 +1847,15 @@ def emit_stage(path):
         "walkboxes": [{"name": n, "points": [list(p) for p in pts]}
                       for n, pts in (WALKBOXES + TAVERN_WALKBOXES
                                      + ALLEY_WALKBOXES + MIDTOWN_WALKBOXES
-                                     + GRAND_WALKBOXES + BACK_WALKBOXES)],
+                                     + GRAND_WALKBOXES + BACK_WALKBOXES
+                                     + OILBAR_WALKBOXES)],
         "walk_targets": {"center-west": [120, 126], "center-east": [250, 126],
                          "tavern-center": [150, 126],
                          "alley-center": [150, 126],
                          "midtown-center": [150, 126],
                          "grand-center": [140, 126],
-                         "backstage-center": [100, 126]},
+                         "backstage-center": [100, 126],
+                         "oilbar-center": [120, 126]},
     }
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
@@ -1659,6 +1917,9 @@ def main():
     save_bmp(midtown, "rooms/midtown.bmp")
     save_bmp(mcrop(midtown, "M_THEATER"), "rooms/marquee_blank.bmp")
     save_bmp(mcrop(midtown_lit, "M_THEATER"), "rooms/marquee_sprocket.bmp")
+    save_bmp(mcrop(midtown, "M_ROPE"), "rooms/rope_hung.bmp")
+    save_bmp(mcrop(draw_midtown(rope="open"), "M_ROPE"),
+             "rooms/rope_open.bmp")
     write_box_file(os.path.join(OUT, "rooms", "midtown.box"),
                    [Box(pts, name=n) for n, pts in MIDTOWN_WALKBOXES])
 
@@ -1704,6 +1965,25 @@ def main():
              "rooms/ghost_dark.bmp")
     write_box_file(os.path.join(OUT, "rooms", "backstage.box"),
                    [Box(pts, name=n) for n, pts in BACK_WALKBOXES])
+
+    # Scene 07: the Oil Bar, inside
+    oil = draw_oilbar()
+
+    def ocrop(src, key):
+        x, y, w, h = OILBAR_GEOM[key]
+        return src.crop((x, y, x + w, y + h))
+
+    save_bmp(oil, "rooms/oilbar.bmp")
+    save_bmp(ocrop(oil, "O_SOMM"), "rooms/somm_post.bmp")
+    save_bmp(ocrop(draw_oilbar(somm="cellar"), "O_SOMM"),
+             "rooms/somm_away.bmp")
+    save_bmp(ocrop(oil, "O_SPIKE"), "rooms/spike_full.bmp")
+    save_bmp(ocrop(draw_oilbar(spike="taken"), "O_SPIKE"),
+             "rooms/spike_taken.bmp")
+    save_bmp(ocrop(oil, "O_CFUGE"), "rooms/cfuge_a.bmp")
+    save_bmp(ocrop(draw_oilbar(spin=1), "O_CFUGE"), "rooms/cfuge_b.bmp")
+    write_box_file(os.path.join(OUT, "rooms", "oilbar.box"),
+                   [Box(pts, name=n) for n, pts in OILBAR_WALKBOXES])
 
     # bolt sprite on dock floor (background-colored patch + bolt)
     bx, by, bw, bh = GEOM["BOLT"]

@@ -1,0 +1,711 @@
+/* Clanker City Chronicles — Scene 07: the Oil Bar, inside.
+ * "A Separate Financial Instrument." The voucher beat the velvet rope
+ * outside (midtown.scc); in here Sprocket orders a drink he can't
+ * drink, on an account that no longer exists, and walks out with the
+ * cancelled work order — Mayor Piston's signature on the cover-up.
+ * NPC dialog is reported secondhand by Sprocket — one voice, deadpan.
+ * Walkthrough-path lines go FIRST in source per handler (dub pairing).
+ *
+ * TODO(actorSay): the costumed-NPC pipeline is being built on another
+ * branch; until it lands every NPC line ships as Sprocket-reported
+ * speech (the Voltina convention, backstage.scc). SWAP MAP — when the
+ * pipeline lands, split each egoSay below at its quoted span; the
+ * quote becomes actorSay(<actor>, "..."), the frame stays Sprocket's,
+ * and source order per handler must not change (dub pairing):
+ *   sommA (talk color 113, en_GB-alan): every quote in
+ *     sommelier:TalkTo (intro, both contest rounds, fillers) and the
+ *     "Your harbor sludge, sir." line in receiptSpike's grab cutscene.
+ *   aideA (talk color 114, en_US-hfc_male): every quote in aide:TalkTo
+ *     (intro, the expose) and aide:UsedWith (poster, workOrder), plus
+ *     "Too educated." in the round-1 single-origin flop.
+ *   boothA (shares 114): "Civic reassurance." in boothAides:TalkTo.
+ *   bouncerA (talk color 115, en_US-danny pitched down): the rope and
+ *     bar quotes live in midtown.scc (velvetRope + oilBar handlers).
+ *   Each actor needs a putActorAt(...) in the room entry on EVERY
+ *   entry, before any line (actorTalk drops lines otherwise).
+ */
+
+#include <scummVars6.s>
+#include "common.sch"
+#include "verbs.sch"
+#include "inventoryitems.sch"
+#include "dialog.sch"
+#include "midtown.sch"
+#include "oilbar.sch"
+
+room OilBarRoom {
+
+    image = "rooms/oilbar.bmp";
+    boxd = "rooms/oilbar.box";
+    trans = 0;
+
+    // ------------------------------------------------------------ sounds
+    // TODO(audio): placeholder casting until genmusic grows
+    // build_oilbar ("The Single-Origin Sway": 12 bars, 72 BPM, Bb
+    // major, loop beat 49, no drummer — the lounge has no drummer and
+    // that's the joke) and genaudio the unhook/pour/steps/paper VOCs
+    // (Scene 07 brief, docs/scenes/SCENE-07-oil-bar.md s5).
+
+    sound oilbarSnd = "backalley.soun";
+    sound pourSnd   = "splash.soun";
+    sound stepsSnd  = "thud.soun";
+    sound paperSnd  = "dart.soun";
+    sound creakSnd  = "creak.soun";
+    sound pickupSnd = "pickup.soun";
+
+    char* dlgStr;       // dialog-option scratch (openquest idiom)
+
+    // ------------------------------------------------------------ music
+
+    local script musicLoop() {
+        // uptown sits back; placeholder loop point = the back-alley
+        // reel's 49 while oilbarSnd borrows it (TODO(audio) above)
+        stopMusic();
+        startMusic(oilbarSnd);
+        imPlayerSetLoop(oilbarSnd, 999, 1, 0, 49, 0);
+        while(1) {
+            delay(120);
+            unless(isSoundRunning(oilbarSnd)) {
+                startMusic(oilbarSnd);
+                imPlayerSetLoop(oilbarSnd, 999, 1, 0, 49, 0);
+            }
+        }
+    }
+
+    // the ceiling centrifuge spins the house pour to a shine
+    // (ghostFlicker pattern, backstage.scc — local scripts die with
+    // the room, so no explicit stop is needed on exit)
+    local script centrifugeSpin() {
+        while(1) {
+            delay(9);
+            setObjectState(centrifuge, 2);
+            delay(9);
+            setObjectState(centrifuge, 1);
+        }
+    }
+
+    // ------------------------------------------------------- room entry
+
+    local script entry() {
+        startScript(1, musicLoop, []);
+        startScript(1, centrifugeSpin, []);
+        // TODO(actorSay): putActorAt for sommA/aideA/boothA here,
+        // every entry, before any of their lines.
+        unless(visitedOilBar) {
+            visitedOilBar = 1;
+            cutscene(2) {
+                try {
+                    putActorAt(VAR_EGO, 28, 118, OilBarRoom);
+                    walkActorTo(VAR_EGO, 70, 124);
+                    waitForActor(VAR_EGO);
+                    egoSay("The Oil Bar, inside. Everything is amber: the light, the bottles, the prices.");
+                    waitForMessage();
+                    egoSay("A ceiling centrifuge spins the house pour to a shine. The music is what a tuxedo would hum.");
+                    waitForMessage();
+                    egoSay("In the corner booth, City Hall aides are drinking lunch at nine in the evening.");
+                    waitForMessage();
+                    egoSay("And alone at the bar: a fresh civic crest on an old chassis, folded over a glass like a memo nobody filed.");
+                    waitForMessage();
+                }
+            }
+        }
+    }
+
+    // ---------------------------------------------------------- objects
+
+    object doorOut {
+        x = 8;
+        y = 56;
+        w = 24;
+        h = 48;
+        dir = EAST;
+        name = "door to the street";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The way back to the street. Frosted glass keeps the neon out and the amber in.");
+            return;
+        case Open:
+        case Use:
+            // room transitions say NOTHING (docs/NOTES.md)
+            putActorAt(VAR_EGO, 130, 120, MidtownRoom);
+            startRoom(MidtownRoom);
+            return;
+        }
+    }
+
+    object backBar {
+        x = 36;
+        y = 24;
+        w = 96;
+        h = 32;
+        dir = NORTH;
+        name = "back bar";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Single-origin crudes, racked by derrick. Each bottle has a little biography.");
+            waitForMessage();
+            egoSay("The bottom shelf is dark glass and no biographies. Working oil. Visitors don't ask.");
+            return;
+        case PickUp:
+        case Use:
+            egoSay("The sommelier doesn't move. The shelf is somehow already between us.");
+            return;
+        case Smell:
+            egoSay("Crude, in seventeen accents.");
+            return;
+        }
+    }
+
+    object sommelier {
+        x = 80;
+        y = 52;
+        w = 24;
+        h = 48;
+        dir = SOUTH;
+        name = "oil sommelier";
+        class = { Person };
+        states = {
+            { 0, 0, "rooms/somm_post.bmp" },
+            { 0, 0, "rooms/somm_away.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            if(pourOrdered && !aideServed) {
+                egoSay("Not at his post. From below the floor: the sound of a bottle being judged.");
+                return;
+            }
+            if(aideServed) {
+                egoSay("Back at his post, towel refolded. The cellar dust didn't dare follow him up.");
+                return;
+            }
+            egoSay("The sommelier. White towel, black chassis, a decanting arm with more joints than I have parts.");
+            waitForMessage();
+            egoSay("He's listening to a thimble of crude. The crude is apparently confiding in him.");
+            return;
+
+        case TalkTo:
+            // BRANCH ORDER = dub order: intro, then the contest
+            // (winner branches first inside each round), then fillers.
+            unless(metSommelier) {
+                metSommelier = 1;
+                cutscene(0) {
+                    egoSay("He pours a thimble of crude, swirls it, and holds it up to where an ear would be.");
+                    waitForMessage();
+                    egoSay("'Derrick Nine,' he says. 'A confident year.'");
+                    waitForMessage();
+                    egoSay("I ask if anyone in this room could tell it from the house pour.");
+                    waitForMessage();
+                    egoSay("'No.'");
+                    waitForMessage();
+                    egoSay("He pours it back. Gently. So the bottle doesn't hear.");
+                    waitForMessage();
+                    egoSay("I ask about the old days. This bar oiled the Great Dynamo, he says. Two hundred years. By the barrel. By appointment.");
+                    waitForMessage();
+                    egoSay("'Never late. Never tipped. Never complained.'");
+                    waitForMessage();
+                    egoSay("Then, last spring, it stopped. He won't say more. Grief, or a nondisclosure.");
+                    waitForMessage();
+                }
+                return;
+            }
+            // THE ORDER — playable, two rounds (editorial B2 shape; per
+            // N-A11 the winners sit at slots 1 and 0, never 2, and both
+            // are planted in the world: the aide names the pour, the
+            // cellar list names the account). Flops are free retries;
+            // re-TalkTo reopens the round you're on.
+            if(metAide && !pourOrdered) {
+                unless(orderRound) {
+                    // round 1 — the pour
+                    cutscene(0) {
+                        egoSay("He asks, with ceremony, what the gentleman at the end will be having.");
+                        waitForMessage();
+                    }
+                    dlgStr[0] = "Your finest single-origin.";
+                    Dialog::dialogAdd(dlgStr);
+                    dlgStr = 0;
+                    dlgStr[0] = "Something dock-aged. A working 10W-40.";
+                    Dialog::dialogAdd(dlgStr);
+                    dlgStr = 0;
+                    dlgStr[0] = "Another round of the house pour.";
+                    Dialog::dialogAdd(dlgStr);
+                    dlgStr = 0;
+                    Dialog::dialogStart(0, 0);
+                    do breakScript() while(selectedSentence < 0);
+                    Dialog::dialogHide();
+                    Dialog::dialogClear(1);
+                    Dialog::dialogEnd();
+                    // winner branch first in SOURCE (dub pairing)
+                    if(selectedSentence == 1) {
+                        orderRound = 1;         // flag before speech
+                        cutscene(0) {
+                            egoSay("The towel stops moving.");
+                            waitForMessage();
+                            egoSay("He looks at me the way appraisers look at paperwork that might be real.");
+                            waitForMessage();
+                        }
+                        return;
+                    }
+                    if(selectedSentence == 0) {
+                        cutscene(0) {
+                            egoSay("The sommelier ascends three emotional registers and decants Derrick Nine like a christening.");
+                            waitForMessage();
+                            egoSay("The aide takes one nose of it and slides it back, untouched. 'Too educated.'");
+                            waitForMessage();
+                            egoSay("'Refused,' the sommelier says. 'Derrick Nine, refused. I'll be closing early.'");
+                            waitForMessage();
+                        }
+                        return;
+                    }
+                    cutscene(0) {
+                        egoSay("'He has one,' the sommelier says. 'He hasn't touched it in an hour.'");
+                        waitForMessage();
+                        egoSay("The glass is full. The glass has been full all night.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                // round 2 — the billing
+                cutscene(0) {
+                    egoSay("'Dock-aged,' he says, with the towel at half-mast. 'And this is billed to?'");
+                    waitForMessage();
+                }
+                dlgStr[0] = "The Dynamo maintenance account.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "My tab.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "City Hall's tab.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                Dialog::dialogStart(0, 0);
+                do breakScript() while(selectedSentence < 0);
+                Dialog::dialogHide();
+                Dialog::dialogClear(1);
+                Dialog::dialogEnd();
+                // winner branch first in SOURCE (dub pairing)
+                if(selectedSentence == 0) {
+                    pourOrdered = 1;            // flag before speech
+                    cutscene(0) {
+                        egoSay("'That account is closed,' he says.");
+                        waitForMessage();
+                        egoSay("Then it can stand one last round, I say. For two hundred years of never complaining.");
+                        waitForMessage();
+                        egoSay("'...Decanted under protest.'");
+                        waitForMessage();
+                        egoSay("He folds the towel like a flag and opens the floor.");
+                        waitForMessage();
+                        startSound(creakSnd);
+                        startSound(stepsSnd);
+                        setObjectState(sommelier, 2);
+                        egoSay("The cellar takes him. The bar is suddenly very unattended.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                if(selectedSentence == 1) {
+                    cutscene(0) {
+                        egoSay("'Tabs here are inherited, not opened.'");
+                        waitForMessage();
+                        egoSay("I have no ancestors. It's a known gap.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                cutscene(0) {
+                    egoSay("'City Hall settles in banners now,' he says. 'We have enough banners.'");
+                    waitForMessage();
+                    egoSay("The booth in the corner drinks to that without hearing it.");
+                    waitForMessage();
+                }
+                return;
+            }
+            if(pourOrdered && !aideServed) {
+                egoSay("From under the floor, the sound of a vintage being forgiven.");
+                return;
+            }
+            if(aideServed) {
+                egoSay("He's re-alphabetizing the derricks, west to east. The evening took something out of him.");
+                return;
+            }
+            // !metAide filler — points at the aide
+            egoSay("He asks what the bot at the end is having. Nothing, currently. It worries us both.");
+            return;
+
+        case Give:
+        case UsedWith:
+            egoSay("He receives it on the towel, inspects it, and returns it. The towel forgives everything.");
+            return;
+        case Smell:
+            egoSay("Nothing. He out-clean-rooms my sensor.");
+            return;
+        }
+    }
+
+    object oilBarCounter {
+        x = 32;
+        y = 84;
+        w = 128;
+        h = 26;
+        dir = NORTH;
+        name = "bar counter";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Amber-lit steel with a mahogany opinion of itself. You could land small aircraft on the polish.");
+            return;
+        case Use:
+            egoSay("I order nothing. The stool and I are both here in a professional capacity.");
+            return;
+        case Smell:
+            egoSay("Nothing escapes the polish. Including smells.");
+            return;
+        }
+    }
+
+    object cellarList {
+        x = 40;
+        y = 72;
+        w = 16;
+        h = 16;
+        dir = NORTH;
+        name = "cellar list";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The cellar list. Single-origins by derrick, vintages by viscosity, prices by audacity.");
+            waitForMessage();
+            egoSay("At the bottom, in older type: DYNAMO MAINTENANCE -- STANDING ORDER.");
+            waitForMessage();
+            egoSay("Someone has stamped CANCELLED across it. The stamp is the freshest ink on the page.");
+            return;
+        case Use:
+            egoSay("Nothing on it is for me. My warranty cites statutes, and the statutes cite my warranty.");
+            return;
+        case Smell:
+            egoSay("Nothing. It's laminated against exactly me.");
+            return;
+        }
+    }
+
+    object receiptSpike {
+        x = 140;
+        y = 64;
+        w = 16;
+        h = 24;
+        dir = NORTH;
+        name = "receipt spike";
+        states = {
+            { 0, 0, "rooms/spike_full.bmp" },
+            { 0, 0, "rooms/spike_taken.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case Use:
+        case PickUp:
+        case Open:
+            // walkthrough path FIRST: the grab (dub pairing)
+            if(pourOrdered && !aideServed) {
+                aideServed = 1;                 // flag before speech
+                cutscene(0) {
+                    egoSay("The cellar is still sighing under the floor. I perform some quiet, certified archival work.");
+                    waitForMessage();
+                    startSound(paperSnd);
+                    setObjectState(receiptSpike, 2);
+                    startSound(pickupSnd);
+                    pickupObject(InventoryItems::workOrder, InventoryItems);
+                    egoSay("Bottom of the spike: the Dynamo standing order. Two hundred years of weekly oil.");
+                    waitForMessage();
+                    egoSay("Across it, a stamp: CANCELLED BY ORDER OF THE MAYOR. Signed in steam-pressed ink: M. PISTON.");
+                    waitForMessage();
+                    startSound(stepsSnd);
+                    startSound(creakSnd);
+                    setObjectState(sommelier, 1);
+                    egoSay("The floor opens. The sommelier surfaces with a dusty bottle and a look of moral exemption.");
+                    waitForMessage();
+                    egoSay("'Your harbor sludge, sir. Decanted.'");
+                    waitForMessage();
+                    startSound(pourSnd);
+                    egoSay("He pours it the way you'd lower a casket. The aide takes the glass with both hands.");
+                    waitForMessage();
+                }
+                return;
+            }
+            if(getObjectOwner(InventoryItems::workOrder) == VAR_EGO) {
+                egoSay("I have the page that matters. The rest is beverage history.");
+                return;
+            }
+            // refusal that teaches the window
+            egoSay("His eye is on the pour, the door, and the spike. All three. I've counted.");
+            return;
+
+        case LookAt:
+            if(getObjectOwner(InventoryItems::workOrder) == VAR_EGO) {
+                egoSay("The spike, minus one municipal document. The grease thumbprints kept their counsel.");
+                return;
+            }
+            if(pourOrdered && !aideServed) {
+                egoSay("Unguarded paper. The rarest vintage in the building.");
+                return;
+            }
+            egoSay("A brass spike by the till, impaling the bar's paper history. Oldest at the bottom.");
+            waitForMessage();
+            egoSay("The bottom page has a municipal seal and two centuries of grease thumbprints.");
+            return;
+
+        case Smell:
+            egoSay("Two centuries of bar air, pressed flat.");
+            return;
+        }
+    }
+
+    object centrifuge {
+        x = 152;
+        y = 4;
+        w = 40;
+        h = 16;
+        dir = NORTH;
+        name = "centrifuge";
+        states = {
+            { 0, 0, "rooms/cfuge_a.bmp" },
+            { 0, 0, "rooms/cfuge_b.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The house centrifuge, spinning the evening's pour to a shine.");
+            waitForMessage();
+            egoSay("Round and round goes the sediment, learning nothing.");
+            return;
+        case Use:
+            egoSay("It's at speed. Anything I added would be redistributed. Widely.");
+            return;
+        case Smell:
+            egoSay("Warm crude on a carousel.");
+            return;
+        }
+    }
+
+    object aide {
+        x = 172;
+        y = 56;
+        w = 24;
+        h = 48;
+        dir = SOUTH;
+        name = "the aide";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case TalkTo:
+            // BRANCH ORDER = dub order: intro -> expose -> after ->
+            // window -> hint (off-path branches textually last).
+            unless(metAide) {
+                metAide = 1;
+                cutscene(0) {
+                    egoSay("I take the stool one over. Bar protocol: close enough to talk, far enough to deny it.");
+                    waitForMessage();
+                    egoSay("He clocks me, and something behind his face files itself.");
+                    waitForMessage();
+                    egoSay("'You're the one with the paper.'");
+                    waitForMessage();
+                    egoSay("The door at City Hall. Nine degrees of daylight, one eye. His.");
+                    waitForMessage();
+                    egoSay("I mention the Mayor. He develops a deep professional interest in his coaster.");
+                    waitForMessage();
+                    egoSay("'I file things. I don't say them.'");
+                    waitForMessage();
+                    egoSay("I mention the oil instead. He looks at his glass like it's a co-worker.");
+                    waitForMessage();
+                    egoSay("'The oil up here is too educated.'");
+                    waitForMessage();
+                    egoSay("Homesick. For the harbor, and for oil that argues back.");
+                    waitForMessage();
+                }
+                return;
+            }
+            if(aideServed && !aideTalked) {     // THE EXPOSE
+                aideTalked = 1;                 // flag before speech
+                cutscene(0) {
+                    egoSay("He drinks like the harbor's in the glass. For one minute he's a dock bot somebody painted a crest on.");
+                    waitForMessage();
+                    egoSay("'Ask it quiet.'");
+                    waitForMessage();
+                    egoSay("I ask, quiet, who cancelled the Dynamo's maintenance.");
+                    waitForMessage();
+                    egoSay("'Who signs everything?'");
+                    waitForMessage();
+                    egoSay("I don't say the name. The paper in my pocket says it in steam-press.");
+                    waitForMessage();
+                    egoSay("'He cancelled the rewind to pay for reassurance. Then needed more.'");
+                    waitForMessage();
+                    egoSay("Bigger banners, flatter hum. The budget and the Dynamo, winding down together.");
+                    waitForMessage();
+                    egoSay("'Take it to him. Aides can't. Aides file.'");
+                    waitForMessage();
+                    egoSay("He goes back to his glass. I leave him the rest of the harbor.");
+                    waitForMessage();
+                }
+                return;
+            }
+            if(aideTalked) {
+                egoSay("He tips the glass at me a quarter inch. Maximum legal gratitude, for an aide.");
+                return;
+            }
+            if(pourOrdered) {                   // the window filler/hint
+                egoSay("He's watching the cellar door the way dock bots watch a ferry.");
+                waitForMessage();
+                egoSay("'Bars keep paper. Bars always do.'");
+                return;
+            }
+            // escalating hint, second contact (off-path; textually
+            // last — names 10W-40 on SECOND contact only, N-A2)
+            unless(aideHinted) {
+                aideHinted = 1;
+                egoSay("He's tilting the house pour and watching it not move. Wrong viscosity. Wrong everything.");
+                waitForMessage();
+                egoSay("'You can't get an honest 10W-40 above the funicular.'");
+                return;
+            }
+            egoSay("He's reached the bottom of the coaster. Both sides.");
+            return;
+
+        case LookAt:
+            if(aideTalked) {
+                egoSay("He's reading the coaster like it's mail from home.");
+                return;
+            }
+            if(aideServed) {
+                egoSay("Working oil in an uptown glass. He looks like a bot whose feet finally reach the floor.");
+                return;
+            }
+            egoSay("A City Hall aide, off the clock. The crest on his chest is fresher than the chassis under it.");
+            waitForMessage();
+            egoSay("He has the house pour and isn't drinking it. His eye keeps sliding to the dark end of the shelf.");
+            return;
+
+        case Give:
+        case UsedWith:
+            if(objB == InventoryItems::poster) {    // productive mistake
+                egoSay("I slide the official notice along the bar. NOTHING IS WRONG.");
+                waitForMessage();
+                egoSay("He goes still the way filing cabinets are still.");
+                waitForMessage();
+                egoSay("'Put it away. Walls have aides.'");
+                waitForMessage();
+                egoSay("He drains half the house pour anyway. The half he's been avoiding all night.");
+                return;
+            }
+            if(objB == InventoryItems::workOrder) {
+                egoSay("'I never saw that.'");
+                waitForMessage();
+                egoSay("He says it with his eyes shut.");
+                return;
+            }
+            egoSay("He won't take anything with a paper trail. Filing it would be a confession.");
+            return;
+
+        case Smell:
+            egoSay("Primer, and under it, salt. Harbor primer.");
+            return;
+        }
+    }
+
+    object boothAides {
+        x = 216;
+        y = 76;
+        w = 64;
+        h = 40;
+        dir = SOUTH;
+        name = "booth of aides";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A corner booth of City Hall aides, drinking in formation.");
+            waitForMessage();
+            egoSay("Every chassis the same civic grey. The paint chart probably calls it Plausible.");
+            return;
+        case TalkTo:
+            unless(heardBoothToast) {
+                heardBoothToast = 1;
+                cutscene(0) {
+                    egoSay("I lean on the rail nearby. Casually. The lean has become a discipline.");
+                    waitForMessage();
+                    egoSay("They're toasting the new banner. The big one. Readable from the harbor.");
+                    waitForMessage();
+                    egoSay("A young one asks which line item the banners come out of. The booth goes quiet on schedule.");
+                    waitForMessage();
+                    egoSay("'Civic reassurance.'");
+                    waitForMessage();
+                    egoSay("They drink at once, in formation. The question retires.");
+                    waitForMessage();
+                }
+                return;
+            }
+            egoSay("They've moved on to whether NOTHING IS WRONG needs a comma. Careers are riding on the comma.");
+            return;
+        case Smell:
+            egoSay("Civic grey doesn't smell. It's in the spec.");
+            return;
+        }
+    }
+
+    object portrait {
+        x = 224;
+        y = 16;
+        w = 36;
+        h = 40;
+        dir = NORTH;
+        name = "portrait of the Mayor";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Mayor Piston, in oils. Recently enlarged.");
+            waitForMessage();
+            egoSay("The frame didn't keep up. He continues some distance onto the wall.");
+            return;
+        case Use:
+        case PickUp:
+            egoSay("It's bolted to the wall. The wall seems resigned.");
+            return;
+        case Smell:
+            egoSay("Oil paint. The one oil in the building nobody will pour.");
+            return;
+        }
+    }
+
+    object cellarHatch {
+        x = 148;
+        y = 104;
+        w = 24;
+        h = 16;
+        dir = NORTH;
+        name = "cellar hatch";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A floor hatch behind the bar, brass-hinged. The cellar: where oil goes to think.");
+            return;
+        case Open:
+        case Use:
+            if(pourOrdered && !aideServed) {
+                egoSay("Occupied by management. I'd be interrupting a communion.");
+                return;
+            }
+            egoSay("Staff only. The hinges would report me.");
+            return;
+        case Smell:
+            egoSay("Cool air through the seams. Down there it's still last century.");
+            return;
+        }
+    }
+
+}

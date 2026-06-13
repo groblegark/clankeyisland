@@ -7,10 +7,13 @@ room MidtownRoom {
     bit visitedMidtown;
     bit metClerk;
     bit signedUp;
+    bit ropeOpen;        // Scene 07: the voucher beat the velvet rope
+    bit voucherShown;    // first post-reading presentation to the bouncer
 
     object station;
     object leftys;
     object oilBar;
+    object velvetRope;
     object theater;
     object boxOffice;
     object cityHall;
