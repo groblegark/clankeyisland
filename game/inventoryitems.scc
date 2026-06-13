@@ -169,7 +169,9 @@ room InventoryItems {
                 sntcPrepo[0] = "on";
             return;
         case LookAt:
-            egoSay("A brass wind-up key the size of my forearm. Somebody polished it for years. Somebody is going to want it back.");
+            egoSay("A brass wind-up key the size of my forearm. A red 8 is stamped under the bow -- somebody's idea of a redline.");
+            waitForMessage();
+            egoSay("Somebody polished it for years. Somebody is going to want it back.");
             return;
         case Use:
             if(objB) {
@@ -472,7 +474,7 @@ room InventoryItems {
                 egoSay("Those two things politely decline each other.");
                 return;
             }
-            egoSay("Paper this heavy wants a desk to land on. There's one at City Hall, nine degrees open.");
+            egoSay("Technician of record: O. CRANK. They cancelled the rewind and fired the bot who logged it. This paper is his name, cleared.");
             return;
         case Smell:
             egoSay("Municipal toner, then two centuries of bar grease. In that order.");

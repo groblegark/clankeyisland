@@ -188,7 +188,7 @@ room MidtownRoom {
                 }
                 egoSay("The bouncer reads it. Valid, he admits. The rope, he explains, is a separate financial instrument.");
                 waitForMessage();
-                egoSay("Madame's night, he says. The rope respects her appointments.");
+                egoSay("Madame's night, he says. And the rope's the establishment here, not him -- take it up with the velvet.");
                 return;
             }
             if(objB == InventoryItems::backstagePass) {  // streamer mistake

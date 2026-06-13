@@ -547,7 +547,7 @@ room OilBarRoom {
                     waitForMessage();
                     egoSay("Bigger banners, flatter hum. The budget and the Dynamo, winding down together.");
                     waitForMessage();
-                    egoSay("'Take it to him. Aides can't. Aides file.'");
+                    egoSay("'Take it to the bot it clears. Aides can't. Aides file.'");
                     waitForMessage();
                     egoSay("He goes back to his glass. I leave him the rest of the harbor.");
                     waitForMessage();

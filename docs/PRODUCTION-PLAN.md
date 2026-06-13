@@ -85,3 +85,16 @@ items this pass; this table is the fix for that failure mode.
 | N-A17 | Magnet/string split (DECIDED: ships, GDD updated) | Scene 09 prep |
 | Player NIT | only:perform flop shots for the wind-count + "one act per night" line | Streamer screenplay |
 | B12 rider | SCENE-07 brief: add backstage.scc to required reading; voucher gate is the rope (voltKey-keyed); fix stale "first Crank mention" claim | Scene 07 build pass, FIRST |
+
+
+## Scene 07 desk debt (third-pass additions, 2026-06-12)
+
+| Item | What | Lands with |
+|------|------|-----------|
+| N-11 | Every set-piece contest is the same 3-option/free-retry machine x4; give one stakes or non-menu input | Next contest pass (Scene 08+) |
+| N-14 | Deadline (3 days) + detuning hum designed but unimplemented; genmusic act-flag pitch drift + one NPC names the clock | Cheap escalation pass |
+| N-15 | Tavern piano three-missing-keys plant has no Act-3 payoff scheduled (now noted in GDD) | Act 3 |
+| N-16 | Robot taste/mouth ledger inconsistent ("I don't have teeth" vs bots tasting constantly) | Next punch-up |
+| N-17 | Catwalk heist escape (up, into the roof) points away from the bottom-tier hideout | One catwalk line |
+| B-02 rider | City Hall / Mayor confrontation: DECIDE whether Act 3 adds it (loaded door + work order = the lock-and-key) or the work order stays Crank-only leverage | Act 3 planning |
+| N-08/09/10 | Signposting polish: restate the goal post-heist; jar-before-toll redirect; sommelier idle-hint | Next polish |
