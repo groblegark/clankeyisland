@@ -1,1305 +1,3625 @@
 {
  "cutscenes": {
-  "DockRoom.entry": [
-   "Clanker City! The big smoke! The city of ten thousand gears!",
-   "One small maintenance-bot, one dream, and not so much as an oil can to my name.",
-   "Thanks for the ride! I'll catch the return ferry once I'm rich and famous.",
-   "...",
-   "That clunk sounded expensive.",
-   "That clunk sounded PERMANENT.",
-   "Well. Guess I live here now.",
-   "The neon sign dips. The tavern window. The lit windows across the water. All together, like the city skipped a heartbeat.",
-   "Nobody on the dock looks up. That's the part I don't like."
-  ],
-  "TavernRoom.entry": [
-   "The Scrap & Barrel. Where the floor is sticky and nothing is explained.",
-   "The bartender says to mind the everything.",
-   "The piano is playing itself. Badly. With confidence."
-  ],
-  "AlleyRoom.entry": [
-   "The alley behind the Scrap & Barrel. Where the city keeps its rough drafts.",
-   "There's a gate at the end marked MIDTOWN, going up.",
-   "Coin-operated. Of course it's coin-operated."
-  ],
-  "MidtownRoom.entry": [
-   "Midtown Gearworks. The neon is louder, the streets are cleaner, and the manholes hiss in a higher register.",
-   "City Hall says NOTHING IS WRONG in letters you can read from the harbor.",
-   "And up the hill, behind the fence: the Great Dynamo. You can hear it from here.",
-   "It's flat. By half a step."
-  ],
-  "TheaterRoom.entry": [
-   "The Grand Cog, inside. Red velvet, brass rails, and a chandelier assembled from smaller, defeated chandeliers.",
-   "The house is packed. Forty bots, and not one of them came here to be impressed.",
-   "And up on the catwalk: one more, with a spyglass. No ticket. No hurry.",
-   "Somewhere past that curtain is backstage. And backstage, if the clerk is right, is Madame Voltina."
-  ],
-  "BackstageRoom.entry": [
-   "Backstage. Rope, sandbags, and a fortune-teller's parlor where the fire exit should be.",
-   "Three keys wind this city back up. As of the ovation, I hold none of them.",
-   "The cables on the floor all run one direction. The direction glows.",
-   "A voice from the parlor: 'Mind the cables.'",
-   "I mind the cables."
-  ],
-  "BackstageRoom.cardTwo": [
-   "The arc tastes the voucher. 'One free oil. Redeemable where the rope is velvet.'",
-   "She taps it twice with an arc and hands it back uncashed.",
-   "'Cash it where City Hall drinks. Debts talk after hours.'",
-   "Card three lands face down. The first two didn't do that.",
-   "'The future,' she says. 'Place the key.'",
-   "The table waits. My pockets hold a notice, a magnet, a voucher, and a pass. Notably: no key."
-  ],
-  "BackstageRoom.cardThreePass": [
-   "I deal the pass onto the felt with intent.",
-   "'That opens one door. The future has more doors.'"
-  ],
-  "BackstageRoom.cardThreeBluff": [
-   "I explain that the key is in my other chassis.",
-   "The arc that finds me is small, educational, and extremely specific.",
-   "'The coil bills for lies.'"
-  ],
-  "BackstageRoom.optCrank": [
-   "I ask about the key that winds itself. As instructed.",
-   "'Old Crank,' she says. 'Up the hill, behind the fence. Older than the hum.'",
-   "'He was winding himself before the city needed winding.'",
-   "'When you hold two keys, ask him where the third one stands.'",
-   "A hermit, a fence, and a riddle with posture.",
-   "'Old Crank,' she says again. 'Up the hill. He keeps.'"
-  ],
-  "BackstageRoom.optWhoTook": [
-   "'Their door answers to the knock,' she says. 'Doors are not loyal.'",
-   "Twice. Once. Twice. I've got it.",
-   "'The cards answer that one. Place them.'",
-   "The felt is greener on the business side of the table."
-  ],
-  "BackstageRoom.optWant": [
-   "I ask what she gets out of vetting key-bearers.",
-   "'A city with one future puts fortune-tellers out of work.'",
-   "'Everyone stopping is not a fortune. It's a schedule.'",
-   "She wants tomorrow back on the table. Professionally.",
-   "'Same answer,' she says. 'A negotiable tomorrow.'"
-  ],
-  "BackstageRoom.optLater": [
-   "'Mind the cables.'",
-   "I'm learning."
-  ],
   "ResRoom.defaultAction": [
-   "Picking up citizens is how you get decommissioned.",
-   "My warranty specifically excludes that.",
-   "I can't just *use* a fellow robot. We have a union.",
-   "They look fully assembled already.",
-   "Those parts are not compatible.",
-   "My manual has no chapter on that.",
-   "Maybe later. It might be a collector's item.",
-   "I can't do that!",
-   "A fellow mechanical citizen.",
-   "Standard-issue municipal hardware.",
-   "Moving them would accomplish nothing.",
-   "It's bolted down. Everything here is bolted down. Except the bolts.",
-   "My screwdriver attachment is for personal use only.",
-   "That doesn't seem to open.",
-   "Smells like hard work and WD-40.",
-   "Nothing my scent library has a match for. Filing it under 'municipal'.",
-   "I don't know how to communicate with them.",
-   "It has nothing to say. Story of this whole town.",
-   "Hmm. No."
+   {
+    "text": "Picking up citizens is how you get decommissioned.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "My warranty specifically excludes that.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "I can't just *use* a fellow robot. We have a union.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "They look fully assembled already.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Those parts are not compatible.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "My manual has no chapter on that.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Maybe later. It might be a collector's item.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Physics says yes. Etiquette says no.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "A fellow mechanical citizen.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Standard-issue municipal hardware.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Moving them would accomplish nothing.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "It's bolted down. Everything here is bolted down. Except the bolts.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "My screwdriver attachment is for personal use only.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "That doesn't seem to open.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Smells like hard work and WD-40.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Nothing my scent library has a match for. Filing it under 'municipal'.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "I don't know how to communicate with them.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "It has nothing to say. Story of this whole town.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Hmm. No.",
+    "speaker": "sprocket"
+   }
   ],
   "ResRoom.keyboardHandler": [
-   "Beep."
+   {
+    "text": "Beep.",
+    "speaker": "sprocket"
+   }
+  ],
+  "DockRoom.entry": [
+   {
+    "text": "TEST NPC LINE. TWELVE WORDS OF DIAGNOSTIC YELLOW-ORANGE TEXT GO HERE NOW.",
+    "speaker": "extra"
+   },
+   {
+    "text": "SECOND TEST. EMCEE ACTOR SPEAKING IN FOOTLIGHT YELLOW FROM THE DOCKS.",
+    "speaker": "emcee"
+   },
+   {
+    "text": "Clanker City! The big smoke! The city of ten thousand gears!",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "One small maintenance-bot, one dream, and not so much as an oil can to my name.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Thanks for the ride! I'll catch the return ferry once I'm rich and famous.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "...",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "That clunk sounded expensive.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "That clunk sounded PERMANENT.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Well. Guess I live here now.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "The neon sign dips. The tavern window. The lit windows across the water. All together, like the city skipped a heartbeat.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Nobody on the dock looks up. That's the part I don't like.",
+    "speaker": "sprocket"
+   }
+  ],
+  "TavernRoom.entry": [
+   {
+    "text": "The Scrap & Barrel. Where the floor is sticky and nothing is explained.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "The bartender says to mind the everything.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "The piano is playing itself. Badly. With confidence.",
+    "speaker": "sprocket"
+   }
+  ],
+  "AlleyRoom.entry": [
+   {
+    "text": "The alley behind the Scrap & Barrel. Where the city keeps its rough drafts.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "There's a gate at the end marked MIDTOWN, going up.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Coin-operated. Of course it's coin-operated.",
+    "speaker": "sprocket"
+   }
+  ],
+  "MidtownRoom.entry": [
+   {
+    "text": "Midtown Gearworks. The neon is louder, the streets are cleaner, and the manholes hiss in a higher register.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "City Hall says NOTHING IS WRONG in letters you can read from the harbor.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "And up the hill, behind the fence: the Great Dynamo. You can hear it from here.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "It's flat. By half a step.",
+    "speaker": "sprocket"
+   }
+  ],
+  "TheaterRoom.entry": [
+   {
+    "text": "The Grand Cog, inside. Red velvet, brass rails, and a chandelier assembled from smaller, defeated chandeliers.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "The house is packed. Forty bots, and not one of them came here to be impressed.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "And up on the catwalk: one more, with a spyglass. No ticket. No hurry.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Somewhere past that curtain is backstage. And backstage, if the clerk is right, is Madame Voltina.",
+    "speaker": "sprocket"
+   }
+  ],
+  "BackstageRoom.entry": [
+   {
+    "text": "Backstage. Rope, sandbags, and a fortune-teller's parlor where the fire exit should be.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Three keys wind this city back up. As of the ovation, I hold none of them.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "The cables on the floor all run one direction. The direction glows.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "A voice from the parlor: 'Mind the cables.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "I mind the cables.",
+    "speaker": "sprocket"
+   }
+  ],
+  "BackstageRoom.cardTwo": [
+   {
+    "text": "The arc tastes the voucher. 'One free oil. Redeemable where the rope is velvet.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "She taps it twice with an arc and hands it back uncashed.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'Cash it where City Hall drinks. Debts talk after hours.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Card three lands face down. The first two didn't do that.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'The future,' she says. 'Place the key.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "The table waits. My pockets hold a notice, a magnet, a voucher, and a pass. Notably: no key.",
+    "speaker": "sprocket"
+   }
+  ],
+  "BackstageRoom.cardThreePass": [
+   {
+    "text": "I deal the pass onto the felt with intent.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'That opens one door. The future has more doors.'",
+    "speaker": "sprocket"
+   }
+  ],
+  "BackstageRoom.cardThreeBluff": [
+   {
+    "text": "I explain that the key is in my other chassis.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "The arc that finds me is small, educational, and extremely specific.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'The coil bills for lies.'",
+    "speaker": "sprocket"
+   }
+  ],
+  "BackstageRoom.optCrank": [
+   {
+    "text": "I ask about the key that winds itself. As instructed.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'Old Crank,' she says. 'Up the hill, behind the fence. Older than the hum.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'He was winding himself before the city needed winding.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'When you hold two keys, ask him where the third one stands.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "A hermit, a fence, and a riddle with posture.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'Old Crank,' she says again. 'Up the hill. He keeps.'",
+    "speaker": "sprocket"
+   }
+  ],
+  "BackstageRoom.optWhoTook": [
+   {
+    "text": "'Their door answers to the knock,' she says. 'Doors are not loyal.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Twice. Once. Twice. I've got it.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'The cards answer that one. Tell it to the table. The felt notarizes.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "The felt is greener on the business side of the table.",
+    "speaker": "sprocket"
+   }
+  ],
+  "BackstageRoom.optWant": [
+   {
+    "text": "I ask what she gets out of vetting key-bearers.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'A city with one future puts fortune-tellers out of work.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'Everyone stopping is not a fortune. It's a schedule.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "She wants tomorrow back on the table. Professionally.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'Same answer,' she says. 'A negotiable tomorrow.'",
+    "speaker": "sprocket"
+   }
+  ],
+  "BackstageRoom.optLater": [
+   {
+    "text": "'Mind the cables.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "I'm learning.",
+    "speaker": "sprocket"
+   }
   ]
  },
  "objects": {
-  "neon sign": {
-   "LookAt": [
-    "WELCOME TO CLANKER CITY. POP. 8,01,1.",
-    "Population eight-oh-one-comma-one. The punctuation died first.",
-    "Something inside it rattles on every flicker. Loose hardware. Practically an invoice.",
-    "Still POP. 8,01,1. The bolt wasn't load-bearing for the comma. Maintenance is iterative."
-   ],
-   "Use": [
-    "Maybe a good honest whack will fix the display.",
-    "It rained a bolt. In this town that's basically a tip.",
-    "It already gave me everything it had."
-   ],
-   "Move": [
-    "Maybe a good honest whack will fix the display.",
-    "It rained a bolt. In this town that's basically a tip.",
-    "It already gave me everything it had."
-   ],
-   "Smell": [
-    "Ozone and civic neglect."
-   ]
-  },
   "shiny bolt": {
    "LookAt": [
-    "One genuine Clanker City bolt. Legal tender, light snack, structural member."
+    {
+     "text": "A bolt. On the ground it's litter. In my pocket it's capital.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Mmm. Zinc-plated.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "One bolt. Only eight thousand and ten more and I can afford a personality upgrade.",
+     "speaker": "sprocket"
+    }
    ],
    "PickUp": [
-    "One bolt. Only eight thousand and ten more and I can afford a personality upgrade."
-   ],
-   "Use": [
-    "Those two things politely decline each other.",
-    "Saving it. Unless something jammed needs a shim more than I need a fortune."
-   ],
-   "Smell": [
-    "Mmm. Zinc-plated."
-   ]
-  },
-  "ferry": {
-   "LookAt": [
-    "The S.S. Eventually. My ride here, and apparently nothing's ride anywhere ever again."
-   ],
-   "Use": [
-    "The engine made a noise like a dying accordion and is now doing modern art."
-   ],
-   "Open": [
-    "The engine made a noise like a dying accordion and is now doing modern art."
-   ],
-   "TalkTo": [
-    "Hang in there, buddy.",
-    "The foghorn wheezed. I'm choosing to hear that as optimism."
-   ],
-   "Smell": [
-    "Salt water and burnt transmission fluid. Adventure, by the nose of it."
-   ]
-  },
-  "Boom-Arm Betty": {
-   "LookAt": [
-    "A cargo crane, frozen mid-lift. Or mid-yawn. Hard to tell.",
-    "The operator plate says 'BOOM-ARM BETTY'. Her eye-light is blinking in morse.",
-    "O... I... L. Yeah, Betty, we've all been there.",
-    "Betty's lifting things and putting them down again. For joy, near as I can tell."
-   ],
-   "TalkTo": [
-    "Hello up there! Lovely evening!",
-    "...",
-    "She'd wave back if she could. She's out of oil, not out of manners.",
-    "Her eye-light blinks: T... H... X.",
-    "She's billing by the letter. I respect it."
-   ],
-   "Use": [
-    "Her joints are dry as a tax form."
-   ],
-   "Give": [
-    "Open wide, Betty. Doctor's orders.",
-    "The oil goes in. Twenty years of squeak go out.",
-    "Betty sets the crate down with the gentleness of a very large aunt.",
-    "She considers it from up there and blinks a polite no."
-   ],
-   "UsedWith": [
-    "Open wide, Betty. Doctor's orders.",
-    "The oil goes in. Twenty years of squeak go out.",
-    "Betty sets the crate down with the gentleness of a very large aunt.",
-    "She considers it from up there and blinks a polite no."
-   ],
-   "Smell": [
-    "Burnt servo grease. A working robot's perfume."
-   ]
-  },
-  "crate": {
-   "LookAt": [
-    "Stenciled on the side: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
-    "Ominous AND conveniently plot-relevant. Also up a crane.",
-    "On the dock now, at a polite opening height.",
-    "Empty, except for packing grease and destiny residue."
-   ],
-   "PickUp": [
-    "It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.",
-    "Betty could set it down, if anyone gave her a drink of oil.",
-    "The lid argues. I argue back with a plank.",
-    "A brass wind-up key the size of my forearm. Stenciled: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
-    "Whoever ships a thing like this as deck cargo deserves to lose it.",
-    "Already opened. The destiny has been extracted."
-   ],
-   "Use": [
-    "It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.",
-    "Betty could set it down, if anyone gave her a drink of oil.",
-    "The lid argues. I argue back with a plank.",
-    "A brass wind-up key the size of my forearm. Stenciled: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
-    "Whoever ships a thing like this as deck cargo deserves to lose it.",
-    "Already opened. The destiny has been extracted."
-   ],
-   "Move": [
-    "It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.",
-    "Betty could set it down, if anyone gave her a drink of oil.",
-    "The lid argues. I argue back with a plank.",
-    "A brass wind-up key the size of my forearm. Stenciled: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
-    "Whoever ships a thing like this as deck cargo deserves to lose it.",
-    "Already opened. The destiny has been extracted."
-   ],
-   "Open": [
-    "It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.",
-    "Betty could set it down, if anyone gave her a drink of oil.",
-    "The lid argues. I argue back with a plank.",
-    "A brass wind-up key the size of my forearm. Stenciled: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
-    "Whoever ships a thing like this as deck cargo deserves to lose it.",
-    "Already opened. The destiny has been extracted."
-   ]
-  },
-  "scrap stall": {
-   "LookAt": [
-    "Rivet's Scrap Emporium: 'One bot's trash is this bot's entire business model.'",
-    "The shutter sign says: BACK IN FIVE OIL CHANGES."
-   ],
-   "Open": [
-    "Shuttered tighter than the city budget."
-   ],
-   "TalkTo": [
-    "HELLO? ANYONE IN THERE?",
-    "The echo has rust in it."
-   ]
-  },
-  "notice board": {
-   "LookAt": [
-    "Official city notice, hot off the press:",
-    "'DYNAMO MAINTENANCE: NOTHING IS WRONG. NOTHING HAS EVER BEEN WRONG.'",
-    "'DO NOT STOCKPILE OIL. SIGNED, MAYOR PISTON.'",
-    "The Great Dynamo powers every bot on this island. Including me, as of today.",
-    "Not wires \u2014 the hum. It keeps every mainspring on the island wound. Remotely. Steam bot, clockwork bot, engine bot: all spring-banked.",
-    "Hand-winding is the backup. Crude, short-burst, off-warranty.",
-    "So that notice is the scariest thing I've ever read.",
-    "Still nothing wrong. Officially."
+    {
+     "text": "One bolt. Only eight thousand and ten more and I can afford a personality upgrade.",
+     "speaker": "sprocket"
+    }
    ]
   },
   "official notice": {
-   "PickUp": [
-    "Let me read it first. I'm a maintenance-bot, not a barbarian.",
-    "Evidence. Or wall art. Possibly both."
-   ],
-   "Use": [
-    "Let me read it first. I'm a maintenance-bot, not a barbarian.",
-    "Evidence. Or wall art. Possibly both."
-   ],
    "LookAt": [
-    "\\\"DYNAMO MAINTENANCE: NOTHING IS WRONG. - Mayor Piston.\\\"",
-    "Nothing says 'something is wrong' like an official notice that nothing is wrong."
+    {
+     "text": "\\\"DYNAMO MAINTENANCE: NOTHING IS WRONG. - Mayor Piston.\\\"",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Nothing says 'something is wrong' like an official notice that nothing is wrong.",
+     "speaker": "sprocket"
+    }
    ],
    "Smell": [
-    "Fresh ink. Suspiciously fresh."
-   ]
-  },
-  "tavern door": {
-   "LookAt": [
-    "The Scrap & Barrel. I can hear a player piano in there. There's a hole in the tune it keeps not noticing."
-   ],
-   "Move": [
-    "Knock knock.",
-    "A voice inside: 'IT'S OPEN. THE KNOCKING IS DECORATIVE.'"
-   ],
-   "Smell": [
-    "10W-40, spilled and re-spilled. The cornerstone of hospitality."
-   ]
-  },
-  "storm drain": {
-   "LookAt": [
-    "Something glints down there. Several somethings.",
-    "The city's loose change goes to the sea. Poetic. Infuriating.",
-    "Nothing glints down there anymore. You're welcome, drain."
+    {
+     "text": "Fresh ink. Suspiciously fresh.",
+     "speaker": "sprocket"
+    }
    ],
    "PickUp": [
-    "My fingers are factory-standard. I'd need something magnetic. On a string."
+    {
+     "text": "Let me read it first. I'm a maintenance-bot, not a barbarian.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Evidence. Or wall art. Possibly both.",
+     "speaker": "sprocket"
+    }
    ],
    "Use": [
-    "My fingers are factory-standard. I'd need something magnetic. On a string."
-   ],
-   "Open": [
-    "My fingers are factory-standard. I'd need something magnetic. On a string."
-   ],
-   "UsedWith": [
-    "Down goes the magnet, on the city's last honest string.",
-    "Something bites. Several somethings.",
-    "Nine bolts. This city has been tipping the ocean for years.",
-    "The drain has been fished to commercial extinction.",
-    "The drain only wants what everyone wants. Something magnetic."
-   ]
-  },
-  "alley mouth": {
-   "LookAt": [
-    "A gap between the tavern and the cliff. The sign says ALLEY, in case the dark didn't read as one."
-   ],
-   "Smell": [
-    "Trouble, marinating."
-   ]
-  },
-  "door to the docks": {
-   "LookAt": [
-    "The way back to the docks. The night air smells of opportunity and brine."
-   ]
-  },
-  "neon bar sign": {
-   "LookAt": [
-    "SCRAP & BARREL. The ampersand is the freshest thing in here."
-   ],
-   "Smell": [
-    "Neon doesn't smell. The regret underneath it does."
-   ]
-  },
-  "bottle shelf": {
-   "LookAt": [
-    "Top-shelf lubricants. Literally. The bottom shelf is the same stuff with dust on it."
-   ],
-   "PickUp": [
-    "Gusket's eye is tracking me like a security camera.",
-    "Because it is one. There's a little red light."
-   ],
-   "Smell": [
-    "Esters, additives, and a 2% hint of regret. A good year."
-   ]
-  },
-  "bar": {
-   "LookAt": [
-    "Polished to a mirror finish in one specific spot. Wonder why."
-   ],
-   "Use": [
-    "I'd order something, but my warranty names additives by statute number."
-   ],
-   "Smell": [
-    "Spilled 10W-40, wiped with a rag that has seen things."
-   ]
-  },
-  "Gusket": {
-   "LookAt": [
-    "Gusket the bartender. He's been polishing that one glass since before I was assembled.",
-    "His arm servo is stuck in a loop. The glass, to be fair, is immaculate.",
-    "Gusket, polishing a second, completely novel glass. Growth."
-   ],
-   "TalkTo": [
-    "He says I look like I've had a hard drive, pal.",
-    "I ask about oil. He says oil is for paying customers and his last can rode off with the dart league.",
-    "He'd shake my hand, he says, but his arm's been polishing this glass since the Dynamo dimmed.",
-    "The servo's jammed. A little shim in the ratchet would free it.",
-    "He says Flange by the dartboard has the last oil can in the building.",
-    "And that Flange would bet his own head gasket on a dart game.",
-    "He says my drinks are free for life. Well. One drink. Per life."
-   ],
-   "Give": [
-    "Hold still, sir. This is a certified maintenance procedure.",
-    "The bolt slots into the ratchet. The servo unwinds. The glass, at long last, comes down.",
-    "My fortune. Reduced to eight thousand and nine.",
-    "He flips me a drink token. Says Flange takes those as table stakes at the dartboard.",
-    "Harbor bolts. Brined stiff. The shim wants one dry and dock-fresh, he says.",
-    "The WELCOME sign sheds those, if a bot asks it firmly enough.",
-    "He nods at my pocket. The dry one the sign already tipped me will do fine.",
-    "He bites it, tastes alley, and waves it off. The servo's fixed; the bolt's mine. Rivet sells facts for these.",
-    "He polishes it politely and hands it back."
-   ],
-   "UsedWith": [
-    "Hold still, sir. This is a certified maintenance procedure.",
-    "The bolt slots into the ratchet. The servo unwinds. The glass, at long last, comes down.",
-    "My fortune. Reduced to eight thousand and nine.",
-    "He flips me a drink token. Says Flange takes those as table stakes at the dartboard.",
-    "Harbor bolts. Brined stiff. The shim wants one dry and dock-fresh, he says.",
-    "The WELCOME sign sheds those, if a bot asks it firmly enough.",
-    "He nods at my pocket. The dry one the sign already tipped me will do fine.",
-    "He bites it, tastes alley, and waves it off. The servo's fixed; the bolt's mine. Rivet sells facts for these.",
-    "He polishes it politely and hands it back."
-   ],
-   "Smell": [
-    "Nothing. He's the cleanest thing in the building. It's a statement."
-   ]
-  },
-  "player piano": {
-   "LookAt": [
-    "A player piano, playing itself. It's missing three keys.",
-    "...That feels thematically significant."
-   ],
-   "Use": [
-    "The roll plays on through the gaps. Two of the missing keys still sound their notes.",
-    "The third doesn't. That one isn't missing a note. It's missing entirely."
-   ],
-   "UsedWith": [
-    "Wrong kind of key, wrong kind of missing.",
-    "The piano plays itself. It does not accessorize."
-   ],
-   "Smell": [
-    "Felt, brass, and the ghost of a B-flat."
-   ]
-  },
-  "rustlers' table": {
-   "LookAt": [
-    "Three corroded pirate-bots playing cards for washers.",
-    "One of them insists washers are 'post-bolt currency'. The other two are holding washers, so they're not arguing hard."
-   ],
-   "TalkTo": [
-    "I lean in casually. Extremely casually. Nobody has ever leaned this casually.",
-    "The one in the hat says: you CLANG twice, then once, then twice, you barnacle.",
-    "I am definitely not supposed to know that.",
-    "They've moved on to arguing about whether the table is winning."
-   ],
-   "Smell": [
-    "Salt corrosion and bluffing."
-   ]
-  },
-  "dartboard": {
-   "LookAt": [
-    "Regulation dartboard. The wall around it has suffered."
-   ],
-   "Use": [
-    "Flange owns the board. Flange owns the darts. The arrangement is explained to me with gestures.",
-    "Retired champion. I don't need to prove anything."
-   ]
-  },
-  "Flange": {
-   "LookAt": [
-    "A dockworker bot named Flange. Arm like a hydraulic press. Currently between games."
-   ],
-   "TalkTo": [
-    "He says: darts, table stakes one drink token, house rules, he always wins.",
-    "The oil can on his belt is the wager. The smugness comes free.",
-    "He's explaining to the wall how he was robbed. The wall agrees."
-   ],
-   "Give": [
-    "Token on the rail. Game on.",
-    "Dart one: the wall.",
-    "Dart two: a different wall.",
-    "Dart three is in the ocean. We're indoors. Nobody knows.",
-    "Flange is laughing so hard he goes for the showboat finish: three darts, one throw, behind the back.",
-    "His shoulder servo overheats with a noise like bacon achieving liftoff.",
-    "House rules: the overheated party forfeits the wager. The oil can is mine.",
-    "Losing this badly took real skill. Nobody will ever believe that.",
-    "He squints at it, then at me. We agree it isn't a drink token."
-   ],
-   "UsedWith": [
-    "Token on the rail. Game on.",
-    "Dart one: the wall.",
-    "Dart two: a different wall.",
-    "Dart three is in the ocean. We're indoors. Nobody knows.",
-    "Flange is laughing so hard he goes for the showboat finish: three darts, one throw, behind the back.",
-    "His shoulder servo overheats with a noise like bacon achieving liftoff.",
-    "House rules: the overheated party forfeits the wager. The oil can is mine.",
-    "Losing this badly took real skill. Nobody will ever believe that.",
-    "He squints at it, then at me. We agree it isn't a drink token."
-   ],
-   "Smell": [
-    "Hot bearings. He's been warming up the throwing arm since lunch."
-   ]
-  },
-  "back door": {
-   "LookAt": [
-    "A heavy back door. The sign says NO. Just NO. Punctuation costs extra."
-   ],
-   "Open": [
-    "CLANG-CLANG. CLANG. CLANG-CLANG.",
-    "A slot opens. An eye looks at me. A voice says: 'Act Three, buddy.' The slot closes.",
-    "Locked. The plate beside it is dented at knuckle height. In a pattern.",
-    "Somebody knocks here in code. Somebody with standing."
-   ],
-   "Use": [
-    "CLANG-CLANG. CLANG. CLANG-CLANG.",
-    "A slot opens. An eye looks at me. A voice says: 'Act Three, buddy.' The slot closes.",
-    "Locked. The plate beside it is dented at knuckle height. In a pattern.",
-    "Somebody knocks here in code. Somebody with standing."
-   ],
-   "Smell": [
-    "Rust, secrets, and back-alley grease."
-   ]
-  },
-  "way to the docks": {
-   "LookAt": [
-    "Back through the gap, the docks. My ferry's still out there, doing modern art."
-   ]
-  },
-  "steel door": {
-   "LookAt": [
-    "A steel door with no handle, no sign, and a brand-new red lamp.",
-    "The kind of door that's also a policy."
-   ],
-   "Open": [
-    "Knock knock.",
-    "The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'",
-    "This organization has remarkable message discipline.",
-    "I knock. The slot opens. The eye pauses \u2014 it knows what I'm here about now.",
-    "'STILL Act Three, buddy.' The slot closes. Slower this time. Almost respectful."
-   ],
-   "Use": [
-    "Knock knock.",
-    "The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'",
-    "This organization has remarkable message discipline.",
-    "I knock. The slot opens. The eye pauses \u2014 it knows what I'm here about now.",
-    "'STILL Act Three, buddy.' The slot closes. Slower this time. Almost respectful."
-   ],
-   "Move": [
-    "Knock knock.",
-    "The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'",
-    "This organization has remarkable message discipline.",
-    "I knock. The slot opens. The eye pauses \u2014 it knows what I'm here about now.",
-    "'STILL Act Three, buddy.' The slot closes. Slower this time. Almost respectful."
-   ],
-   "Smell": [
-    "Nothing. The door is airtight. That's its own kind of information."
-   ]
-  },
-  "graffiti": {
-   "LookAt": [
-    "Someone sprayed DYNAMO IS FINE. Crossed out. Under it, smaller: IT IS NOT.",
-    "Under that, very small: NO REFUNDS."
-   ],
-   "Smell": [
-    "Fresh paint over old paint over older paint. Sediment. Three administrations deep."
-   ]
-  },
-  "dumpster": {
-   "LookAt": [
-    "A municipal dumpster. The graffiti above appraises it at three stars."
-   ],
-   "Open": [
-    "Inside: one rubber duck, seized. One manual in a language of pure grease. And a magnet on a string.",
-    "In a town held together by bolts, a magnet on a string is a license to print money.",
-    "The duck has seniority now. I'm not fighting the duck."
-   ],
-   "Use": [
-    "Inside: one rubber duck, seized. One manual in a language of pure grease. And a magnet on a string.",
-    "In a town held together by bolts, a magnet on a string is a license to print money.",
-    "The duck has seniority now. I'm not fighting the duck."
-   ],
-   "Smell": [
-    "Banana oil and municipal despair."
-   ]
-  },
-  "fire escape": {
-   "LookAt": [
-    "A fire escape, and on it a Rustler with a spyglass, pointed at the docks.",
-    "He's taking notes. I'm in the notes."
-   ],
-   "TalkTo": [
-    "I wave up at him. He writes that down too."
-   ],
-   "PickUp": [
-    "The ladder's rusted shut. The Rustler shakes his head, slowly. Professional courtesy."
-   ],
-   "Use": [
-    "The ladder's rusted shut. The Rustler shakes his head, slowly. Professional courtesy."
-   ],
-   "UsedWith": [
-    "I could oil it. The Rustler taps his spyglass twice: rusted shut on purpose. It's a security feature.",
-    "The fire escape declines. It's seen what I do to infrastructure."
-   ]
-  },
-  "Rivet": {
-   "LookAt": [
-    "A round little bot built entirely out of other bots, sorting screws by mood.",
-    "The stall out front says BACK IN FIVE OIL CHANGES. This is where he goes when he's back."
-   ],
-   "TalkTo": [
-    "Rivet's the name, he says. Knows everything, sells most of it. Today only: the welcome bundle, three facts, free.",
-    "The funicular to Midtown takes ten bolts. Exact change. Gates can count \u2014 it's all they do.",
-    "Fact two, on the house, because I look like rain: the Dynamo is winding down, whatever the posters say.",
-    "The Order that built it left three wind-up keys behind. All three together could wind the city back up. Or down.",
-    "Fact three: the harbor keeps everything this town drops, and that dumpster is \u2014 legally \u2014 his.",
-    "Nine bolts, I tell him. He appraises my pockets from four feet away. Correctly.",
-    "He proposes a riddle duel. His bolt against my official city notice. He collects municipal lies. Complete sets matter.",
-    "Rivet goes first: 'What has a hundred teeth and never bites?' A gear. In this town it's always a gear.",
-    "My turn. One riddle. Alley rules.",
-    "'What winds down... but never winds up?'",
-    "He opens his mouth. He closes it. He looks uptown, at the Dynamo District.",
-    "He pays the bolt without a word.",
-    "'What's the loudest part of a foghorn?' He doesn't blink: 'The regret.'",
-    "Correct, somehow. He offers a rematch. He's enjoying this.",
-    "'How many bolts make a fortune?' He counts my pockets from across the alley: 'Nine short of one.'",
-    "Correct, insultingly. Rematch on the house.",
-    "He won't say how many I'm short. Alley rules: the gate breaks its own news.",
-    "He duels for stakes, and the stake he wants is paper: that official notice pinned up on the docks.",
-    "He duels somebodies only, alley rules. A somebody, here, owns something with an Order's stencil on it.",
-    "He says everything a bot needs is in that dumpster, and he says it as the dumpster's legal owner.",
-    "He eyes the magnet. He says the docks have a drain, the drain has a glint, and the glint has my name on it.",
-    "He waves. He's already sorting the bolts I fed the gate. I'm not asking how.",
-    "He nods at the gate. 'Ten bolts, exact change. The hopper has no pockets and no pity.'"
-   ],
-   "Give": [
-    "He takes the bolt, bites it, appraises my entire financial posture, and hands it back with a fact:",
-    "'The dumpster. Mine, legally. Help yourself before the duck does. Deposit refunded.'",
-    "'The storm drain on the docks. Bring the string. Deposit refunded.'",
-    "'You've already withdrawn. The bank is closed. Deposit refunded.'",
-    "He bites one of the nine and hands the fistful straight back, with a fact:",
-    "'The gate. Let it count. It lives for this.'",
-    "'Stakes, riddle, notary. Talk to me when you're holding paper worth wanting.'",
-    "He won't take it as a gift. Stakes or nothing \u2014 collection ethics.",
-    "Riddles, he says, are the alley's notary.",
-    "He appraises it, names a price, and the price is an insult. We're both happier keeping it."
-   ],
-   "UsedWith": [
-    "He takes the bolt, bites it, appraises my entire financial posture, and hands it back with a fact:",
-    "'The dumpster. Mine, legally. Help yourself before the duck does. Deposit refunded.'",
-    "'The storm drain on the docks. Bring the string. Deposit refunded.'",
-    "'You've already withdrawn. The bank is closed. Deposit refunded.'",
-    "He bites one of the nine and hands the fistful straight back, with a fact:",
-    "'The gate. Let it count. It lives for this.'",
-    "'Stakes, riddle, notary. Talk to me when you're holding paper worth wanting.'",
-    "He won't take it as a gift. Stakes or nothing \u2014 collection ethics.",
-    "Riddles, he says, are the alley's notary.",
-    "He appraises it, names a price, and the price is an insult. We're both happier keeping it."
-   ],
-   "Smell": [
-    "WD-40. He maintains himself. Nobody else is qualified."
-   ]
-  },
-  "junk heap": {
-   "LookAt": [
-    "Rivet's stock: pipes, springs, and a wheel from something that regrets losing it."
-   ],
-   "PickUp": [
-    "Rivet clears his throat without having one. Inventory is sacred."
-   ],
-   "Use": [
-    "Rivet clears his throat without having one. Inventory is sacred."
-   ],
-   "Smell": [
-    "Rust. Vintage rust. Estate rust."
-   ]
-  },
-  "funicular gate": {
-   "LookAt": [
-    "Gate's open, car's lit. Midtown keeps glittering like it doesn't know I'm coming.",
-    "Midtown can wait. The Dynamo, I'm less sure about.",
-    "A wrought-iron gate, a rail going up the cliff, and a sign: MIDTOWN. FARE, 10 BOLTS.",
-    "Uptown. The future. It has a coin slot."
-   ],
-   "Open": [
-    "Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.",
-    "The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.",
-    "Uptown. I can hear the neon from here.",
-    "The fare box wants ten bolts. I have pockets, and ambition.",
-    "I feed it the lot. It counts, returns everything it doesn't honor, and blinks NINE.",
-    "The hopper has no pity. Rivet might.",
-    "I feed it ten. It counts ten, blinks NINE, and spits the dry one back stamped UNCIRCULATED.",
-    "The slot gauge is worn-bolt-sized. Money here has to have suffered. The dry one has another appointment anyway."
-   ],
-   "Use": [
-    "Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.",
-    "The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.",
-    "Uptown. I can hear the neon from here.",
-    "The fare box wants ten bolts. I have pockets, and ambition.",
-    "I feed it the lot. It counts, returns everything it doesn't honor, and blinks NINE.",
-    "The hopper has no pity. Rivet might.",
-    "I feed it ten. It counts ten, blinks NINE, and spits the dry one back stamped UNCIRCULATED.",
-    "The slot gauge is worn-bolt-sized. Money here has to have suffered. The dry one has another appointment anyway."
-   ],
-   "Give": [
-    "I feed it the fistful. It counts, blinks NINE, and returns the lot.",
-    "Smug, for a gate. Rivet would know where a tenth grows.",
-    "It kept the fare. It's not a tip jar.",
-    "It blinks ONE and waits. Bulk payments only.",
-    "The slot wants bolts, plural, all at once."
-   ],
-   "UsedWith": [
-    "I feed it the fistful. It counts, blinks NINE, and returns the lot.",
-    "Smug, for a gate. Rivet would know where a tenth grows.",
-    "It kept the fare. It's not a tip jar.",
-    "It blinks ONE and waits. Bulk payments only.",
-    "The slot wants bolts, plural, all at once."
-   ],
-   "Smell": [
-    "Cold rail grease, all the way up."
-   ]
-  },
-  "funicular station": {
-   "LookAt": [
-    "The funicular, catching its breath. The fare down is free. The city knows which direction people give up in."
-   ]
-  },
-  "Lefty's Spare Parts": {
-   "LookAt": [
-    "LEFTY'S SPARE PARTS. Everything slightly used, mostly left.",
-    "The window display is three gaskets and a dream."
-   ],
-   "Open": [
-    "Closed for inventory. Through the glass I can see Lefty counting his own fingers.",
-    "Recounting."
-   ],
-   "Use": [
-    "Closed for inventory. Through the glass I can see Lefty counting his own fingers.",
-    "Recounting."
-   ],
-   "Smell": [
-    "Degreaser. The whole block smells like starting over."
-   ]
-  },
-  "the Oil Bar": {
-   "LookAt": [
-    "The Oil Bar. Uptown filtered, triple distilled, quadruple priced.",
-    "There's a velvet rope. For robots. To stand behind. Voluntarily."
-   ],
-   "Open": [
-    "A bouncer the size of a vending machine looks at my dock rust and invents a dress code.",
-    "I'm on the list, I tell him. He shows me the list. It's a picture of the door."
-   ],
-   "Use": [
-    "A bouncer the size of a vending machine looks at my dock rust and invents a dress code.",
-    "I'm on the list, I tell him. He shows me the list. It's a picture of the door."
-   ],
-   "Give": [
-    "The bouncer reads it. Valid, he admits. The rope, he explains, is a separate financial instrument.",
-    "Tonight it's at capacity. The rope. Is at capacity.",
-    "He doesn't hold things. Holding things is a different department."
-   ],
-   "UsedWith": [
-    "The bouncer reads it. Valid, he admits. The rope, he explains, is a separate financial instrument.",
-    "Tonight it's at capacity. The rope. Is at capacity.",
-    "He doesn't hold things. Holding things is a different department."
-   ],
-   "Smell": [
-    "Single-origin crude. The good stuff. The unaffordable stuff."
-   ]
-  },
-  "Grand Cog Theater": {
-   "LookAt": [
-    "There it is. SPROCKET. On a marquee. In lights.",
-    "Two of the bulbs are out. The rest are compensating.",
-    "Talent night. Tonight. No pressure. The marquee is the pressure.",
-    "SPROCKET, still in lights. Winner, robbed mid-bow. The marquee doesn't mention that part.",
-    "The Grand Cog Theater. TALENT NITE, says the marquee, with a line left blank underneath.",
-    "A blank line on a marquee is the most dangerous sentence in show business."
-   ],
-   "Open": [
-    "The doors open for performers. I'm a spectator with a forearm-sized key. The doors can tell."
-   ],
-   "Use": [
-    "The doors open for performers. I'm a spectator with a forearm-sized key. The doors can tell."
-   ],
-   "Smell": [
-    "Velvet, valve oil, and flop sweat. Showbiz."
-   ]
-  },
-  "box office": {
-   "LookAt": [
-    "A box office with a clerk built into it. Literally. He IS the booth from the waist down."
-   ],
-   "TalkTo": [
-    "Talent night, tonight, he says. Grand prize: an oil voucher and a backstage pass.",
-    "Backstage. Where Madame Voltina reads fortunes. And guards... things. He doesn't say what things.",
-    "Sign-up needs a stage name and an act. I have a name, and a key the size of my forearm.",
-    "He says, quote, that's more act than most.",
-    "You keep your props, he adds, before I can ask. House insurance won't survive a second Houdini.",
-    "He taps the sign-up slot and looks at my key. The slot is key-shaped, conceptually.",
-    "He says doors at eight, performers at seven, panicking at six. I'm ahead of schedule.",
-    "He says I'm the first winner in Grand Cog history to get robbed mid-bow and take it professionally."
-   ],
-   "Give": [
-    "I pitch the act: THE AMAZING SPROCKET WINDS HIMSELF UP. With a real key. On stage.",
-    "The clerk has seen everything twice, and he still blinks.",
-    "My name goes up on the marquee while I'm still holding the pen.",
-    "I keep the key. It's the act.",
-    "He slides the key back. Pitches come after terms, he says. Talk first.",
-    "Already registered. One act per bot. House rules, and the house is a cog.",
-    "He slides it back. The slot only takes talent."
-   ],
-   "UsedWith": [
-    "I pitch the act: THE AMAZING SPROCKET WINDS HIMSELF UP. With a real key. On stage.",
-    "The clerk has seen everything twice, and he still blinks.",
-    "My name goes up on the marquee while I'm still holding the pen.",
-    "I keep the key. It's the act.",
-    "He slides the key back. Pitches come after terms, he says. Talk first.",
-    "Already registered. One act per bot. House rules, and the house is a cog.",
-    "He slides it back. The slot only takes talent."
-   ],
-   "Smell": [
-    "Stage fright. Not his. It soaks into the booth from the queue."
-   ]
-  },
-  "City Hall": {
-   "LookAt": [
-    "City Hall. The banner says NOTHING IS WRONG. It's brand new.",
-    "They replaced the old banner. The old one said the same thing, smaller."
-   ],
-   "Open": [
-    "An aide opens the door exactly nine degrees. The Mayor is not seeing anyone.",
-    "Especially, he adds, anyone holding paper."
-   ],
-   "Use": [
-    "An aide opens the door exactly nine degrees. The Mayor is not seeing anyone.",
-    "Especially, he adds, anyone holding paper."
-   ],
-   "UsedWith": [
-    "I show the official notice through the gap. The aide identifies it as 'official' and 'correct'.",
-    "Then he closes the door eight of the nine degrees.",
-    "Somebody in there is afraid of this piece of paper. Good. So am I, a little.",
-    "The aide's eye appears in the gap, evaluates it, and declines on the city's behalf."
-   ],
-   "Smell": [
-    "Fresh paint. Several coats. What's underneath is none of my business."
-   ]
-  },
-  "the Great Dynamo": {
-   "LookAt": [
-    "The Great Dynamo, up the hill, behind a fence with opinions.",
-    "Every bot on this island runs on that hum. Including me. The hum is flat by half a step.",
-    "Half a step doesn't sound like much. Neither did the clunk."
-   ],
-   "TalkTo": [
-    "Hang in there, big fella. Help is coming. Help is small and walks funny, but it's coming."
-   ],
-   "Give": [
-    "It fits nothing from down here. One key, three slots, a fence in between.",
-    "Even the fence can do that math.",
-    "The Dynamo has staff for that. Had. The fence implies staff."
-   ],
-   "UsedWith": [
-    "It fits nothing from down here. One key, three slots, a fence in between.",
-    "Even the fence can do that math.",
-    "The Dynamo has staff for that. Had. The fence implies staff."
-   ],
-   "Smell": [
-    "Ozone. The whole sky tastes like a battery up here."
-   ]
-  },
-  "lobby doors": {
-   "LookAt": [
-    "Back out to the street. The street is where bots who didn't enter talent night get to live."
-   ]
-  },
-  "spotlight booth": {
-   "LookAt": [
-    "The spotlight booth. The operator inside is in low-power mode, eye dimmed to a polite ember.",
-    "The brownouts reach everywhere.",
-    "The operator's awake and tracking the stage like it owes him money."
-   ],
-   "Use": [
-    "I rap on the booth. HOUSE LIGHTS, BUDDY. SHOWTIME.",
-    "His eye flickers up through three shades of amber. He checks the program, then checks me.",
-    "He mouths: 'the wind-up act?' I nod. He cracks every knuckle he has. Both of them.",
-    "He's ready. I'm the one stalling."
-   ],
-   "TalkTo": [
-    "I rap on the booth. HOUSE LIGHTS, BUDDY. SHOWTIME.",
-    "His eye flickers up through three shades of amber. He checks the program, then checks me.",
-    "He mouths: 'the wind-up act?' I nod. He cracks every knuckle he has. Both of them.",
-    "He's ready. I'm the one stalling."
-   ],
-   "Move": [
-    "I rap on the booth. HOUSE LIGHTS, BUDDY. SHOWTIME.",
-    "His eye flickers up through three shades of amber. He checks the program, then checks me.",
-    "He mouths: 'the wind-up act?' I nod. He cracks every knuckle he has. Both of them.",
-    "He's ready. I'm the one stalling."
-   ],
-   "Smell": [
-    "Hot carbon and cold coffee."
-   ]
-  },
-  "chandelier": {
-   "LookAt": [
-    "More sockets than the wall has switches, a few of them resting. The rigging predates the building it hangs in."
-   ],
-   "Use": [
-    "Whatever swinging from it would prove, the insurance exclusions prove harder."
-   ],
-   "PickUp": [
-    "Whatever swinging from it would prove, the insurance exclusions prove harder."
-   ]
-  },
-  "the audience": {
-   "LookAt": [
-    "Two rows of regulars with their arms crossed. Some of them welded that way.",
-    "Front row: a juggler rehearsing a drop, and a singer warming up a voice like a ferry in distress.",
-    "My public. An hour ago they were a firing squad."
-   ],
-   "TalkTo": [
-    "I try some crowd work. How's everybody doing tonight?",
-    "A voice from the dark: 'WORSE NOW.'",
-    "Somebody yells ENCORE. Somebody else yells at him. The arts."
-   ],
-   "Smell": [
-    "Idling engines. The whole room is holding its breath with fans."
-   ]
-  },
-  "the emcee": {
-   "LookAt": [
-    "The emcee. Tuxedo paint job, telescoping mic arm, and the smile of a bot who has introduced ten thousand acts and survived nine."
-   ],
-   "TalkTo": [
-    "Sprocket, he says, reading the marquee off my face. The wind-up act. You're on next.",
-    "One problem: the spotlight operator went into low-power mode during the juggler. The juggler had that effect.",
-    "House rule: no spot, no act. He says it like the rule has a plaque somewhere.",
-    "He looks from my key to the dark booth and back. He likes my chances, he says. Conditionally.",
-    "He points his mic arm at the booth. No spot, no act. The plaque is implied.",
-    "He sweeps an arm at the stage. The stage is all mine, he says, the way doctors say 'this won't hurt'.",
-    "He keeps calling me 'the discovery of the season'. The season is one night long."
-   ],
-   "Smell": [
-    "Pomade. He's a robot. I have questions."
-   ]
-  },
-  "the stage": {
-   "LookAt": [
-    "Confetti on the boards and a spotlight with nothing left to prove.",
-    "The stage. Behind that curtain, forty years of acts have died and three have lived.",
-    "Tonight it gets a maintenance-bot and a very large key."
-   ],
-   "Give": [
-    "The curtain opens. The house goes quiet the way a dropped wrench goes quiet. Mid-air.",
-    "The emcee leans in: how many turns? The manual mentions a number. In bold. In red.",
-    "I wind myself. Eight full turns. Regulation maximum is five.",
-    "The spring lets go.",
-    "I am now performing unscheduled acrobatics.",
-    "The proscenium and I meet several times. It gives as good as it gets.",
-    "I land in the spotlight. On my feet. Nobody is more surprised than the feet.",
-    "Silence. Then the house comes apart. The bots who can't stand wave their wheels.",
-    "The emcee declares it the most honest act in Grand Cog history. I don't correct him.",
-    "First prize: one oil voucher, and a backstage pass on a lanyard of bicycle chain.",
-    "The spring spat the key to the boards at launch. I go to collect it for the bow \u2014 my hand closes on applause.",
-    "A hook on a line whips up past the proscenium. Fishing tackle. Somebody else's magnet-on-a-string.",
-    "Up on the catwalk, a hatch clicks shut. Two clangs. One. Two.",
-    "The hats from the card table. The spyglass from the catwalk. I hand-delivered the thing \u2014 lit stage, my name in bulbs.",
-    "Everyone in this house saw a triumph. I saw a hatch.",
-    "Three turns buys one hop and a curtsy. The house files it under 'juggler'.",
-    "The emcee mouths: the bold. red. number.",
-    "Five regulation turns: a clean cartwheel, a safe landing, a smattering.",
-    "'Safe,' says the emcee, like a diagnosis. The Grand Cog doesn't pay out for safe.",
-    "One act per night. The house couldn't take a second one. Neither could the proscenium.",
-    "No spot, no act. The rule has a plaque, the plaque has a lawyer.",
-    "The spot has an operator. The operator is asleep.",
-    "The stage considers it and finds it insufficiently theatrical."
-   ],
-   "UsedWith": [
-    "The curtain opens. The house goes quiet the way a dropped wrench goes quiet. Mid-air.",
-    "The emcee leans in: how many turns? The manual mentions a number. In bold. In red.",
-    "I wind myself. Eight full turns. Regulation maximum is five.",
-    "The spring lets go.",
-    "I am now performing unscheduled acrobatics.",
-    "The proscenium and I meet several times. It gives as good as it gets.",
-    "I land in the spotlight. On my feet. Nobody is more surprised than the feet.",
-    "Silence. Then the house comes apart. The bots who can't stand wave their wheels.",
-    "The emcee declares it the most honest act in Grand Cog history. I don't correct him.",
-    "First prize: one oil voucher, and a backstage pass on a lanyard of bicycle chain.",
-    "The spring spat the key to the boards at launch. I go to collect it for the bow \u2014 my hand closes on applause.",
-    "A hook on a line whips up past the proscenium. Fishing tackle. Somebody else's magnet-on-a-string.",
-    "Up on the catwalk, a hatch clicks shut. Two clangs. One. Two.",
-    "The hats from the card table. The spyglass from the catwalk. I hand-delivered the thing \u2014 lit stage, my name in bulbs.",
-    "Everyone in this house saw a triumph. I saw a hatch.",
-    "Three turns buys one hop and a curtsy. The house files it under 'juggler'.",
-    "The emcee mouths: the bold. red. number.",
-    "Five regulation turns: a clean cartwheel, a safe landing, a smattering.",
-    "'Safe,' says the emcee, like a diagnosis. The Grand Cog doesn't pay out for safe.",
-    "One act per night. The house couldn't take a second one. Neither could the proscenium.",
-    "No spot, no act. The rule has a plaque, the plaque has a lawyer.",
-    "The spot has an operator. The operator is asleep.",
-    "The stage considers it and finds it insufficiently theatrical."
-   ],
-   "Use": [
-    "Climbing up empty-handed is called loitering. With the key, it's called an act.",
-    "The proscenium and I have an agreement."
-   ],
-   "Open": [
-    "Climbing up empty-handed is called loitering. With the key, it's called an act.",
-    "The proscenium and I have an agreement."
-   ],
-   "Smell": [
-    "Sawdust, grease paint, and the fear of four hundred opening nights."
-   ]
-  },
-  "stage door": {
-   "LookAt": [
-    "STAGE DOOR. Behind it: dressing rooms, rope, and a fortune-teller."
-   ],
-   "Open": [
-    "I flash the pass. The stagehand reads it twice. Nothing in his build explains how he steps aside, but he does.",
-    "The dark behind him smells like ozone and incense. A voice from it says: 'I have been expecting you, key-bearer.'",
-    "I start to explain about the key. 'I know,' says the voice. 'Ask me sometime about the key that winds itself. Mind the cables.'",
-    "Madame Voltina. I'm going to need a minute, and possibly a will.",
-    "A stagehand the shape of a filing cabinet fills the doorway. Pass-holders only."
-   ],
-   "Use": [
-    "I flash the pass. The stagehand reads it twice. Nothing in his build explains how he steps aside, but he does.",
-    "The dark behind him smells like ozone and incense. A voice from it says: 'I have been expecting you, key-bearer.'",
-    "I start to explain about the key. 'I know,' says the voice. 'Ask me sometime about the key that winds itself. Mind the cables.'",
-    "Madame Voltina. I'm going to need a minute, and possibly a will.",
-    "A stagehand the shape of a filing cabinet fills the doorway. Pass-holders only."
-   ],
-   "Smell": [
-    "Ozone and incense, from under the door. That combination has never once meant something normal."
-   ]
-  },
-  "door to the stage": {
-   "LookAt": [
-    "Back to the stage. The confetti should be settling by now."
-   ]
-  },
-  "costume rack": {
-   "LookAt": [
-    "Forty years of acts on hangers. A bear suit for a bot. A bot suit for, presumably, a bear."
-   ],
-   "Use": [
-    "Nothing in my size. Everything in my price range."
-   ],
-   "Smell": [
-    "Mothballs, losing."
-   ]
-  },
-  "ghost light": {
-   "LookAt": [
-    "A bare bulb on a stand, center backstage. Theater law: it never goes out.",
-    "It's flickering."
-   ],
-   "Use": [
-    "Not my circuit. Some maintenance is above my pay grade, which is zero."
-   ]
-  },
-  "fuse box": {
-   "LookAt": [
-    "The theater's fuse box. Somebody has labeled every single fuse HER."
-   ],
-   "Open": [
-    "I leave it shut. The wiring outranks me, and the wiring is a person."
-   ],
-   "Use": [
-    "I leave it shut. The wiring outranks me, and the wiring is a person."
-   ]
-  },
-  "Madame Voltina": {
-   "LookAt": [
-    "A tesla coil in a shawl. Her head is a glass dome with weather inside.",
-    "There's no crystal ball on the table. She's the ball."
-   ],
-   "TalkTo": [
-    "'Sprocket,' says the parlor. 'Late of the docks, lately of the stage.'",
-    "I ask how she follows my career. 'The theater is wired. I am the wiring.'",
-    "'You came for the one in the jar.'",
-    "There's a jar. In it: a brass key the size of my forearm.",
-    "The stencil on the glass matches the crate my luck came in.",
-    "'The Order left it with me. I vet the bearer.'",
-    "I ask what the vetting costs. 'A reading. Yours.'",
-    "'Used to be I'd read you cold. The brownouts ended cold reads.'",
-    "'Three cards. Past, present, future. Answer each with what you carry.'",
-    "'Carried things remember. Lie, and the coil bills you.'",
-    "A card snaps onto the felt. A woodcut of a printing press, smiling.",
-    "'The past,' she says. 'Place the lie this city printed you.'"
-   ],
-   "Smell": [
-    "Ozone at a concentration my manual files under 'leave'."
-   ]
-  },
-  "reading table": {
-   "LookAt": [
-    "Card one, face up: a printing press, smiling. The felt waits.",
-    "Card two, face up: an open hand, palm up. Municipal.",
-    "Card three, face down. The first two didn't do that.",
-    "Three cards spent, one key paid. The felt looks satisfied. For felt.",
-    "Green felt, scorch marks in threes. The scorches are tidy. The felt has accepted its life."
-   ],
-   "Give": [
-    "The arc hits the notice and goes the color of a courtroom.",
-    "'NOTHING IS WRONG,' she reads. 'Issued in bulk. Believed by no one.'",
-    "'You pried it off a public board. Past, verified.'",
-    "She slides it back across the felt. The past is mine to keep.",
-    "Card two: a woodcut of an open hand, palm up. Municipal.",
-    "'The present,' she says. 'Place the debt this city owes you.'",
-    "'It fished nine bolts out of a drain,' she reads. 'True. Not printed.'",
-    "The coil reads by touch, and everything I've carried is a diary.",
-    "'Ink so fresh it's still deciding. That isn't past. That's Tuesday.'",
-    "'You earned that an hour ago. The past takes longer to print.'",
-    "'The card is patient.'",
-    "'That's what the city owes itself. Pockets again.'",
-    "'The harbor paid that one. Nine bolts, settled.'",
-    "'You won that at eight turns. Regulation is five.'",
-    "The coil watched my act. Everyone's a critic with provenance.",
-    "'Square winnings. A pass is permission, not debt.'",
-    "'The card is patient.'",
-    "Card three is face down and done with objects. It wants an answer, out loud.",
-    "The reading is over. The felt is off the clock.",
-    "She hasn't dealt yet. Cards first, business after."
-   ],
-   "UsedWith": [
-    "The arc hits the notice and goes the color of a courtroom.",
-    "'NOTHING IS WRONG,' she reads. 'Issued in bulk. Believed by no one.'",
-    "'You pried it off a public board. Past, verified.'",
-    "She slides it back across the felt. The past is mine to keep.",
-    "Card two: a woodcut of an open hand, palm up. Municipal.",
-    "'The present,' she says. 'Place the debt this city owes you.'",
-    "'It fished nine bolts out of a drain,' she reads. 'True. Not printed.'",
-    "The coil reads by touch, and everything I've carried is a diary.",
-    "'Ink so fresh it's still deciding. That isn't past. That's Tuesday.'",
-    "'You earned that an hour ago. The past takes longer to print.'",
-    "'The card is patient.'",
-    "'That's what the city owes itself. Pockets again.'",
-    "'The harbor paid that one. Nine bolts, settled.'",
-    "'You won that at eight turns. Regulation is five.'",
-    "The coil watched my act. Everyone's a critic with provenance.",
-    "'Square winnings. A pass is permission, not debt.'",
-    "'The card is patient.'",
-    "Card three is face down and done with objects. It wants an answer, out loud.",
-    "The reading is over. The felt is off the clock.",
-    "She hasn't dealt yet. Cards first, business after."
-   ],
-   "Use": [
-    "The truth, then. I put my name in bulbs and the key on a lit stage. A hook took it at the bow.",
-    "'Truth.' The arc doesn't flinch. Neither of us mentions whose idea the bulbs were.",
-    "She turns the card with an arc. A woodcut of a city, held upside down, being shaken.",
-    "'The Rustlers don't want a dark city. They want one that pays to stay lit.'",
-    "'Wind it down. Ransom the rewind. Salvage rates.' Their words, says the card.",
-    "Piracy, with invoices.",
-    "'Your future knocks,' she says. 'Twice. Once. Twice.'",
-    "I know that knock. It plays cards in the Scrap & Barrel.",
-    "Twice. Once. Twice. I file the rhythm somewhere fireproof.",
-    "'The reading is paid,' she says. 'Ground yourself.'",
-    "She earths the jar with a rod the size of a baton. The lid gives a small, ceremonial pop.",
-    "'Key the second,' she says. 'Lose it slower.'",
-    "One key in hand, one behind a knock, one still a rumor that winds itself. The math is moving again.",
-    "'Make tomorrow negotiable again. I have appointments.'",
-    "I step back. The card stays face down. It has nowhere better to be.",
-    "The reading is over. The felt is off the clock.",
-    "It's her table. I've seen what the coil does to volunteers."
-   ],
-   "Smell": [
-    "Ozone. Old felt. More ozone."
-   ]
-  },
-  "card carousel": {
-   "LookAt": [
-    "A brass carousel of punch-cards. The holes are the fortunes. The cards are just chaperones."
-   ],
-   "PickUp": [
-    "It deals for her. It has seniority."
-   ],
-   "Use": [
-    "It deals for her. It has seniority."
-   ]
-  },
-  "key in a jar": {
-   "LookAt": [
-    "A brass wind-up key in a glass jar, stenciled PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
-    "The jar hums. Not the city's hum. A private one.",
-    "Empty. The stencil stays. One absence, well documented."
-   ],
-   "Open": [
-    "I reach. The jar reaches back.",
-    "'The deposit is charged,' she says. 'So is the jar.'",
-    "Already mine. The jar and I are square."
-   ],
-   "Use": [
-    "I reach. The jar reaches back.",
-    "'The deposit is charged,' she says. 'So is the jar.'",
-    "Already mine. The jar and I are square."
-   ],
-   "PickUp": [
-    "I reach. The jar reaches back.",
-    "'The deposit is charged,' she says. 'So is the jar.'",
-    "Already mine. The jar and I are square."
-   ],
-   "Smell": [
-    "Glass, brass, and a hum I can taste in my teeth. I don't have teeth."
-   ]
-  },
-  "cables": {
-   "LookAt": [
-    "Cables, braided like the city's worst haircut. Every one of them feeds the parlor."
-   ],
-   "Use": [
-    "Each one is load-bearing. So is her patience."
-   ],
-   "Move": [
-    "Each one is load-bearing. So is her patience."
-   ],
-   "Smell": [
-    "Warm rubber."
+    {
+     "text": "Let me read it first. I'm a maintenance-bot, not a barbarian.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Evidence. Or wall art. Possibly both.",
+     "speaker": "sprocket"
+    }
    ]
   },
   "drink token": {
    "LookAt": [
-    "One genuine Scrap & Barrel drink token. Redeemable for one drink, zero refunds, unlimited regret."
+    {
+     "text": "One genuine Scrap & Barrel drink token. Redeemable for one drink, zero refunds, no appeals.",
+     "speaker": "sprocket"
+    }
    ],
    "Use": [
-    "Those two things politely decline each other.",
-    "Gusket said Flange takes these as table stakes. At the dartboard."
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Gusket said Flange takes these as table stakes. At the dartboard.",
+     "speaker": "sprocket"
+    }
    ],
    "Smell": [
-    "Every hand in the tavern, in chronological order."
+    {
+     "text": "Every hand in the tavern, in chronological order.",
+     "speaker": "sprocket"
+    }
    ]
   },
   "oil can": {
    "LookAt": [
-    "Small-batch, dock-aged 10W-40. The good stuff."
+    {
+     "text": "Small-batch, dock-aged 10W-40. The good stuff.",
+     "speaker": "sprocket"
+    }
    ],
    "Use": [
-    "Those two things politely decline each other.",
-    "I'm not drinking it. It's medicine. For someone with a boom arm."
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I'm not drinking it. It's medicine. For someone with a boom arm.",
+     "speaker": "sprocket"
+    }
    ],
    "Smell": [
-    "Notes of machine shop, with a long viscous finish."
+    {
+     "text": "Notes of machine shop, with a long viscous finish.",
+     "speaker": "sprocket"
+    }
    ]
   },
   "wind-up key": {
    "LookAt": [
-    "A brass wind-up key the size of my forearm. Somebody polished it for years. Somebody is going to want it back."
+    {
+     "text": "A brass wind-up key the size of my forearm. Somebody polished it for years. Somebody is going to want it back.",
+     "speaker": "sprocket"
+    }
    ],
    "Use": [
-    "Those two things politely decline each other.",
-    "Big key, seeking big lock. Open, in the meantime, to showbiz."
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Big key, seeking big lock. Open, in the meantime, to showbiz.",
+     "speaker": "sprocket"
+    }
    ],
    "Smell": [
-    "Brass polish. Somebody maintained this thing its whole life."
+    {
+     "text": "Brass polish, and recent. Whoever the Order left behind still keeps a schedule.",
+     "speaker": "sprocket"
+    }
    ]
   },
   "magnet on a string": {
    "LookAt": [
-    "A magnet on a string. Point it at the ground and walk slowly."
+    {
+     "text": "A magnet on a string. Point it at the ground and walk slowly.",
+     "speaker": "sprocket"
+    }
    ],
    "Use": [
-    "Those two things politely decline each other.",
-    "It wants something ferrous. The storm drain on the docks was full of glint."
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It wants something ferrous. The storm drain on the docks was full of glint.",
+     "speaker": "sprocket"
+    }
    ],
    "Smell": [
-    "It smells of attraction. Strictly professional."
+    {
+     "text": "It smells of attraction. Strictly professional.",
+     "speaker": "sprocket"
+    }
    ]
   },
   "fistful of bolts": {
    "LookAt": [
-    "Nine bolts, fresh from the harbor. The fare to Midtown is ten.",
-    "Nine is the loneliest number that isn't a fare."
+    {
+     "text": "Nine bolts, fresh from the harbor. The fare to Midtown is ten.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Nine is the loneliest number that isn't a fare.",
+     "speaker": "sprocket"
+    }
    ],
    "Use": [
-    "Those two things politely decline each other.",
-    "I count them again. Still nine. Counting is not the bottleneck."
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I count them again. Still nine. Counting is not the bottleneck.",
+     "speaker": "sprocket"
+    }
    ],
    "Smell": [
-    "Brine and compound interest."
+    {
+     "text": "Brine and compound interest.",
+     "speaker": "sprocket"
+    }
    ]
   },
   "the tenth bolt": {
    "LookAt": [
-    "The bolt Rivet paid out on the riddle. It looks exactly like a bolt that used to be his."
+    {
+     "text": "The bolt Rivet paid out on the riddle. It looks exactly like a bolt that used to be his.",
+     "speaker": "sprocket"
+    }
    ],
    "Use": [
-    "Those two things politely decline each other.",
-    "With the other nine, that's a fare."
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "With the other nine, that's a fare.",
+     "speaker": "sprocket"
+    }
    ],
    "Smell": [
-    "Faintly of riddles."
+    {
+     "text": "Faintly of riddles.",
+     "speaker": "sprocket"
+    }
    ]
   },
   "oil voucher": {
    "LookAt": [
-    "GOOD FOR ONE PREMIUM OIL SERVICE. Valid at participating establishments.",
-    "The only establishment that participates has a velvet rope."
+    {
+     "text": "GOOD FOR ONE PREMIUM OIL SERVICE. Valid at participating establishments.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The only establishment that participates has a velvet rope.",
+     "speaker": "sprocket"
+    }
    ],
    "Use": [
-    "Those two things politely decline each other.",
-    "I'm saving it for somewhere with a rope to get past."
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I'm saving it for somewhere with a rope to get past.",
+     "speaker": "sprocket"
+    }
    ],
    "Smell": [
-    "Thermal paper. It's already fading. Spend it."
+    {
+     "text": "Thermal paper. Already fading. Somebody prints these expecting them not to be honored.",
+     "speaker": "sprocket"
+    }
    ]
   },
   "backstage pass": {
    "LookAt": [
-    "ALL ACCESS, it says, over my own startled face. The lanyard is genuine bicycle chain."
+    {
+     "text": "ALL ACCESS, it says, over my own startled face. The lanyard is genuine bicycle chain.",
+     "speaker": "sprocket"
+    }
    ],
    "Use": [
-    "Those two things politely decline each other.",
-    "It opens exactly one door, and the door comes with staff."
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It opens exactly one door, and the door comes with staff.",
+     "speaker": "sprocket"
+    }
    ],
    "Smell": [
-    "Chain grease. The lanyard has a past."
+    {
+     "text": "Chain grease. The lanyard has a past.",
+     "speaker": "sprocket"
+    }
    ]
   },
   "the second key": {
    "LookAt": [
-    "Brass, forearm-sized, second of three. This one has never been on a marquee.",
-    "We're keeping it that way."
+    {
+     "text": "Brass, forearm-sized, second of three. This one has never been on a marquee.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "We're keeping it that way.",
+     "speaker": "sprocket"
+    }
    ],
    "Use": [
-    "Those two things politely decline each other.",
-    "It wants the Dynamo. The Dynamo wants its siblings first."
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It wants the Dynamo. The Dynamo wants its siblings first.",
+     "speaker": "sprocket"
+    }
    ],
    "Smell": [
-    "Ozone. It kept the jar's accent."
+    {
+     "text": "Ozone. It kept the jar's accent.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "neon sign": {
+   "LookAt": [
+    {
+     "text": "WELCOME TO CLANKER CITY. POP. 8,01,1.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Population eight-oh-one-comma-one. The punctuation died first.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Something inside it rattles on every flicker. Loose hardware. That's not a noise, that's a work order.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Still POP. 8,01,1. The bolt wasn't load-bearing for the comma. Maintenance is iterative.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Maybe a good honest whack will fix the display.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It rained a bolt. In this town that's basically a tip.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It already gave me everything it had.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Move": [
+    {
+     "text": "Maybe a good honest whack will fix the display.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It rained a bolt. In this town that's basically a tip.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It already gave me everything it had.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Ozone and civic neglect.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "ferry": {
+   "LookAt": [
+    {
+     "text": "The S.S. Eventually. Turns out the name was the schedule.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "The engine made a noise like a dying accordion and is now doing modern art.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "The engine made a noise like a dying accordion and is now doing modern art.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "Hang in there, buddy.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The foghorn wheezed. I'm choosing to hear that as optimism.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Salt water and burnt transmission fluid. Adventure, by the nose of it.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "Boom-Arm Betty": {
+   "LookAt": [
+    {
+     "text": "A cargo crane, frozen mid-lift. Or mid-yawn. Hard to tell.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The operator plate says 'BOOM-ARM BETTY'. Her eye-light is blinking in morse.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "O... I... L. Yeah, Betty, we've all been there.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Betty's lifting things and putting them down again. For joy, near as I can tell.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "Hello up there! Lovely evening!",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "...",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She'd wave back if she could. She's out of oil, not out of manners.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Her eye-light blinks: T... H... X.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She's billing by the letter. I respect it.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Her joints are dry as a tax form.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "Open wide, Betty. Doctor's orders.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The oil goes in. Twenty years of squeak go out.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Betty sets the crate down with the gentleness of a very large aunt.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She considers it from up there and blinks a polite no.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "Open wide, Betty. Doctor's orders.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The oil goes in. Twenty years of squeak go out.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Betty sets the crate down with the gentleness of a very large aunt.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She considers it from up there and blinks a polite no.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Burnt servo grease. A working robot's perfume.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "crate": {
+   "LookAt": [
+    {
+     "text": "Stenciled on the side: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Ominous AND conveniently plot-relevant. Also up a crane.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "On the dock now, at a polite opening height.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Empty, except for packing grease and destiny residue.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Betty could set it down, if anyone gave her a drink of oil.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The lid argues. I argue back with a plank.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A brass wind-up key the size of my forearm. Stenciled: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Whoever ships a thing like this as deck cargo deserves to lose it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Already opened. The destiny has been extracted.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Betty could set it down, if anyone gave her a drink of oil.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The lid argues. I argue back with a plank.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A brass wind-up key the size of my forearm. Stenciled: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Whoever ships a thing like this as deck cargo deserves to lose it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Already opened. The destiny has been extracted.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Move": [
+    {
+     "text": "It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Betty could set it down, if anyone gave her a drink of oil.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The lid argues. I argue back with a plank.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A brass wind-up key the size of my forearm. Stenciled: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Whoever ships a thing like this as deck cargo deserves to lose it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Already opened. The destiny has been extracted.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "It's eight feet up. Fine: four. My arms are stock parts and the principle is load-bearing.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Betty could set it down, if anyone gave her a drink of oil.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The lid argues. I argue back with a plank.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A brass wind-up key the size of my forearm. Stenciled: PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Whoever ships a thing like this as deck cargo deserves to lose it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Already opened. The destiny has been extracted.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "scrap stall": {
+   "LookAt": [
+    {
+     "text": "Rivet's Scrap Emporium: 'One bot's trash is this bot's entire business model.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The shutter sign says: BACK IN FIVE OIL CHANGES.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "Shuttered tighter than the city budget.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "HELLO? ANYONE IN THERE?",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The echo has rust in it.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "notice board": {
+   "LookAt": [
+    {
+     "text": "Official city notice, hot off the press:",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'DYNAMO MAINTENANCE: NOTHING IS WRONG. NOTHING HAS EVER BEEN WRONG.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'DO NOT STOCKPILE OIL. SIGNED, MAYOR PISTON.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The Great Dynamo powers every bot on this island. Including me, as of today.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Not wires -- the hum. It keeps every mainspring on the island wound. Remotely. Steam bot, clockwork bot, engine bot: all spring-banked.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Hand-winding is the backup. Crude, short-burst, off-warranty.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "So that notice is the scariest thing I've ever read.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Still nothing wrong. Officially.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "tavern door": {
+   "LookAt": [
+    {
+     "text": "The Scrap & Barrel. I can hear a player piano in there. There's a hole in the tune it keeps not noticing.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Move": [
+    {
+     "text": "Knock knock.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A voice inside: 'IT'S OPEN. THE KNOCKING IS DECORATIVE.'",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "10W-40, spilled and re-spilled. The cornerstone of hospitality.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "storm drain": {
+   "LookAt": [
+    {
+     "text": "Something glints down there. Several somethings.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The city's loose change goes to the sea. Poetic. Infuriating.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Nothing glints down there anymore. You're welcome, drain.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "My fingers are factory-standard. I'd need something magnetic. On a string.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "My fingers are factory-standard. I'd need something magnetic. On a string.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "My fingers are factory-standard. I'd need something magnetic. On a string.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "Down goes the magnet, on the city's last honest string.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Something bites. Several somethings.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Nine bolts. This city has been tipping the ocean for years.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The drain has been fished to commercial extinction.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The drain only wants what everyone wants. Something magnetic.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "alley mouth": {
+   "LookAt": [
+    {
+     "text": "A gap between the tavern and the cliff. The sign says ALLEY, in case the dark didn't read as one.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Trouble, marinating.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "door to the docks": {
+   "LookAt": [
+    {
+     "text": "The way back to the docks. The night air is free, which in this town reads as a misprint.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "neon bar sign": {
+   "LookAt": [
+    {
+     "text": "SCRAP & BARREL. The ampersand is the freshest thing in here.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Neon doesn't smell. The regret underneath it does.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "bottle shelf": {
+   "LookAt": [
+    {
+     "text": "Top-shelf lubricants. Literally. The bottom shelf is the same stuff with dust on it.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "Gusket's eye is tracking me like a security camera.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Because it is one. There's a little red light.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Esters and additives, forty proof. The dust is the vintage.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "bar": {
+   "LookAt": [
+    {
+     "text": "Polished to a mirror finish in one specific spot. Wonder why.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "I'd order something, but my warranty names additives by statute number.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Spilled 10W-40, wiped with a rag that has seen things.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "Gusket": {
+   "LookAt": [
+    {
+     "text": "Gusket the bartender. He's been polishing that one glass since before I was assembled.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "His arm servo is stuck in a loop. The glass, to be fair, is immaculate.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Gusket, polishing a second, completely novel glass. Growth.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "He says I look like I've had a hard drive, pal.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask about oil. He says oil is for paying customers and his last can rode off with the dart league.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He'd shake my hand, he says, but his arm's been polishing this glass since the Dynamo dimmed.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The servo's jammed. A little shim in the ratchet would free it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He says Flange by the dartboard has the last oil can in the building.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "And that Flange would bet his own head gasket on a dart game.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He says my drinks are free for life. Well. One drink. Per life.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "Hold still, sir. This is a certified maintenance procedure.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The bolt slots into the ratchet. The servo unwinds. The glass, at long last, comes down.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "My fortune. Back up to eight thousand and eleven to go. Investing is brutal.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He flips me a drink token. Says Flange takes those as table stakes at the dartboard.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Brined. He'd sooner drink them. Rivet sells facts for the dry kind.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Harbor bolts. Brined stiff. The shim wants one dry and dock-fresh, he says.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The WELCOME sign sheds those, if a bot asks it firmly enough.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He nods at my pocket. The dry one the sign already tipped me will do fine.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He bites it, tastes alley, and waves it off. The servo's fixed; the bolt's mine. Rivet sells facts for these.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He polishes it politely and hands it back.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "Hold still, sir. This is a certified maintenance procedure.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The bolt slots into the ratchet. The servo unwinds. The glass, at long last, comes down.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "My fortune. Back up to eight thousand and eleven to go. Investing is brutal.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He flips me a drink token. Says Flange takes those as table stakes at the dartboard.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Brined. He'd sooner drink them. Rivet sells facts for the dry kind.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Harbor bolts. Brined stiff. The shim wants one dry and dock-fresh, he says.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The WELCOME sign sheds those, if a bot asks it firmly enough.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He nods at my pocket. The dry one the sign already tipped me will do fine.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He bites it, tastes alley, and waves it off. The servo's fixed; the bolt's mine. Rivet sells facts for these.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He polishes it politely and hands it back.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Nothing. He's the cleanest thing in the building. It's a statement.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "player piano": {
+   "LookAt": [
+    {
+     "text": "A player piano, playing itself. It's missing three keys.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "...That feels thematically significant.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "The roll plays on through the gaps. Two of the missing keys still sound their notes.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The third doesn't. That one isn't missing a note. It's missing entirely.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "Wrong kind of key, wrong kind of missing.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The piano plays itself. It does not accessorize.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Felt, brass, and the ghost of a B-flat.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "rustlers' table": {
+   "LookAt": [
+    {
+     "text": "Same three. Same hat. One of them is dealing with my key for a card weight, and we are all pretending otherwise.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Three corroded pirate-bots playing cards for washers.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "One of them insists washers are 'post-bolt currency'. The other two are holding washers, so they're not arguing hard.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "I lean in casually. Extremely casually. Nobody has ever leaned this casually.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The one in the hat says: you CLANG twice, then once, then twice, you barnacle.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I am definitely not supposed to know that.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "They've moved on to arguing about whether the table is winning.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Salt corrosion and bluffing.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "dartboard": {
+   "LookAt": [
+    {
+     "text": "Regulation dartboard. The wall around it has suffered.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Flange owns the board. Flange owns the darts. The arrangement is explained to me with gestures.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Retired champion. I don't need to prove anything.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "Flange": {
+   "LookAt": [
+    {
+     "text": "A dockworker bot named Flange. Arm like a hydraulic press. Currently between games.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "He says: darts, table stakes one drink token, house rules, he always wins.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The oil can on his belt is the wager. The smugness comes free.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He's explaining to the wall how he was robbed. The wall agrees.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "Token on the rail. Game on.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Dart one: the wall.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Dart two: a different wall.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Dart three is in the ocean. We're indoors. Nobody knows.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Flange is laughing so hard he goes for the showboat finish: three darts, one throw, behind the back.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "His shoulder servo overheats with a noise like bacon achieving liftoff.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "House rules: the overheated party forfeits the wager. The oil can is mine.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Losing this badly took real skill. Nobody will ever believe that.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He squints at it, then at me. We agree it isn't a drink token.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "Token on the rail. Game on.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Dart one: the wall.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Dart two: a different wall.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Dart three is in the ocean. We're indoors. Nobody knows.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Flange is laughing so hard he goes for the showboat finish: three darts, one throw, behind the back.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "His shoulder servo overheats with a noise like bacon achieving liftoff.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "House rules: the overheated party forfeits the wager. The oil can is mine.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Losing this badly took real skill. Nobody will ever believe that.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He squints at it, then at me. We agree it isn't a drink token.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Hot bearings. He's been warming up the throwing arm since lunch.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "back door": {
+   "LookAt": [
+    {
+     "text": "A heavy back door. The sign says NO. Just NO. Punctuation costs extra.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "CLANG-CLANG. CLANG. CLANG-CLANG.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A slot opens. The eye checks me twice. 'Right knock. Wrong appointment.' The slot closes.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It knows my knock now. That's not a refusal. That's a booking.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A slot opens. An eye looks at me. A voice says: 'Act Three, buddy.' The slot closes.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Locked. The plate beside it is dented at knuckle height. In a pattern.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Somebody knocks here in code. Somebody with standing.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "CLANG-CLANG. CLANG. CLANG-CLANG.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A slot opens. The eye checks me twice. 'Right knock. Wrong appointment.' The slot closes.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It knows my knock now. That's not a refusal. That's a booking.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A slot opens. An eye looks at me. A voice says: 'Act Three, buddy.' The slot closes.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Locked. The plate beside it is dented at knuckle height. In a pattern.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Somebody knocks here in code. Somebody with standing.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Hinge oil, fresh. Somebody keeps this door quiet on purpose.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "way to the docks": {
+   "LookAt": [
+    {
+     "text": "Back through the gap, the docks. My ferry's still out there, doing modern art.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "steel door": {
+   "LookAt": [
+    {
+     "text": "A steel door with no handle, no sign, and a brand-new red lamp.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The kind of door that's also a policy.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "Knock knock.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "This organization has remarkable message discipline.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I knock. The slot opens. The eye pauses -- it knows what I'm here about now.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'STILL Act Three, buddy.' The slot closes. Slower this time. Almost respectful.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Knock knock.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "This organization has remarkable message discipline.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I knock. The slot opens. The eye pauses -- it knows what I'm here about now.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'STILL Act Three, buddy.' The slot closes. Slower this time. Almost respectful.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Move": [
+    {
+     "text": "Knock knock.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "This organization has remarkable message discipline.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I knock. The slot opens. The eye pauses -- it knows what I'm here about now.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'STILL Act Three, buddy.' The slot closes. Slower this time. Almost respectful.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Nothing. The door is airtight. That's its own kind of information.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "graffiti": {
+   "LookAt": [
+    {
+     "text": "Someone sprayed DYNAMO IS FINE. Crossed out. Under it, smaller: IT IS NOT.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Under that, very small: NO REFUNDS.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Fresh paint over old paint over older paint. Sediment. Three administrations deep.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "dumpster": {
+   "LookAt": [
+    {
+     "text": "A municipal dumpster. The graffiti above appraises it at three stars.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "Inside: one rubber duck, seized. One manual in a language of pure grease. And a magnet on a string.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "In a town held together by bolts, a magnet on a string is a license to print money.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The duck has seniority now. I'm not fighting the duck.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Inside: one rubber duck, seized. One manual in a language of pure grease. And a magnet on a string.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "In a town held together by bolts, a magnet on a string is a license to print money.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The duck has seniority now. I'm not fighting the duck.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Banana oil and municipal despair.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "fire escape": {
+   "LookAt": [
+    {
+     "text": "The spyglass isn't pointed at the docks anymore. It's pointed at me. I've been promoted.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A fire escape, and on it a Rustler with a spyglass, pointed at the docks.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He's taking notes. I'm in the notes.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "I don't wave this time. He notes that too.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I wave up at him. He writes that down too.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "The ladder's rusted shut. The Rustler shakes his head, slowly. Professional courtesy.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "The ladder's rusted shut. The Rustler shakes his head, slowly. Professional courtesy.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "I could oil it. The Rustler taps his spyglass twice: rusted shut on purpose. It's a security feature.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The fire escape declines. It's seen what I do to infrastructure.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "Rivet": {
+   "LookAt": [
+    {
+     "text": "A round little bot built entirely out of other bots, sorting screws by mood.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The stall out front says BACK IN FIVE OIL CHANGES. This is where he goes when he's back.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "Rivet's the name, he says. Knows everything, sells most of it. Today only: the welcome bundle, three facts, free.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The funicular to Midtown takes ten bolts. Exact change. Gates can count -- it's all they do.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Fact two, on the house, because I look like rain: the Dynamo is winding down, whatever the posters say.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The Order that built it left three wind-up keys behind. All three together could wind the city back up. Or down.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Fact three: the harbor keeps everything this town drops, and that dumpster is -- legally -- his.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Nine bolts, I tell him. He appraises my pockets from four feet away. Correctly.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He proposes a riddle duel. His bolt against my official city notice. He collects municipal lies. Complete sets matter.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Rivet goes first: 'What has a hundred teeth and never bites?' A gear. In this town it's always a gear.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "My turn. One riddle. Alley rules.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'What winds down... but never winds up?'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He opens his mouth. He closes it. He looks uptown, at the Dynamo District.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He pays the bolt without a word.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'What's the loudest part of a foghorn?' He doesn't blink: 'The regret.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Correct, somehow. He offers a rematch. He's enjoying this.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'How many bolts make a fortune?' He counts my pockets from across the alley: 'Nine short of one.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Correct, insultingly. Rematch on the house.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He won't say how many I'm short. Alley rules: the gate breaks its own news.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He duels for stakes, and the stake he wants is paper: that official notice pinned up on the docks.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He duels somebodies only, alley rules. A somebody, here, owns something with an Order's stencil on it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He says everything a bot needs is in that dumpster, and he says it as the dumpster's legal owner.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He eyes the magnet. He says the docks have a drain, the drain has a glint, and the glint has my name on it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He waves. He's already sorting the bolts I fed the gate. I'm not asking how.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He nods at the gate. 'Ten bolts, exact. Go on up,' he says. 'Wave to me from the future.'",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "He takes the bolt, bites it, appraises my entire financial posture, and hands it back with a fact:",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The dumpster. Mine, legally. Help yourself before the duck does. Deposit refunded.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The storm drain on the docks. Bring the string. Deposit refunded.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'You've already withdrawn. The bank is closed. Deposit refunded.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He bites one of the nine and hands the fistful straight back, with a fact:",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The gate. Let it count. It lives for this.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Stakes, riddle, notary. Talk to me when you're holding paper worth wanting.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'You've got the paper AND my bolt. The shop is closed to you, champ.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He won't appraise his own bolt. Conflict of interest. The fact comes free:",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Ten go in the gate. All at once. It likes the drama.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He won't take it as a gift. Stakes or nothing -- collection ethics.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Riddles, he says, are the alley's notary.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He appraises it, names a price, and the price is an insult. We're both happier keeping it.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "He takes the bolt, bites it, appraises my entire financial posture, and hands it back with a fact:",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The dumpster. Mine, legally. Help yourself before the duck does. Deposit refunded.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The storm drain on the docks. Bring the string. Deposit refunded.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'You've already withdrawn. The bank is closed. Deposit refunded.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He bites one of the nine and hands the fistful straight back, with a fact:",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The gate. Let it count. It lives for this.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Stakes, riddle, notary. Talk to me when you're holding paper worth wanting.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'You've got the paper AND my bolt. The shop is closed to you, champ.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He won't appraise his own bolt. Conflict of interest. The fact comes free:",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Ten go in the gate. All at once. It likes the drama.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He won't take it as a gift. Stakes or nothing -- collection ethics.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Riddles, he says, are the alley's notary.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He appraises it, names a price, and the price is an insult. We're both happier keeping it.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "WD-40. He maintains himself. Nobody else is qualified.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "junk heap": {
+   "LookAt": [
+    {
+     "text": "Rivet's stock: pipes, springs, and a wheel that outlived its vehicle.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "Rivet clears his throat without having one. Inventory is sacred.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Rivet clears his throat without having one. Inventory is sacred.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Rust. Vintage rust. Estate rust.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "funicular gate": {
+   "LookAt": [
+    {
+     "text": "Gate's open, car's lit. Midtown keeps glittering like it doesn't know I'm coming.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Midtown can wait. The Dynamo, I'm less sure about.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A wrought-iron gate, a rail going up the cliff, and a sign: MIDTOWN. FARE, 10 BOLTS.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Uptown. The future. It has a coin slot.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Uptown. I can hear the neon from here.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The fare box wants ten bolts. I have pockets, and ambition.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I feed it the lot. It counts, returns everything it doesn't honor, and blinks NINE.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The hopper has no pity. Rivet might.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I feed it ten. It counts ten, blinks NINE, and spits the dry one back stamped UNCIRCULATED.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The slot gauge is worn-bolt-sized. The dry one has another appointment anyway.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Ten bolts in the hopper. It counts them twice. Trust died in this town years ago.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The gate ratchets up, and a little brass car rolls down to meet me, lit up like a promise.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Uptown. I can hear the neon from here.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The fare box wants ten bolts. I have pockets, and ambition.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I feed it the lot. It counts, returns everything it doesn't honor, and blinks NINE.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The hopper has no pity. Rivet might.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I feed it ten. It counts ten, blinks NINE, and spits the dry one back stamped UNCIRCULATED.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The slot gauge is worn-bolt-sized. The dry one has another appointment anyway.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "I feed it the fistful. It counts, blinks NINE, and returns the lot.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Smug, for a gate. Rivet would know where a tenth grows.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It kept the fare. It's not a tip jar.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It blinks ONE and waits. Bulk payments only.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The slot wants bolts, plural, all at once.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "I feed it the fistful. It counts, blinks NINE, and returns the lot.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Smug, for a gate. Rivet would know where a tenth grows.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It kept the fare. It's not a tip jar.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It blinks ONE and waits. Bulk payments only.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The slot wants bolts, plural, all at once.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Cold rail grease, all the way up.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "funicular station": {
+   "LookAt": [
+    {
+     "text": "The funicular, catching its breath. The fare down is free. The city knows which direction people give up in.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "Lefty's Spare Parts": {
+   "LookAt": [
+    {
+     "text": "LEFTY'S SPARE PARTS. Everything slightly used, mostly left.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The window display is three gaskets and a dream.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "Closed for inventory. Through the glass I can see Lefty counting his own fingers.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Recounting.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Closed for inventory. Through the glass I can see Lefty counting his own fingers.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Recounting.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Degreaser. The whole block smells like starting over.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "the Oil Bar": {
+   "LookAt": [
+    {
+     "text": "The Oil Bar. Uptown filtered, triple distilled, quadruple priced.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "There's a velvet rope. For robots. To stand behind. Voluntarily.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "A bouncer the size of a vending machine looks at my dock rust and invents a dress code.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I'm on the list, I tell him. He shows me the list. It's a picture of the door.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "A bouncer the size of a vending machine looks at my dock rust and invents a dress code.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I'm on the list, I tell him. He shows me the list. It's a picture of the door.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "He reads it again. Valid, he repeats. After hours, he says, like somebody told him to say it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The rope stays up. But now it's a door with a schedule instead of a wall with a manner.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The bouncer reads it. Valid, he admits. The rope, he explains, is a separate financial instrument.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Madame's night, he says. The rope respects her appointments.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He doesn't hold things. Holding things is a different department.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "He reads it again. Valid, he repeats. After hours, he says, like somebody told him to say it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The rope stays up. But now it's a door with a schedule instead of a wall with a manner.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The bouncer reads it. Valid, he admits. The rope, he explains, is a separate financial instrument.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Madame's night, he says. The rope respects her appointments.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He doesn't hold things. Holding things is a different department.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Single-origin crude. The good stuff. The unaffordable stuff.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "Grand Cog Theater": {
+   "LookAt": [
+    {
+     "text": "There it is. SPROCKET. On a marquee. In lights.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A third of the bulbs are out. The rest are compensating.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Talent night. Tonight. No pressure. The marquee is the pressure.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "SPROCKET, still in lights. Winner, robbed mid-bow. The marquee doesn't mention that part.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The Grand Cog Theater. TALENT NITE, says the marquee, with a line left blank underneath.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A blank line on a marquee is the most dangerous sentence in show business.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "The doors open for performers. I'm a spectator with a forearm-sized key. The doors can tell.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "The doors open for performers. I'm a spectator with a forearm-sized key. The doors can tell.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Velvet, valve oil, and flop sweat. Showbiz.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "box office": {
+   "LookAt": [
+    {
+     "text": "A box office with a clerk built into it. Literally. He IS the booth from the waist down.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "Talent night, tonight, he says. Grand prize: an oil voucher and a backstage pass.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Backstage. Where Madame Voltina reads fortunes. And guards... things. He doesn't say what things.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Sign-up needs a stage name and an act. I have a name, and a key the size of my forearm.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He says, quote, that's more act than most.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "You keep your props, he adds, before I can ask. House insurance won't survive a second Houdini.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He taps the sign-up slot and looks at my key. The slot is key-shaped, conceptually.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He says doors at eight, performers at seven, panicking at six. I'm ahead of schedule.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He says I'm the first winner in Grand Cog history to leave lighter than I arrived.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "I pitch the act: THE AMAZING SPROCKET WINDS HIMSELF UP. With a real key. On stage.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The clerk has seen everything twice, and he still blinks.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "My name goes up on the marquee while I'm still holding the pen.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I keep the key. It's the act.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He slides the key back. Pitches come after terms, he says. Talk first.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Already registered. One act per bot. House rules, and the house is a cog.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He slides it back. The slot only takes talent.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "I pitch the act: THE AMAZING SPROCKET WINDS HIMSELF UP. With a real key. On stage.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The clerk has seen everything twice, and he still blinks.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "My name goes up on the marquee while I'm still holding the pen.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I keep the key. It's the act.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He slides the key back. Pitches come after terms, he says. Talk first.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Already registered. One act per bot. House rules, and the house is a cog.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He slides it back. The slot only takes talent.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Stage fright. Not his. It soaks into the booth from the queue.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "City Hall": {
+   "LookAt": [
+    {
+     "text": "City Hall. The banner says NOTHING IS WRONG. It's brand new.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "They replaced the old banner. The old one said the same thing, smaller.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "An aide opens the door exactly nine degrees. The Mayor is not seeing anyone.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Especially, he adds, anyone holding paper.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "An aide opens the door exactly nine degrees. The Mayor is not seeing anyone.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Especially, he adds, anyone holding paper.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "I show the official notice through the gap. The aide identifies it as 'official' and 'correct'.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Then he closes the door eight of the nine degrees.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A whole government, one degree of open. The paper goes back in my pocket, loaded.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The aide's eye appears in the gap, evaluates it, and declines on the city's behalf.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "I show the official notice through the gap. The aide identifies it as 'official' and 'correct'.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Then he closes the door eight of the nine degrees.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A whole government, one degree of open. The paper goes back in my pocket, loaded.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The aide's eye appears in the gap, evaluates it, and declines on the city's behalf.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Fresh paint. Several coats. What's underneath is none of my business.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "the Great Dynamo": {
+   "LookAt": [
+    {
+     "text": "The Great Dynamo, up the hill, behind a fence with opinions.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Every bot on this island runs on that hum. Including me. The hum is flat by half a step.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Half a step doesn't sound like much. Neither did the clunk.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "Hang in there, big fella. Help is coming. Help is small and walks funny, but it's coming.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "It fits nothing from down here. One key, three slots, a fence in between.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Even the fence can do that math.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The Dynamo has staff for that. Had. The fence implies staff.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "It fits nothing from down here. One key, three slots, a fence in between.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Even the fence can do that math.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The Dynamo has staff for that. Had. The fence implies staff.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Ozone. The whole sky tastes like a battery up here.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "lobby doors": {
+   "LookAt": [
+    {
+     "text": "Back out to the street. The street is where bots who didn't enter talent night get to live.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "spotlight booth": {
+   "LookAt": [
+    {
+     "text": "The spotlight booth. The operator inside is in low-power mode, eye dimmed to a polite ember.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The brownouts reach everywhere.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The operator's awake, tracking the stage at full amber. Somebody is getting lit tonight whether they like it or not.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "I rap on the booth. HOUSE LIGHTS, BUDDY. SHOWTIME.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "His eye flickers up through three shades of amber. He checks the program, then checks me.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He mouths: 'the wind-up act?' I nod. He cracks every knuckle he has. Both of them.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He's ready. I'm the one stalling.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "I rap on the booth. HOUSE LIGHTS, BUDDY. SHOWTIME.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "His eye flickers up through three shades of amber. He checks the program, then checks me.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He mouths: 'the wind-up act?' I nod. He cracks every knuckle he has. Both of them.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He's ready. I'm the one stalling.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Move": [
+    {
+     "text": "I rap on the booth. HOUSE LIGHTS, BUDDY. SHOWTIME.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "His eye flickers up through three shades of amber. He checks the program, then checks me.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He mouths: 'the wind-up act?' I nod. He cracks every knuckle he has. Both of them.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He's ready. I'm the one stalling.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Hot carbon and cold coffee.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "chandelier": {
+   "LookAt": [
+    {
+     "text": "More sockets than the wall has switches, a few of them resting. The rigging predates the building it hangs in.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Whatever swinging from it would prove, the insurance exclusions prove harder.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "Whatever swinging from it would prove, the insurance exclusions prove harder.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "the audience": {
+   "LookAt": [
+    {
+     "text": "Two rows of regulars with their arms crossed. Some of them welded that way.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Front row: a juggler rehearsing a drop, and a singer warming up a voice like a ferry in distress.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "My public. An hour ago they were a firing squad.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "I try some crowd work. How's everybody doing tonight?",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A voice from the dark: 'WORSE NOW.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Somebody yells ENCORE. Somebody else yells at him. The arts.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Idling engines. The whole room is holding its breath with fans.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "catwalk": {
+   "LookAt": [
+    {
+     "text": "The catwalk is empty now. It looks innocent. Catwalks always do.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The hatch is shut, and the bolt is on their side. Somebody up there respects maintenance.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A catwalk over the stage. Walkway, rail, hatch -- and a silhouette doing audience research with a spyglass.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "Out of reach, and bolted from the far side. The scene of the crime, sealed by the criminals.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Out of reach. And occupied. The house's rigging belongs to whoever is already in it.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Out of reach, and bolted from the far side. The scene of the crime, sealed by the criminals.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Out of reach. And occupied. The house's rigging belongs to whoever is already in it.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "Out of reach, and bolted from the far side. The scene of the crime, sealed by the criminals.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Out of reach. And occupied. The house's rigging belongs to whoever is already in it.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Rope, dust, and altitude.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "the emcee": {
+   "LookAt": [
+    {
+     "text": "The emcee. Tuxedo paint job, telescoping mic arm, and the smile of a bot who has introduced ten thousand acts and survived nine.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "Sprocket. The wind-up act. You're on next.",
+     "speaker": "emcee"
+    },
+    {
+     "text": "He read the marquee off my face. I didn't know faces leaked.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "One problem: the spotlight operator went into low-power mode during the juggler. The juggler had that effect.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "House rule. No spot, no act.",
+     "speaker": "emcee"
+    },
+    {
+     "text": "He says it like the rule has a plaque somewhere.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He looks from my key to the dark booth and back.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I like your chances. Conditionally.",
+     "speaker": "emcee"
+    },
+    {
+     "text": "He points his mic arm at the booth. No spot, no act. The plaque is implied.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He sweeps an arm at the stage. The stage is all mine, he says, the way doctors say 'this won't hurt'.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He keeps calling me 'the discovery of the season'. The season is one night long.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Pomade. He's a robot. I have questions.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "the stage": {
+   "LookAt": [
+    {
+     "text": "Confetti on the boards and a spotlight with nothing left to prove.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The stage. Tonight it gets a maintenance-bot and a very large key.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Tonight it gets a maintenance-bot and a very large key.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "The curtain opens. The house goes quiet the way a dropped wrench goes quiet. Mid-air.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The emcee leans in: how many turns? The manual mentions a number. In bold. In red.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I wind myself. Eight full turns. Regulation maximum is five.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The spring lets go.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I am now performing unscheduled acrobatics.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The proscenium and I meet several times. It gives as good as it gets.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I land in the spotlight. On my feet. Nobody is more surprised than the feet.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Silence. Then the house comes apart. The bots who can't stand wave their wheels.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The emcee declares it the most honest act in Grand Cog history. I don't correct him.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "First prize: one oil voucher, and a backstage pass on a lanyard of bicycle chain.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The spring spat the key to the boards at launch. I go to collect it for the bow -- my hand closes on applause.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A hook on a line whips up past the proscenium. Fishing tackle. Somebody else's magnet-on-a-string.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The hatch clicks shut. Then, from the far side, knuckles: two. One. Two. They sign their work.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The hat from the card table. The spyglass from the catwalk.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Everyone in this house saw a triumph. I saw a hatch.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Three turns buys one hop and a curtsy. The house files it under 'juggler'.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The emcee mouths: the bold red number.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Five regulation turns: a clean cartwheel, a safe landing, a smattering.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Safe,' says the emcee, like a diagnosis. The Grand Cog doesn't pay out for safe.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "One act per night. The house couldn't take a second one. Neither could the proscenium.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "No spot, no act. The rule has a plaque, the plaque has a lawyer.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The spot has an operator. The operator is asleep.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The stage considers it and finds it insufficiently theatrical.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "The curtain opens. The house goes quiet the way a dropped wrench goes quiet. Mid-air.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The emcee leans in: how many turns? The manual mentions a number. In bold. In red.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I wind myself. Eight full turns. Regulation maximum is five.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The spring lets go.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I am now performing unscheduled acrobatics.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The proscenium and I meet several times. It gives as good as it gets.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I land in the spotlight. On my feet. Nobody is more surprised than the feet.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Silence. Then the house comes apart. The bots who can't stand wave their wheels.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The emcee declares it the most honest act in Grand Cog history. I don't correct him.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "First prize: one oil voucher, and a backstage pass on a lanyard of bicycle chain.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The spring spat the key to the boards at launch. I go to collect it for the bow -- my hand closes on applause.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A hook on a line whips up past the proscenium. Fishing tackle. Somebody else's magnet-on-a-string.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The hatch clicks shut. Then, from the far side, knuckles: two. One. Two. They sign their work.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The hat from the card table. The spyglass from the catwalk.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Everyone in this house saw a triumph. I saw a hatch.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Three turns buys one hop and a curtsy. The house files it under 'juggler'.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The emcee mouths: the bold red number.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Five regulation turns: a clean cartwheel, a safe landing, a smattering.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Safe,' says the emcee, like a diagnosis. The Grand Cog doesn't pay out for safe.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "One act per night. The house couldn't take a second one. Neither could the proscenium.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "No spot, no act. The rule has a plaque, the plaque has a lawyer.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The spot has an operator. The operator is asleep.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The stage considers it and finds it insufficiently theatrical.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Climbing up empty-handed is called loitering. With the key, it's called an act.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The proscenium and I have an agreement.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "Climbing up empty-handed is called loitering. With the key, it's called an act.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The proscenium and I have an agreement.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Sawdust, grease paint, and the fear of four hundred opening nights.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "stage door": {
+   "LookAt": [
+    {
+     "text": "STAGE DOOR. Behind it: dressing rooms, rope, and a fortune-teller.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "I flash the pass. The stagehand reads it twice. Nothing in his build explains how he steps aside, but he does.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The dark behind him smells like ozone and incense. A voice from it says: 'I have been expecting you, key-bearer.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I start to explain about the key. 'I know,' says the voice. 'Ask me sometime about the key that winds itself. Mind the cables.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Madame Voltina. I'm going to need a minute, and possibly a will.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She'll keep. The door is mine to open when the minute's over.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A stagehand the shape of a filing cabinet fills the doorway. Pass-holders only.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "I flash the pass. The stagehand reads it twice. Nothing in his build explains how he steps aside, but he does.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The dark behind him smells like ozone and incense. A voice from it says: 'I have been expecting you, key-bearer.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I start to explain about the key. 'I know,' says the voice. 'Ask me sometime about the key that winds itself. Mind the cables.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Madame Voltina. I'm going to need a minute, and possibly a will.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She'll keep. The door is mine to open when the minute's over.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A stagehand the shape of a filing cabinet fills the doorway. Pass-holders only.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Incense. Through steel. That has never once meant something normal.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "door to the stage": {
+   "LookAt": [
+    {
+     "text": "Back to the stage. The confetti should be settling by now.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "costume rack": {
+   "LookAt": [
+    {
+     "text": "Forty years of acts on hangers. A bear suit for a bot. A bot suit for, presumably, a bear.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Nothing in my size. Everything in my price range.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Mothballs, losing.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "ghost light": {
+   "LookAt": [
+    {
+     "text": "A bare bulb on a stand, center backstage. Theater law: it never goes out.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It's flickering.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Not my circuit. Some maintenance is above my pay grade, which is zero.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "fuse box": {
+   "LookAt": [
+    {
+     "text": "The theater's fuse box. Somebody has labeled every single fuse HER.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "I leave it shut. The wiring outranks me, and the wiring is a person.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "I leave it shut. The wiring outranks me, and the wiring is a person.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "Madame Voltina": {
+   "LookAt": [
+    {
+     "text": "A tesla coil in a shawl. Her head is a glass dome with weather inside.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "There's no crystal ball on the table. She's the ball.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "'Sprocket,' says the parlor. 'Late of the docks, lately of the stage.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask how she follows my career. 'The theater is wired. I am the wiring.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The coil drinks mains. The bot under the shawl is wound like the rest of us. The readings are the expensive part.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'You came for the one in the jar.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "There's a jar. In it: a brass key the size of my forearm.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The stencil on the glass matches the crate my luck came in.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The Order left it with me. I vet the bearer.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask what the vetting costs. 'A reading. Yours.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Used to be I'd read you cold. The brownouts ended cold reads.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Three cards. Past, present, future. Answer each with what you carry.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Carried things remember. Lie, and the coil bills you.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A card snaps onto the felt. A woodcut of a printing press, smiling.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The past,' she says. 'Place the lie this city printed you.'",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Ozone at a concentration my manual files under 'leave'.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "reading table": {
+   "LookAt": [
+    {
+     "text": "Card one, face up: a printing press, smiling. The felt waits.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Card two, face up: an open hand, palm up. Municipal.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Card three, face down. The first two didn't do that.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Three cards spent, one key paid. The felt looks satisfied. For felt.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Green felt, scorch marks in threes. The scorches are tidy. The felt has accepted its life.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+     "text": "The arc hits the notice and goes the color of a courtroom.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'NOTHING IS WRONG,' she reads. 'Issued in bulk. Believed by no one.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'You pried it off a public board. Past, verified.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She slides it back across the felt. The past is mine to keep.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Card two: a woodcut of an open hand, palm up. Municipal.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The present,' she says. 'Place the debt this city owes you.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'It fished nine bolts out of a drain,' she reads. 'True. Not printed.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The coil reads by touch, and everything I've carried is a diary.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Ink so fresh it's still deciding. That isn't past. That's Tuesday.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'You earned that an hour ago. The past takes longer to print.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The card is patient.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'That's what the city owes itself. Pockets again.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The harbor paid that one. Nine bolts, settled.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'You won that at eight turns. Regulation is five.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The coil watched my act. Everyone's a critic with provenance.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Square winnings. A pass is permission, not debt.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The card is patient.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The arc nudges it back without tasting it. 'The future,' she says, 'is spoken.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The reading is over. The felt is off the clock.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She hasn't dealt yet. Cards first, business after.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "The arc hits the notice and goes the color of a courtroom.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'NOTHING IS WRONG,' she reads. 'Issued in bulk. Believed by no one.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'You pried it off a public board. Past, verified.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She slides it back across the felt. The past is mine to keep.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Card two: a woodcut of an open hand, palm up. Municipal.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The present,' she says. 'Place the debt this city owes you.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'It fished nine bolts out of a drain,' she reads. 'True. Not printed.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The coil reads by touch, and everything I've carried is a diary.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Ink so fresh it's still deciding. That isn't past. That's Tuesday.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'You earned that an hour ago. The past takes longer to print.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The card is patient.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'That's what the city owes itself. Pockets again.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The harbor paid that one. Nine bolts, settled.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'You won that at eight turns. Regulation is five.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The coil watched my act. Everyone's a critic with provenance.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Square winnings. A pass is permission, not debt.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The card is patient.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The arc nudges it back without tasting it. 'The future,' she says, 'is spoken.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The reading is over. The felt is off the clock.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She hasn't dealt yet. Cards first, business after.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "The truth, then. I put my name in bulbs and the key on a lit stage. A hook took it at the bow.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Truth.' The arc doesn't flinch. Neither of us mentions whose idea the bulbs were.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She turns the card with an arc. A woodcut of a city, held upside down, being shaken.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The Rustlers don't want a dark city. They want one that pays to stay lit.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'They don't wind a thing. The city winds down for free. They mean to own the rewind.' Their words, says the card.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Piracy, with invoices.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Your future knocks,' she says. 'Twice. Once. Twice.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I know that knock. It plays cards in the Scrap & Barrel.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Twice. Once. Twice. I file the rhythm somewhere fireproof.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'It answers when they want something walking through it,' she adds. 'They will.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The reading is paid,' she says. 'Ground yourself.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She earths the jar with a rod the size of a baton. The lid gives a small, ceremonial pop.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Key the second,' she says. 'Lose it slower.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "One key in hand, one behind a knock, one still a rumor that winds itself. The math is moving again.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Make tomorrow negotiable again. I have appointments.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I step back. The card stays face down. It has nowhere better to be.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The reading is over. The felt is off the clock.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It's her table. I've seen what the coil does to volunteers.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Ozone. Old felt. More ozone.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "card carousel": {
+   "LookAt": [
+    {
+     "text": "A brass carousel of punch-cards. The holes are the fortunes. The cards are just chaperones.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "It deals for her. It has seniority.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "It deals for her. It has seniority.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "key in a jar": {
+   "LookAt": [
+    {
+     "text": "A brass wind-up key in a glass jar, stenciled PROPERTY OF THE ORDER OF THE WIND-UP KEY.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The jar hums. Not the city's hum. A private one.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Empty. The stencil stays. One absence, well documented.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "I reach. The jar reaches back.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The deposit is charged,' she says. 'So is the jar.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Already mine. The jar and I are square.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "I reach. The jar reaches back.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The deposit is charged,' she says. 'So is the jar.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Already mine. The jar and I are square.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "I reach. The jar reaches back.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The deposit is charged,' she says. 'So is the jar.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Already mine. The jar and I are square.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Glass, brass, and a hum I can taste in my teeth. I don't have teeth.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "cables": {
+   "LookAt": [
+    {
+     "text": "Cables, braided like the city's worst haircut. Every one of them feeds the parlor.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Each one is load-bearing. So is her patience.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Move": [
+    {
+     "text": "Each one is load-bearing. So is her patience.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Warm rubber.",
+     "speaker": "sprocket"
+    }
    ]
   }
  }

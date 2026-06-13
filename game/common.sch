@@ -77,7 +77,7 @@ actor emcee_a;
 actor rivet_a;
 actor extra_a;     // shared: clerk, bouncer, heckler, slot-eye
 #define SPROCKET_COLOR  105
-#define BETTY_COLOR     106
+#define BETTY_COLOR     106   // RETIRED (vestigial; RGB reassigned to EXTRA_COLOR -- art doctor SYS-2)
 // per-NPC talk colors (PAL 108-112, tools/genassets.py)
 #define GUSKET_COLOR    108
 #define VOLTINA_COLOR   109

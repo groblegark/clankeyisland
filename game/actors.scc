@@ -32,22 +32,27 @@ room Actors {
         // Rooms putActorAt each speaker before its first line.
         setCurrentActor(gusket_a);
         initActor();
+        setActorIgnoreBoxes();
         setActorName("Gusket");
         setActorTalkColor(GUSKET_COLOR);
         setCurrentActor(voltina_a);
         initActor();
+        setActorIgnoreBoxes();
         setActorName("Madame Voltina");
         setActorTalkColor(VOLTINA_COLOR);
         setCurrentActor(emcee_a);
         initActor();
+        setActorIgnoreBoxes();
         setActorName("the emcee");
         setActorTalkColor(EMCEE_COLOR);
         setCurrentActor(rivet_a);
         initActor();
+        setActorIgnoreBoxes();
         setActorName("Rivet");
         setActorTalkColor(RIVET_COLOR);
         setCurrentActor(extra_a);
         initActor();
+        setActorIgnoreBoxes();
         setActorName("voice");
         setActorTalkColor(EXTRA_COLOR);
 

@@ -13,6 +13,7 @@ Outputs into assets/generated/:
 Also writes preview.png (full scene mockup) for eyeballing.
 """
 
+import glob
 import os
 import sys
 from PIL import Image, ImageDraw
@@ -64,7 +65,7 @@ PAL[108] = (120, 255, 120)   # GUSKET_COLOR  (bartender green)
 PAL[109] = (255, 140, 220)   # VOLTINA_COLOR (tesla pink)
 PAL[110] = (255, 255, 120)   # EMCEE_COLOR   (footlight yellow)
 PAL[111] = (170, 150, 255)   # RIVET_COLOR   (back-alley violet)
-PAL[112] = (255, 170, 90)    # EXTRA_COLOR   (clerk/bouncer/heckler pool)
+PAL[112] = (140, 220, 255)   # EXTRA_COLOR (took the retired talk-2 cyan; old orange was 4 over driver TOL from SPROCKET under VP8 -- art doctor SYS-2)
 
 # 224-255: costume window. 224 must be the transparent marker.
 COST = 224
@@ -1563,7 +1564,6 @@ STAGE_PROBES = {
     "verb-hi":   [101],
     "white":     [104],
     "talk":      [105],   # SPROCKET_COLOR — egoSay text
-    "talk-2":    [106],
     # per-NPC talk colors: the driver classifies talk pixels by nearest
     # color to attribute segments to speakers (NPC-DIALOG.md item 3)
     "talk-gusket":  [108],
@@ -1578,6 +1578,43 @@ STAGE_PROBES = {
     "brass":      [45, 46, 47],
     "card-white": [104],
 }
+
+
+TALK_COLOR_TOL = 16 + 8   # driver TOL + VP8 4:2:0 smear margin
+
+
+def assert_no_talk_collisions():
+    """No room paint may approximate a talk color (rows 0-104): the
+    driver reads those colors as SPEECH. The piano-keys bug class,
+    made un-shippable (NPC-DIALOG.md item 1, art doctor SYS-1)."""
+    talk = {name: [PAL[i] for i in idxs]
+            for name, idxs in STAGE_PROBES.items()
+            if name.startswith("talk")}
+    rooms = [os.path.join(OUT, "rooms", f"{r}.bmp")
+             for r in ("docks", "tavern", "alley", "midtown",
+                       "theater", "backstage")]
+    bad = []
+    for path in rooms:
+        if not os.path.exists(path):
+            continue
+        im = Image.open(path).convert("RGB")
+        px = im.load()
+        for yy in range(0, 104):
+            for xx in range(im.size[0]):
+                p = px[xx, yy]
+                for fam, cols in talk.items():
+                    for c in cols:
+                        if all(abs(a - b) <= TALK_COLOR_TOL
+                               for a, b in zip(p, c)):
+                            bad.append((os.path.basename(path),
+                                        xx, yy, fam, p))
+    if bad:
+        for b in bad[:10]:
+            print("TALK COLLISION:", b)
+        raise SystemExit(
+            f"{len(bad)} room pixels approximate talk colors -- "
+            "the driver would hallucinate speech. Repaint or "
+            "re-pick the talk color.")
 
 
 def emit_stage(path):
@@ -1757,6 +1794,7 @@ def main():
         prev.paste(f.convert("RGB"), (px, 140 - CH), mask)
     prev = prev.resize((W * 3, (H + PANEL_H) * 3), Image.NEAREST)
     prev.save(os.path.join(OUT, "preview.png"))
+    assert_no_talk_collisions()
     print(f"Assets written to {OUT}")
 
 

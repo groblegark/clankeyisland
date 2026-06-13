@@ -218,20 +218,28 @@ class Oracle:
         # talk text is SPROCKET_COLOR (+ the secondary talk color) ONLY —
         # white is also scenery (the tavern piano's keys read as "talking"
         # forever if white counts)
-        fams = [("sprocket", self.stage.probes["talk"]
-                 + self.stage.probes["talk-2"])]
+        fams = [("sprocket", self.stage.probes["talk"])]
         fams += [(name[5:], cols) for name, cols in
                  self.stage.probes.items()
-                 if name.startswith("talk-") and name != "talk-2"]
+                 if name.startswith("talk-")]
         px = frame.load()
         mask = []
         for yy in range(0, 104, 2):
             for xx in range(0, GAME_W, 2):
                 p = px[xx, yy]
+                # nearest-color classification (art doctor SYS-3):
+                # a pixel within TOL of any family is attributed to
+                # the CLOSEST family, not the first match
+                best, best_d = None, None
                 for fam, colors in fams:
-                    if any(near(p, c) for c in colors):
-                        mask.append((xx, yy, fam))
-                        break
+                    for c in colors:
+                        if near(p, c):
+                            d = (abs(p[0]-c[0]) + abs(p[1]-c[1])
+                                 + abs(p[2]-c[2]))
+                            if best_d is None or d < best_d:
+                                best, best_d = fam, d
+                if best is not None:
+                    mask.append((xx, yy, best))
         return frozenset(mask)
 
     def room_ready(self, frame):
