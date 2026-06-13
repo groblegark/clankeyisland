@@ -162,6 +162,13 @@ room OilBarRoom {
         }
     }
 
+    // FOLLOW-UP (see docs/PRODUCTION-PLAN.md "Scene 07 ship gap"): this is
+    // the only Person+states object in the game, and the state image
+    // occludes the overhead egoSay the validate driver reads -> the
+    // contest ships only:perform. Proper fix: split into a stateless
+    // figure object (the art) + an imageless class={Person} talk target
+    // (text renders clear), then re-promote the 4 oil-bar contest shots
+    // to canonical. The game works for real players as-is.
     object sommelier {
         x = 80;
         y = 52;

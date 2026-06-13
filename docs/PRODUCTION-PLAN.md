@@ -98,3 +98,32 @@ items this pass; this table is the fix for that failure mode.
 | N-17 | Catwalk heist escape (up, into the roof) points away from the bottom-tier hideout | One catwalk line |
 | B-02 rider | City Hall / Mayor confrontation: DECIDE whether Act 3 adds it (loaded door + work order = the lock-and-key) or the work order stays Crank-only leverage | Act 3 planning |
 | N-08/09/10 | Signposting polish: restate the goal post-heist; jar-before-toll redirect; sommelier idle-hint | Next polish |
+
+
+## Scene 07 ship gap — sommelier contest is only:perform (HIGH PRIORITY follow-up)
+
+The oil-bar sommelier contest (two-round order puzzle that frees the cellar
+and the O. CRANK work order) ships **only:perform** — it is NOT a deploy
+gate. Root cause (exhaustively confirmed, ~5h agent investigation): the
+sommelier is the ONLY game object carrying BOTH `class={Person}` and a
+multi-state image. The state image (24x48, y52-100) paints OVER the egoSay
+text the validate driver reads above the ego at the post, so the driver's
+talk-pixel and dialog-list detectors register nothing. The aide (Person, no
+states) and the spike (states, no Person) both validate fine. Non-fixes
+ruled out: Person-removal, walkbox merge, hotspot walk-to, cutscene-Escape,
+shot reorder, centrifuge slowdown, direct-dialog-open.
+
+**The game itself works** — a real player (and the perform/film pass) sees
+the contest fine; this is a validate-DRIVER blindness, not a game bug. And
+nothing downstream depends on the work order yet (no Scene 08), so the
+un-gated contest carries no cascade risk today.
+
+**Proper fix (do this when Scene 08 makes the work order load-bearing, or
+when activating the NPC-actor pipeline):** split the sommelier into (a) a
+stateless/decorative figure object carrying the post/away art and (b) an
+imageless `class={Person}` click+talk target whose overhead egoSay renders
+in the clear. This is the same figure/talk-target separation the
+costume-less NPC actors already use. Re-promote the four perform-only oil-bar
+shots (the-sommelier-of-crude, the-order-pour, the-order-billing,
+certified-archival-work) to canonical and re-validate. Inline TODO is in
+game/oilbar.scc at the sommelier object.
