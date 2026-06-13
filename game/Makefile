@@ -18,6 +18,7 @@ SRCS = common.scc \
        midtown.scc \
        theater.scc \
        backstage.scc \
+       oilbar.scc \
 
 REPO_ROOT  := $(abspath ..)
 SCUMMC_DIR := $(REPO_ROOT)/vendor/scummc
@@ -106,6 +107,7 @@ $(BUILD)/alley.roobj:  $(SOUNS)
 $(BUILD)/midtown.roobj: $(SOUNS)
 $(BUILD)/theater.roobj: $(SOUNS)
 $(BUILD)/backstage.roobj: $(SOUNS)
+$(BUILD)/oilbar.roobj: $(SOUNS)
 
 $(BUILD)/$(GAME_NAME).000: $(OBJS)
 	cd $(BUILD) && $(SLD) -o $(GAME_NAME) $(SLD_FLAGS) $(notdir $^)

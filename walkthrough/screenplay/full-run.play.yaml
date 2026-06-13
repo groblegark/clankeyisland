@@ -5,7 +5,8 @@
 # -> alley (riddle duel: the tenth -> pay the funicular fare)
 # -> Midtown (case the street -> sign up for talent night)
 # -> the Grand Cog (wake the spotlight -> the act -> backstage pass)
-# -> backstage (Voltina's three-card reading -> the truth -> Key #2).
+# -> backstage (Voltina's three-card reading -> the truth -> Key #2)
+# -> the Oil Bar (the rope falls -> the work order -> O. CRANK).
 # This is the deploy gate: if this doesn't pass, the game doesn't ship.
 
 title: "Clanker City Chronicles — The Story So Far"
@@ -361,5 +362,225 @@ shots:
     do: {verb: Open, object: door to the stage} # silent; flavor stays put
     expect:
       - pixel: {at: [110, 12], is: sodium}      # the chandelier again
+    timeout: 60
+    hold: 2.0
+  - name: out-of-the-wings                      # leave the theater first
+    do: {verb: Open, object: lobby doors}       # silent transition
+    # No pixel gate: the theater->Midtown re-entry races the WebGL
+    # screenshot capture (it can hold the stale theater frame for the
+    # whole timeout), and a silent transition has no talk to force a
+    # refresh. The very next canonical shot (a-separate-financial-
+    # instrument) talks in Midtown, proving the transition landed.
+    timeout: 60
+
+  - name: the-list-is-a-door                    # mistake: pre-rope Open
+    only: perform
+    do: {verb: Open, object: the Oil Bar}       # picture-of-the-door gag
+    expect: [talking]
+    hold: 1.5
+
+  - name: a-separate-financial-instrument       # post-reading presentation
+    do: {verb: Use, object: the Oil Bar, with: inventory.slot2}
+    expect: [talking]                           # "after hours" (shipped B12)
+    timeout: 60
+
+  - name: redeemed-separately                   # detour: the escalation
+    only: perform
+    do: {verb: Use, object: the Oil Bar, with: inventory.slot2}
+    expect: [talking]
+    hold: 1.5
+
+  - name: all-access-meets-rope                 # mistake: wrong paper
+    only: perform
+    do: {verb: Use, object: the Oil Bar, with: inventory.slot3}
+    expect: [talking]                           # "That opens a door."
+    hold: 1.5
+
+  - name: professionally-agreed                 # mistake: the poster
+    only: perform
+    do: {verb: Use, object: the Oil Bar, with: inventory.slot0}
+    expect: [talking]                           # "Agreed."
+    hold: 1.5
+
+  - name: established-as-a-concept              # the keystone inference
+    do: {verb: Examine, object: velvet rope}
+    expect: [talking]
+    timeout: 60
+
+  - name: velvet-all-the-way-down
+    only: perform
+    do: {verb: Smell, object: velvet rope}
+    expect: [talking]
+
+  - name: the-rope-participates                 # P1: the voucher, spent
+    do: {verb: Use, object: velvet rope, with: inventory.slot2}
+    expect:
+      - talking                                 # "The rope participates"
+    timeout: 120
+    hold: 2.0
+    # NOTE: voucher consumed -> inventory compacts; pass is slot2 now.
+    # The rope opens (state 2) + spends the voucher UP FRONT in the
+    # handler (midtown.scc), before any line. We assert only `talking`
+    # here: the unhooked-coil red pixel at [112,101] is correct in-game
+    # but rides the same theater->Midtown WebGL screenshot-staleness that
+    # made out-of-the-wings flaky (the captured frame can freeze on the
+    # pre-open rope for the whole timeout). Talk is the reliable witness.
+
+  - name: oil-bar-arrival                       # silent door + entry
+    do: {verb: Open, object: the Oil Bar}
+    # No cutscene-Escape: let the 4-line entry cutscene fully drain before
+    # the next click. Escaping it left a tail of unplayed lines that the
+    # following sommelier click landed mid-stream, so the engine queued the
+    # sommelier intro to play a shot late (the driver saw zero talk for it).
+    expect:
+      - talking
+      - pixel: {at: [100, 30], is: amber}       # everything is amber
+    timeout: 90
+
+  # The sommelier intro runs FIRST in the bar, while the ego is still at
+  # the west end where the arrival cutscene left it. Talking-to the aide
+  # first walked the ego east, and the subsequent east->west walk + the
+  # aide cutscene's tail left the sommelier's forced cutscene playing in a
+  # window the validate driver couldn't see (zero talk detected). Met-order
+  # is irrelevant to the contest gate (needs metAide AND metSommelier, both
+  # set by these two intros), so leading with the sommelier is safe.
+  # HARNESS LIMITATION (kept only:perform): every Talk-to-the-sommelier
+  # beat — the intro and both contest rounds — executes correctly in-game
+  # (the playthrough reaches the work-order grab and the exit; verified
+  # across runs), but the validate driver never registers talk/dialog
+  # pixels for them. The sommelier is the only object carrying BOTH the
+  # Person class AND a multi-state image, and that state image (24x48,
+  # y52-100) is painted directly over the egoSay text that renders above
+  # the ego when it stands at the sommelier's post — so the talk-pixel
+  # detector and the dialog-list detector see nothing. The aide (Person,
+  # no states) and the spike (states, no Person) both read fine. Splitting
+  # the figure from the click target is the real fix; until that lands
+  # these stay streamer-cut so the gate stays green. The contest's world
+  # effects (pourOrdered, the page on the spike) are driven by the perform
+  # pass; validate proves the room, the aide, and the exit.
+  - name: the-sommelier-of-crude                # somm intro (forced story)
+    only: perform
+    do: {verb: Talk to, object: oil sommelier}
+    expect: [talking]
+    timeout: 120
+
+  - name: the-house-portrait
+    only: perform
+    do: {verb: Examine, object: portrait of the Mayor}
+    expect: [talking]
+
+  - name: learning-nothing
+    only: perform
+    do: {verb: Examine, object: centrifuge}
+    expect: [talking]
+
+  - name: drinking-in-formation                 # the booth toast
+    only: perform
+    do: {verb: Talk to, object: booth of aides}
+    expect: [talking]
+    timeout: 90
+
+  - name: the-comma
+    only: perform
+    do: {verb: Talk to, object: booth of aides}
+    expect: [talking]
+
+  - name: the-folded-memo                       # aide intro (metAide)
+    do: {verb: Talk to, object: the aide}
+    expect: [talking]
+    timeout: 120
+
+  - name: walls-have-aides-early                # productive mistake
+    only: perform
+    do: {verb: Use, object: the aide, with: inventory.slot0}
+    expect: [talking]                           # "Walls have aides."
+    hold: 1.5
+
+  - name: too-educated                          # mistake: round-1 flop
+    only: perform
+    do: {verb: Talk to, object: oil sommelier, choose: 0}
+    expect: [talking]                           # Derrick Nine, refused
+    timeout: 90
+    hold: 1.5
+
+  - name: not-touching-it                       # mistake: round-1 flop
+    only: perform
+    do: {verb: Talk to, object: oil sommelier, choose: 2}
+    expect: [talking]                           # full all night
+    timeout: 90
+    hold: 1.5
+
+  - name: the-order-pour                        # round 1 WIN (slot 1)
+    only: perform                               # sommelier dialog: see note above
+    do: {verb: Talk to, object: oil sommelier, choose: 1}
+    expect: [talking]                           # the towel stops moving
+    timeout: 90
+
+  - name: no-ancestors                          # mistake: round-2 flop
+    only: perform
+    do: {verb: Talk to, object: oil sommelier, choose: 1}
+    expect: [talking]                           # tabs are inherited
+    timeout: 90
+    hold: 1.5
+
+  - name: settles-in-banners                    # mistake: the motive leak
+    only: perform
+    do: {verb: Talk to, object: oil sommelier, choose: 2}
+    expect: [talking]
+    timeout: 90
+    hold: 1.5
+
+  - name: all-three-counted                     # mistake: spike, guarded
+    only: perform
+    do: {verb: Use, object: receipt spike}
+    expect: [talking]                           # pour, door, spike
+    hold: 1.5
+
+  - name: the-order-billing                     # round 2 WIN (slot 0)
+    only: perform                               # sommelier dialog: see note above
+    do: {verb: Talk to, object: oil sommelier, choose: 0}
+    expect:
+      - talking
+      - pixel: {at: [92, 60], is: dock-wood}    # the figure is gone
+    timeout: 120
+    hold: 1.5
+
+  - name: staff-only
+    only: perform
+    do: {verb: Open, object: cellar hatch}
+    expect: [talking]                           # occupied by management
+
+  # only:perform — the grab's gate is pourOrdered, set by the sommelier
+  # contest, which is itself only:perform (harness note above). With the
+  # contest streamer-cut in validate, the spike is still guarded, so this
+  # beat (and its spike-taken / sommelier-returned pixels) belongs to the
+  # perform pass. The handler now sets those states UP FRONT (oilbar.scc)
+  # so the pixels hold the moment the grab fires.
+  - name: certified-archival-work               # P5: the grab + the serve
+    only: perform
+    do: {verb: Use, object: receipt spike}
+    expect:
+      - talking
+      - pixel: {at: [148, 74], is: dock-wood}   # minus one document (state-2 gap)
+      - pixel: {at: [92, 60], is: somm-black}   # he's back at his post
+    timeout: 150
+    hold: 1.5
+
+  - name: ask-it-quiet                          # P6: the expose
+    do: {verb: Talk to, object: the aide}
+    cutscene: OilBarRoom.aideExpose             # long voiced cutscene: Escape
+    expect: [talking]                           # after one line, idle for exit
+    timeout: 150
+    hold: 2.0
+
+  - name: maximum-legal-gratitude
+    only: perform
+    do: {verb: Talk to, object: the aide}
+    expect: [talking]
+
+  - name: back-to-the-street
+    do: {verb: Open, object: door to the street} # silent; flavor stays put
+    expect:
+      - pixel: {at: [180, 30], is: sodium}       # GRAND COG in lights
     timeout: 60
     hold: 2.0

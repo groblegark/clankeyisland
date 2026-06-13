@@ -123,7 +123,7 @@ room TheaterRoom {
                 spotAwake = 1;
                 cutscene(0) {
                     startSound(knockSnd);
-                    egoSay("I rap on the booth. HOUSE LIGHTS, BUDDY. SHOWTIME.");
+                    egoSay("I rap on the booth. HOUSE LIGHTS. We're past call.");
                     waitForMessage();
                     startSound(pickupSnd);
                     egoSay("His eye flickers up through three shades of amber. He checks the program, then checks me.");
@@ -256,7 +256,7 @@ room TheaterRoom {
                     // debugged. TODO(actorSay): restore direct lines.
                     egoSay("Sprocket, he says, reading the marquee off my face. The wind-up act. You're on next.");
                     waitForMessage();
-                    egoSay("One problem: the spotlight operator went into low-power mode during the juggler. The juggler had that effect.");
+                    egoSay("One problem: the brownout caught the spotlight operator mid-juggler. He's down to a polite ember.");
                     waitForMessage();
                     egoSay("House rule: no spot, no act. He says it like the rule has a plaque somewhere.");
                     waitForMessage();
@@ -303,7 +303,7 @@ room TheaterRoom {
             }
             egoSay("The stage. Tonight it gets a maintenance-bot and a very large key.");
             waitForMessage();
-            egoSay("Tonight it gets a maintenance-bot and a very large key.");
+            egoSay("The key is the act. The maintenance-bot is the optimism.");
             return;
         case Give:
         case UsedWith:
@@ -324,13 +324,13 @@ room TheaterRoom {
                                 waitForMessage();
                             }
                         }
-                        dlgStr[0] = "Three turns. A dignified minimum.";
+                        dlgStr[0] = "Three turns.";
                         Dialog::dialogAdd(dlgStr);
                         dlgStr = 0;
-                        dlgStr[0] = "Five turns. The regulation maximum.";
+                        dlgStr[0] = "Five turns.";
                         Dialog::dialogAdd(dlgStr);
                         dlgStr = 0;
-                        dlgStr[0] = "Eight turns. The bold red number.";
+                        dlgStr[0] = "Eight turns. The redline.";
                         Dialog::dialogAdd(dlgStr);
                         dlgStr = 0;
                         Dialog::dialogStart(0, 0);
@@ -381,7 +381,7 @@ room TheaterRoom {
                             setObjectOwner(InventoryItems::windupKey, 0);
                             egoSay("The spring spat the key to the boards at launch. I go to collect it for the bow -- my hand closes on applause.");
                             waitForMessage();
-                            egoSay("A hook on a line whips up past the proscenium. Fishing tackle. Somebody else's magnet-on-a-string.");
+                            egoSay("A hook on a line whips up past the proscenium, and is gone.");
                             waitForMessage();
                             startSound(knockSnd);
                             setObjectState(catwalk, 2);
@@ -414,7 +414,7 @@ room TheaterRoom {
                             startSound(boingSnd);
                             egoSay("Five regulation turns: a clean cartwheel, a safe landing, a smattering.");
                             waitForMessage();
-                            egoSay("'Safe,' says the emcee, like a diagnosis. The Grand Cog doesn't pay out for safe.");
+                            egoSay("'Safe,' says the emcee, the word landing like a coat-check ticket. The Grand Cog doesn't pay out for safe.");
                             waitForMessage();
                         }
                         return;

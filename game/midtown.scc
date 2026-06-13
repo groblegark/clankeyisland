@@ -11,6 +11,7 @@
 #include "inventoryitems.sch"
 #include "alley.sch"
 #include "theater.sch"
+#include "oilbar.sch"
 #include "midtown.sch"
 
 room MidtownRoom {
@@ -125,7 +126,7 @@ room MidtownRoom {
         x = 104;
         y = 48;
         w = 48;
-        h = 56;
+        h = 40;
         dir = NORTH;
         name = "the Oil Bar";
 
@@ -137,31 +138,164 @@ room MidtownRoom {
             return;
         case Open:
         case Use:
+            // walkthrough path first in source: once the rope is down
+            // the door is a door. Room transitions say NOTHING
+            // (docs/NOTES.md) — arrival flavor lives in OilBarRoom.entry.
+            if(ropeOpen) {
+                putActorAt(VAR_EGO, 28, 118, OilBarRoom);
+                startRoom(OilBarRoom);
+                return;
+            }
             egoSay("A bouncer the size of a vending machine looks at my dock rust and invents a dress code.");
             waitForMessage();
             egoSay("I'm on the list, I tell him. He shows me the list. It's a picture of the door.");
+            return;
+        case TalkTo:
+            // TODO(actorSay): the bouncer's quotes -> bouncerA (115)
+            if(ropeOpen) {
+                egoSay("'The rope remembers you fondly,' says the bouncer.");
+                waitForMessage();
+                egoSay("We've all grown.");
+                return;
+            }
+            egoSay("I ask about the rope's hours. The rope keeps its own counsel, he says. He interprets.");
+            waitForMessage();
+            egoSay("'The rope sees everyone. Eventually.'");
             return;
         case Give:
         case UsedWith:
             if(objB == InventoryItems::oilVoucher) {
                 // B12: the voucher is Card II's only key. The rope
                 // holds until the reading is done (voltKey in pocket),
-                // so Scene 07 can never spend the debt early.
+                // so Scene 07 can never spend the debt early. The
+                // post-reading presentation is the canonical Scene 07
+                // beat, so it leads the bucket (dub pairing).
                 if(getObjectOwner(InventoryItems::voltKey) == VAR_EGO) {
-                    egoSay("He reads it again. Valid, he repeats. After hours, he says, like somebody told him to say it.");
+                    unless(voucherShown) {
+                        voucherShown = 1;
+                        egoSay("He reads it again. Valid, he repeats. After hours, he says, like somebody told him to say it.");
+                        waitForMessage();
+                        egoSay("The rope stays up. But now it's a door with a schedule instead of a wall with a manner.");
+                        return;
+                    }
+                    // escalation: the second leg of the N-M4 promise
+                    egoSay("He reads it once more. Still valid. The rope, he repeats, is a separate financial instrument.");
                     waitForMessage();
-                    egoSay("The rope stays up. But now it's a door with a schedule instead of a wall with a manner.");
+                    egoSay("'Separate instruments get redeemed separately.'");
+                    waitForMessage();
+                    egoSay("He says it slowly, like directions to a window.");
                     return;
                 }
                 egoSay("The bouncer reads it. Valid, he admits. The rope, he explains, is a separate financial instrument.");
                 waitForMessage();
-                egoSay("Madame's night, he says. The rope respects her appointments.");
+                egoSay("Madame's night, he says. And the rope's the establishment here, not him -- take it up with the velvet.");
+                return;
+            }
+            if(objB == InventoryItems::backstagePass) {  // streamer mistake
+                egoSay("I show him ALL ACCESS, over my own startled face.");
+                waitForMessage();
+                egoSay("'That opens a door. This is a rope.'");
+                waitForMessage();
+                egoSay("The pass goes back in my pocket, access intact.");
+                return;
+            }
+            if(objB == InventoryItems::poster) {         // streamer mistake
+                egoSay("I hold up the official notice. NOTHING IS WRONG.");
+                waitForMessage();
+                egoSay("'Agreed.'");
+                waitForMessage();
+                egoSay("Professionally, nothing ever is.");
                 return;
             }
             egoSay("He doesn't hold things. Holding things is a different department.");
             return;
         case Smell:
             egoSay("Single-origin crude. The good stuff. The unaffordable stuff.");
+            return;
+        }
+    }
+
+    object velvetRope {
+        x = 104;
+        y = 88;
+        w = 48;
+        h = 16;
+        dir = NORTH;
+        name = "velvet rope";
+        states = {
+            { 0, 0, "rooms/rope_hung.bmp" },
+            { 0, 0, "rooms/rope_open.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case Give:
+        case UsedWith:
+            // TODO(actorSay): the bouncer's quotes -> bouncerA (115)
+            if(objB == InventoryItems::oilVoucher) {
+                // P1 — walkthrough path, FIRST in source. The B12 gate
+                // (voltKey owned == reading done) MUST hold here too:
+                // Card II of the shipped reading needs this voucher
+                // uncashed, so pre-reading the rope defers to Madame
+                // (guard branch trails the success path — dub pairing).
+                if(getObjectOwner(InventoryItems::voltKey) == VAR_EGO) {
+                    unless(ropeOpen) {
+                        ropeOpen = 1;           // flag before speech
+                        // open the rope + spend the voucher UP FRONT, before
+                        // any egoSay: the validate gate's red-coil pixel must
+                        // hold even if the long voiced cutscene stalls between
+                        // lines (state set early survives the stall).
+                        setObjectState(velvetRope, 2);
+                        setObjectOwner(InventoryItems::oilVoucher, 0);
+                        cutscene(0) {
+                            startSound(clinkSnd);
+                            egoSay("Valid at participating establishments, says the voucher. ESTABLISHED, says the rope's own plaque.");
+                            waitForMessage();
+                            egoSay("I present the voucher to the rope. Formally. The bouncer watches me do the paperwork.");
+                            waitForMessage();
+                            egoSay("He reads the voucher. He reads the plaque. Somewhere in there, a precedent forms.");
+                            waitForMessage();
+                            egoSay("'The rope participates,' he rules.");
+                            waitForMessage();
+                            egoSay("He unhooks the rope and folds it over his arm like a sommelier's towel.");
+                            waitForMessage();
+                            egoSay("'Capacity was the rope's grievance,' he says. 'The rope has been compensated.'");
+                            waitForMessage();
+                            egoSay("One premium oil service, spent on a length of velvet.");
+                            waitForMessage();
+                        }
+                        return;
+                    }
+                    return;   // unreachable: the voucher left with the open
+                }
+                // pre-reading (B12): the rope holds for Madame's night
+                egoSay("The rope is on Madame's clock tonight, says the bouncer. Her appointments outrank its receipts.");
+                return;
+            }
+            egoSay("The rope refers it to the bouncer. The rope has people.");
+            return;
+        case LookAt:
+            if(ropeOpen) {
+                egoSay("The rope hangs from one post, off duty.");
+                return;
+            }
+            egoSay("Velvet over steel cable, slung between two brass posts. The posts get polished. The street doesn't.");
+            waitForMessage();
+            egoSay("A plaque on the near post: THE ROPE. ESTABLISHED. No date. Established as a concept.");
+            return;
+        case Use:
+        case Open:
+        case Move:
+            if(ropeOpen) {
+                egoSay("Unhooked. The rope and I are past it.");
+                return;
+            }
+            egoSay("I test the rope. The bouncer tests me back.");
+            waitForMessage();
+            egoSay("'Touching the rope is a service. It's not included.'");
+            return;
+        case Smell:
+            egoSay("Velvet. Under the velvet, cable. Under the cable, I suspect more velvet.");
             return;
         }
     }

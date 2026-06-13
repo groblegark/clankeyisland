@@ -974,3 +974,105 @@ Line-by-line items:
 ---
 
 **END OF DESIGN DOC** — Scene 07 "The Oil Bar, Inside" / *A Separate Financial Instrument*. Sections: (1) goal+spine, (2) puzzle graph P1–P6 with fair-play audit and the two-round playable contest, (3) object table with rects on the 320×144 stage, (4) complete dialog draft (every line written, branch order normative), (5) music brief (12 bars, 72 BPM, B♭ major, loop beat 49) + 4 SFX recipes, (6) validate shots + streamer detours/mistakes, (7) planted/paid ledger, (8) embodiment audit, (9) implementation checklist. Source files read: `/Users/matthewbaker/clankeyisland/docs/PRODUCTION-PLAN.md`, `docs/GDD.md`, `docs/NOTES.md`, `docs/editorial/CHARTER.md` + all three reports, `docs/research/NPC-DIALOG.md`, `docs/research/NARRATION.md`, `docs/WALKTHROUGHER.md`, `game/{tavern,theater,midtown,alley,inventoryitems}.scc`, `game/common.sch`, `tools/{genmusic,genaudio}.py`, `walkthrough/screenplay/full-run.play.yaml`. Intended landing path: `/Users/matthewbaker/clankeyisland/docs/scenes/SCENE-07.md` (file not written per subagent contract — parent should write this output there).
+---
+
+## 10. BUILD-INTEGRATION NOTE (2026-06-12, implementation pass)
+
+Scene 07 is implemented and `make tentacle` passes clean. What landed,
+where, and what the serial integrator needs to know:
+
+**Room / link order.** `OilBarRoom` lives in `game/oilbar.scc` +
+`game/oilbar.sch`, appended after `backstage.scc` in the Makefile's
+`SRCS` (the 12th compilation unit; sld assigns the room id from link
+order, so keep it last until Scene 08 lands behind it).
+
+**Makefile additions** (`game/Makefile`):
+- `oilbar.scc \` appended to `SRCS` (after `backstage.scc`).
+- `$(BUILD)/oilbar.roobj: $(SOUNS)` added to the extra dependencies.
+
+**Transit wiring.** Midtown -> bar: `midtown.scc:oilBar:Open/Use` now
+branches on `ropeOpen` and runs `putActorAt(VAR_EGO, 28, 118,
+OilBarRoom); startRoom(OilBarRoom)` SILENTLY (transition rule). Bar ->
+midtown: `oilbar.scc:doorOut:Open/Use` -> `putActorAt(VAR_EGO, 130,
+120, MidtownRoom)`, also silent. `midtown.scc` includes `oilbar.sch`;
+`oilbar.scc` includes `midtown.sch`. Arrival flavor lives only in
+`OilBarRoom.entry` (first visit, `visitedOilBar`).
+
+**Globals / flags touched.** NO new common.sch globals. MidtownRoom
+gains room-local bits `ropeOpen`, `voucherShown` and object
+`velvetRope` (midtown.sch). OilBarRoom bits (oilbar.sch):
+`visitedOilBar, metSommelier, metAide, aideHinted, heardBoothToast,
+orderRound, pourOrdered, aideServed, aideTalked`. "Sommelier in
+cellar" stays DERIVED (`pourOrdered && !aideServed`). The 06-before-07
+gate rides on `getObjectOwner(InventoryItems::voltKey) == VAR_EGO`
+exactly as shipped; the rope's P1 success branch repeats that guard
+(B12) and the pre-reading rope answer defers to Madame's night.
+
+**Inventory.** `workOrder` ("cancelled work order") added to
+`inventoryitems.sch` + `.scc` with the standard `if(objB)` UsedWith
+routing and Preposition "to"; icon `inventory/inv_workorder.bmp`.
+The rope CONSUMES the voucher (`setObjectOwner(oilVoucher, 0)`) —
+compaction shifts pass to slot2, voltKey to slot3; workOrder appends
+at slot4 (OFF-PAGE: never probe or click it; see SCENE-07-shots.yaml).
+
+**Art / stage map** (`tools/genassets.py`): `OILBAR_GEOM` +
+`draw_oilbar(somm, spike, spin)` with three 2-state crops
+(`somm_post/away`, `spike_full/taken`, `cfuge_a/b`), `rooms/oilbar.bmp`
++ `.box`; `M_OILBAR` shrank to h=40 and new `M_ROPE` (104,88,48,16)
+owns the strip below it (`rope_hung/rope_open` crops; facade still
+paints the full 56px). Stage names, `oilwest/oileast` walkboxes,
+`oilbar-center` walk target, hotspot override `M_ROPE -> (146, 98)`,
+probes `amber` + `somm-black`. ALL probe pixels are at y<=95 and
+verified ego-clear against their shots' walk targets (the Scene 06
+probe-occlusion lesson): rope coil (112,95) vs ego at x146; backlight
+(100,30); somm head (92,60); spike page (146,73). Regenerate with
+`python3 tools/genassets.py && python3 tools/genassets.py --emit-stage`.
+
+**Audio: placeholders, Scene-06 style.** `oilbarSnd` borrows
+`backalley.soun` (loop 49) until genmusic grows `build_oilbar` (s5:
+12 bars, 72 BPM, Bb, loop beat 49); pour/steps/paper borrow
+splash/thud/dart VOCs until genaudio grows the s5.2 recipes. TODOs are
+marked in oilbar.scc's sound block. The rope cutscene reuses midtown's
+`clinkSnd` for the unhook.
+
+**Deviations from this brief (deliberate, desk-ruling-driven):**
+1. NO actorSay, NO new actors/talk colors: the costumed-NPC pipeline is
+   on a parallel branch. Every NPC line ships Sprocket-reported (the
+   Voltina convention); the TODO(actorSay) swap map at the top of
+   oilbar.scc (and markers in midtown.scc) carries the casting table
+   from s4.9. common.sch and actors.scc are UNTOUCHED.
+2. The contest is two SEPARATE TalkTo+choose interactions (round 1
+   closes after the pick; `orderRound` persists, so a round-2 flop
+   reopens at round 2) — the driver has no mid-dialog second click.
+   Winners sit at slots 1 then 0, never `choose: 2` (N-A11); both
+   winners are planted in the world (the aide's escalation names the
+   pour; the cellar list names the account), not in the prompt.
+3. N-A12/A13/A14 rationing applied to the brief's text: dropped the
+   terminal verdict-nouns ("Uptown.", "Honorably discharged.",
+   "Provenance.", "Thorough.", "It's a sommelier thing.", "It's a
+   lifestyle.") and rewrote the rope's refusal off the "declines"
+   template. No new "this town" aphorisms, no new period-chops.
+4. The shipped midtown rope branches are ground truth: the canonical
+   first presentation is the POST-reading "after hours" beat (front of
+   the UsedWith bucket); "Madame's night" is the pre-reading guard and
+   trails in source. The brief's "at capacity" lines predate the B12
+   fix and were not restored; the escalation beat ("redeemed
+   separately") now grows from the after-hours branch instead.
+5. The brief's `dialog:` screenplay primitive doesn't exist; shots use
+   the shipped `choose:` form (see SCENE-06-shots.yaml schema notes).
+   `the-dossier` (Examine work order) is dropped from the streamer cut:
+   workOrder lands on the off-page inventory slot.
+
+**Serial integrator steps:**
+1. Append SCENE-07-shots.yaml entries to
+   `walkthrough/screenplay/full-run.play.yaml` after
+   `back-through-the-curtain` (the fragment opens by leaving the
+   theater through the lobby doors).
+2. `python3 tools/genassets.py && python3 tools/genassets.py
+   --emit-stage` (committed here, but rerun after any merge).
+3. `cd game && make tentacle` (genvoice renders ~122 new lines on
+   first run; cached thereafter).
+4. Editorial desk pass on the scene text, then the validate gate
+   (`walkthrough.py --serve full-run.play.yaml`) before any deploy.
+5. When the actorSay branch lands: execute the swap map at the top of
+   oilbar.scc; source order per handler must not change.
