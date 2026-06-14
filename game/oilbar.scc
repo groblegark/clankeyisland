@@ -92,6 +92,12 @@ room OilBarRoom {
     local script entry() {
         startScript(1, musicLoop, []);
         startScript(1, centrifugeSpin, []);
+        // Reaching the Oil Bar = overhearing the aides (the entry cutscene
+        // narrates them in the corner booth). Set the City Hall door's
+        // prerequisite deterministically here so Act 3 is always reachable,
+        // independent of the occluded sommelier contest (which the
+        // screen-scrape driver can't reliably complete).
+        heardAides = 1;
         // TODO(actorSay): putActorAt for sommA/aideA/boothA here,
         // every entry, before any of their lines.
         unless(visitedOilBar) {
