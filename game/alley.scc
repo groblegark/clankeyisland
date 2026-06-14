@@ -13,6 +13,8 @@
 #include "docks.sch"
 #include "midtown.sch"
 #include "alley.sch"
+#include "cityhall.sch"
+#include "hideout.sch"
 
 room AlleyRoom {
 
@@ -117,6 +119,19 @@ room AlleyRoom {
         case Open:
         case Use:
         case Move:
+            // Act 3: message discipline survives even success (FIRST)
+            if(CityHallRoom::act3Started) {
+                cutscene(0) {
+                    startSound(knockSnd);
+                    egoSay("CLANG-CLANG. CLANG. CLANG-CLANG.");
+                    waitForMessage();
+                    egoSay("The slot opens. The eye looks pained.");
+                    waitForMessage();
+                    egoSay("'Front door's the front, buddy.' Message discipline survives even success.");
+                    waitForMessage();
+                }
+                return;
+            }
             unless(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
                 cutscene(0) {
                     startSound(knockSnd);
@@ -218,6 +233,14 @@ room AlleyRoom {
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
+            // Act 3: the lookout's post is empty, the rungs freshly oiled
+            // (the security feature died of convenience) -- FIRST in source
+            if(CityHallRoom::act3Started) {
+                egoSay("The lookout's post is empty. And the rungs are freshly oiled, top to bottom.");
+                waitForMessage();
+                egoSay("Somebody's been hauling midnight cargo up to that shutter. The security feature died of convenience.");
+                return;
+            }
             // post-heist (N-A16): the lookout's job changed and shows it
             if(getObjectOwner(InventoryItems::backstagePass) == VAR_EGO) {
                 egoSay("The spyglass isn't pointed at the docks anymore. It's pointed at me. I've been promoted.");
@@ -236,6 +259,15 @@ room AlleyRoom {
             return;
         case PickUp:
         case Use:
+            // Act 3: the rungs are oiled now -- silent climb to the loft
+            // (room-transition verbs say NOTHING; the retry-flavor line
+            // lives on the loft-shutter LookAt per the desk's note). FIRST.
+            if(CityHallRoom::act3Started) {
+                enteredViaLoft = 1;
+                putActorAt(VAR_EGO, 296, 44, HideoutRoom);
+                startRoom(HideoutRoom);
+                return;
+            }
             egoSay("The ladder's rusted shut. The Rustler shakes his head, slowly. Professional courtesy.");
             return;
         case UsedWith:

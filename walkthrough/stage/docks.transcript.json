@@ -375,6 +375,58 @@
     "text": "The hum sags. The gauge needle leans. His hand drifts toward the crank dock.",
     "speaker": "sprocket"
    }
+  ],
+<<<<<<< HEAD
+  "HideoutRoom.entry": [
+   {
+    "text": "The Rustlers' hideout. The room between the tavern's back wall and the alley. The city forgot to put it on either side.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Smaller than the legend. Tidier, too. Somebody in here squares chairs.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "At the desk: a winch-bot the size of a cargo door, dictating to a quill lashed to her own left crank.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'...item four. The rewind: three keys, one city, our rates.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "She sees me. Everyone sees me. Four hands of cards go face down in unison.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'The wind-up act. You knocked the code, so you're a guest. Guests leave with what they carried in. House rule.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "'Captain Capstan. Wind-up crew, retired. By the city, not by choice.'",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "And over the card table, on the hook that took it: my key.",
+=======
+  "DynamoRoom.entry": [
+   {
+    "text": "Top of the hill. The Dynamo District, where the city keeps the thing it won't talk about.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Behind the fence: the Great Dynamo. Bigger up close. Quieter up close, which is the part that worries me.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "The hum's still going. Barely. Like something counting down and losing its place.",
+    "speaker": "sprocket"
+   },
+   {
+    "text": "Below, the lights are going out in patches. Up here, the thing that's supposed to stop that is barely turning.",
+>>>>>>> scene-10
+    "speaker": "sprocket"
+   }
   ]
  },
  "objects": {
@@ -770,6 +822,34 @@
    "Smell": [
     {
      "text": "Salt corrosion. Postmarked the harbor.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "the third key": {
+   "LookAt": [
+    {
+     "text": "Old Crank's key. Heavier than mine, and still a little warm. I'm choosing not to dwell.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It winds the thing that winds everything. It used to wind him.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Three keys, one machine, one finale. It's not a here-problem.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Brass and clock oil. Him, basically. I put it back in my pocket gently.",
      "speaker": "sprocket"
     }
    ]
@@ -1479,6 +1559,14 @@
   "rustlers' table": {
    "LookAt": [
     {
+     "text": "The table's empty. Cards racked, washers gone, chairs squared away.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Wherever the game moved, it moved somewhere with a door policy.",
+     "speaker": "sprocket"
+    },
+    {
      "text": "Same three. Same hat. One of them is dealing with my key for a card weight, and we are all pretending otherwise.",
      "speaker": "sprocket"
     },
@@ -1492,6 +1580,14 @@
     }
    ],
    "TalkTo": [
+    {
+     "text": "The table's empty. Cards racked, washers gone, chairs squared away.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Wherever the game moved, it moved somewhere with a door policy.",
+     "speaker": "sprocket"
+    },
     {
      "text": "I lean in casually. Extremely casually. Nobody has ever leaned this casually.",
      "speaker": "sprocket"
@@ -1641,11 +1737,35 @@
   "back door": {
    "LookAt": [
     {
-     "text": "A heavy back door. The sign says NO. Just NO. Punctuation costs extra.",
+     "text": "The back of the back door: a bar, a slot, and the doorbot's entire career.",
      "speaker": "sprocket"
     }
    ],
    "Open": [
+    {
+     "text": "CLANG-CLANG. CLANG. CLANG-CLANG.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The slot opens. The eye looks at me for a long time.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Intermission, buddy.' The slot closes. Fair.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "CLANG-CLANG. CLANG. CLANG-CLANG.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The slot opens. The eye looks at me. For a long time.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Act Three, buddy.' The bar lifts. The same three words, and this time they're a ticket.",
+     "speaker": "sprocket"
+    },
     {
      "text": "CLANG-CLANG. CLANG. CLANG-CLANG.",
      "speaker": "sprocket"
@@ -1672,6 +1792,30 @@
     }
    ],
    "Use": [
+    {
+     "text": "CLANG-CLANG. CLANG. CLANG-CLANG.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The slot opens. The eye looks at me for a long time.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Intermission, buddy.' The slot closes. Fair.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "CLANG-CLANG. CLANG. CLANG-CLANG.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The slot opens. The eye looks at me. For a long time.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Act Three, buddy.' The bar lifts. The same three words, and this time they're a ticket.",
+     "speaker": "sprocket"
+    },
     {
      "text": "CLANG-CLANG. CLANG. CLANG-CLANG.",
      "speaker": "sprocket"
@@ -1715,59 +1859,35 @@
   "steel door": {
    "LookAt": [
     {
-     "text": "A steel door with no handle, no sign, and a brand-new red lamp.",
-     "speaker": "sprocket"
-    },
-    {
-     "text": "The kind of door that's also a policy.",
+     "text": "The famous steel door, from the famous inside. The red lamp is just a lamp in here.",
      "speaker": "sprocket"
     }
    ],
    "Open": [
     {
-     "text": "Knock knock.",
-     "speaker": "sprocket"
-    },
-    {
-     "text": "The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'",
-     "speaker": "sprocket"
-    },
-    {
-     "text": "This organization has remarkable message discipline.",
-     "speaker": "sprocket"
-    },
-    {
-     "text": "I knock. The slot opens. The eye pauses -- it knows what I'm here about now.",
-     "speaker": "sprocket"
-    },
-    {
-     "text": "'STILL Act Three, buddy.' The slot closes. Slower this time. Almost respectful.",
+     "text": "Barred. It's the emergency exit, and my being here isn't an emergency yet. Says the doorbot's posture.",
      "speaker": "sprocket"
     }
    ],
    "Use": [
     {
-     "text": "Knock knock.",
-     "speaker": "sprocket"
-    },
-    {
-     "text": "The slot opens. The same eye as the tavern. 'This is the BACK back door. STILL Act Three, buddy.'",
-     "speaker": "sprocket"
-    },
-    {
-     "text": "This organization has remarkable message discipline.",
-     "speaker": "sprocket"
-    },
-    {
-     "text": "I knock. The slot opens. The eye pauses -- it knows what I'm here about now.",
-     "speaker": "sprocket"
-    },
-    {
-     "text": "'STILL Act Three, buddy.' The slot closes. Slower this time. Almost respectful.",
+     "text": "Barred. It's the emergency exit, and my being here isn't an emergency yet. Says the doorbot's posture.",
      "speaker": "sprocket"
     }
    ],
    "Move": [
+    {
+     "text": "CLANG-CLANG. CLANG. CLANG-CLANG.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The slot opens. The eye looks pained.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Front door's the front, buddy.' Message discipline survives even success.",
+     "speaker": "sprocket"
+    },
     {
      "text": "Knock knock.",
      "speaker": "sprocket"
@@ -1791,7 +1911,7 @@
    ],
    "Smell": [
     {
-     "text": "Nothing. The door is airtight. That's its own kind of information.",
+     "text": "Airtight from this side too. Commitment.",
      "speaker": "sprocket"
     }
    ]
@@ -1858,6 +1978,14 @@
   },
   "fire escape": {
    "LookAt": [
+    {
+     "text": "The lookout's post is empty. And the rungs are freshly oiled, top to bottom.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Somebody's been hauling midnight cargo up to that shutter. The security feature died of convenience.",
+     "speaker": "sprocket"
+    },
     {
      "text": "The spyglass isn't pointed at the docks anymore. It's pointed at me. I've been promoted.",
      "speaker": "sprocket"
@@ -3017,55 +3145,127 @@
   "the Great Dynamo": {
    "LookAt": [
     {
-     "text": "The Great Dynamo, up the hill, behind a fence with opinions.",
+     "text": "Two slots turned, one dark. The hum settled back to flat the second I let go.",
      "speaker": "sprocket"
     },
     {
-     "text": "Every bot on this island runs on that hum. Including me. The hum is flat by half a step.",
+     "text": "Two-thirds of a heartbeat. The last third has a slot the size of a key I've seen.",
      "speaker": "sprocket"
     },
     {
-     "text": "Half a step doesn't sound like much. Neither did the clunk.",
+     "text": "The Great Dynamo, close enough to touch and too big to believe.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The hum's almost gone. Flat by a half-step, and getting flatter while I stand here.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Three keyhole slots in a row. Two of them are the size of what's in my pockets.",
      "speaker": "sprocket"
     }
    ],
    "TalkTo": [
     {
-     "text": "Hang in there, big fella. Help is coming. Help is small and walks funny, but it's coming.",
+     "text": "Hang on, big fella. The cavalry's here. The cavalry is me and two keys and a bad feeling.",
      "speaker": "sprocket"
     }
    ],
    "Give": [
     {
-     "text": "It fits nothing from down here. One key, three slots, a fence in between.",
+     "text": "I could start turning keys in the city's heart unsupervised. I could also wait the one minute.",
      "speaker": "sprocket"
     },
     {
-     "text": "Even the fence can do that math.",
+     "text": "I seat both keys and turn. Together. The slots take them like they were measured for it.",
      "speaker": "sprocket"
     },
     {
-     "text": "The Dynamo has staff for that. Had. The fence implies staff.",
+     "text": "I seat the one key I've got and turn. The slot takes it like it was measured for it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The hum climbs. A half-step, clean, the way Midtown should have sounded.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The hum climbs. Only a third, not a half -- one key short of the chord.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Then it stalls. Holds. Sags back to flat. Two keys is two-thirds of a turn.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Behind me, Old Crank stops pretending he isn't watching.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I take my keys back. You don't leave these in a lock and walk away.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Same two slots, same half-step, same sag. The third one's still waiting on somebody.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Not yet. All three at once, or it's just noise and grief. That's the finale's problem.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The Dynamo doesn't accessorize. It has very specific taste in keys.",
      "speaker": "sprocket"
     }
    ],
    "UsedWith": [
     {
-     "text": "It fits nothing from down here. One key, three slots, a fence in between.",
+     "text": "I could start turning keys in the city's heart unsupervised. I could also wait the one minute.",
      "speaker": "sprocket"
     },
     {
-     "text": "Even the fence can do that math.",
+     "text": "I seat both keys and turn. Together. The slots take them like they were measured for it.",
      "speaker": "sprocket"
     },
     {
-     "text": "The Dynamo has staff for that. Had. The fence implies staff.",
+     "text": "I seat the one key I've got and turn. The slot takes it like it was measured for it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The hum climbs. A half-step, clean, the way Midtown should have sounded.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The hum climbs. Only a third, not a half -- one key short of the chord.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Then it stalls. Holds. Sags back to flat. Two keys is two-thirds of a turn.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Behind me, Old Crank stops pretending he isn't watching.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I take my keys back. You don't leave these in a lock and walk away.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Same two slots, same half-step, same sag. The third one's still waiting on somebody.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Not yet. All three at once, or it's just noise and grief. That's the finale's problem.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The Dynamo doesn't accessorize. It has very specific taste in keys.",
      "speaker": "sprocket"
     }
    ],
    "Smell": [
     {
-     "text": "Ozone. The whole sky tastes like a battery up here.",
+     "text": "Ozone, going stale. Up close it's almost no smell at all, which is the whole problem.",
      "speaker": "sprocket"
     }
    ]
@@ -5368,6 +5568,1066 @@
    "Smell": [
     {
      "text": "Coal smoke. He precedes himself.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+<<<<<<< HEAD
+  "door station": {
+   "LookAt": [
+    {
+     "text": "A bolted stack of crates, exactly slot-high. Beside the slot, a chalk tally: WRONG and RIGHT.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "WRONG is winning by a margin you could retire on.",
+=======
+  "way down": {
+   "LookAt": [
+    {
+     "text": "Back down the rail to Midtown. Downhill's the easy direction. It always is.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "fence": {
+   "LookAt": [
+    {
+     "text": "The fence with opinions. Wrought iron, wound tight, and certain it was here first.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "There's a gate in it. The gate is where opinions are negotiated.",
+>>>>>>> scene-10
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+<<<<<<< HEAD
+     "text": "The slot is licensed equipment. The license is glaring at me.",
+=======
+     "text": "I lean on it. The fence has opinions. It just shared one.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Rust held together by paint held together by rust.",
+>>>>>>> scene-10
+     "speaker": "sprocket"
+    }
+   ]
+  },
+<<<<<<< HEAD
+  "doorbot": {
+   "LookAt": [
+    {
+     "text": "The eye, the whole bot at last. Knee-high, mostly eyelid, all protocol.",
+=======
+  "plaque": {
+   "LookAt": [
+    {
+     "text": "A brass plaque, polished by nobody for a long time: GOVERNOR -- KEEP TIME.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Under it, smaller: ORDER OF THE WIND-UP KEY. So this is their front porch.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Brass and verdigris. Nobody's breathed on it in years.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "governor": {
+   "LookAt": [
+    {
+     "text": "Spinning sweet now. Little flyweights out level, keeping their own time again.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A flyweight speed-regulator. Those weights should fan out smooth as the hum.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "They're twitching instead. Trying to keep time with something they can't hear anymore.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "You don't push a governor. You match it. That's the whole point of it.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Move": [
+    {
+     "text": "You don't push a governor. You match it. That's the whole point of it.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Hot bearing oil. It's been working overtime to do nothing.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "gate": {
+   "LookAt": [
+    {
+     "text": "Open. The governor's spinning sweet now, in time with itself for once.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A turnstile run by a governor -- little flyweights that should be spinning.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "There's a hand-crank socket on the post, worn shiny. Other hands. Older hands.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Open": [
+    {
+     "text": "It turns free now. I let it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I take the crank. The governor lurches, fights me, locks.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "From inside the yard, a voice. Dry as a dropped washer.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It only answers the hum, the voice says. Always did.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I crank in time with the dying hum. Slow. Flat. Apologetic.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The governor stops fighting me. The escapement lets go. The turnstile turns.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I commit. The governor overspeeds, throws a weight, and bites down harder.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The crank handle leaves. I find it later. Worse than when I started.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I coax it. The pawl never catches. The gate waits for me to mean it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I put a shoulder into it. The fence shares a second opinion. Same as the first.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "It turns free now. I let it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I take the crank. The governor lurches, fights me, locks.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "From inside the yard, a voice. Dry as a dropped washer.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It only answers the hum, the voice says. Always did.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I crank in time with the dying hum. Slow. Flat. Apologetic.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The governor stops fighting me. The escapement lets go. The turnstile turns.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I commit. The governor overspeeds, throws a weight, and bites down harder.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The crank handle leaves. I find it later. Worse than when I started.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I coax it. The pawl never catches. The gate waits for me to mean it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I put a shoulder into it. The fence shares a second opinion. Same as the first.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Move": [
+    {
+     "text": "It turns free now. I let it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I take the crank. The governor lurches, fights me, locks.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "From inside the yard, a voice. Dry as a dropped washer.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It only answers the hum, the voice says. Always did.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I crank in time with the dying hum. Slow. Flat. Apologetic.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The governor stops fighting me. The escapement lets go. The turnstile turns.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I commit. The governor overspeeds, throws a weight, and bites down harder.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The crank handle leaves. I find it later. Worse than when I started.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I coax it. The pawl never catches. The gate waits for me to mean it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I put a shoulder into it. The fence shares a second opinion. Same as the first.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Cold iron. The crank socket smells of every hand that gave up here.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "Old Crank": {
+   "LookAt": [
+    {
+     "text": "Old Crank, wound all the way down. Mid-gesture. Waiting again, the only way he has left.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A wind-up bot older than the streetlights, oiled to a shine nobody's seen him do.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Everything on this island is stalling out. He's the only thing still keeping time.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "There's a key in his back. It's turning. Slowly. On its own.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Old Crank. Built to last, and made to wait. Bad combination, long-term.",
+>>>>>>> scene-10
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+<<<<<<< HEAD
+     "text": "'Never doubted you, buddy,' he says. He doubted me twice. Both times are in chalk.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He's drilling slot timing against a sand timer. There are standards.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "pot-belly stove": {
+   "LookAt": [
+    {
+     "text": "A pot-belly stove. The flue exits through the tavern's chimney next door. The landlord doesn't know.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "It's at a rolling boil of something I'm not asking about.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Driftwood. Kelp. A stew with a past.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "framed notice": {
+   "LookAt": [
+    {
+     "text": "A framed cease-and-desist from City Hall, stamped by the Mayor's own office.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "They dusted the frame. Nothing else in here is dusted.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "It's exhibit A of the grievance collection. Touching exhibits voids my guest status.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "It's exhibit A of the grievance collection. Touching exhibits voids my guest status.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "card table": {
+   "LookAt": [
+    {
+     "text": "The game resumes. The pot is washers again, now that the big score is paperwork.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The tavern trio, plus the spyglass. Four hands of cards, one pot of washers, zero trust.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The lookout finally got a seat at the game. He keeps glancing at where his window isn't.",
+     "speaker": "sprocket"
+    }
+   ],
+   "TalkTo": [
+    {
+     "text": "The one in the hat squints at me, sure he knows me from somewhere acoustic.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I have never leaned near anyone in my life, I tell him. Casually. He lets it go.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "They're arguing over whether the spyglass counts as a tell.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "Fishing steel washers off a manned table. Even the duck wouldn't back this plan.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "They appraise it, then go back to their cards.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Salt. They track the harbor in on their feet.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "key on a line": {
+   "LookAt": [
+    {
+     "text": "The hook hangs empty. Pensioned off.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "My key, over the table, still rigged to the very hook that took it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "They never re-rigged. Why retire a working crime.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "Brass. The magnet holds no opinion about brass. That's why they brought a hook in the first place.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Also: four witnesses.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It hangs at exactly cutlass height. The geometry is a contract clause.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I reach. Four chairs scrape. I un-reach. The chairs scrape back.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Brass. The magnet holds no opinion about brass. That's why they brought a hook in the first place.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Also: four witnesses.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "It hangs at exactly cutlass height. The geometry is a contract clause.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I reach. Four chairs scrape. I un-reach. The chairs scrape back.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "Brass. The magnet holds no opinion about brass. That's why they brought a hook in the first place.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Also: four witnesses.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Those two things politely decline each other.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "From down here, just rope tar. They keep my property out of nose range. Deliberately, I assume.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "ransom desk": {
+   "LookAt": [
+    {
+     "text": "The ransom note, flipped over and reborn as a work order. Same numbers. Fewer threats.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Drafts of a ransom note, filed in seniority order. The number grows a digit per draft.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The latest is denominated in washers. Post-bolt currency found its true believers.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+     "text": "Her quill, her desk, her margins. I've seen what she benches.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "Her quill, her desk, her margins. I've seen what she benches.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Ink and lamp smoke. The grievance keeps office hours.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "Captain Capstan": {
+   "TalkTo": [
+    {
+     "text": "She's drilling the crew on crank form. Heave, hold, quarter-turn. The shanty writes itself.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Invoice us when the city's ready, wind-up act.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask after my key. She asks after my city's credit rating.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Ransom isn't theft. It's maintenance, invoiced in advance.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She slides me the current draft. The number has six digits and a footnote.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The rewind is a job, I tell her. Three keys, one machine the size of a district, and my arms are stock parts.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "First call goes to a certified wind-up crew. Paid. In writing. Starting with the bots who kept the skill alive.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'In writing means in writing, wind-up act.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She flips the ransom note over. I write the work order on the back. Same numbers, fewer threats.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Crew! Pay the gentleman his key.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She hooks the line to her wrist drum and pays it out, smooth as a tide chart.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The key comes down like a settled invoice. I sign for it by holding on.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'On the house: the third key isn't lost. It's retired.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Ask the old crank up the hill how retirement's paying.' She says it like a name and not a description.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I offer bolts. I have zero bolts. I offer the concept of bolts.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'We invented owing. Try again.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I offer the backstage pass. She reads the lanyard. Bicycle chain. Good chain.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Tempting. The act, not the access.' She's heard about the act. Everyone has heard about the act.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I tell her I'll think about it. The card game resumes its careful nothing.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask who signs the cheque. Ransom needs a payer. Payers need wound springs.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The hum is flat and dropping. Past a point, this city can't surrender. It can only stop.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'We can wind them awake to pay. Hand-winding is what we do.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Six of you. Eight thousand of them, give or take this room.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "And when the hum quits -- who winds the winders?",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Her crank stops mid-polish. The card game stops pretending to be a card game.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'...The plan assumed somebody stays wound.' Plans usually do.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'Then make me a better offer than a dead invoice.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I explain that the city needs the key. Sincerely. With gestures.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'The city needed winders once. We kept the receipts.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She points at a drawer. The drawer is labeled RECEIPTS, GRIEVANCE, MIXED.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I invoke City Hall. The room enjoys that.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'His last cease-and-desist is over the stove. Framed.' It is. They dusted it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I tell her I'll think about it. The card game resumes its careful nothing.",
+     "speaker": "sprocket"
+    }
+   ],
+   "LookAt": [
+    {
+     "text": "Same rig, new posture. Employed suits her.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A harbor winch-bot, decommissioned. Cable for shoulders, a crank where each hand should be, a drum chest wound tight.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The drum is stenciled 4,000 POUNDS WORKING LOAD. Nothing about her reads decorative.",
+=======
+     "text": "I introduce myself. The maintenance-bot. Three days late and one key short.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He knows what I am, he says. I'm the one they send last.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He doesn't get up. The key in his back keeps turning. Nobody's winding it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He winds himself, he says. Last one on this hill who can.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He's already reaching back for it. I'm the one who needs the minute now.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I tell him there has to be another way. He's checked, he says. For longer than I've been wound.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask if he's sure. He's the spare, he says. Spares wait. He's waited enough.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I thank him. Don't, he says. Just make it worth the quiet.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He works the key out of his own back. It's heavier than mine. Warmer, too.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The turning in him slows. His voice comes down a register, then a register more.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Pull a wind-up's key, the wind-up stops, he says. Simple. He says it slower.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Three keys. The set's complete. It weighs about a person.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Wind the city, he says. He'll catch up. Maybe. Slowest of all.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Then nothing. He's still. Mid-gesture, like he meant to wave and ran out of road.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Nothing. The key that answered everything is in my hand now.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask what the Order left him to do. Wait, he says. Be the spare. He's the third key.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He says it the way you'd report the weather. The bottom drops out of the room anyway.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I mention the third slot's size. It would fit, he says. It's the one he's wearing.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He taps the key in his own back. The math finishes itself. I wish it hadn't.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ask how he's still moving. He's off their grid, he says. Has been since before mine.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Off the grid. The one bot the blackout can't reach. I start doing math I don't like.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He says show him it's worth it first. Then we'll talk.",
+>>>>>>> scene-10
+     "speaker": "sprocket"
+    }
+   ],
+   "Give": [
+    {
+<<<<<<< HEAD
+     "text": "She'll hear offers at the desk, in order, like a business.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She appraises it against the ransom and files it under petty.",
+=======
+     "text": "I'm not winding a stranger with my key. That's how you end up in his stories.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He's a person, not a vending machine. I keep being reminded.",
+>>>>>>> scene-10
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+<<<<<<< HEAD
+     "text": "She'll hear offers at the desk, in order, like a business.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "She appraises it against the ransom and files it under petty.",
+=======
+     "text": "I'm not winding a stranger with my key. That's how you end up in his stories.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "He's a person, not a vending machine. I keep being reminded.",
+>>>>>>> scene-10
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+<<<<<<< HEAD
+     "text": "Tarred rope. The real thing. Nobody's made it in an epoch -- she has a supplier or a hoard.",
+=======
+     "text": "Brass polish, going cold. The good kind. The kind they stopped making.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Brass polish and... no. Just brass polish. Decades of it.",
+>>>>>>> scene-10
+     "speaker": "sprocket"
+    }
+   ]
+  },
+<<<<<<< HEAD
+  "trophy wall": {
+   "LookAt": [
+    {
+     "text": "The work order hangs on a fresh nail. First new plaque of the epoch.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Plaques: BEST KNOTS. FASTEST REEL. EMPLOYEE OF THE EPOCH. All one employee, all older than the Dynamo.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Under them, an old crew photo. One winder stands apart, up a hill of his own already.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "loft hatch": {
+   "Open": [
+    {
+     "text": "Through a shut hatch, the magnet would be fishing for the hatch.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The pot's been emptied. Nothing left to sing.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Old reliable. I lower the magnet on its string, aiming brass.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The magnet ignores brass -- and finds the pot of washers. Steel, the lot of them.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The pot sings. Four heads come up in close harmony. 'Loft.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Two of them come up the outside rigging like weather. Boarding is the one skill they kept current.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I am escorted down and out with one Rustler per arm. Professional courtesy.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Behind me, the slot opens. The eye confirms I'm still ejected. I am.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "That won't open the hatch.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ease the hatch. Below: cards, stove, and the boardroom voice of a winch-bot reading a draft aloud.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'...item four. The rewind: three keys, one city, our rates. They retired hand-winding. Fine. Then the rewind is a private contract.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The ransom. Voltina called it: a city that can be wound down can be billed for winding back up.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "And under the hatch, over the table: my key. Still rigged to the hook that took it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The line runs up over a pulley to a cleat by my foot.",
+=======
+  "workbench": {
+   "LookAt": [
+    {
+     "text": "A workbench of spare springs and half-keys, sorted by a hand that had nothing but time.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Everything here is a spare for something. He fits right in.",
+     "speaker": "sprocket"
+    }
+   ],
+   "PickUp": [
+    {
+     "text": "It's his life's filing. I'm not the one who gets to close the drawer.",
+>>>>>>> scene-10
+     "speaker": "sprocket"
+    }
+   ],
+   "Use": [
+    {
+<<<<<<< HEAD
+     "text": "Through a shut hatch, the magnet would be fishing for the hatch.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The pot's been emptied. Nothing left to sing.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Old reliable. I lower the magnet on its string, aiming brass.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The magnet ignores brass -- and finds the pot of washers. Steel, the lot of them.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The pot sings. Four heads come up in close harmony. 'Loft.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Two of them come up the outside rigging like weather. Boarding is the one skill they kept current.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I am escorted down and out with one Rustler per arm. Professional courtesy.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Behind me, the slot opens. The eye confirms I'm still ejected. I am.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "That won't open the hatch.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I ease the hatch. Below: cards, stove, and the boardroom voice of a winch-bot reading a draft aloud.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "'...item four. The rewind: three keys, one city, our rates. They retired hand-winding. Fine. Then the rewind is a private contract.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The ransom. Voltina called it: a city that can be wound down can be billed for winding back up.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "And under the hatch, over the table: my key. Still rigged to the hook that took it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The line runs up over a pulley to a cleat by my foot.",
+     "speaker": "sprocket"
+    }
+   ],
+   "LookAt": [
+    {
+     "text": "A hatch over the card table. The tackle's pulley is screwed to the rafter beside it.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "This is where my key got reeled home.",
+     "speaker": "sprocket"
+    }
+   ],
+   "UsedWith": [
+    {
+     "text": "Through a shut hatch, the magnet would be fishing for the hatch.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The pot's been emptied. Nothing left to sing.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Old reliable. I lower the magnet on its string, aiming brass.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The magnet ignores brass -- and finds the pot of washers. Steel, the lot of them.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The pot sings. Four heads come up in close harmony. 'Loft.'",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Two of them come up the outside rigging like weather. Boarding is the one skill they kept current.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "I am escorted down and out with one Rustler per arm. Professional courtesy.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Behind me, the slot opens. The eye confirms I'm still ejected. I am.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "That won't open the hatch.",
+=======
+     "text": "It's his life's filing. I'm not the one who gets to close the drawer.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "Clock oil. The kind they stopped making, same as the bot who bought it.",
+>>>>>>> scene-10
+     "speaker": "sprocket"
+    }
+   ]
+  },
+<<<<<<< HEAD
+  "brass cleat": {
+   "Use": [
+    {
+     "text": "I take the line off the cleat. The trick is to reel like you're nobody.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Quarter-turn at a time, between shanty beats. The key rises past four hats and zero glances.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Brass in hand, off their own hook. They stole it by fishing. The harbor keeps what this town drops.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Below, somebody finally folds. Time to be a rumor.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Nothing left on the line but precedent.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "Reeling in mystery cargo through a shut hatch is how stories start. Hatch first.",
+     "speaker": "sprocket"
+    }
+   ],
+   "LookAt": [
+    {
+     "text": "Line's slack. The rig is between engagements.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A brass cleat, tied off sailor-tight. The line goes over the pulley and down to my key.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A cleat, tied off sailor-tight. The line disappears through a shut hatch. Could be anything down there. Anchors. Laundry.",
+     "speaker": "sprocket"
+    }
+   ]
+  },
+  "loft shutter": {
+   "LookAt": [
+    {
+     "text": "The shutter's still unlatched. Their security model never planned for stubborn.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "The shutter the heist came home through. It latches from habit, not commitment.",
+=======
+  "overlook": {
+   "LookAt": [
+    {
+     "text": "From up here the whole city fits in one window. Tonight it's losing that window block by block.",
+     "speaker": "sprocket"
+    },
+    {
+     "text": "A streetlamp gives up. Then a sign. Then a whole street, polite about it.",
+     "speaker": "sprocket"
+    }
+   ],
+   "Smell": [
+    {
+     "text": "The wind up here carries the whole city. It carries less of it every hour.",
+>>>>>>> scene-10
      "speaker": "sprocket"
     }
    ]

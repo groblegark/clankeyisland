@@ -6,6 +6,7 @@ room TavernRoom {
     bit visitedTavern;
     bit servoFixed;
     bit dartsDone;
+    bit doorBackOpen;    // Scene 09: the hideout front door has been opened
     // heardKnockCode moved to common.sch (Scene 06 reads/writes it)
 
     object doorOut;

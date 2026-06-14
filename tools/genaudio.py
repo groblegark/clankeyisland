@@ -472,6 +472,143 @@ def sfx_whistle():
     return partials(0.4, [(932, 0.6, 4), (988, 0.5, 4)])
 
 
+def sfx_barlift():
+    """The hideout's door bar lifting on the right knock (Scene 09): a
+    metal scrape, then a heavy thunk as the bar clears its keepers. The
+    refusal-becomes-admission beat -- it should sound like weight moving,
+    not a latch clicking."""
+    scrape = noise_burst(0.35, 0.45, 9)
+    thunk = partials(0.4, [(82, 1.0, 7), (164, 0.55, 9), (247, 0.3, 12)],
+                     attack=0.001)
+    return concat(scrape, thunk)
+
+
+def sfx_reel():
+    """The stealth steal: a fishing reel paid out carefully, 14 clicks
+    with gaps shrinking 0.09s -> 0.04s (reeling like you're nobody,
+    quarter-turn at a time between shanty beats)."""
+    out = []
+    for i in range(14):
+        gap = 0.09 - (0.09 - 0.04) * (i / 13.0)
+        click = partials(0.03, [(2300, 0.6, 90), (1150, 0.3, 70)],
+                         attack=0.0005)
+        out = concat(out, click, silence(gap))
+    return out
+
+
+def sfx_winch():
+    """Capstan paying the key down on her own crank (Scene 09 parley):
+    6 slow clicks at 0.16s intervals over a low-amp drum rumble -- a
+    rated winch easing a load, smooth as a tide chart."""
+    rumble = partials(0.16 * 6, [(70, 0.18, 1.2), (105, 0.1, 1.4)],
+                      attack=0.01)
+    clicks = []
+    for i in range(6):
+        click = partials(0.05, [(1400, 0.7, 60), (700, 0.4, 40)],
+                         attack=0.0005)
+        clicks = concat(clicks, click, silence(0.16 - 0.05))
+    return mix(clicks, rumble)
+
+
+def sfx_washers():
+    """The magnet flop: a pot of steel washers singing as the magnet
+    finds them through the hatch -- 6 staggered bright bursts, 2.8-5.2
+    kHz, mixed so they ring over each other (four heads come up in close
+    harmony)."""
+    freqs = [2800, 3300, 3900, 4400, 4800, 5200]
+    decays = [20, 23, 26, 29, 32, 35]
+    onsets = [0.0, 0.04, 0.07, 0.10, 0.14, 0.18]
+    tracks = []
+    for f, dc, on in zip(freqs, decays, onsets):
+        burst = partials(0.5, [(f, 0.7, dc), (f * 1.5, 0.3, dc + 10)],
+                         attack=0.0005)
+        tracks.append(concat(silence(on), burst))
+    return mix(*tracks)
+
+
+def sfx_scribble():
+    """The work order: a quill scratching the ransom note over into a
+    contract -- three short dry noise bursts with small gaps (same
+    numbers, fewer threats)."""
+    s = noise_burst(0.08, 0.35, 45)
+    gap = silence(0.05)
+    return concat(s, gap, s, gap, s)
+def sfx_governor():
+    """The clockwork governor on the gate post (Scene 10): a regular train
+    of short high metallic escapement ticks over a low whirring undertone --
+    a speed-regulator turning. The gate puzzle's timing source made audible
+    (it 'only answers the hum')."""
+    whir = partials(0.9, [(180, 0.4, 3), (360, 0.25, 4)])
+    tick = lambda: partials(0.03, [(2600, 0.6, 80), (3900, 0.3, 100)])
+    gap = silence(0.09)                       # ~120ms tick interval
+    train_parts = []
+    for i in range(7):                        # ~0.9s of ticks
+        train_parts.append(tick())
+        if i < 6:
+            train_parts.append(gap)
+    train = concat(*train_parts)
+    return mix(whir, train)
+
+
+def sfx_winddown():
+    """Old Crank pulling his own key and winding down (Scene 10, the cost):
+    a descending square sweep ~600->80Hz with falling amplitude (the reverse
+    of sfx_pickup's hopeful rising chirp), plus a DECELERATING tick train
+    that thins to silence -- a mainspring giving up the last of its turn."""
+    n = int(RATE * 1.3)
+    sweep = []
+    for i in range(n):
+        t = i / RATE
+        f = 600 - (600 - 80) * (t / 1.3)
+        phase = 2 * math.pi * (600 * t - (600 - 80) * t * t / (2 * 1.3))
+        square = 1.0 if math.sin(phase) >= 0 else -1.0
+        sweep.append(0.4 * square * (1.0 - t / 1.35))
+    tick = lambda: partials(0.025, [(1700, 0.5, 90), (2550, 0.25, 110)])
+    # decelerating gaps: 90ms growing toward 260ms, then nothing
+    gaps = [0.09, 0.115, 0.145, 0.18, 0.22, 0.26]
+    train_parts = []
+    for i, gp in enumerate(gaps):
+        train_parts.append(tick())
+        train_parts.append(silence(gp))
+    train = concat(*train_parts)
+    return mix(sweep, train)
+
+
+def sfx_humlift():
+    """The dry run catching (Scene 10, two keys turned): a swelling chord
+    rising a semitone -- two partial stacks a half-step apart, the upper
+    fading in over ~0.7s, a soft harmonic shimmer on top. Short, hopeful,
+    then cut (it stalls). Db -> D, the N-A5 detuning reversed for one beat."""
+    # the flat chord already sounding (Db) -- steady
+    flat = partials(0.9, [(277, 0.45, 1.0), (415, 0.3, 1.2), (554, 0.2, 1.4)])
+    # the lifted chord (D, a semitone up) fading IN over 0.7s
+    n = len(flat)
+    lifted = []
+    for i in range(n):
+        t = i / RATE
+        env_in = min(1.0, t / 0.7)
+        s = (0.45 * math.sin(2 * math.pi * 294 * t)
+             + 0.3 * math.sin(2 * math.pi * 440 * t)
+             + 0.2 * math.sin(2 * math.pi * 587 * t))
+        decay = math.exp(-0.8 * t)
+        lifted.append(s * env_in * decay)
+    shimmer = partials(0.9, [(1175, 0.12, 3), (1760, 0.08, 4)], attack=0.4)
+    return mix(flat, lifted, shimmer)
+
+
+def sfx_keyturn():
+    """A heavy brass key seating and turning in a big lock (Scene 10): a
+    lower, slower ratchet variant -- a few deep brass clicks ending in a
+    detent clunk. Bigger than sfx_ratchet; it's the Dynamo's collar."""
+    clicks = []
+    for f in (240, 360, 520):
+        clicks.append(partials(0.07, [(f, 0.7, 30), (f * 1.8, 0.3, 45)]))
+        clicks.append(silence(0.1))
+    clunk = mix(partials(0.16, [(120, 0.9, 22), (200, 0.5, 30)]),
+                noise_burst(0.03, 0.5, 90))
+    return concat(*clicks, silence(0.04), clunk)
+
+
 EFFECTS = {
     "whack": sfx_whack,
     "bolt_drop": sfx_bolt_drop,
@@ -499,6 +636,15 @@ EFFECTS = {
     "creak9": sfx_creak9,
     "sag": sfx_sag,
     "whistle": sfx_whistle,
+    "barlift": sfx_barlift,
+    "reel": sfx_reel,
+    "winch": sfx_winch,
+    "washers": sfx_washers,
+    "scribble": sfx_scribble,
+    "governor": sfx_governor,
+    "winddown": sfx_winddown,
+    "humlift": sfx_humlift,
+    "keyturn": sfx_keyturn,
 }
 
 

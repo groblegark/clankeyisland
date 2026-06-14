@@ -20,6 +20,8 @@ SRCS = common.scc \
        backstage.scc \
        oilbar.scc \
        cityhall.scc \
+       hideout.scc \
+       dynamo.scc \
 
 REPO_ROOT  := $(abspath ..)
 SCUMMC_DIR := $(REPO_ROOT)/vendor/scummc
@@ -74,8 +76,11 @@ CHARSETS = $(BUILD)/vera.char $(BUILD)/vera-small.char $(BUILD)/vera-gui.char
 AUDIO_DIR := $(ASSET_DIR)/audio
 SFX = whack bolt_drop pickup knock foghorn ratchet dart sizzle clink \
       thud plink splash creak boing clunk clunk_dead coded_knock applause \
-      steam manhole crowd drip stamp creak9 sag whistle
-MUSIC = dockside scrapnbarrel backalley shuffle vamp cityhall
+      steam manhole crowd drip stamp creak9 sag whistle \
+      barlift reel winch washers scribble \
+      governor winddown humlift keyturn
+MUSIC = dockside scrapnbarrel backalley shuffle vamp cityhall rustlersden \
+        dynamohum dynamohum_lift
 SOUNS = $(SFX:%=$(BUILD)/%.soun) $(MUSIC:%=$(BUILD)/%.soun)
 
 $(BUILD)/%.soun: $(AUDIO_DIR)/%.voc | $(BUILD)
@@ -111,6 +116,8 @@ $(BUILD)/theater.roobj: $(SOUNS)
 $(BUILD)/backstage.roobj: $(SOUNS)
 $(BUILD)/oilbar.roobj: $(SOUNS)
 $(BUILD)/cityhall.roobj: $(SOUNS)
+$(BUILD)/hideout.roobj: $(SOUNS)
+$(BUILD)/dynamo.roobj: $(SOUNS)
 
 $(BUILD)/$(GAME_NAME).000: $(OBJS)
 	cd $(BUILD) && $(SLD) -o $(GAME_NAME) $(SLD_FLAGS) $(notdir $^)

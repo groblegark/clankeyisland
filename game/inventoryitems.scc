@@ -573,4 +573,46 @@ room InventoryItems {
         }
     }
 
+    object crankKey {
+        w = 40;
+        h = 16;
+        x = 0;
+        name = "the third key";
+        states = {
+            { 0, 0, "inventory/inv_crankkey.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case Preposition:
+            if(vrb == Give)
+                sntcPrepo[0] = "to";
+            else
+                sntcPrepo[0] = "on";
+            return;
+        case LookAt:
+            egoSay("Old Crank's key. Heavier than mine, and still a little warm. I'm choosing not to dwell.");
+            waitForMessage();
+            egoSay("It winds the thing that winds everything. It used to wind him.");
+            return;
+        case Use:
+            if(objB) {
+                // route "Use me with/on X" to X's UsedWith -- the engine
+                // dispatches to OUR script (objA), so a bare Use gag
+                // here would swallow every two-object sentence
+                if(getObjectVerbEntrypoint(objB, UsedWith)) {
+                    startObject2(objB, UsedWith, [ UsedWith, objB, objA ]);
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
+            egoSay("Three keys, one machine, one finale. It's not a here-problem.");
+            return;
+        case Smell:
+            egoSay("Brass and clock oil. Him, basically. I put it back in my pocket gently.");
+            return;
+        }
+    }
+
 }

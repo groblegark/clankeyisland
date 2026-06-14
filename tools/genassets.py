@@ -68,6 +68,7 @@ PAL[111] = (170, 150, 255)   # RIVET_COLOR   (back-alley violet)
 PAL[112] = (140, 220, 255)   # EXTRA_COLOR (took the retired talk-2 cyan; old orange was 4 over driver TOL from SPROCKET under VP8 -- art doctor SYS-2)
 PAL[113] = (235, 175, 40)    # PISTON_COLOR  (brass gold) -- Scene 08, reserved for actorSay
 PAL[114] = (150, 175, 200)   # CALIPER_COLOR (cool slate) -- Scene 08, reserved for actorSay
+PAL[115] = (90, 200, 175)    # CAPSTAN_COLOR (harbor verdigris) -- Scene 09, reserved for actorSay
 
 # 224-255: costume window. 224 must be the transparent marker.
 COST = 224
@@ -1269,6 +1270,220 @@ CITYHALL_GEOM = {
 }
 
 
+HIDEOUT_GEOM = {
+    # den level (y 48-104 walkable strip; walk line ~118-126)
+    "H_DOORTAVERN": (8, 64, 24, 48),
+    "H_DOORSTATION":(34, 64, 24, 40),
+    "H_SLOTEYE":    (38, 84, 16, 28),
+    "H_STOVE":      (62, 72, 24, 40),
+    "H_NOTICE":     (60, 46, 28, 20),
+    "H_CARDTABLE":  (100, 88, 56, 32),
+    "H_KEYLINE":    (120, 52, 16, 32),    # 8-aligned (stated object)
+    "H_RANSOMDESK": (180, 88, 48, 32),    # 8-aligned (stated object)
+    "H_CAPSTAN":    (192, 48, 40, 56),    # 8-aligned (figure)
+    "H_TROPHY":     (240, 32, 48, 24),    # 8-aligned (stated object)
+    "H_DOORALLEY":  (288, 64, 24, 48),
+    # loft level (y 0-48 strip; walk line ~44, disconnected from the den)
+    "H_HATCH":      (112, 24, 24, 16),    # 8-aligned (stated object)
+    "H_CLEAT":      (96, 32, 16, 16),     # 8-aligned (stated object)
+    "H_SHUTTER":    (284, 16, 24, 24),    # 8-aligned (silent exit)
+}
+
+
+def draw_hideout(key="hanging", desk="ransom", trophy="bare",
+                 hatch="closed", cleat="loaded", flick=0):
+    """The Rustlers' hideout: the room between the tavern's east wall and
+    the alley, two levels. Den floor y>=48 (walk line ~118-126); a loft
+    strip y 0-48 reached only by the alley fire escape (no painted ladder).
+    key:    "hanging"/"gone"   -- Key #1 on the heist hook over the table.
+    desk:   "ransom"/"order"   -- the ransom drafts vs the flipped work order.
+    trophy: "bare"/"order"     -- the reserved nail vs the hung work order.
+    hatch:  "closed"/"open"    -- the loft hatch over the card table.
+    cleat:  "loaded"/"slack"   -- the brass cleat, tackle tied off / slack.
+    flick:  0/1                -- the stove's flicker (the animating element).
+    Talk colors (108-115) stay OFF the walls (assert_no_talk_collisions)."""
+    im = new_img(W, H)
+    d = ImageDraw.Draw(im)
+    g = HIDEOUT_GEOM
+
+    # --- the loft ceiling / rafters (dark, the freight level up top)
+    d.rectangle([0, 0, W, 48], fill=1)
+    for x in range(0, W, 32):                          # rafter shadows
+        d.line([(x, 0), (x, 16)], fill=2)
+    d.line([(0, 47), (W, 47)], fill=6)                 # the loft floor edge
+
+    # --- the rafter pulley, painted between hatch and key (the heist tackle)
+    hx, hy, hw, hh = g["H_HATCH"]
+    kx, ky, kw, kh = g["H_KEYLINE"]
+    d.ellipse([hx + hw + 2, 18, hx + hw + 10, 26], outline=46)  # pulley
+    im.putpixel((hx + hw + 6, 22), 47)
+
+    # --- den walls: planks over the gap the city forgot to assign
+    d.rectangle([0, 48, W, 104], fill=64)
+    for y in range(54, 104, 9):                        # plank seams
+        d.line([(0, y), (W, y)], fill=65)
+    for x in range(0, W, 26):                          # studs
+        d.line([(x, 48), (x, 104)], fill=46)
+    d.line([(0, 104), (W, 104)], fill=46)              # baseboard
+
+    # --- floor: scrubbed boards, somebody in here squares chairs
+    d.rectangle([0, 105, W, H], fill=66)
+    for y in range(109, H, 6):
+        d.line([(0, y), (W, y)], fill=64)
+    d.line([(0, 106), (W, 106)], fill=46)
+
+    # --- doorTavern: back of the back door (a bar, a slot)
+    tx, ty, tw, th = g["H_DOORTAVERN"]
+    d.rectangle([tx - 2, ty - 2, tx + tw + 2, ty + th], fill=46)
+    d.rectangle([tx, ty, tx + tw, ty + th], fill=6)
+    d.rectangle([tx + 2, ty + 18, tx + tw - 2, ty + 22], fill=2)   # the bar
+    d.rectangle([tx + 6, ty + 8, tx + tw - 6, ty + 12], fill=1)    # the slot
+
+    # --- doorStation: bolted crate stack + chalk tally WRONG / RIGHT
+    sx, sy, sw, sh = g["H_DOORSTATION"]
+    d.rectangle([sx, sy, sx + sw, sy + sh], fill=18)              # crates
+    for cy in range(sy + 4, sy + sh - 2, 10):
+        d.line([(sx, cy), (sx + sw, cy)], fill=16)
+    im.putpixel((sx + 3, sy + 6), 104)                           # chalk WRONG
+    im.putpixel((sx + 5, sy + 6), 104)
+    im.putpixel((sx + 3, sy + 16), 104)                          # chalk RIGHT
+
+    # --- slotEye: the doorbot, knee-high, mostly eyelid
+    ex, ey, ew, eh = g["H_SLOTEYE"]
+    d.rectangle([ex + 2, ey + 12, ex + ew - 2, ey + eh - 2], fill=2)  # body
+    d.ellipse([ex + 2, ey + 2, ex + ew - 2, ey + 14], fill=5)        # eye dome
+    im.putpixel((ex + ew // 2, ey + 8), 44)                          # the eye
+
+    # --- stove: pot-belly, flue into the tavern chimney, the flicker
+    vx, vy, vw, vh = g["H_STOVE"]
+    d.rectangle([vx + 2, vy + 6, vx + vw - 2, vy + vh - 2], fill=2)  # belly
+    d.ellipse([vx + 4, vy + 12, vx + vw - 4, vy + vh - 6], outline=16)
+    d.rectangle([vx + vw // 2 - 2, vy - 6, vx + vw // 2 + 2, vy + 6], fill=6)  # flue
+    # the firebox glow (2 frames: small / flared)
+    if flick == 0:
+        d.rectangle([vx + 8, vy + 22, vx + vw - 8, vy + 28], fill=42)
+    else:
+        d.rectangle([vx + 7, vy + 20, vx + vw - 7, vy + 30], fill=44)
+        im.putpixel((vx + vw // 2, vy + 25), 47)
+
+    # --- framedNotice: the dusted cease-and-desist (only dusted thing)
+    nx, ny, nw, nh = g["H_NOTICE"]
+    d.rectangle([nx, ny, nx + nw, ny + nh], fill=47)             # gilt frame
+    d.rectangle([nx + 2, ny + 2, nx + nw - 2, ny + nh - 2], fill=104)
+    for ly in range(ny + 5, ny + nh - 3, 3):                     # text lines
+        d.line([(nx + 4, ly), (nx + nw - 5, ly)], fill=8)
+
+    # --- card table: the tavern trio + the ex-lookout, pot of washers
+    cx, cy, cw, ch = g["H_CARDTABLE"]
+    d.ellipse([cx, cy + 6, cx + cw, cy + ch], fill=76)          # green felt
+    d.ellipse([cx, cy + 6, cx + cw, cy + ch], outline=64)
+    d.ellipse([cx + cw // 2 - 6, cy + ch // 2, cx + cw // 2 + 6,
+               cy + ch // 2 + 8], fill=8)                       # pot of washers
+    for wn in range(4):                                          # washer glints
+        im.putpixel((cx + cw // 2 - 4 + wn * 3, cy + ch // 2 + 4), 11)
+    for i in range(4):                                           # four hands
+        px = cx + 6 + i * (cw // 4)
+        d.rectangle([px, cy + 2, px + 6, cy + 8], fill=104)     # cards face-up
+    # the ex-lookout's spyglass on the table
+    d.line([(cx + cw - 14, cy + 4), (cx + cw - 6, cy + 4)], fill=46)
+
+    # --- keyOnLine: Key #1, hung on the heist hook over the table
+    if key == "hanging":
+        d.line([(hx + hw + 6, 22), (kx + kw // 2, ky)], fill=2)  # the line, taut
+        d.line([(kx + kw // 2, ky), (kx + kw // 2, ky + 8)], fill=46)  # hook
+        d.rectangle([kx + 2, ky + 8, kx + kw - 2, ky + 14], fill=47)   # bow
+        d.rectangle([kx + kw // 2 - 1, ky + 14, kx + kw // 2 + 1,
+                     ky + kh - 4], fill=46)                            # shaft
+        d.rectangle([kx + 2, ky + kh - 6, kx + 6, ky + kh - 2], fill=46)  # bit
+        im.putpixel((kx + kw // 2, ky + 10), 107)                      # the red 8
+    else:
+        d.line([(hx + hw + 6, 22), (kx + kw // 2, ky + 18)], fill=3)   # slack line
+        d.line([(kx + kw // 2, ky + 18), (kx + kw // 2 + 2, ky + 24)], fill=46)
+
+    # --- ransomDesk: drafts in seniority order / the flipped work order
+    rx, ry, rw, rh = g["H_RANSOMDESK"]
+    d.rectangle([rx, ry, rx + rw, ry + rh], fill=64)            # desk
+    d.rectangle([rx, ry, rx + rw, ry + 3], fill=46)            # brass edge
+    if desk == "ransom":
+        for i in range(3):                                      # stacked drafts
+            d.rectangle([rx + 6 + i * 3, ry + 6 + i * 2,
+                         rx + 22 + i * 3, ry + 18 + i * 2], fill=104)
+        d.rectangle([rx + 26, ry + 8, rx + 30, ry + 14], fill=107)  # red threat
+    else:
+        d.rectangle([rx + 8, ry + 6, rx + 28, ry + 20], fill=11)   # work order
+        d.line([(rx + 11, ry + 10), (rx + 25, ry + 10)], fill=8)
+        d.line([(rx + 11, ry + 14), (rx + 25, ry + 14)], fill=8)
+    # her quill, lashed to the crank
+    d.line([(rx + rw - 12, ry + 4), (rx + rw - 6, ry + 16)], fill=104)
+
+    # --- Capstan: a harbor winch-bot, cable shoulders, crank hands, drum
+    ax, ay, aw, ah = g["H_CAPSTAN"]
+    d.rectangle([ax + 6, ay + 20, ax + aw - 6, ay + ah - 2], fill=2)   # drum chest
+    d.ellipse([ax + 8, ay + 24, ax + aw - 8, ay + ah - 6], outline=16) # drum bands
+    d.rectangle([ax + 12, ay + 30, ax + aw - 12, ay + 38], fill=11)    # stencil plate
+    d.rectangle([ax + 10, ay + 6, ax + aw - 10, ay + 20], fill=5)      # head/winch
+    d.rectangle([ax + 13, ay + 10, ax + 15, ay + 12], fill=44)         # eyes
+    d.rectangle([ax + aw - 15, ay + 10, ax + aw - 13, ay + 12], fill=44)
+    # cable shoulders
+    d.arc([ax + 2, ay + 16, ax + 16, ay + 30], 180, 360, fill=46)
+    d.arc([ax + aw - 16, ay + 16, ax + aw - 2, ay + 30], 180, 360, fill=46)
+    # crank hands
+    d.line([(ax + 4, ay + 28), (ax + 4, ay + 40)], fill=46)
+    d.ellipse([ax + 1, ay + 38, ax + 7, ay + 44], outline=47)
+    d.line([(ax + aw - 4, ay + 28), (ax + aw - 4, ay + 40)], fill=46)
+    d.ellipse([ax + aw - 7, ay + 38, ax + aw - 1, ay + 44], outline=47)
+
+    # --- trophyWall: plaques + one reserved nail (or the work order hung)
+    yx, yy, yw, yh = g["H_TROPHY"]
+    for i in range(3):                                          # plaques
+        plx = yx + 2 + i * (yw // 3)
+        d.rectangle([plx, yy + 2, plx + yw // 3 - 4, yy + 12], fill=47)
+        d.rectangle([plx + 1, yy + 3, plx + yw // 3 - 5, yy + 11], fill=64)
+    # the crew photo below (one winder up a hill of his own -- the plant)
+    d.rectangle([yx + 4, yy + 14, yx + 24, yy + yh - 2], fill=104)
+    im.putpixel((yx + 21, yy + 16), 16)                        # the apart winder
+    if trophy == "bare":
+        im.putpixel((yx + yw - 8, yy + 16), 46)                # the reserved nail
+    else:
+        d.rectangle([yx + yw - 14, yy + 12, yx + yw - 2, yy + yh - 2], fill=11)
+        d.line([(yx + yw - 11, yy + 16), (yx + yw - 5, yy + 16)], fill=8)
+
+    # --- doorAlley: the BACK back door, from inside (the red lamp is a lamp)
+    lx, ly, lw, lh = g["H_DOORALLEY"]
+    d.rectangle([lx - 2, ly - 2, lx + lw + 2, ly + lh], fill=46)
+    d.rectangle([lx, ly, lx + lw, ly + lh], fill=2)
+    d.rectangle([lx + 2, ly + 18, lx + lw - 2, ly + 22], fill=6)   # the bar
+    im.putpixel((lx + lw // 2, ly + 6), 107)                       # red lamp
+
+    # --- hatch: the loft hatch over the card table (closed / open)
+    if hatch == "closed":
+        d.rectangle([hx, hy, hx + hw, hy + hh], fill=64)
+        d.rectangle([hx, hy, hx + hw, hy + hh], outline=46)
+        d.line([(hx + hw // 2, hy), (hx + hw // 2, hy + hh)], fill=46)
+    else:
+        d.rectangle([hx, hy, hx + hw, hy + hh], fill=1)            # dark hole
+        d.rectangle([hx, hy, hx + hw, hy + hh], outline=46)
+        d.line([(hx, hy), (hx - 4, hy - 4)], fill=64)             # flap up
+
+    # --- loftCleat: brass cleat, tackle tied off (loaded / slack)
+    fx, fy, fw, fh = g["H_CLEAT"]
+    d.rectangle([fx + 4, fy + 6, fx + fw - 4, fy + 10], fill=47)   # cleat horn
+    d.line([(fx + 2, fy + 8), (fx + fw - 2, fy + 8)], fill=46)
+    if cleat == "loaded":
+        d.line([(fx + fw // 2, fy + 8), (fx + fw // 2, fy + fh)], fill=2)
+    else:
+        im.putpixel((fx + fw // 2, fy + 10), 3)                    # frayed tail
+
+    # --- loftShutter: how the heist came home (latches from habit)
+    ux, uy, uw, uh = g["H_SHUTTER"]
+    d.rectangle([ux, uy, ux + uw, uy + uh], fill=6)
+    for sl in range(uy + 2, uy + uh - 1, 4):                       # louvres
+        d.line([(ux + 2, sl), (ux + uw - 2, sl)], fill=2)
+    im.putpixel((ux + 3, uy + uh // 2), 47)                        # the latch
+
+    return im
+
+
 def draw_cityhall(window="closed", gauge="high", puff=0):
     """window: "closed"/"open" (open paints the Dynamo small + distant).
     gauge: "high"/"low" (needle, the brownout + post-crack state).
@@ -1407,6 +1622,205 @@ def draw_cityhall(window="closed", gauge="high", puff=0):
     else:
         d.ellipse([ix + iw - 18, iy - 6, ix + iw - 6, iy + 2], outline=11)
         im.putpixel((ix + iw - 12, iy - 4), 8)
+
+    return im
+
+
+DYNAMO_GEOM = {
+    "D_WAYDOWN":  (0, 52, 24, 52),     # left exit to Midtown (funicular)
+    "D_OVERLOOK": (6, 104, 110, 26),   # the city below, dimming
+    "D_PLAQUE":   (40, 28, 32, 12),    # GOVERNOR -- KEEP TIME
+    "D_GATE":     (64, 48, 32, 56),    # 8-aligned (stated: closed/open)
+    "D_GOVERNOR": (64, 24, 24, 24),    # 8-aligned (stated: 2-frame flicker)
+    "D_FENCE":    (40, 36, 152, 22),   # the fence with opinions
+    "D_CRANK":    (120, 48, 32, 56),   # 8-aligned (stated: normal/wounddown)
+    "D_WORKBENCH":(160, 60, 48, 44),   # spares, sorted by a hand with time
+    "D_DYNAMO":   (200, 8, 104, 76),   # the Great Dynamo, three slots
+}
+
+
+def draw_dynamo(gate="closed", gov=0, crank="up", dim=0):
+    """gate: "closed"/"open" (turnstile rigid vs spinning free).
+    gov: 0/1 (the governor's flyweights -- a 2-frame flicker: in-time vs
+    twitched-out-of-time, the room's animating element).
+    crank: "up"/"down" (Old Crank standing vs wound down mid-gesture).
+    dim: 0/1 (overlook: the city below losing window blocks; dim=1 is the
+    deeper brownout the finale seeds).
+    Top-of-the-hill yard at dusk. Talk colors (108-114) kept OFF the
+    painted walls/figures (the art doctor SYS-1 contract)."""
+    im = new_img(W, H)
+    d = ImageDraw.Draw(im)
+    g = DYNAMO_GEOM
+
+    # --- night sky over the hill (the district is above the city)
+    for sy in range(0, 60):
+        d.line([(0, sy), (W, sy)], fill=52 + min(11, sy // 5))
+    # a few cold stars (sodium dim, off the talk band)
+    for sx, sy in [(150, 6), (250, 12), (300, 4), (110, 18), (286, 22)]:
+        im.putpixel((sx, sy), 50)
+
+    # --- the hill ground / yard floor (wood-brown dirt, polished track)
+    d.rectangle([0, 100, W, H], fill=66)
+    for y in range(106, H, 6):
+        d.line([(0, y), (W, y)], fill=65)
+    d.line([(0, 100), (W, 100)], fill=64)               # the lip of the yard
+
+    # --- the Great Dynamo (right, up the hill): a vast cylinder + housing
+    dx, dy, dw, dh = g["D_DYNAMO"]
+    d.rectangle([dx, dy, dx + dw, dy + dh], fill=6)        # steel housing
+    d.rectangle([dx + 4, dy + 4, dx + dw - 4, dy + dh - 4], fill=5)
+    # ribs of the cylinder
+    for rx in range(dx + 10, dx + dw - 8, 14):
+        d.line([(rx, dy + 6), (rx, dy + dh - 6)], fill=8)
+    # the brass collar where the keys go: three keyhole slots in a row,
+    # drawn at key scale (the fair-play geometry -- "paint what it claims")
+    collar_y = dy + dh - 30
+    d.rectangle([dx + 12, collar_y - 6, dx + dw - 12, collar_y + 18], fill=46)
+    d.rectangle([dx + 12, collar_y - 6, dx + dw - 12, collar_y + 18],
+                outline=47)
+    slot_xs = [dx + 26, dx + dw // 2, dx + dw - 28]
+    for k, slx in enumerate(slot_xs):
+        # keyhole: round bow over a slot, sized like the inventory keys
+        d.ellipse([slx - 4, collar_y - 2, slx + 4, collar_y + 6], fill=1)
+        d.rectangle([slx - 2, collar_y + 5, slx + 2, collar_y + 14], fill=1)
+        # the third slot's profile carries a faint brass key-tooth outline,
+        # so its LookAt can claim it matches a key already seen
+        if k == 2:
+            im.putpixel((slx + 3, collar_y + 9), 47)
+    # the faint hum-glow at the core (dimmer than Midtown's window glow:
+    # the hum is nearly gone). steel/teal, never a talk hue.
+    d.ellipse([dx + dw // 2 - 8, dy + 14, dx + dw // 2 + 8, dy + 30], fill=30)
+    im.putpixel((dx + dw // 2, dy + 22), 33)
+
+    # --- the fence with opinions (wrought iron, wound tight)
+    fx, fy, fw, fh = g["D_FENCE"]
+    d.rectangle([fx, fy + 2, fx + fw, fy + 4], fill=6)     # top rail
+    d.rectangle([fx, fy + fh - 4, fx + fw, fy + fh - 2], fill=6)  # bottom rail
+    for px in range(fx + 3, fx + fw - 2, 6):              # pickets
+        d.line([(px, fy + 2), (px, fy + fh - 2)], fill=8)
+        im.putpixel((px, fy + 1), 9)                      # a finial each
+
+    # --- the plaque: GOVERNOR -- KEEP TIME (diegetic signage)
+    qx, qy, qw, qh = g["D_PLAQUE"]
+    d.rectangle([qx, qy, qx + qw, qy + qh], fill=46)      # brass plaque
+    d.rectangle([qx, qy, qx + qw, qy + qh], outline=47)
+    d.line([(qx + 3, qy + 4), (qx + qw - 4, qy + 4)], fill=1)   # GOVERNOR
+    d.line([(qx + 5, qy + 8), (qx + qw - 6, qy + 8)], fill=1)   # KEEP TIME
+
+    # --- the gate / turnstile (set into the fence)
+    gx, gy, gw, gh = g["D_GATE"]
+    d.rectangle([gx - 2, gy - 2, gx + gw + 2, gy + gh], fill=6)   # post frame
+    if gate == "open":
+        # turnstile spun clear -- the yard (and a strip of sky) shows through
+        d.rectangle([gx, gy, gx + gw, gy + gh], fill=53)         # sky/yard gap
+        for yy in range(gy, gy + 14):
+            d.line([(gx, yy), (gx + gw, yy)], fill=52 + min(11, (yy - gy) // 2))
+        d.rectangle([gx + 2, gy + gh - 18, gx + gw - 2, gy + gh], fill=66)
+        # the turnstile arm swung to one side
+        d.line([(gx + 2, gy + 6), (gx + 10, gy + gh - 8)], fill=8)
+    else:
+        # chain-link infill, the arm rigid across the middle
+        d.rectangle([gx, gy, gx + gw, gy + gh], fill=2)
+        for ly in range(gy + 3, gy + gh - 2, 5):
+            d.line([(gx, ly), (gx + gw, ly + 5)], fill=8)
+        for lx in range(gx + 3, gx + gw - 2, 5):
+            d.line([(lx, gy), (lx + 5, gy + gh)], fill=8)
+        d.rectangle([gx + 2, gy + gh // 2 - 1, gx + gw - 2, gy + gh // 2 + 1],
+                    fill=9)                              # the locked arm
+    # the worn hand-crank socket on the post (always present)
+    d.ellipse([gx + gw - 6, gy + gh - 18, gx + gw + 2, gy + gh - 10],
+              outline=47)
+    im.putpixel((gx + gw - 2, gy + gh - 14), 47)         # the worn shine
+
+    # --- the governor on the post: flyweights that should be spinning
+    vx, vy, vw, vh = g["D_GOVERNOR"]
+    d.rectangle([vx + vw // 2 - 1, vy + 4, vx + vw // 2 + 1, vy + vh - 2],
+                fill=6)                                  # the spindle
+    cx2, cy2 = vx + vw // 2, vy + 8
+    if gov == 0:
+        # in-time: flyweights out wide, level (the "matched" frame)
+        d.ellipse([vx + 2, cy2 - 2, vx + 8, cy2 + 4], fill=8)
+        d.ellipse([vx + vw - 8, cy2 - 2, vx + vw - 2, cy2 + 4], fill=8)
+        d.line([(cx2, cy2), (vx + 5, cy2 + 1)], fill=9)
+        d.line([(cx2, cy2), (vx + vw - 5, cy2 + 1)], fill=9)
+    else:
+        # twitched out of time: flyweights drooped, uneven
+        d.ellipse([vx + 1, cy2 + 2, vx + 7, cy2 + 8], fill=8)
+        d.ellipse([vx + vw - 7, cy2 - 3, vx + vw - 1, cy2 + 3], fill=8)
+        d.line([(cx2, cy2), (vx + 4, cy2 + 5)], fill=9)
+        d.line([(cx2, cy2), (vx + vw - 4, cy2 - 1)], fill=9)
+
+    # --- the workbench of spares (sorted by a hand with nothing but time)
+    wx, wy, ww, wh = g["D_WORKBENCH"]
+    d.rectangle([wx, wy + 8, wx + ww, wy + wh], fill=64)  # bench top + legs
+    d.rectangle([wx, wy + 8, wx + ww, wy + 11], fill=46)  # brass-edged top
+    for bxk in range(wx + 4, wx + ww - 6, 10):           # racked half-keys
+        d.rectangle([bxk, wy + 1, bxk + 2, wy + 8], fill=45)
+        im.putpixel((bxk + 1, wy + 1), 47)               # a brass glint
+    for sxk in range(wx + 6, wx + ww - 6, 8):            # spare springs
+        d.arc([sxk, wy + 13, sxk + 6, wy + 19], 0, 360, fill=8)
+
+    # --- Old Crank: a wind-up hermit, painted figure, key in his back
+    kx, ky, kw, kh = g["D_CRANK"]
+    if crank == "down":
+        # wound down, slumped mid-gesture (lower, leaned, arm half-raised)
+        bodytop = ky + 24
+        d.rectangle([kx + 8, bodytop, kx + kw - 8, ky + kh - 2], fill=3)
+        d.rectangle([kx + 10, bodytop - 12, kx + kw - 10, bodytop], fill=3)
+        d.rectangle([kx + 12, bodytop - 9, kx + 14, bodytop - 7], fill=44)
+        d.rectangle([kx + kw - 14, bodytop - 9, kx + kw - 12, bodytop - 7],
+                    fill=44)
+        # the half-raised arm that ran out of road
+        d.line([(kx + kw - 8, bodytop + 4), (kx + kw - 2, bodytop - 2)],
+               fill=3)
+    else:
+        bodytop = ky + 18
+        d.rectangle([kx + 8, bodytop, kx + kw - 8, ky + kh - 2], fill=4)  # body
+        d.rectangle([kx + 8, bodytop, kx + kw - 8, bodytop + 3], fill=11)
+        d.rectangle([kx + 10, bodytop - 14, kx + kw - 10, bodytop], fill=4) # head
+        d.rectangle([kx + 12, bodytop - 10, kx + 14, bodytop - 8], fill=44) # eyes
+        d.rectangle([kx + kw - 14, bodytop - 10, kx + kw - 12, bodytop - 8],
+                    fill=44)
+        # a patient hand resting on a knee
+        d.rectangle([kx + 6, bodytop + 14, kx + 10, bodytop + 18], fill=4)
+    # the self-winding key in his back (drawn, examinable, on BOTH poses;
+    # brass, off the talk band). In the up pose it reads as "turning."
+    bkx = kx + kw - 6
+    bky = (ky + 24) if crank == "down" else (ky + 22)
+    d.ellipse([bkx - 3, bky, bkx + 3, bky + 6], outline=46)   # the bow
+    d.rectangle([bkx - 1, bky + 6, bkx + 1, bky + 11], fill=45)  # the shaft
+    if crank == "up":
+        im.putpixel((bkx + 2, bky + 1), 47)                  # turning glint
+
+    # --- the overlook: the whole city below, losing window blocks
+    ox, oy, ow, oh = g["D_OVERLOOK"]
+    d.rectangle([ox, oy, ox + ow, oy + oh], fill=52)         # the night below
+    # rows of buildings receding, with lit window clusters
+    seed = 0x1D
+    for row in range(3):
+        ry = oy + 4 + row * 7
+        bh2 = 6 - row
+        for col in range(0, ow - 6, 9):
+            bx2 = ox + 3 + col
+            d.rectangle([bx2, ry, bx2 + 6, ry + bh2], fill=2 + row)
+            # window cluster: lit (sodium) unless this block has gone dark
+            seed = (seed * 1103515245 + 12345) & 0x7FFFFFFF
+            dark_cut = 5 if dim == 0 else 11      # dim=1 darkens far more
+            lit = (seed >> 8) % 16 >= dark_cut
+            wc = 50 if lit else 1
+            im.putpixel((bx2 + 2, ry + 1), wc)
+            if bh2 > 3:
+                im.putpixel((bx2 + 4, ry + 2), wc)
+    d.line([(ox, oy), (ox + ow, oy)], fill=46)              # the overlook rail
+
+    # --- the way down (left): the funicular rail back to Midtown
+    ax, ay, aw, ah = g["D_WAYDOWN"]
+    d.rectangle([ax, ay, ax + aw, ay + ah], fill=1)         # the cutting
+    d.rectangle([ax + 2, ay + 2, ax + aw - 2, ay + ah], fill=6)
+    for ty in range(ay + 6, ay + ah, 8):                   # rail ties going down
+        d.line([(ax + 3, ty), (ax + aw - 3, ty + 3)], fill=64)
+    d.line([(ax + 6, ay + 2), (ax + 2, ay + ah)], fill=9)  # the rails
+    d.line([(ax + aw - 6, ay + 2), (ax + aw - 2, ay + ah)], fill=9)
 
     return im
 
@@ -1827,6 +2241,18 @@ def gen_inventory_icons():
     d.line([(13, 11), (20, 11)], fill=1)
     d.ellipse([24, 9, 28, 13], fill=107)                   # the red smudge
     icons["inv_ransom"] = im
+    # the third key: Old Crank's own key. Heaviest of the three -- a fuller
+    # bow and a thicker stem, still a little warm (a sodium glint, not the
+    # voltkey's ozone teal). Same forearm silhouette as its siblings.
+    im = new_img(40, 16)
+    d = ImageDraw.Draw(im)
+    d.ellipse([6, 2, 18, 14], outline=46, width=2)         # round bow, larger
+    d.ellipse([9, 5, 15, 11], outline=47)                  # inner ring
+    d.rectangle([16, 6, 30, 10], fill=45)                  # thick stem
+    d.rectangle([29, 3, 32, 13], fill=46)                  # flag
+    d.rectangle([30, 6, 32, 10], fill=0)                   # notch
+    im.putpixel((11, 8), 49)                               # still-warm glint
+    icons["inv_crankkey"] = im
     return icons
 
 
@@ -1920,6 +2346,34 @@ CITYHALL_OBJECT_NAMES = {
     "C_PISTON":    "Mayor Piston",
 }
 
+HIDEOUT_OBJECT_NAMES = {
+    "H_DOORTAVERN": "back door",
+    "H_DOORSTATION":"door station",
+    "H_SLOTEYE":    "doorbot",
+    "H_STOVE":      "pot-belly stove",
+    "H_NOTICE":     "framed notice",
+    "H_CARDTABLE":  "card table",
+    "H_KEYLINE":    "key on a line",
+    "H_RANSOMDESK": "ransom desk",
+    "H_CAPSTAN":    "Captain Capstan",
+    "H_TROPHY":     "trophy wall",
+    "H_DOORALLEY":  "steel door",
+    "H_HATCH":      "loft hatch",
+    "H_CLEAT":      "brass cleat",
+    "H_SHUTTER":    "loft shutter",
+}
+DYNAMO_OBJECT_NAMES = {
+    "D_WAYDOWN":   "way down",
+    "D_OVERLOOK":  "overlook",
+    "D_PLAQUE":    "plaque",
+    "D_GATE":      "gate",
+    "D_GOVERNOR":  "governor",
+    "D_FENCE":     "fence",
+    "D_CRANK":     "Old Crank",
+    "D_WORKBENCH": "workbench",
+    "D_DYNAMO":    "the Great Dynamo",
+}
+
 OILBAR_OBJECT_NAMES = {
     "O_DOOR":     "door to the street",
     "O_BACKBAR":  "back bar",
@@ -1944,6 +2398,12 @@ STAGE_HOTSPOT_OVERRIDES = {
     # unhooked-coil probe lives on the LEFT post (112, 95) — keep the
     # ego's 20px span clear of it (Scene 06 probe-occlusion lesson)
     "M_ROPE":     (146, 98),
+    # hideout: the key hangs at cutlass height over the table -- click the
+    # bow, not the line; the loft objects sit in the y0-48 freight strip
+    "H_KEYLINE":  (128, 64),
+    "H_HATCH":    (124, 32),
+    "H_CLEAT":    (104, 40),
+    "H_SHUTTER":  (296, 28),
 }
 
 TAVERN_WALKBOXES = [
@@ -1985,6 +2445,20 @@ OILBAR_WALKBOXES = [
 # from the door to the Mayor's desk for the duel)
 CITYHALL_WALKBOXES = [
     ("hallfloor", [(8, 108), (304, 108), (304, 140), (8, 140)]),
+]
+
+# two disconnected regions, one matrix: the den floor (front + parley
+# walk) and the loft strip (stealth path). No painted ladder joins them
+# (the hatch is freight-only; the crew commutes by the alley fire escape),
+# so the boxes share no edge -- the actor can never walk between levels.
+HIDEOUT_WALKBOXES = [
+    ("denfloor", [(8, 112), (304, 112), (304, 140), (8, 140)]),
+    ("loftstrip", [(96, 40), (308, 40), (308, 48), (96, 48)]),
+]
+# one wide floor box (the oilbar lesson): the gate beat and the Crank/
+# Dynamo beats walk the ego across the yard, so no shared-edge seam.
+DYNAMO_WALKBOXES = [
+    ("yardfloor", [(8, 104), (312, 104), (312, 140), (8, 140)]),
 ]
 
 # Verb anchors from game/verbs.scc (verbCenter() -> x is the center;
@@ -2039,6 +2513,12 @@ STAGE_PROBES = {
     # Scene 08: City Hall's marble paint (the wall field is bright steel;
     # the screenplay probes [160,80] for marble-paint after the door opens)
     "marble-paint": [11, 9, 8],
+    # Scene 09: the den's plank walls/floor (wood browns -- the room palette
+    # probe after the front door opens), the recovered key's bright brass,
+    # and the alley sky the silent exits land on
+    "den-lamplight": list(range(64, 76)),
+    "bright-brass": [45, 46, 47],
+    "alley-sky": list(range(52, 64)),
 }
 
 
@@ -2054,7 +2534,8 @@ def assert_no_talk_collisions():
             if name.startswith("talk")}
     rooms = [os.path.join(OUT, "rooms", f"{r}.bmp")
              for r in ("docks", "tavern", "alley", "midtown",
-                       "theater", "backstage", "oilbar", "cityhall")]
+                       "theater", "backstage", "oilbar", "cityhall",
+                       "hideout", "dynamo")]
     bad = []
     for path in rooms:
         if not os.path.exists(path):
@@ -2089,7 +2570,9 @@ def emit_stage(path):
                         (GRAND_OBJECT_NAMES, GRAND_GEOM),
                         (BACK_OBJECT_NAMES, BACK_GEOM),
                         (OILBAR_OBJECT_NAMES, OILBAR_GEOM),
-                        (CITYHALL_OBJECT_NAMES, CITYHALL_GEOM)]:
+                        (CITYHALL_OBJECT_NAMES, CITYHALL_GEOM),
+                        (HIDEOUT_OBJECT_NAMES, HIDEOUT_GEOM),
+                        (DYNAMO_OBJECT_NAMES, DYNAMO_GEOM)]:
         for key, name in names.items():
             x, y, w, h = geom[key]
             hs = STAGE_HOTSPOT_OVERRIDES.get(key, (x + w // 2, y + h // 2))
@@ -2108,7 +2591,9 @@ def emit_stage(path):
                                      + ALLEY_WALKBOXES + MIDTOWN_WALKBOXES
                                      + GRAND_WALKBOXES + BACK_WALKBOXES
                                      + OILBAR_WALKBOXES
-                                     + CITYHALL_WALKBOXES)],
+                                     + CITYHALL_WALKBOXES
+                                     + HIDEOUT_WALKBOXES
+                                     + DYNAMO_WALKBOXES)],
         "walk_targets": {"center-west": [120, 126], "center-east": [250, 126],
                          "tavern-center": [150, 126],
                          "alley-center": [150, 126],
@@ -2116,7 +2601,9 @@ def emit_stage(path):
                          "grand-center": [140, 126],
                          "backstage-center": [100, 126],
                          "oilbar-center": [120, 126],
-                         "cityhall-center": [120, 126]},
+                         "cityhall-center": [120, 126],
+                         "hideout-center": [120, 126],
+                         "dynamo-center": [120, 126]},
     }
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
@@ -2265,6 +2752,57 @@ def main():
              "rooms/piston_puff1.bmp")
     write_box_file(os.path.join(OUT, "rooms", "cityhall.box"),
                    [Box(pts, name=n) for n, pts in CITYHALL_WALKBOXES])
+
+    # Scene 09: the Rustlers' hideout
+    den = draw_hideout()
+
+    def dcrop(src, key):
+        x, y, w, h = HIDEOUT_GEOM[key]
+        return src.crop((x, y, x + w, y + h))
+
+    save_bmp(den, "rooms/hideout.bmp")
+    # keyOnLine: hanging / gone (the line drawn slack post-recovery)
+    save_bmp(dcrop(den, "H_KEYLINE"), "rooms/key_hanging.bmp")
+    save_bmp(dcrop(draw_hideout(key="gone"), "H_KEYLINE"), "rooms/key_gone.bmp")
+    # ransomDesk: ransom drafts / work order (post-parley)
+    save_bmp(dcrop(den, "H_RANSOMDESK"), "rooms/ransom_drafts.bmp")
+    save_bmp(dcrop(draw_hideout(desk="order"), "H_RANSOMDESK"),
+             "rooms/ransom_order.bmp")
+    # trophyWall: nail bare / work order hung (post-parley)
+    save_bmp(dcrop(den, "H_TROPHY"), "rooms/trophy_bare.bmp")
+    save_bmp(dcrop(draw_hideout(trophy="order"), "H_TROPHY"),
+             "rooms/trophy_order.bmp")
+    # hatch: closed / open
+    save_bmp(dcrop(den, "H_HATCH"), "rooms/hatch_closed.bmp")
+    save_bmp(dcrop(draw_hideout(hatch="open"), "H_HATCH"),
+             "rooms/hatch_open.bmp")
+    # loftCleat: loaded / slack
+    save_bmp(dcrop(den, "H_CLEAT"), "rooms/cleat_loaded.bmp")
+    save_bmp(dcrop(draw_hideout(cleat="slack"), "H_CLEAT"),
+             "rooms/cleat_slack.bmp")
+    # the stove flicker (the animating element, 2 frames)
+    save_bmp(dcrop(den, "H_STOVE"), "rooms/stove_a.bmp")
+    save_bmp(dcrop(draw_hideout(flick=1), "H_STOVE"), "rooms/stove_b.bmp")
+    write_box_file(os.path.join(OUT, "rooms", "hideout.box"),
+                   [Box(pts, name=n) for n, pts in HIDEOUT_WALKBOXES])
+
+    # Scene 10: Dynamo District / Old Crank
+    dyn = draw_dynamo()
+
+    def dcrop(src, key):
+        x, y, w, h = DYNAMO_GEOM[key]
+        return src.crop((x, y, x + w, y + h))
+
+    save_bmp(dyn, "rooms/dynamo.bmp")
+    save_bmp(dcrop(dyn, "D_GATE"), "rooms/dgate_closed.bmp")
+    save_bmp(dcrop(draw_dynamo(gate="open"), "D_GATE"), "rooms/dgate_open.bmp")
+    save_bmp(dcrop(dyn, "D_GOVERNOR"), "rooms/governor_a.bmp")
+    save_bmp(dcrop(draw_dynamo(gov=1), "D_GOVERNOR"), "rooms/governor_b.bmp")
+    save_bmp(dcrop(dyn, "D_CRANK"), "rooms/crank_up.bmp")
+    save_bmp(dcrop(draw_dynamo(crank="down"), "D_CRANK"),
+             "rooms/crank_down.bmp")
+    write_box_file(os.path.join(OUT, "rooms", "dynamo.box"),
+                   [Box(pts, name=n) for n, pts in DYNAMO_WALKBOXES])
 
     # bolt sprite on dock floor (background-colored patch + bolt)
     bx, by, bw, bh = GEOM["BOLT"]

@@ -1,0 +1,849 @@
+/* Clanker City Chronicles — Scene 09: the Rustlers' Hideout (Act 3 opens).
+ * "How do you take it?" The key is visible from the first minute, hung over
+ * the card table on the heist hook. The whole scene is the taking: argue it
+ * down (the parley, a two-stage dialog tree against Captain Capstan) or reel
+ * it up (the stealth steal, the theater heist inverted on the Rustlers' own
+ * tackle). Both paths surface the ransom plot and recover Key #1.
+ *
+ * NPC dialog is reported secondhand by Sprocket -- one voice, deadpan. The
+ * dialog TREE machinery (dialogStart etc.) is required and fine; only
+ * actorSay is forbidden (it corrupts the dialog UI -- the Voltina/Piston
+ * convention, docs/research/NPC-DIALOG-ACTORSAY-BUG.md).
+ * Walkthrough-path lines go FIRST in source per handler (dub pairing).
+ *
+ * TODO(actorSay): the costumed-NPC pipeline is being built on another
+ * branch; until it lands every NPC line ships as Sprocket-reported speech.
+ * When it lands, split each egoSay below at its quoted span: the quote
+ * becomes actorSay(<actor>, "..."), the frame stays Sprocket's, source
+ * order per handler must not change (dub pairing). SWAP MAP:
+ *   capstan_a (talk color 115, en_GB-alba-medium asetrate=48000*0.88 +
+ *     slow flanger): every Capstan quote in capstan:TalkTo (the parley
+ *     opening, both stages, the contract cutscene, post-parley) and the
+ *     entry/hatch dictation beats and the capstan item-verb lines.
+ *   slotEye_a (talk color rank 2, kept from Scene 02/03): slotEye:TalkTo
+ *     and the slot-eye admission/refusal lines in the tavern/alley addenda.
+ *   Both need putActorAt in HideoutRoom.entry on EVERY entry (capstan_a
+ *     208,110; slotEye_a 44,110), BEFORE any of their lines (off-room
+ *     actorTalk drops lines).
+ */
+
+#include <scummVars6.s>
+#include "common.sch"
+#include "verbs.sch"
+#include "inventoryitems.sch"
+#include "dialog.sch"
+#include "tavern.sch"
+#include "alley.sch"
+#include "hideout.sch"
+
+room HideoutRoom {
+
+    image = "rooms/hideout.bmp";
+    boxd = "rooms/hideout.box";
+    trans = 0;
+
+    // ------------------------------------------------------------ sounds
+
+    sound denSnd     = "rustlersden.soun";   // "The Rustlers' Den"
+    sound knockSnd   = "knock.soun";
+    sound codedKnockSnd = "coded_knock.soun";
+    sound barliftSnd = "barlift.soun";
+    sound creakSnd   = "creak.soun";
+    sound reelSnd    = "reel.soun";
+    sound winchSnd   = "winch.soun";
+    sound washersSnd = "washers.soun";
+    sound scribbleSnd = "scribble.soun";
+    sound clinkSnd   = "clink.soun";
+    sound thudSnd    = "thud.soun";
+    sound pickupSnd  = "pickup.soun";
+
+    // ------------------------------------------------------------- music
+
+    local script musicLoop() {
+        // "The Rustlers' Den" -- 16 bars, DEN_LOOP_BEATS = 65
+        // (tools/genmusic.py). The lead carries a constant -40-cent bend:
+        // the den is downstream of the same dying hum (N-A5). Watchdog
+        // restarts the loop if it falls off the end (the docks.scc idiom).
+        stopMusic();
+        startMusic(denSnd);
+        imPlayerSetLoop(denSnd, 999, 1, 0, 65, 0);
+        while(1) {
+            delay(120);
+            unless(isSoundRunning(denSnd)) {
+                startMusic(denSnd);
+                imPlayerSetLoop(denSnd, 999, 1, 0, 65, 0);
+            }
+        }
+    }
+
+    // the stove's flicker: the den's animating element (signFlicker
+    // pattern). Local script -- dies with the room, no explicit stop.
+    local script stoveFlicker() {
+        while(1) {
+            delay(35);
+            setObjectState(stove, 2);
+            delay(35);
+            setObjectState(stove, 1);
+        }
+    }
+
+    // ------------------------------------------------------- room entry
+
+    local script entry() {
+        startScript(1, musicLoop, []);
+        startScript(1, stoveFlicker, []);
+        // TODO(actorSay): putActorAt(capstan_a, 208, 110, HideoutRoom) and
+        // putActorAt(slotEye_a, 44, 110, HideoutRoom) here, every entry,
+        // before any of their lines.
+
+        // loft arrivals get silence -- the hatch owns the reveal
+        // (enteredViaLoft is AlleyRoom-scoped, set by the fire escape)
+        if(AlleyRoom::enteredViaLoft) {
+            AlleyRoom::enteredViaLoft = 0;
+            return;
+        }
+
+        unless(denEntered) {
+            denEntered = 1;
+            ransomKnown = 1;                 // flags before speech
+            cutscene(2) {
+                walkActorTo(VAR_EGO, 64, 124);
+                waitForActor(VAR_EGO);
+                egoSay("The Rustlers' hideout. The room between the tavern's back wall and the alley. The city forgot to put it on either side.");
+                waitForMessage();
+                egoSay("Smaller than the legend. Tidier, too. Somebody in here squares chairs.");
+                waitForMessage();
+                egoSay("At the desk: a winch-bot the size of a cargo door, dictating to a quill lashed to her own left crank.");
+                waitForMessage();
+                egoSay("'...item four. The rewind: three keys, one city, our rates.'");
+                waitForMessage();
+                egoSay("She sees me. Everyone sees me. Four hands of cards go face down in unison.");
+                waitForMessage();
+                egoSay("'The wind-up act. You knocked the code, so you're a guest. Guests leave with what they carried in. House rule.'");
+                waitForMessage();
+                egoSay("'Captain Capstan. Wind-up crew, retired. By the city, not by choice.'");
+                waitForMessage();
+                egoSay("And over the card table, on the hook that took it: my key.");
+                waitForMessage();
+            }
+        }
+    }
+
+    // -------------------------------------------------- the parley menus
+    // Rebuilt each stage (don't mutate in place); flop picks re-add the
+    // same menu (no loss state -- the menu never shrinks). The openquest
+    // idiom from cityhall.scc/dialog.scc.
+
+    local script stage1Menu() {
+        dlgStr[0] = "The city needs that key back.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "City Hall will hear about this.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "Who pays a ransom after the city stops?";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "I'll think about it.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        Dialog::dialogStart(0, 0);
+        do breakScript() while(selectedSentence < 0);
+        Dialog::dialogHide();
+        Dialog::dialogClear(1);
+        Dialog::dialogEnd();
+    }
+
+    local script stage2Menu() {
+        dlgStr[0] = "I can get you bolts. Eventually.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "One backstage pass, barely used.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "Wind the Dynamo with me. On the books.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "Let me think.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        Dialog::dialogStart(0, 0);
+        do breakScript() while(selectedSentence < 0);
+        Dialog::dialogHide();
+        Dialog::dialogClear(1);
+        Dialog::dialogEnd();
+    }
+
+    // ---------------------------------------------------------- objects
+
+    // doorTavern: the back of the back door -- silent exit to the tavern
+    object doorTavern {
+        x = 8;
+        y = 64;
+        w = 24;
+        h = 48;
+        dir = WEST;
+        name = "back door";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The back of the back door: a bar, a slot, and the doorbot's entire career.");
+            return;
+        case Open:
+        case Use:
+            // room transitions say NOTHING (docs/NOTES.md)
+            putActorAt(VAR_EGO, 282, 120, TavernRoom);
+            startRoom(TavernRoom);
+            return;
+        }
+    }
+
+    object doorStation {
+        x = 34;
+        y = 64;
+        w = 24;
+        h = 40;
+        dir = EAST;
+        name = "door station";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A bolted stack of crates, exactly slot-high. Beside the slot, a chalk tally: WRONG and RIGHT.");
+            waitForMessage();
+            egoSay("WRONG is winning by a margin you could retire on.");
+            return;
+        case Use:
+            egoSay("The slot is licensed equipment. The license is glaring at me.");
+            return;
+        }
+    }
+
+    object slotEye {
+        x = 38;
+        y = 84;
+        w = 16;
+        h = 28;
+        dir = EAST;
+        name = "doorbot";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The eye, the whole bot at last. Knee-high, mostly eyelid, all protocol.");
+            return;
+        case TalkTo:
+            unless(metSlotEye) {
+                metSlotEye = 1;
+                egoSay("'Never doubted you, buddy,' he says. He doubted me twice. Both times are in chalk.");
+                return;
+            }
+            egoSay("He's drilling slot timing against a sand timer. There are standards.");
+            return;
+        }
+    }
+
+    object stove {
+        x = 62;
+        y = 72;
+        w = 24;
+        h = 40;
+        dir = NORTH;
+        name = "pot-belly stove";
+        states = {
+            { 0, 0, "rooms/stove_a.bmp" },
+            { 0, 0, "rooms/stove_b.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A pot-belly stove. The flue exits through the tavern's chimney next door. The landlord doesn't know.");
+            return;
+        case Use:
+            egoSay("It's at a rolling boil of something I'm not asking about.");
+            return;
+        case Smell:
+            egoSay("Driftwood. Kelp. A stew with a past.");
+            return;
+        }
+    }
+
+    object framedNotice {
+        x = 60;
+        y = 46;
+        w = 28;
+        h = 20;
+        dir = NORTH;
+        name = "framed notice";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A framed cease-and-desist from City Hall, stamped by the Mayor's own office.");
+            waitForMessage();
+            egoSay("They dusted the frame. Nothing else in here is dusted.");
+            return;
+        case Use:
+        case PickUp:
+            egoSay("It's exhibit A of the grievance collection. Touching exhibits voids my guest status.");
+            return;
+        }
+    }
+
+    object cardTable {
+        x = 100;
+        y = 88;
+        w = 56;
+        h = 32;
+        dir = NORTH;
+        name = "card table";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            if(keyRecovered) {
+                egoSay("The game resumes. The pot is washers again, now that the big score is paperwork.");
+                return;
+            }
+            egoSay("The tavern trio, plus the spyglass. Four hands of cards, one pot of washers, zero trust.");
+            waitForMessage();
+            egoSay("The lookout finally got a seat at the game. He keeps glancing at where his window isn't.");
+            return;
+        case TalkTo:
+            unless(metTable) {
+                metTable = 1;
+                egoSay("The one in the hat squints at me, sure he knows me from somewhere acoustic.");
+                waitForMessage();
+                egoSay("I have never leaned near anyone in my life, I tell him. Casually. He lets it go.");
+                return;
+            }
+            egoSay("They're arguing over whether the spyglass counts as a tell.");
+            return;
+        case UsedWith:
+            if(objB == InventoryItems::magnet) {
+                egoSay("Fishing steel washers off a manned table. Even the duck wouldn't back this plan.");
+                return;
+            }
+            egoSay("They appraise it, then go back to their cards.");
+            return;
+        case Smell:
+            egoSay("Salt. They track the harbor in on their feet.");
+            return;
+        }
+    }
+
+    object keyOnLine {
+        x = 120;
+        y = 52;
+        w = 16;
+        h = 32;
+        dir = NORTH;
+        name = "key on a line";
+        states = {
+            { 0, 0, "rooms/key_hanging.bmp" },
+            { 0, 0, "rooms/key_gone.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            if(keyRecovered) {
+                egoSay("The hook hangs empty. Pensioned off.");
+                return;
+            }
+            egoSay("My key, over the table, still rigged to the very hook that took it.");
+            waitForMessage();
+            egoSay("They never re-rigged. Why retire a working crime.");
+            return;
+        case PickUp:
+        case Use:
+            if(objB) {
+                if(objB == InventoryItems::magnet) {
+                    egoSay("Brass. The magnet holds no opinion about brass. That's why they brought a hook in the first place.");
+                    waitForMessage();
+                    egoSay("Also: four witnesses.");
+                    return;
+                }
+                egoSay("Those two things politely decline each other.");
+                return;
+            }
+            egoSay("It hangs at exactly cutlass height. The geometry is a contract clause.");
+            waitForMessage();
+            egoSay("I reach. Four chairs scrape. I un-reach. The chairs scrape back.");
+            return;
+        case UsedWith:
+            if(objB == InventoryItems::magnet) {
+                egoSay("Brass. The magnet holds no opinion about brass. That's why they brought a hook in the first place.");
+                waitForMessage();
+                egoSay("Also: four witnesses.");
+                return;
+            }
+            egoSay("Those two things politely decline each other.");
+            return;
+        case Smell:
+            egoSay("From down here, just rope tar. They keep my property out of nose range. Deliberately, I assume.");
+            return;
+        }
+    }
+
+    object ransomDesk {
+        x = 180;
+        y = 88;
+        w = 48;
+        h = 32;
+        dir = NORTH;
+        name = "ransom desk";
+        states = {
+            { 0, 0, "rooms/ransom_drafts.bmp" },
+            { 0, 0, "rooms/ransom_order.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            if(keyByParley) {
+                egoSay("The ransom note, flipped over and reborn as a work order. Same numbers. Fewer threats.");
+                return;
+            }
+            egoSay("Drafts of a ransom note, filed in seniority order. The number grows a digit per draft.");
+            waitForMessage();
+            egoSay("The latest is denominated in washers. Post-bolt currency found its true believers.");
+            return;
+        case Use:
+        case PickUp:
+            egoSay("Her quill, her desk, her margins. I've seen what she benches.");
+            return;
+        case Smell:
+            egoSay("Ink and lamp smoke. The grievance keeps office hours.");
+            return;
+        }
+    }
+
+    object capstan {
+        x = 192;
+        y = 48;
+        w = 40;
+        h = 56;
+        dir = SOUTH;
+        name = "Captain Capstan";
+        class = { Person };
+
+        verb(int vrb,int objA,int objB) {
+        case TalkTo:
+            // ===== the parley: walkthrough path FIRST in source. Stage 1
+            // (the argument) then Stage 2 (the offer, gated on
+            // arithmeticLanded), each stage's WINNER branch textually
+            // before its flops (dub pairing). Flops loop the same stage.
+
+            // ---- post-parley ----
+            if(keyRecovered) {
+                egoSay("She's drilling the crew on crank form. Heave, hold, quarter-turn. The shanty writes itself.");
+                waitForMessage();
+                egoSay("'Invoice us when the city's ready, wind-up act.'");
+                return;
+            }
+
+            // ---- the opening (every time the tree opens) ----
+            cutscene(0) {
+                egoSay("I ask after my key. She asks after my city's credit rating.");
+                waitForMessage();
+                egoSay("'Ransom isn't theft. It's maintenance, invoiced in advance.'");
+                waitForMessage();
+                egoSay("She slides me the current draft. The number has six digits and a footnote.");
+                waitForMessage();
+            }
+
+            // ---- STAGE 2 (gated on arithmeticLanded) ----
+            if(arithmeticLanded) {
+                stage2Menu();
+                // WINNER first in source: option 2 (the contract)
+                if(selectedSentence == 2) {
+                    keyRecovered = 1;       // flags before speech
+                    keyByParley = 1;
+                    cutscene(0) {
+                        egoSay("The rewind is a job, I tell her. Three keys, one machine the size of a district, and my arms are stock parts.");
+                        waitForMessage();
+                        egoSay("First call goes to a certified wind-up crew. Paid. In writing. Starting with the bots who kept the skill alive.");
+                        waitForMessage();
+                        egoSay("'In writing means in writing, wind-up act.'");
+                        waitForMessage();
+                        startSound(scribbleSnd);
+                        egoSay("She flips the ransom note over. I write the work order on the back. Same numbers, fewer threats.");
+                        waitForMessage();
+                        egoSay("'Crew! Pay the gentleman his key.'");
+                        waitForMessage();
+                        startSound(winchSnd);
+                        setObjectState(keyOnLine, 2);
+                        egoSay("She hooks the line to her wrist drum and pays it out, smooth as a tide chart.");
+                        waitForMessage();
+                        startSound(clinkSnd);
+                        pickupObject(InventoryItems::windupKey, InventoryItems);
+                        egoSay("The key comes down like a settled invoice. I sign for it by holding on.");
+                        waitForMessage();
+                        egoSay("'On the house: the third key isn't lost. It's retired.'");
+                        waitForMessage();
+                        egoSay("'Ask the old crank up the hill how retirement's paying.' She says it like a name and not a description.");
+                        waitForMessage();
+                        setObjectState(ransomDesk, 2);
+                        setObjectState(trophyWall, 2);
+                    }
+                    return;
+                }
+                if(selectedSentence == 0) {
+                    cutscene(0) {
+                        egoSay("I offer bolts. I have zero bolts. I offer the concept of bolts.");
+                        waitForMessage();
+                        egoSay("'We invented owing. Try again.'");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                if(selectedSentence == 1) {
+                    cutscene(0) {
+                        egoSay("I offer the backstage pass. She reads the lanyard. Bicycle chain. Good chain.");
+                        waitForMessage();
+                        egoSay("'Tempting. The act, not the access.' She's heard about the act. Everyone has heard about the act.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                // "Let me think." -- exit tree
+                egoSay("I tell her I'll think about it. The card game resumes its careful nothing.");
+                return;
+            }
+
+            // ---- STAGE 1 (pick the argument) ----
+            stage1Menu();
+            // WINNER first in source: option 2 (who winds the winders?)
+            if(selectedSentence == 2) {
+                arithmeticLanded = 1;       // flag before speech
+                cutscene(0) {
+                    egoSay("I ask who signs the cheque. Ransom needs a payer. Payers need wound springs.");
+                    waitForMessage();
+                    egoSay("The hum is flat and dropping. Past a point, this city can't surrender. It can only stop.");
+                    waitForMessage();
+                    egoSay("'We can wind them awake to pay. Hand-winding is what we do.'");
+                    waitForMessage();
+                    egoSay("Six of you. Eight thousand of them, give or take this room.");
+                    waitForMessage();
+                    egoSay("And when the hum quits -- who winds the winders?");
+                    waitForMessage();
+                    egoSay("Her crank stops mid-polish. The card game stops pretending to be a card game.");
+                    waitForMessage();
+                    egoSay("'...The plan assumed somebody stays wound.' Plans usually do.");
+                    waitForMessage();
+                    egoSay("'Then make me a better offer than a dead invoice.'");
+                    waitForMessage();
+                }
+                return;
+            }
+            if(selectedSentence == 0) {
+                cutscene(0) {
+                    egoSay("I explain that the city needs the key. Sincerely. With gestures.");
+                    waitForMessage();
+                    egoSay("'The city needed winders once. We kept the receipts.'");
+                    waitForMessage();
+                    egoSay("She points at a drawer. The drawer is labeled RECEIPTS, GRIEVANCE, MIXED.");
+                    waitForMessage();
+                }
+                return;
+            }
+            if(selectedSentence == 1) {
+                cutscene(0) {
+                    egoSay("I invoke City Hall. The room enjoys that.");
+                    waitForMessage();
+                    egoSay("'His last cease-and-desist is over the stove. Framed.' It is. They dusted it.");
+                    waitForMessage();
+                }
+                return;
+            }
+            // "I'll think about it." -- exit tree
+            egoSay("I tell her I'll think about it. The card game resumes its careful nothing.");
+            return;
+
+        case LookAt:
+            if(keyRecovered) {
+                egoSay("Same rig, new posture. Employed suits her.");
+                return;
+            }
+            egoSay("A harbor winch-bot, decommissioned. Cable for shoulders, a crank where each hand should be, a drum chest wound tight.");
+            waitForMessage();
+            egoSay("The drum is stenciled 4,000 POUNDS WORKING LOAD. Nothing about her reads decorative.");
+            return;
+
+        case Give:
+        case UsedWith:
+            if(objB == InventoryItems::backstagePass) {
+                egoSay("She'll hear offers at the desk, in order, like a business.");
+                return;
+            }
+            egoSay("She appraises it against the ransom and files it under petty.");
+            return;
+
+        case Smell:
+            egoSay("Tarred rope. The real thing. Nobody's made it in an epoch -- she has a supplier or a hoard.");
+            return;
+        }
+    }
+
+    object trophyWall {
+        x = 240;
+        y = 32;
+        w = 48;
+        h = 24;
+        dir = NORTH;
+        name = "trophy wall";
+        states = {
+            { 0, 0, "rooms/trophy_bare.bmp" },
+            { 0, 0, "rooms/trophy_order.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            if(keyByParley) {
+                egoSay("The work order hangs on a fresh nail. First new plaque of the epoch.");
+                return;
+            }
+            egoSay("Plaques: BEST KNOTS. FASTEST REEL. EMPLOYEE OF THE EPOCH. All one employee, all older than the Dynamo.");
+            waitForMessage();
+            egoSay("Under them, an old crew photo. One winder stands apart, up a hill of his own already.");
+            return;
+        }
+    }
+
+    // doorAlley: the BACK back door, from inside -- silent exit when the
+    // key's recovered, refusal flavor before (the bar is narration, not a
+    // visual state, so no setObjectState here -- art note in the report).
+    object doorAlley {
+        x = 288;
+        y = 64;
+        w = 24;
+        h = 48;
+        dir = EAST;
+        name = "steel door";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The famous steel door, from the famous inside. The red lamp is just a lamp in here.");
+            return;
+        case Open:
+        case Use:
+            // walkthrough path FIRST: post-recovery silent exit
+            if(keyRecovered) {
+                putActorAt(VAR_EGO, 66, 120, AlleyRoom);
+                startRoom(AlleyRoom);
+                return;
+            }
+            egoSay("Barred. It's the emergency exit, and my being here isn't an emergency yet. Says the doorbot's posture.");
+            return;
+        case Smell:
+            egoSay("Airtight from this side too. Commitment.");
+            return;
+        }
+    }
+
+    // ---- the loft (y 0-48 strip; reached only by the alley fire escape)
+
+    object hatch {
+        x = 112;
+        y = 24;
+        w = 24;
+        h = 16;
+        dir = NORTH;
+        name = "loft hatch";
+        states = {
+            { 0, 0, "rooms/hatch_closed.bmp" },
+            { 0, 0, "rooms/hatch_open.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case Open:
+        case Use:
+            if(objB) {
+                // "Use hatch with magnet" -- the caught-and-ejected flop
+                if(objB == InventoryItems::magnet) {
+                    if(!loftEntered) {
+                        egoSay("Through a shut hatch, the magnet would be fishing for the hatch.");
+                        return;
+                    }
+                    if(keyRecovered) {
+                        egoSay("The pot's been emptied. Nothing left to sing.");
+                        return;
+                    }
+                    ejectedOnce = 1;            // flag before speech
+                    cutscene(0) {
+                        egoSay("Old reliable. I lower the magnet on its string, aiming brass.");
+                        waitForMessage();
+                        egoSay("The magnet ignores brass -- and finds the pot of washers. Steel, the lot of them.");
+                        waitForMessage();
+                        startSound(washersSnd);
+                        egoSay("The pot sings. Four heads come up in close harmony. 'Loft.'");
+                        waitForMessage();
+                        egoSay("Two of them come up the outside rigging like weather. Boarding is the one skill they kept current.");
+                        waitForMessage();
+                        startSound(thudSnd);
+                        egoSay("I am escorted down and out with one Rustler per arm. Professional courtesy.");
+                        waitForMessage();
+                        egoSay("Behind me, the slot opens. The eye confirms I'm still ejected. I am.");
+                        waitForMessage();
+                        putActorAt(VAR_EGO, 66, 120, AlleyRoom);
+                        startRoom(AlleyRoom);
+                    }
+                    return;
+                }
+                egoSay("That won't open the hatch.");
+                return;
+            }
+            // walkthrough path FIRST: the forced eavesdrop, on first open
+            if(!loftEntered) {
+                loftEntered = 1;               // flags before speech
+                ransomKnown = 1;
+                cutscene(0) {
+                    startSound(creakSnd);
+                    setObjectState(hatch, 2);
+                    egoSay("I ease the hatch. Below: cards, stove, and the boardroom voice of a winch-bot reading a draft aloud.");
+                    waitForMessage();
+                    egoSay("'...item four. The rewind: three keys, one city, our rates. They retired hand-winding. Fine. Then the rewind is a private contract.'");
+                    waitForMessage();
+                    egoSay("The ransom. Voltina called it: a city that can be wound down can be billed for winding back up.");
+                    waitForMessage();
+                    egoSay("And under the hatch, over the table: my key. Still rigged to the hook that took it.");
+                    waitForMessage();
+                    egoSay("The line runs up over a pulley to a cleat by my foot.");
+                    waitForMessage();
+                }
+                return;
+            }
+            // already open -- just toggles, no line
+            setObjectState(hatch, 2);
+            return;
+        case LookAt:
+            egoSay("A hatch over the card table. The tackle's pulley is screwed to the rafter beside it.");
+            waitForMessage();
+            egoSay("This is where my key got reeled home.");
+            return;
+        case UsedWith:
+            if(objB == InventoryItems::magnet) {
+                if(!loftEntered) {
+                    egoSay("Through a shut hatch, the magnet would be fishing for the hatch.");
+                    return;
+                }
+                if(keyRecovered) {
+                    egoSay("The pot's been emptied. Nothing left to sing.");
+                    return;
+                }
+                ejectedOnce = 1;               // flag before speech
+                cutscene(0) {
+                    egoSay("Old reliable. I lower the magnet on its string, aiming brass.");
+                    waitForMessage();
+                    egoSay("The magnet ignores brass -- and finds the pot of washers. Steel, the lot of them.");
+                    waitForMessage();
+                    startSound(washersSnd);
+                    egoSay("The pot sings. Four heads come up in close harmony. 'Loft.'");
+                    waitForMessage();
+                    egoSay("Two of them come up the outside rigging like weather. Boarding is the one skill they kept current.");
+                    waitForMessage();
+                    startSound(thudSnd);
+                    egoSay("I am escorted down and out with one Rustler per arm. Professional courtesy.");
+                    waitForMessage();
+                    egoSay("Behind me, the slot opens. The eye confirms I'm still ejected. I am.");
+                    waitForMessage();
+                    putActorAt(VAR_EGO, 66, 120, AlleyRoom);
+                    startRoom(AlleyRoom);
+                }
+                return;
+            }
+            egoSay("That won't open the hatch.");
+            return;
+        }
+    }
+
+    object loftCleat {
+        x = 96;
+        y = 32;
+        w = 16;
+        h = 16;
+        dir = NORTH;
+        name = "brass cleat";
+        states = {
+            { 0, 0, "rooms/cleat_loaded.bmp" },
+            { 0, 0, "rooms/cleat_slack.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case Use:
+            // walkthrough path FIRST: the steal (hatch open, !keyRecovered)
+            if(loftEntered) {
+                if(!keyRecovered) {
+                    keyRecovered = 1;          // flags before speech
+                    keyByTheft = 1;
+                    cutscene(0) {
+                        egoSay("I take the line off the cleat. The trick is to reel like you're nobody.");
+                        waitForMessage();
+                        startSound(reelSnd);
+                        egoSay("Quarter-turn at a time, between shanty beats. The key rises past four hats and zero glances.");
+                        waitForMessage();
+                        setObjectState(keyOnLine, 2);
+                        setObjectState(loftCleat, 2);
+                        startSound(clinkSnd);
+                        pickupObject(InventoryItems::windupKey, InventoryItems);
+                        egoSay("Brass in hand, off their own hook. They stole it by fishing. The harbor keeps what this town drops.");
+                        waitForMessage();
+                        egoSay("Below, somebody finally folds. Time to be a rumor.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                egoSay("Nothing left on the line but precedent.");
+                return;
+            }
+            egoSay("Reeling in mystery cargo through a shut hatch is how stories start. Hatch first.");
+            return;
+        case LookAt:
+            if(keyRecovered) {
+                egoSay("Line's slack. The rig is between engagements.");
+                return;
+            }
+            if(loftEntered) {
+                egoSay("A brass cleat, tied off sailor-tight. The line goes over the pulley and down to my key.");
+                return;
+            }
+            egoSay("A cleat, tied off sailor-tight. The line disappears through a shut hatch. Could be anything down there. Anchors. Laundry.");
+            return;
+        }
+    }
+
+    object loftShutter {
+        x = 284;
+        y = 16;
+        w = 24;
+        h = 24;
+        dir = EAST;
+        name = "loft shutter";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            // carries the fire-escape retry-flavor line (moved here per the
+            // desk's note: room-transition verbs say nothing, so the
+            // ejected-retry line cannot ride the fire-escape Use click)
+            if(ejectedOnce && !keyRecovered) {
+                egoSay("The shutter's still unlatched. Their security model never planned for stubborn.");
+                return;
+            }
+            egoSay("The shutter the heist came home through. It latches from habit, not commitment.");
+            return;
+        case Open:
+        case Use:
+            // silent exit to the alley, at the fire-escape foot
+            putActorAt(VAR_EGO, 152, 120, AlleyRoom);
+            startRoom(AlleyRoom);
+            return;
+        }
+    }
+
+}

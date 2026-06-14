@@ -616,6 +616,7 @@ room CityHallRoom {
                 if(selectedSentence == 2) {
                     pistonRound = 4;        // flags before speech
                     pistonCracked = 1;
+                    act3Started = 1;        // Act 3 opens (Scene 09 gate)
                     setObjectState(gauge, 2);
                     pickupObject(InventoryItems::ransomNote, InventoryItems);
                     cutscene(0) {

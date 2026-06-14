@@ -1,0 +1,665 @@
+/* Clanker City Chronicles -- Scene 10: Dynamo District / Old Crank.
+ * "The key that winds itself." The twist scene, and the last acquisition
+ * before the finale. Sprocket walks in with two keys and the Dynamo's
+ * three-slot interface to learn; walks out with Key #3 -- which was never
+ * in a crate. Key #3 is Old Crank, the Order's living fail-safe, who pulls
+ * his own key and winds down so the city can wind up.
+ *
+ * The gate is the playable beat: a clockwork governor regulates SPEED, so
+ * brute force makes it worse -- you must crank at the rate it expects, the
+ * rate the dying Dynamo hums. Four picks (the dialog.scc UI, the City Hall
+ * duel idiom); three flop funny and always retry, one ("Match the hum")
+ * wins. After the gate it is character work with player-driven reveals.
+ *
+ * NPC dialog is reported secondhand by Sprocket -- one voice, deadpan
+ * (the Voltina/Caliper convention; docs/research/NPC-DIALOG-ACTORSAY-BUG.md
+ * -- actorSay corrupts the dialog UI). Old Crank is a painted figure in the
+ * background (no actor), examinable, with a wound-down pose state. The
+ * dialog TREE machinery is required and fine; only NPC *speech* is reported.
+ * Walkthrough-path lines go FIRST in source per handler (dub pairing).
+ *
+ * Key #2 here is InventoryItems::voltKey (named "the second key"; Scene 06).
+ * The spec's "secondKey" did not finalize under that id -- voltKey is the
+ * shipped item. Key #3 is InventoryItems::crankKey, created at the give.
+ * FALLBACK (spec s0/s4): if Key #2 isn't in pocket, the dry run runs on
+ * windupKey alone and lifts the hum a third, not a half -- same signpost.
+ */
+
+#include <scummVars6.s>
+#include "common.sch"
+#include "verbs.sch"
+#include "inventoryitems.sch"
+#include "dialog.sch"
+#include "midtown.sch"
+#include "dynamo.sch"
+
+room DynamoRoom {
+
+    image = "rooms/dynamo.bmp";
+    boxd = "rooms/dynamo.box";
+    trans = 0;
+
+    // ------------------------------------------------------------ sounds
+
+    sound humSnd      = "dynamohum.soun";      // "The Dynamo's Hum" (flat)
+    sound humLiftSnd  = "dynamohum_lift.soun"; // the dry-run half-step lift
+    sound governorSnd = "governor.soun";
+    sound winddownSnd = "winddown.soun";
+    sound humliftSnd  = "humlift.soun";        // the dry-run SFX cue
+    sound keyturnSnd  = "keyturn.soun";
+    sound ratchetSnd  = "ratchet.soun";
+    sound thudSnd     = "thud.soun";
+    sound boingSnd    = "boing.soun";
+    sound pickupSnd   = "pickup.soun";
+
+    char* dlgStr;       // dialog-option scratch (the City Hall idiom)
+
+    // ------------------------------------------------------------ music
+    // The hum IS this room's music (N-A5, the GDD clock). Watchdog-restart
+    // like every other room. The dry run swaps in dynamohum_lift for one
+    // cutscene, then we return here to dynamohum_flat (humLoop notices the
+    // flat track stopped and brings it back).
+
+    local script humLoop() {
+        stopMusic();
+        startMusic(humSnd);
+        imPlayerSetLoop(humSnd, 999, 1, 0, 33, 0);   // DHUM_LOOP_BEATS = 33
+        while(1) {
+            delay(120);
+            // don't fight the dry-run lift cue; only restart the flat hum
+            // when NEITHER hum track is running (the lift has ended)
+            unless(isSoundRunning(humSnd)) {
+                unless(isSoundRunning(humLiftSnd)) {
+                    startMusic(humSnd);
+                    imPlayerSetLoop(humSnd, 999, 1, 0, 33, 0);
+                }
+            }
+        }
+    }
+
+    // The governor's flyweights twitch out of time: the room's animating
+    // element, a 2-state flicker (the signFlicker/stackPuff pattern). Once
+    // the gate is wound it spins sweet -- hold the in-time frame. Local
+    // script, so it dies with the room (the oilbar centrifuge model).
+    local script governorFlicker() {
+        while(1) {
+            if(gateWound) {
+                setObjectState(governor, 1);     // in-time, spinning sweet
+                delay(60);
+            } else {
+                delay(30);
+                setObjectState(governor, 2);     // twitched out of time
+                delay(30);
+                setObjectState(governor, 1);
+            }
+        }
+    }
+
+    // ------------------------------------------------------- room entry
+
+    local script entry() {
+        startScript(1, humLoop, []);
+        startScript(1, governorFlicker, []);
+        unless(visitedDynamoDistrict) {
+            visitedDynamoDistrict = 1;
+            cutscene(2) {
+                putActorAt(VAR_EGO, 16, 122, DynamoRoom);
+                walkActorTo(VAR_EGO, 60, 124);
+                waitForActor(VAR_EGO);
+                egoSay("Top of the hill. The Dynamo District, where the city keeps the thing it won't talk about.");
+                waitForMessage();
+                egoSay("Behind the fence: the Great Dynamo. Bigger up close. Quieter up close, which is the part that worries me.");
+                waitForMessage();
+                egoSay("The hum's still going. Barely. Like something counting down and losing its place.");
+                waitForMessage();
+                egoSay("Below, the lights are going out in patches. Up here, the thing that's supposed to stop that is barely turning.");
+                waitForMessage();
+            }
+        }
+    }
+
+    // -------------------------------------------------- the gate dialog
+    // Four picks, rebuilt each open (don't mutate in place); flops re-add
+    // the same menu (no soft-lock -- the menu never shrinks). WIN line is
+    // first in source per the handler below (dub pairing), but the menu
+    // ORDER below is the player-facing order from the spec table.
+
+    local script gateMenu() {
+        dlgStr[0] = "Crank it hard.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "Crank it gently.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "Match the hum.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        dlgStr[0] = "Just shove the gate.";
+        Dialog::dialogAdd(dlgStr);
+        dlgStr = 0;
+        Dialog::dialogStart(0, 0);
+        do breakScript() while(selectedSentence < 0);
+        Dialog::dialogHide();
+        Dialog::dialogClear(1);
+        Dialog::dialogEnd();
+    }
+
+    // ---------------------------------------------------------- objects
+
+    object wayDown {
+        x = 0;
+        y = 52;
+        w = 24;
+        h = 52;
+        dir = EAST;
+        name = "way down";
+        class = { Openable };
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("Back down the rail to Midtown. Downhill's the easy direction. It always is.");
+            return;
+        case Open:
+        case Use:
+            // room transitions say NOTHING (docs/NOTES.md); arrival flavor
+            // lives in MidtownRoom.entry
+            putActorAt(VAR_EGO, 286, 120, MidtownRoom);
+            startRoom(MidtownRoom);
+            return;
+        }
+    }
+
+    object fence {
+        x = 40;
+        y = 36;
+        w = 152;
+        h = 22;
+        dir = NORTH;
+        name = "fence";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("The fence with opinions. Wrought iron, wound tight, and certain it was here first.");
+            waitForMessage();
+            egoSay("There's a gate in it. The gate is where opinions are negotiated.");
+            return;
+        case Use:
+            // the one sanctioned payoff of the reserved phrase
+            egoSay("I lean on it. The fence has opinions. It just shared one.");
+            return;
+        case Smell:
+            egoSay("Rust held together by paint held together by rust.");
+            return;
+        }
+    }
+
+    object plaque {
+        x = 40;
+        y = 28;
+        w = 32;
+        h = 12;
+        dir = NORTH;
+        name = "plaque";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A brass plaque, polished by nobody for a long time: GOVERNOR -- KEEP TIME.");
+            waitForMessage();
+            egoSay("Under it, smaller: ORDER OF THE WIND-UP KEY. So this is their front porch.");
+            return;
+        case Smell:
+            egoSay("Brass and verdigris. Nobody's breathed on it in years.");
+            return;
+        }
+    }
+
+    object governor {
+        x = 64;
+        y = 24;
+        w = 24;
+        h = 24;
+        dir = NORTH;
+        name = "governor";
+        states = {
+            { 0, 0, "rooms/governor_a.bmp" },    // in-time
+            { 0, 0, "rooms/governor_b.bmp" }     // twitched out of time
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            if(gateWound) {
+                egoSay("Spinning sweet now. Little flyweights out level, keeping their own time again.");
+                return;
+            }
+            egoSay("A flyweight speed-regulator. Those weights should fan out smooth as the hum.");
+            waitForMessage();
+            egoSay("They're twitching instead. Trying to keep time with something they can't hear anymore.");
+            return;
+        case Use:
+        case Move:
+            egoSay("You don't push a governor. You match it. That's the whole point of it.");
+            return;
+        case Smell:
+            egoSay("Hot bearing oil. It's been working overtime to do nothing.");
+            return;
+        }
+    }
+
+    object gate {
+        x = 64;
+        y = 48;
+        w = 32;
+        h = 56;
+        dir = NORTH;
+        name = "gate";
+        class = { Openable };
+        states = {
+            { 0, 0, "rooms/dgate_closed.bmp" },
+            { 0, 0, "rooms/dgate_open.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            if(gateWound) {
+                egoSay("Open. The governor's spinning sweet now, in time with itself for once.");
+                return;
+            }
+            egoSay("A turnstile run by a governor -- little flyweights that should be spinning.");
+            waitForMessage();
+            egoSay("There's a hand-crank socket on the post, worn shiny. Other hands. Older hands.");
+            return;
+
+        case Open:
+        case Use:
+        case Move:
+            // already open: you walk through, no transition line
+            if(gateWound) {
+                egoSay("It turns free now. I let it.");
+                return;
+            }
+            // first contact: setup + Crank's offscreen nudge (reported)
+            unless(heardGateHint) {
+                heardGateHint = 1;        // flag before speech
+                cutscene(0) {
+                    startSound(governorSnd);
+                    egoSay("I take the crank. The governor lurches, fights me, locks.");
+                    waitForMessage();
+                    egoSay("From inside the yard, a voice. Dry as a dropped washer.");
+                    waitForMessage();
+                    egoSay("It only answers the hum, the voice says. Always did.");
+                    waitForMessage();
+                }
+            }
+            // --- the dialog tree: how do I crank it? ---
+            gateMenu();
+            // WIN first in source (dub pairing): option 2, "Match the hum."
+            if(selectedSentence == 2) {
+                gateWound = 1;            // flag before speech
+                cutscene(0) {
+                    startSound(governorSnd);
+                    egoSay("I crank in time with the dying hum. Slow. Flat. Apologetic.");
+                    waitForMessage();
+                    startSound(ratchetSnd);
+                    setObjectState(gate, 2);
+                    setObjectState(governor, 1);
+                    startSound(thudSnd);
+                    egoSay("The governor stops fighting me. The escapement lets go. The turnstile turns.");
+                    waitForMessage();
+                }
+                return;
+            }
+            if(selectedSentence == 0) {
+                // "Crank it hard." -- over-speed, handle launches. Flop.
+                cutscene(0) {
+                    startSound(governorSnd);
+                    egoSay("I commit. The governor overspeeds, throws a weight, and bites down harder.");
+                    waitForMessage();
+                    startSound(boingSnd);
+                    startSound(thudSnd);
+                    egoSay("The crank handle leaves. I find it later. Worse than when I started.");
+                    waitForMessage();
+                }
+                return;
+            }
+            if(selectedSentence == 1) {
+                // "Crank it gently." -- the pawl never catches. Flop.
+                egoSay("I coax it. The pawl never catches. The gate waits for me to mean it.");
+                return;
+            }
+            // "Just shove the gate." -- the fence shares a second opinion.
+            egoSay("I put a shoulder into it. The fence shares a second opinion. Same as the first.");
+            return;
+
+        case Smell:
+            egoSay("Cold iron. The crank socket smells of every hand that gave up here.");
+            return;
+        }
+    }
+
+    object oldCrank {
+        x = 120;
+        y = 48;
+        w = 32;
+        h = 56;
+        dir = SOUTH;
+        name = "Old Crank";
+        class = { Person };
+        states = {
+            { 0, 0, "rooms/crank_up.bmp" },      // standing, key turning
+            { 0, 0, "rooms/crank_down.bmp" }     // wound down, mid-gesture
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            if(crankGiven) {
+                egoSay("Old Crank, wound all the way down. Mid-gesture. Waiting again, the only way he has left.");
+                return;
+            }
+            unless(metCrank) {
+                egoSay("A wind-up bot older than the streetlights, oiled to a shine nobody's seen him do.");
+                waitForMessage();
+                egoSay("Everything on this island is stalling out. He's the only thing still keeping time.");
+                waitForMessage();
+                egoSay("There's a key in his back. It's turning. Slowly. On its own.");
+                return;
+            }
+            egoSay("Old Crank. Built to last, and made to wait. Bad combination, long-term.");
+            return;
+
+        case TalkTo:
+            // ===== meet / reveal / cost. Walkthrough path FIRST in source
+            // per branch; reveal/give WIN lines lead their menus.
+
+            // ---- first meeting ----
+            unless(metCrank) {
+                metCrank = 1;             // flag before speech
+                cutscene(0) {
+                    egoSay("I introduce myself. The maintenance-bot. Three days late and one key short.");
+                    waitForMessage();
+                    egoSay("He knows what I am, he says. I'm the one they send last.");
+                    waitForMessage();
+                    egoSay("He doesn't get up. The key in his back keeps turning. Nobody's winding it.");
+                    waitForMessage();
+                    egoSay("He winds himself, he says. Last one on this hill who can.");
+                    waitForMessage();
+                }
+                return;
+            }
+
+            // ---- after the dry run: the reveal tree, then the give ----
+            if(dynamoPrimed) {
+
+                // the give tree (the cost). WIN of the whole scene: leads.
+                if(crankRevealed) {
+                    unless(crankGiven) {
+                        cutscene(0) {
+                            egoSay("He's already reaching back for it. I'm the one who needs the minute now.");
+                            waitForMessage();
+                        }
+                        Dialog::dialogClear(1);
+                        dlgStr[0] = "Stop. There has to be another way.";
+                        Dialog::dialogAdd(dlgStr);
+                        dlgStr = 0;
+                        dlgStr[0] = "Are you sure about this?";
+                        Dialog::dialogAdd(dlgStr);
+                        dlgStr = 0;
+                        dlgStr[0] = "Thank you.";
+                        Dialog::dialogAdd(dlgStr);
+                        dlgStr = 0;
+                        Dialog::dialogStart(0, 0);
+                        do breakScript() while(selectedSentence < 0);
+                        Dialog::dialogHide();
+                        Dialog::dialogClear(1);
+                        Dialog::dialogEnd();
+                        // the player authors the goodbye: the lines differ,
+                        // all advance to the give. WIN beat leads in source.
+                        crankGiven = 1;          // flags before speech
+                        allThreeKeys = 1;        // EXPORTED to Scene 11
+                        setObjectState(oldCrank, 2);
+                        cutscene(0) {
+                            if(selectedSentence == 0) {
+                                egoSay("I tell him there has to be another way. He's checked, he says. For longer than I've been wound.");
+                                waitForMessage();
+                            }
+                            if(selectedSentence == 1) {
+                                egoSay("I ask if he's sure. He's the spare, he says. Spares wait. He's waited enough.");
+                                waitForMessage();
+                            }
+                            if(selectedSentence == 2) {
+                                egoSay("I thank him. Don't, he says. Just make it worth the quiet.");
+                                waitForMessage();
+                            }
+                            startSound(ratchetSnd);
+                            egoSay("He works the key out of his own back. It's heavier than mine. Warmer, too.");
+                            waitForMessage();
+                            startSound(winddownSnd);
+                            egoSay("The turning in him slows. His voice comes down a register, then a register more.");
+                            waitForMessage();
+                            egoSay("Pull a wind-up's key, the wind-up stops, he says. Simple. He says it slower.");
+                            waitForMessage();
+                            startSound(pickupSnd);
+                            pickupObject(InventoryItems::crankKey, InventoryItems);
+                            egoSay("Three keys. The set's complete. It weighs about a person.");
+                            waitForMessage();
+                            egoSay("Wind the city, he says. He'll catch up. Maybe. Slowest of all.");
+                            waitForMessage();
+                            egoSay("Then nothing. He's still. Mid-gesture, like he meant to wave and ran out of road.");
+                            waitForMessage();
+                        }
+                        return;
+                    }
+                    // post-give
+                    egoSay("Nothing. The key that answered everything is in my hand now.");
+                    return;
+                }
+
+                // the reveal tree (earned, not narrated). The reveal WIN
+                // (option 1) leads in source.
+                Dialog::dialogClear(1);
+                dlgStr[0] = "How are you still moving? Everything else has stopped.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "What did the Order leave you up here to do?";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "The Dynamo's third slot is the size of your key.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                Dialog::dialogStart(0, 0);
+                do breakScript() while(selectedSentence < 0);
+                Dialog::dialogHide();
+                Dialog::dialogClear(1);
+                Dialog::dialogEnd();
+                // WIN first in source: option 1, the Order asked outright
+                if(selectedSentence == 1) {
+                    crankRevealed = 1;     // flag before speech
+                    cutscene(0) {
+                        egoSay("I ask what the Order left him to do. Wait, he says. Be the spare. He's the third key.");
+                        waitForMessage();
+                        egoSay("He says it the way you'd report the weather. The bottom drops out of the room anyway.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                if(selectedSentence == 2) {
+                    crankRevealed = 1;     // flag before speech
+                    cutscene(0) {
+                        egoSay("I mention the third slot's size. It would fit, he says. It's the one he's wearing.");
+                        waitForMessage();
+                        egoSay("He taps the key in his own back. The math finishes itself. I wish it hadn't.");
+                        waitForMessage();
+                    }
+                    return;
+                }
+                // option 0: off the grid -- the dread route, no reveal yet
+                cutscene(0) {
+                    egoSay("I ask how he's still moving. He's off their grid, he says. Has been since before mine.");
+                    waitForMessage();
+                    egoSay("Off the grid. The one bot the blackout can't reach. I start doing math I don't like.");
+                    waitForMessage();
+                }
+                return;
+            }
+
+            // metCrank but not yet primed: he won't be hurried (his WANT)
+            egoSay("He says show him it's worth it first. Then we'll talk.");
+            return;
+
+        case Give:
+        case UsedWith:
+            // taking his key by force, pre-give: refused
+            if(objB == InventoryItems::windupKey || objB == InventoryItems::voltKey) {
+                egoSay("I'm not winding a stranger with my key. That's how you end up in his stories.");
+                return;
+            }
+            unless(crankRevealed) {
+                egoSay("He's a person, not a vending machine. I keep being reminded.");
+                return;
+            }
+            // after the reveal, Use routes into the give via TalkTo
+            startObject2(oldCrank, TalkTo, [ TalkTo, oldCrank, 0 ]);
+            return;
+
+        case Smell:
+            if(crankGiven) {
+                egoSay("Brass polish, going cold. The good kind. The kind they stopped making.");
+                return;
+            }
+            egoSay("Brass polish and... no. Just brass polish. Decades of it.");
+            return;
+        }
+    }
+
+    object workbench {
+        x = 160;
+        y = 60;
+        w = 48;
+        h = 44;
+        dir = NORTH;
+        name = "workbench";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("A workbench of spare springs and half-keys, sorted by a hand that had nothing but time.");
+            waitForMessage();
+            egoSay("Everything here is a spare for something. He fits right in.");
+            return;
+        case PickUp:
+        case Use:
+            egoSay("It's his life's filing. I'm not the one who gets to close the drawer.");
+            return;
+        case Smell:
+            egoSay("Clock oil. The kind they stopped making, same as the bot who bought it.");
+            return;
+        }
+    }
+
+    object dynamo {
+        x = 200;
+        y = 8;
+        w = 104;
+        h = 76;
+        dir = NORTH;
+        name = "the Great Dynamo";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            if(dynamoPrimed) {
+                egoSay("Two slots turned, one dark. The hum settled back to flat the second I let go.");
+                waitForMessage();
+                egoSay("Two-thirds of a heartbeat. The last third has a slot the size of a key I've seen.");
+                return;
+            }
+            egoSay("The Great Dynamo, close enough to touch and too big to believe.");
+            waitForMessage();
+            egoSay("The hum's almost gone. Flat by a half-step, and getting flatter while I stand here.");
+            waitForMessage();
+            egoSay("Three keyhole slots in a row. Two of them are the size of what's in my pockets.");
+            return;
+
+        case TalkTo:
+            egoSay("Hang on, big fella. The cavalry's here. The cavalry is me and two keys and a bad feeling.");
+            return;
+
+        case Give:
+        case UsedWith:
+            if(objB == InventoryItems::windupKey || objB == InventoryItems::voltKey) {
+                // don't turn keys in the city's heart before meeting Crank
+                unless(metCrank) {
+                    egoSay("I could start turning keys in the city's heart unsupervised. I could also wait the one minute.");
+                    return;
+                }
+                // the dry run: the inventory-combination beat. WIN leads.
+                unless(dynamoPrimed) {
+                    dynamoPrimed = 1;     // flag before speech
+                    cutscene(0) {
+                        startSound(keyturnSnd);
+                        // fallback: if Key #2 isn't owned, one key, a third
+                        if(getObjectOwner(InventoryItems::voltKey) == VAR_EGO) {
+                            egoSay("I seat both keys and turn. Together. The slots take them like they were measured for it.");
+                        } else {
+                            egoSay("I seat the one key I've got and turn. The slot takes it like it was measured for it.");
+                        }
+                        waitForMessage();
+                        // music: swap the flat hum for the lift, play once
+                        stopMusic();
+                        startSound(humliftSnd);
+                        startMusic(humLiftSnd);
+                        if(getObjectOwner(InventoryItems::voltKey) == VAR_EGO) {
+                            egoSay("The hum climbs. A half-step, clean, the way Midtown should have sounded.");
+                        } else {
+                            egoSay("The hum climbs. Only a third, not a half -- one key short of the chord.");
+                        }
+                        waitForMessage();
+                        egoSay("Then it stalls. Holds. Sags back to flat. Two keys is two-thirds of a turn.");
+                        waitForMessage();
+                        egoSay("Behind me, Old Crank stops pretending he isn't watching.");
+                        waitForMessage();
+                        startSound(pickupSnd);
+                        egoSay("I take my keys back. You don't leave these in a lock and walk away.");
+                        waitForMessage();
+                        // humLoop's watchdog brings the flat hum back once
+                        // the lift track finishes
+                    }
+                    return;
+                }
+                egoSay("Same two slots, same half-step, same sag. The third one's still waiting on somebody.");
+                return;
+            }
+            if(objB == InventoryItems::crankKey) {
+                egoSay("Not yet. All three at once, or it's just noise and grief. That's the finale's problem.");
+                return;
+            }
+            egoSay("The Dynamo doesn't accessorize. It has very specific taste in keys.");
+            return;
+
+        case Smell:
+            egoSay("Ozone, going stale. Up close it's almost no smell at all, which is the whole problem.");
+            return;
+        }
+    }
+
+    object overlook {
+        x = 6;
+        y = 104;
+        w = 110;
+        h = 26;
+        dir = NORTH;
+        name = "overlook";
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            egoSay("From up here the whole city fits in one window. Tonight it's losing that window block by block.");
+            waitForMessage();
+            egoSay("A streetlamp gives up. Then a sign. Then a whole street, polite about it.");
+            return;
+        case Smell:
+            egoSay("The wind up here carries the whole city. It carries less of it every hour.");
+            return;
+        }
+    }
+
+}
