@@ -615,11 +615,11 @@ room ResRoom {
             Actors::setupActors();
 
             startRoom(CityHallRoom);
-            delay(800);            // ~13s: City Hall has 4 narration lines
+            delay(1400);           // ~23s: City Hall, 4 narration lines (+margin)
             startRoom(HideoutRoom);
-            delay(1100);           // ~18s: Hideout has 7 narration lines
+            delay(2500);           // ~42s: Hideout, 7 narration lines (+margin)
             startRoom(DynamoRoom);
-            delay(900);            // ~15s: Dynamo has 4 narration lines
+            delay(1600);           // ~27s: Dynamo, 4 narration lines (+margin)
             return;
         }
 
