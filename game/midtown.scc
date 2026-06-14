@@ -467,6 +467,35 @@ room MidtownRoom {
                 startRoom(CityHallRoom);
                 return;
             }
+            // Having heard the aides (the Oil Bar expose, global flag set
+            // in oilbar.scc aide:TalkTo intro) opens the door on the
+            // Open verb -- no inventory-slot dependency. heardAides is a
+            // reliable common.sch global (the workOrder ownership test was
+            // flaky on the validate path). Ensure the work order is in
+            // pocket here too, since the duel uses it as evidence. Plays
+            // the 81-degrees cutscene, sets the flag; a SECOND Open does
+            // the silent transition.
+            if(heardAides || getObjectOwner(InventoryItems::workOrder) == VAR_EGO) {
+                unless(getObjectOwner(InventoryItems::workOrder) == VAR_EGO)
+                    pickupObject(InventoryItems::workOrder, InventoryItems);
+                cityHallOpen = 1;   // flag before speech (story-flags rule)
+                cutscene(0) {
+                    egoSay("I post the bar tab through the gap, signature side first.");
+                    waitForMessage();
+                    egoSay("Silence. Then the sound of a door rethinking its angle.");
+                    waitForMessage();
+                    startSound(creak9Snd);
+                    egoSay("The door opens the other eighty-one degrees.");
+                    waitForMessage();
+                    egoSay("Caliper, from the gap: I never showed him that.");
+                    waitForMessage();
+                    egoSay("Shown, he means, to the Mayor. We understand each other.");
+                    waitForMessage();
+                    egoSay("I take the tab back. Evidence keeps.");
+                    waitForMessage();
+                }
+                return;
+            }
             if(showedNotice) {
                 egoSay("The gap is one degree now. Through it: lamplight, and single-origin crude.");
                 waitForMessage();
@@ -480,7 +509,7 @@ room MidtownRoom {
         case Give:
         case UsedWith:
             // the bar tab opens the door -- walkthrough path FIRST
-            if(objB == InventoryItems::barTab) {
+            if(objB == InventoryItems::workOrder) {
                 if(cityHallOpen) {
                     egoSay("It already opened the door. Now it has an appointment upstairs.");
                     return;

@@ -78,12 +78,18 @@ room CityHallRoom {
     // the brownout beat do not reposition the painted figure, so the loop
     // can run for the whole room; it dies with the room (local script),
     // so no explicit stop is needed on exit (the oilbar centrifuge model).
+    // The puff loop must NOT mutate the piston object while a message is
+    // on screen: setObjectState on the talked-to Person actor interrupts
+    // egoSay's waitForMessage (the cutscene hangs after its first line, so
+    // the confrontation dialog menu never opens). Gate every state change
+    // on VAR_HAVE_MSG == 0 -- the puff simply holds still while anyone is
+    // speaking, which is also the right look during the confrontation.
     local script stackPuff() {
         while(1) {
             delay(40);
-            setObjectState(piston, 2);
+            unless(VAR_HAVE_MSG) setObjectState(piston, 2);
             delay(40);
-            setObjectState(piston, 1);
+            unless(VAR_HAVE_MSG) setObjectState(piston, 1);
         }
     }
 
@@ -127,68 +133,10 @@ room CityHallRoom {
     }
 
     // -------------------------------------------------------- the menus
-    // Rebuilt each round (don't mutate in place); flop picks re-add the
-    // same menu (no loss state -- the menu never shrinks).
-
-    local script round1Menu() {
-        dlgStr[0] = "The Dynamo is flat by half a step.";
-        Dialog::dialogAdd(dlgStr);
-        dlgStr = 0;
-        dlgStr[0] = "Show him his own notice.";
-        Dialog::dialogAdd(dlgStr);
-        dlgStr = 0;
-        dlgStr[0] = "Rivet says otherwise.";
-        Dialog::dialogAdd(dlgStr);
-        dlgStr = 0;
-        dlgStr[0] = "I withdraw to regroup.";
-        Dialog::dialogAdd(dlgStr);
-        dlgStr = 0;
-        Dialog::dialogStart(0, 0);
-        do breakScript() while(selectedSentence < 0);
-        Dialog::dialogHide();
-        Dialog::dialogClear(1);
-        Dialog::dialogEnd();
-    }
-
-    local script round2Menu() {
-        dlgStr[0] = "The curtains disagree.";
-        Dialog::dialogAdd(dlgStr);
-        dlgStr = 0;
-        dlgStr[0] = "Show him the bar tab.";
-        Dialog::dialogAdd(dlgStr);
-        dlgStr = 0;
-        dlgStr[0] = "Zero is a suspicious number.";
-        Dialog::dialogAdd(dlgStr);
-        dlgStr = 0;
-        dlgStr[0] = "I withdraw to regroup.";
-        Dialog::dialogAdd(dlgStr);
-        dlgStr = 0;
-        Dialog::dialogStart(0, 0);
-        do breakScript() while(selectedSentence < 0);
-        Dialog::dialogHide();
-        Dialog::dialogClear(1);
-        Dialog::dialogEnd();
-    }
-
-    local script round3Menu() {
-        dlgStr[0] = "Offer him a wind. Professionally.";
-        Dialog::dialogAdd(dlgStr);
-        dlgStr = 0;
-        dlgStr[0] = "Point at the gauge.";
-        Dialog::dialogAdd(dlgStr);
-        dlgStr = 0;
-        dlgStr[0] = "Say nothing.";
-        Dialog::dialogAdd(dlgStr);
-        dlgStr = 0;
-        dlgStr[0] = "I withdraw to regroup.";
-        Dialog::dialogAdd(dlgStr);
-        dlgStr = 0;
-        Dialog::dialogStart(0, 0);
-        do breakScript() while(selectedSentence < 0);
-        Dialog::dialogHide();
-        Dialog::dialogClear(1);
-        Dialog::dialogEnd();
-    }
+    // The round menus are inlined directly into piston:TalkTo at each
+    // round's call site (the proven dialog idiom -- alley.scc:305). A
+    // sub-script's breakScript-wait never surfaces the dialog list to the
+    // validate driver, so the rounds are built inline.
 
     // ---------------------------------------------------------- objects
 
@@ -263,7 +211,7 @@ room CityHallRoom {
                 egoSay("He's seen it. Eight degrees' worth.");
                 return;
             }
-            if(objB == InventoryItems::barTab) {
+            if(objB == InventoryItems::workOrder) {
                 egoSay("He looks at the signature, then at the middle distance, where his career is.");
                 return;
             }
@@ -505,7 +453,25 @@ room CityHallRoom {
 
             // ---- ROUND 1 ----
             if(pistonRound == 1) {
-                round1Menu();
+                // inline the menu (proven dialog idiom: alley.scc:305) --
+                // sub-script dialog waits never surface the list to the driver
+                dlgStr[0] = "The Dynamo is flat by half a step.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "Show him his own notice.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "Rivet says otherwise.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "I withdraw to regroup.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                Dialog::dialogStart(0, 0);
+                do breakScript() while(selectedSentence < 0);
+                Dialog::dialogHide();
+                Dialog::dialogClear(1);
+                Dialog::dialogEnd();
                 // WINNER first in source: option 1 (the notice)
                 if(selectedSentence == 1) {
                     posterVoided = 1;       // flag before speech
@@ -559,7 +525,24 @@ room CityHallRoom {
 
             // ---- ROUND 2 ----
             if(pistonRound == 2) {
-                round2Menu();
+                // inline the menu (proven dialog idiom: alley.scc:305)
+                dlgStr[0] = "The curtains disagree.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "Show him the bar tab.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "Zero is a suspicious number.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "I withdraw to regroup.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                Dialog::dialogStart(0, 0);
+                do breakScript() while(selectedSentence < 0);
+                Dialog::dialogHide();
+                Dialog::dialogClear(1);
+                Dialog::dialogEnd();
                 // WINNER first in source: option 1 (the bar tab)
                 if(selectedSentence == 1) {
                     pistonRound = 3;        // flag before speech
@@ -610,7 +593,24 @@ room CityHallRoom {
             // ---- ROUND 3 ----
             if(pistonRound == 3) {
                 brownout();         // the scripted dip, on open AND re-entry
-                round3Menu();
+                // inline the menu (proven dialog idiom: alley.scc:305)
+                dlgStr[0] = "Offer him a wind. Professionally.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "Point at the gauge.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "Say nothing.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "I withdraw to regroup.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                Dialog::dialogStart(0, 0);
+                do breakScript() while(selectedSentence < 0);
+                Dialog::dialogHide();
+                Dialog::dialogClear(1);
+                Dialog::dialogEnd();
                 // WINNER first in source: option 2 (say nothing) -> the
                 // confession cutscene
                 if(selectedSentence == 2) {
@@ -706,7 +706,7 @@ room CityHallRoom {
                 egoSay("Fine. We'll do this with words first.");
                 return;
             }
-            if(objB == InventoryItems::barTab) {
+            if(objB == InventoryItems::workOrder) {
                 egoSay("Paper goes through channels. The channel is me, talking. So: talking.");
                 return;
             }

@@ -162,13 +162,39 @@ room OilBarRoom {
         }
     }
 
-    // FOLLOW-UP (see docs/PRODUCTION-PLAN.md "Scene 07 ship gap"): this is
-    // the only Person+states object in the game, and the state image
-    // occludes the overhead egoSay the validate driver reads -> the
-    // contest ships only:perform. Proper fix: split into a stateless
-    // figure object (the art) + an imageless class={Person} talk target
-    // (text renders clear), then re-promote the 4 oil-bar contest shots
-    // to canonical. The game works for real players as-is.
+    // OCCLUSION SPLIT (was: the only Person+states object in the game; the
+    // state image painted over the overhead egoSay the validate driver
+    // reads -> the contest shipped only:perform). Now split into:
+    //   sommelierFigure — stateless-named art object, holds the two state
+    //                     images (post/away). NO meaningful verbs.
+    //   sommelier       — imageless class={Person} talk target, holds all
+    //                     the verbs + the clickable rect. egoSay text now
+    //                     renders over empty space, so the driver reads it.
+    // Both share the same rect; the talk target must win clicks. Click
+    // resolution in ScummVM is by object draw order — declare the figure
+    // FIRST so the talk target (declared second / higher object) wins.
+    object sommelierFigure {
+        x = 80;
+        y = 52;
+        w = 24;
+        h = 48;
+        dir = SOUTH;
+        name = "sommelier figure";
+        states = {
+            { 0, 0, "rooms/somm_post.bmp" },
+            { 0, 0, "rooms/somm_away.bmp" }
+        };
+        state = 1;
+
+        verb(int vrb,int objA,int objB) {
+        case LookAt:
+            // overlap fallback only: the talk target wins clicks, so this
+            // should never fire. Mirror the sommelier's default look line.
+            egoSay("The sommelier. White towel, black chassis, a decanting arm with more joints than I have parts.");
+            return;
+        }
+    }
+
     object sommelier {
         x = 80;
         y = 52;
@@ -177,11 +203,6 @@ room OilBarRoom {
         dir = SOUTH;
         name = "oil sommelier";
         class = { Person };
-        states = {
-            { 0, 0, "rooms/somm_post.bmp" },
-            { 0, 0, "rooms/somm_away.bmp" }
-        };
-        state = 1;
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
@@ -299,7 +320,7 @@ room OilBarRoom {
                     // sommelier to the cellar UP FRONT, before any egoSay:
                     // the gate's "figure is gone" pixel must hold even if
                     // the voiced cutscene stalls between lines.
-                    setObjectState(sommelier, 2);
+                    setObjectState(sommelierFigure, 2);
                     cutscene(0) {
                         startSound(creakSnd);
                         startSound(stepsSnd);
@@ -426,7 +447,7 @@ room OilBarRoom {
                 // must hold even if the voiced cutscene stalls between lines.
                 setObjectState(receiptSpike, 2);
                 pickupObject(InventoryItems::workOrder, InventoryItems);
-                setObjectState(sommelier, 1);
+                setObjectState(sommelierFigure, 1);
                 cutscene(0) {
                     startSound(paperSnd);
                     startSound(pickupSnd);

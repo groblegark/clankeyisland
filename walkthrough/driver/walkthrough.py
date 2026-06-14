@@ -470,11 +470,11 @@ class Performer:
             # two-phase shot: the pre-dialog cutscene talks, then the
             # option list appears; pick the option, then the outcome
             # plays. Line pairing carries across both watches.
-            ok1, _ = self.watch(self.dialog_open,
+            ok1, fr1 = self.watch(self.dialog_open,
                                 timeout=shot.get("timeout", 40),
                                 lines=lines)
             if not ok1:
-                self.take.fail(name, "dialog list never appeared", None)
+                self.take.fail(name, "dialog list never appeared", fr1)
                 self.take.log("shot_end", shot=name, ok=False)
                 return False
             seg_carry = getattr(self, "_last_segs", 0)

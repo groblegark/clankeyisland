@@ -690,6 +690,18 @@
     76
    ]
   },
+  "sommelier figure": {
+   "rect": [
+    80,
+    52,
+    24,
+    48
+   ],
+   "hotspot": [
+    92,
+    76
+   ]
+  },
   "bar counter": {
    "rect": [
     32,

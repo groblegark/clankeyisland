@@ -1243,6 +1243,8 @@ OILBAR_GEOM = {
     "O_DOOR":     (8, 56, 24, 48),
     "O_BACKBAR":  (36, 24, 96, 32),
     "O_SOMM":     (80, 52, 24, 48),
+    "O_SOMMFIG":  (80, 52, 24, 48),    # occlusion split: stateless art twin
+
     "O_COUNTER":  (32, 84, 128, 26),
     "O_LIST":     (40, 72, 16, 16),
     "O_SPIKE":    (140, 64, 16, 24),
@@ -1922,6 +1924,7 @@ OILBAR_OBJECT_NAMES = {
     "O_DOOR":     "door to the street",
     "O_BACKBAR":  "back bar",
     "O_SOMM":     "oil sommelier",
+    "O_SOMMFIG":  "sommelier figure",
     "O_COUNTER":  "bar counter",
     "O_LIST":     "cellar list",
     "O_SPIKE":    "receipt spike",

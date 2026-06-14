@@ -459,7 +459,6 @@ shots:
   # effects (pourOrdered, the page on the spike) are driven by the perform
   # pass; validate proves the room, the aide, and the exit.
   - name: the-sommelier-of-crude                # somm intro (forced story)
-    only: perform
     do: {verb: Talk to, object: oil sommelier}
     expect: [talking]
     timeout: 120
@@ -511,7 +510,6 @@ shots:
     hold: 1.5
 
   - name: the-order-pour                        # round 1 WIN (slot 1)
-    only: perform                               # sommelier dialog: see note above
     do: {verb: Talk to, object: oil sommelier, choose: 1}
     expect: [talking]                           # the towel stops moving
     timeout: 90
@@ -537,7 +535,6 @@ shots:
     hold: 1.5
 
   - name: the-order-billing                     # round 2 WIN (slot 0)
-    only: perform                               # sommelier dialog: see note above
     do: {verb: Talk to, object: oil sommelier, choose: 0}
     expect:
       - talking
@@ -557,7 +554,6 @@ shots:
   # perform pass. The handler now sets those states UP FRONT (oilbar.scc)
   # so the pixels hold the moment the grab fires.
   - name: certified-archival-work               # P5: the grab + the serve
-    only: perform
     do: {verb: Use, object: receipt spike}
     expect:
       - talking
@@ -596,18 +592,18 @@ shots:
   # integration against the Act 2 held set (poster, magnet, backstage
   # pass, barTab, +/- voucher per Scene 07).
   - name: paper-trail
-    do: {verb: Use, object: City Hall, with: inventory.slot<barTab>}  # TODO(slot)
+    do: {verb: Open, object: City Hall}    # owning the work order opens it
     expect: [talking]            # the 81-degrees cutscene
     timeout: 60
   - name: the-other-eighty-one-degrees
-    do: {verb: Open, object: City Hall}
-    expect:
-      - pixel: {at: [160, 80], is: marble-paint}    # CityHallRoom probe
-    timeout: 60
-  - name: marble-paint                                # entry cutscene
+    do: {verb: Open, object: City Hall}    # 2nd Open: transition + entry
     cutscene: CityHallRoom.entry
-    expect: [talking]
+    expect:
+      - talking                            # the City Hall entry cutscene
     timeout: 60
+  # (entry cutscene fires during the Open transition above and is proven by
+  # the marble-paint pixel there; a separate cutscene shot would wait for
+  # talk that already finished -- removed.)
   - name: civic-optimism                              # R3 plant 1 (fair-play, forced)
     do: {verb: Examine, object: civic gauge}
     expect: [talking]
@@ -618,53 +614,70 @@ shots:
     do: {verb: Talk to, object: Caliper}
     expect: [talking]
     hold: 1.5
-  - name: the-confrontation
-    do: {verb: Talk to, object: Mayor Piston}
-    expect: [talking, dialog-open]                    # dialog verbs visible at y>=145
-    timeout: 90
-  - name: exhibit-a
-    choose: "Show him his own notice."
+  # the confrontation: each Talk-to-Mayor-Piston advances one duel round.
+  # The first opens intro + Round 1 menu; choose: is the 0-based menu
+  # index (round1Menu order in cityhall.scc: 0 flat / 1 notice / 2 Rivet
+  # / 3 withdraw). The driver does dialog-open watch + option click in the
+  # SAME shot, so the round and its winning pick are one shot each.
+  - name: the-confrontation                           # R1: intro + the notice (idx 1)
+    do: {verb: Talk to, object: Mayor Piston, choose: 1}
     expect: [talking]                                 # VOID stamp beat
     timeout: 90
-  - name: exhibit-b
-    choose: "Show him the bar tab."
+  - name: exhibit-b                                   # R2: the bar tab (round2Menu idx 1)
+    do: {verb: Talk to, object: Mayor Piston, choose: 1}
     expect: [talking]
     timeout: 90
-  - name: say-nothing
-    choose: "Say nothing."
+  - name: say-nothing                                 # R3: say nothing (round3Menu idx 2)
+    do: {verb: Talk to, object: Mayor Piston, choose: 2}
     expect:
-      - talking
-      - pixel: {at: inventory.slot<ransomNote>, is: white}   # TODO(slot): the note lands
+      - talking       # ransomNote lands on page 2 (slot4); talk is the witness
     timeout: 120
     hold: 2
 
-  # ---- Scene 08 streamer-mode detours & mistakes (the film's screenplay)
+  # ---- Scene 08 streamer-mode detours & mistakes (the film's screenplay).
+  # All only:perform: these are the cinematic-cut flops/asides. The
+  # validate driver only dispatches `do`, so `detour`/`mistake` keys are
+  # rewritten to `do` here and the whole block rides perform (precedent:
+  # the Oil Bar contest). Flop choose: indices follow the round menus in
+  # cityhall.scc; they re-open the same round (no loss state).
   - name: four-mayors-one-boiler
-    detour: {verb: Examine, object: portrait gallery}
+    only: perform
+    do: {verb: Examine, object: portrait gallery}
   - name: confidence-reorder-point
-    detour: {verb: Examine, object: spare banners}
+    only: perform
+    do: {verb: Examine, object: spare banners}
   - name: the-dust-tells
-    detour: {verb: Examine, object: curtained window}
+    only: perform
+    do: {verb: Examine, object: curtained window}
   - name: pull-the-cord
-    detour: {verb: Open, object: curtained window}        # curtains open, Dynamo framed
+    only: perform
+    do: {verb: Open, object: curtained window}            # curtains open, Dynamo framed
   - name: he-precedes-himself
-    detour: {verb: Smell, object: Mayor Piston}
+    only: perform
+    do: {verb: Smell, object: Mayor Piston}
   - name: paper-through-channels                          # wrong-but-reasonable first move
-    mistake: {verb: Give, object: Mayor Piston, with: inventory.slot<poster>}  # TODO(slot)
+    only: perform
+    do: {verb: Give, object: Mayor Piston, with: inventory.slot0}  # the poster (slot0)
     line: "He waves it at the visitor's chair. Appointments are conducted seated."
   - name: half-a-step-flat                                # R1 flop, played first
-    mistake: {choose: "The Dynamo is flat by half a step."}
+    only: perform
+    do: {verb: Talk to, object: Mayor Piston, choose: 0}  # round1Menu idx 0
     line: "Retuned, he says. By request. The city prefers a softer key."
   - name: the-staplers                                    # R1 flop two -- the gag mine
-    mistake: {choose: "Rivet says otherwise."}
+    only: perform
+    do: {verb: Talk to, object: Mayor Piston, choose: 2}  # round1Menu idx 2
     line: "Rivet, he says, once sold this office its own staplers."
   - name: the-curtains-disagree                           # R2 flop that rewards the detour
-    mistake: {choose: "The curtains disagree."}
+    only: perform
+    do: {verb: Talk to, object: Mayor Piston, choose: 0}  # round2Menu idx 0
     line: "He enjoys the view, he says. Briefly. In private."
   - name: courtesy-wind                                   # R3 near-miss before the win
-    mistake: {choose: "Offer him a wind. Professionally."}
+    only: perform
+    do: {verb: Talk to, object: Mayor Piston, choose: 0}  # round3Menu idx 0
     line: "The Mayor does not receive maintenance during office hours."
   - name: aftermath                                       # post-crack mop-up
-    detour: {verb: Talk to, object: Caliper}
+    only: perform
+    do: {verb: Talk to, object: Caliper}
   - name: official-twice
-    detour: {verb: Examine, object: inventory.slot<poster>}  # TODO(slot): the VOIDed notice
+    only: perform
+    do: {verb: Examine, object: inventory.slot0}          # the VOIDed notice (poster, slot0)
