@@ -1,0 +1,38 @@
+# Clanker City Chronicles — Act 3 NON-INTERACTIVE room tour.
+#
+# Boot param 3 triggers the debug tour in common.scc main(): it warps
+# CityHall -> Hideout -> Dynamo with ZERO clicks, letting each room's
+# entry() cutscene narrate. No interactive duel/parley (those race).
+#
+# This screenplay never clicks; the shots just watch the auto-playing
+# tour and hold the recorder open across all three rooms.
+
+title: "Clanker City Chronicles — Act 3 Room Tour (non-interactive)"
+game: "--boot-param=3 chronicles"
+stage: docks.stage.json
+transcript: docks.transcript.json
+
+shots:
+  # City Hall: 4 narration lines (~13s of tour delay).
+  - name: city-hall-entry
+    cutscene: CityHallRoom.entry
+    only: perform
+    expect: [talking]
+    timeout: 30
+    hold: 6.0
+
+  # Hideout: 7 narration lines (~18s of tour delay) — the longest.
+  - name: hideout-entry
+    cutscene: HideoutRoom.entry
+    only: perform
+    expect: [talking]
+    timeout: 30
+    hold: 8.0
+
+  # Dynamo District: 4 narration lines (~15s of tour delay).
+  - name: dynamo-entry
+    cutscene: DynamoRoom.entry
+    only: perform
+    expect: [talking]
+    timeout: 30
+    hold: 8.0

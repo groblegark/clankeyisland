@@ -13,6 +13,9 @@
 #include "verbs.sch"
 #include "actors.sch"
 #include "docks.sch"
+#include "cityhall.sch"
+#include "hideout.sch"
+#include "dynamo.sch"
 
 
 room ResRoom {
@@ -598,6 +601,28 @@ room ResRoom {
 
         // do the box effect
         screenEffect(0x0005);
+
+        // ---- DEBUG: non-interactive Act 3 room tour (boot param 3) ----
+        // Warp room-to-room, letting each entry() cutscene play, with ZERO
+        // clicks (no click-race). The guard bits (visitedCityHall,
+        // denEntered, visitedDynamoDistrict) default to 0, so each room's
+        // entry narration fires. main() is global and survives startRoom,
+        // so these delays pause here while each cutscene plays, then warp on.
+        if(bootParam == 3) {
+            // actors normally set up in DockRoom.entry first-init; the tour
+            // skips DockRoom, so set them up here (Sprocket / VAR_EGO).
+            Verbs::setupVerbs();
+            Actors::setupActors();
+
+            startRoom(CityHallRoom);
+            delay(800);            // ~13s: City Hall has 4 narration lines
+            startRoom(HideoutRoom);
+            delay(1100);           // ~18s: Hideout has 7 narration lines
+            startRoom(DynamoRoom);
+            delay(900);            // ~15s: Dynamo has 4 narration lines
+            return;
+        }
+
         // start the room
         startRoom(DockRoom);
     }
