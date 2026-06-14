@@ -1,0 +1,1136 @@
+title: "Clanker City Chronicles \u2014 The Story So Far"
+game: --debuglevel=1 chronicles
+stage: docks.stage.json
+transcript: docks.transcript.json
+shots:
+- name: arrival
+  cutscene: DockRoom.entry
+  expect:
+  - talking
+  timeout: 60
+- name: the-sign
+  do:
+    verb: Examine
+    object: neon sign
+  expect:
+  - talking
+- name: percussive-maintenance
+  do:
+    verb: Use
+    object: neon sign
+  expect:
+  - talking
+  - pixel:
+      at: shiny bolt
+      is: bright-steel
+- name: legal-tender
+  do:
+    verb: Pick up
+    object: shiny bolt
+  expect:
+  - talking
+  - pixel:
+      at: inventory.slot0
+      is: bright-steel
+- name: civic-duty
+  do:
+    verb: Examine
+    object: notice board
+  expect:
+  - talking
+- name: take-the-evidence
+  do:
+    verb: Pick up
+    object: official notice
+  expect:
+  - pixel:
+      at: inventory.slot1
+      is: bright-steel
+- name: meet-betty
+  do:
+    verb: Talk to
+    object: Boom-Arm Betty
+  expect:
+  - talking
+  hold: 1.5
+- name: enter-the-tavern
+  do:
+    verb: Open
+    object: tavern door
+  expect:
+  - pixel:
+      at:
+      - 88
+      - 9
+      is: magenta
+  timeout: 60
+- name: the-piano
+  do:
+    verb: Examine
+    object: player piano
+  expect:
+  - talking
+- name: certified-maintenance
+  do:
+    verb: Use
+    object: Gusket
+    with: inventory.slot0
+  expect:
+  - talking
+  - pixel:
+      at: inventory.slot1
+      is: greens
+  timeout: 60
+- name: extremely-casual
+  do:
+    verb: Talk to
+    object: rustlers' table
+  expect:
+  - talking
+  timeout: 60
+  hold: 1.5
+- name: the-dart-hustle
+  do:
+    verb: Give
+    object: Flange
+    with: inventory.slot1
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 284
+      - 175
+      is: red
+  timeout: 90
+- name: back-to-the-docks
+  do:
+    verb: Open
+    object: door to the docks
+  expect:
+  - pixel:
+      at:
+      - 10
+      - 4
+      is: sky
+  timeout: 60
+- name: doctors-orders
+  do:
+    verb: Use
+    object: Boom-Arm Betty
+    with: inventory.slot1
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 132
+      - 56
+      is: sky
+  timeout: 60
+- name: the-first-key
+  do:
+    verb: Open
+    object: crate
+  expect:
+  - talking
+  - pixel:
+      at: inventory.slot1
+      is: sodium
+  timeout: 60
+  hold: 2.0
+- name: into-the-alley
+  do:
+    verb: Open
+    object: alley mouth
+  expect:
+  - pixel:
+      at:
+      - 76
+      - 24
+      is: magenta
+  timeout: 60
+- name: meet-rivet
+  do:
+    verb: Talk to
+    object: Rivet
+  expect:
+  - talking
+  timeout: 60
+- name: the-wall
+  only: perform
+  do:
+    verb: Examine
+    object: graffiti
+  expect:
+  - talking
+- name: message-discipline
+  only: perform
+  do:
+    verb: Open
+    object: steel door
+  expect:
+  - talking
+  timeout: 60
+- name: dumpster-diving
+  do:
+    verb: Open
+    object: dumpster
+  expect:
+  - talking
+  - pixel:
+      at: inventory.slot2
+      is: red
+  timeout: 60
+- name: back-out-front
+  do:
+    verb: Open
+    object: way to the docks
+  expect:
+  - pixel:
+      at:
+      - 10
+      - 4
+      is: sky
+  timeout: 60
+- name: gone-fishing
+  do:
+    verb: Use
+    object: storm drain
+    with: inventory.slot2
+  expect:
+  - talking
+  - pixel:
+      at: inventory.slot3
+      is: bright-steel
+  timeout: 60
+- name: back-to-the-alley
+  do:
+    verb: Open
+    object: alley mouth
+  expect:
+  - pixel:
+      at:
+      - 76
+      - 24
+      is: magenta
+  timeout: 60
+- name: try-the-fare
+  do:
+    verb: Give
+    object: funicular gate
+    with: inventory.slot3
+  expect:
+  - talking
+  timeout: 60
+- name: the-riddle-duel
+  do:
+    verb: Talk to
+    object: Rivet
+    choose: 2
+  expect:
+  - talking
+  timeout: 120
+- name: pay-the-fare
+  do:
+    verb: Use
+    object: funicular gate
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 284
+      - 70
+      is: sodium
+  timeout: 90
+- name: now-boarding
+  do:
+    verb: Examine
+    object: funicular gate
+  expect:
+  - talking
+  timeout: 60
+  hold: 2.0
+- name: ride-uptown
+  do:
+    verb: Use
+    object: funicular gate
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 180
+      - 30
+      is: sodium
+  timeout: 90
+- name: meet-the-clerk
+  do:
+    verb: Talk to
+    object: box office
+  expect:
+  - talking
+  timeout: 60
+- name: the-dynamo
+  only: perform
+  do:
+    verb: Examine
+    object: the Great Dynamo
+  expect:
+  - talking
+- name: nothing-is-wrong
+  only: perform
+  do:
+    verb: Examine
+    object: City Hall
+  expect:
+  - talking
+- name: nine-degrees
+  only: perform
+  do:
+    verb: Open
+    object: City Hall
+  expect:
+  - talking
+- name: the-act
+  do:
+    verb: Use
+    object: box office
+    with: inventory.slot1
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 182
+      - 50
+      is: sodium
+  timeout: 90
+- name: in-lights
+  do:
+    verb: Examine
+    object: Grand Cog Theater
+  expect:
+  - talking
+  timeout: 60
+  hold: 2.0
+- name: enter-the-grand-cog
+  do:
+    verb: Open
+    object: Grand Cog Theater
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 110
+      - 12
+      is: sodium
+  timeout: 90
+- name: the-emcee
+  do:
+    verb: Talk to
+    object: the emcee
+  expect:
+  - talking
+  timeout: 60
+- name: tough-room
+  only: perform
+  do:
+    verb: Talk to
+    object: the audience
+  expect:
+  - talking
+- name: house-lights
+  do:
+    verb: Use
+    object: spotlight booth
+  expect:
+  - talking
+  timeout: 60
+- name: the-amazing-sprocket
+  do:
+    verb: Use
+    object: the stage
+    with: inventory.slot1
+    choose: 2
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 220
+      - 40
+      is: teal
+  - pixel:
+      at: inventory.slot2
+      is: sodium
+  timeout: 150
+- name: stage-door
+  do:
+    verb: Open
+    object: stage door
+  expect:
+  - talking
+  timeout: 60
+  hold: 2.0
+- name: mind-the-cables
+  do:
+    verb: Open
+    object: stage door
+  cutscene: BackstageRoom.entry
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 256
+      - 68
+      is: brass
+  timeout: 90
+- name: the-parlor
+  only: perform
+  do:
+    verb: Examine
+    object: Madame Voltina
+  expect:
+  - talking
+- name: the-jar
+  only: perform
+  do:
+    verb: Examine
+    object: key in a jar
+  expect:
+  - talking
+- name: grabby
+  only: perform
+  do:
+    verb: Use
+    object: key in a jar
+  expect:
+  - talking
+  hold: 1.5
+- name: the-price
+  do:
+    verb: Talk to
+    object: Madame Voltina
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 155
+      - 90
+      is: card-white
+  timeout: 150
+- name: wrong-past
+  only: perform
+  do:
+    verb: Use
+    object: reading table
+    with: inventory.slot1
+  expect:
+  - talking
+  hold: 1.5
+- name: card-one
+  do:
+    verb: Use
+    object: reading table
+    with: inventory.slot0
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 166
+      - 89
+      is: card-white
+  timeout: 90
+- name: card-two
+  do:
+    verb: Use
+    object: reading table
+    with: inventory.slot2
+  cutscene: BackstageRoom.cardTwo
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 183
+      - 89
+      is: rust
+  timeout: 90
+- name: the-bluff
+  only: perform
+  do:
+    verb: Use
+    object: reading table
+    choose: 1
+  cutscene: BackstageRoom.cardThreeBluff
+  expect:
+  - talking
+  hold: 2.0
+- name: the-truth
+  do:
+    verb: Use
+    object: reading table
+    choose: 2
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 256
+      - 68
+      is: teal
+  timeout: 180
+- name: the-key-that-winds-itself
+  do:
+    verb: Talk to
+    object: Madame Voltina
+    choose: 0
+  cutscene: BackstageRoom.optCrank
+  expect:
+  - talking
+  timeout: 90
+- name: occupational-hazards
+  only: perform
+  do:
+    verb: Talk to
+    object: Madame Voltina
+    choose: 2
+  cutscene: BackstageRoom.optWant
+  expect:
+  - talking
+- name: ghost-light
+  only: perform
+  do:
+    verb: Examine
+    object: ghost light
+  expect:
+  - talking
+- name: wardrobe
+  only: perform
+  do:
+    verb: Examine
+    object: costume rack
+  expect:
+  - talking
+- name: haircut
+  only: perform
+  do:
+    verb: Examine
+    object: cables
+  expect:
+  - talking
+- name: her-fuses
+  only: perform
+  do:
+    verb: Examine
+    object: fuse box
+  expect:
+  - talking
+- name: back-through-the-curtain
+  do:
+    verb: Open
+    object: door to the stage
+  expect:
+  - pixel:
+      at:
+      - 110
+      - 12
+      is: sodium
+  timeout: 60
+  hold: 2.0
+- name: out-of-the-wings
+  do:
+    verb: Open
+    object: lobby doors
+  timeout: 60
+- name: the-list-is-a-door
+  only: perform
+  do:
+    verb: Open
+    object: the Oil Bar
+  expect:
+  - talking
+  hold: 1.5
+- name: a-separate-financial-instrument
+  do:
+    verb: Use
+    object: the Oil Bar
+    with: inventory.slot2
+  expect:
+  - talking
+  timeout: 60
+- name: redeemed-separately
+  only: perform
+  do:
+    verb: Use
+    object: the Oil Bar
+    with: inventory.slot2
+  expect:
+  - talking
+  hold: 1.5
+- name: all-access-meets-rope
+  only: perform
+  do:
+    verb: Use
+    object: the Oil Bar
+    with: inventory.slot3
+  expect:
+  - talking
+  hold: 1.5
+- name: professionally-agreed
+  only: perform
+  do:
+    verb: Use
+    object: the Oil Bar
+    with: inventory.slot0
+  expect:
+  - talking
+  hold: 1.5
+- name: established-as-a-concept
+  do:
+    verb: Examine
+    object: velvet rope
+  expect:
+  - talking
+  timeout: 60
+- name: velvet-all-the-way-down
+  only: perform
+  do:
+    verb: Smell
+    object: velvet rope
+  expect:
+  - talking
+- name: the-rope-participates
+  do:
+    verb: Use
+    object: velvet rope
+    with: inventory.slot2
+  expect:
+  - talking
+  timeout: 120
+  hold: 2.0
+- name: oil-bar-arrival
+  do:
+    verb: Open
+    object: the Oil Bar
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 100
+      - 30
+      is: amber
+  timeout: 90
+- name: the-sommelier-of-crude
+  do:
+    verb: Talk to
+    object: oil sommelier
+  expect:
+  - talking
+  timeout: 120
+- name: the-house-portrait
+  only: perform
+  do:
+    verb: Examine
+    object: portrait of the Mayor
+  expect:
+  - talking
+- name: learning-nothing
+  only: perform
+  do:
+    verb: Examine
+    object: centrifuge
+  expect:
+  - talking
+- name: drinking-in-formation
+  only: perform
+  do:
+    verb: Talk to
+    object: booth of aides
+  expect:
+  - talking
+  timeout: 90
+- name: the-comma
+  only: perform
+  do:
+    verb: Talk to
+    object: booth of aides
+  expect:
+  - talking
+- name: the-folded-memo
+  do:
+    verb: Talk to
+    object: the aide
+  expect:
+  - talking
+  timeout: 120
+- name: walls-have-aides-early
+  only: perform
+  do:
+    verb: Use
+    object: the aide
+    with: inventory.slot0
+  expect:
+  - talking
+  hold: 1.5
+- name: too-educated
+  only: perform
+  do:
+    verb: Talk to
+    object: oil sommelier
+    choose: 0
+  expect:
+  - talking
+  timeout: 90
+  hold: 1.5
+- name: not-touching-it
+  only: perform
+  do:
+    verb: Talk to
+    object: oil sommelier
+    choose: 2
+  expect:
+  - talking
+  timeout: 90
+  hold: 1.5
+- name: the-order-pour
+  do:
+    verb: Talk to
+    object: oil sommelier
+    choose: 1
+  expect:
+  - talking
+  timeout: 90
+- name: no-ancestors
+  only: perform
+  do:
+    verb: Talk to
+    object: oil sommelier
+    choose: 1
+  expect:
+  - talking
+  timeout: 90
+  hold: 1.5
+- name: settles-in-banners
+  only: perform
+  do:
+    verb: Talk to
+    object: oil sommelier
+    choose: 2
+  expect:
+  - talking
+  timeout: 90
+  hold: 1.5
+- name: all-three-counted
+  only: perform
+  do:
+    verb: Use
+    object: receipt spike
+  expect:
+  - talking
+  hold: 1.5
+- name: the-order-billing
+  do:
+    verb: Talk to
+    object: oil sommelier
+    choose: 0
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 92
+      - 60
+      is: dock-wood
+  timeout: 120
+  hold: 1.5
+- name: staff-only
+  only: perform
+  do:
+    verb: Open
+    object: cellar hatch
+  expect:
+  - talking
+- name: certified-archival-work
+  do:
+    verb: Use
+    object: receipt spike
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 148
+      - 74
+      is: dock-wood
+  - pixel:
+      at:
+      - 92
+      - 60
+      is: somm-black
+  timeout: 150
+  hold: 1.5
+- name: ask-it-quiet
+  do:
+    verb: Talk to
+    object: the aide
+  cutscene: OilBarRoom.aideExpose
+  expect:
+  - talking
+  timeout: 150
+  hold: 2.0
+- name: maximum-legal-gratitude
+  only: perform
+  do:
+    verb: Talk to
+    object: the aide
+  expect:
+  - talking
+- name: back-to-the-street
+  do:
+    verb: Open
+    object: door to the street
+  expect:
+  - pixel:
+      at:
+      - 180
+      - 30
+      is: sodium
+  timeout: 60
+  hold: 2.0
+- name: paper-trail
+  do:
+    verb: Open
+    object: City Hall
+  expect:
+  - talking
+  timeout: 60
+- name: the-other-eighty-one-degrees
+  do:
+    verb: Open
+    object: City Hall
+  cutscene: CityHallRoom.entry
+  expect:
+  - talking
+  timeout: 60
+- name: civic-optimism
+  do:
+    verb: Examine
+    object: civic gauge
+  expect:
+  - talking
+- name: an-argument-of-one
+  do:
+    verb: Talk to
+    object: Caliper
+  expect:
+  - talking
+- name: the-second-participant
+  do:
+    verb: Talk to
+    object: Caliper
+  expect:
+  - talking
+  hold: 1.5
+- name: the-confrontation
+  do:
+    verb: Talk to
+    object: Mayor Piston
+    choose: 1
+  expect:
+  - talking
+  timeout: 90
+- name: exhibit-b
+  do:
+    verb: Talk to
+    object: Mayor Piston
+    choose: 1
+  expect:
+  - talking
+  timeout: 90
+- name: say-nothing
+  do:
+    verb: Talk to
+    object: Mayor Piston
+    choose: 2
+  expect:
+  - talking
+  timeout: 120
+  hold: 2
+- name: four-mayors-one-boiler
+  only: perform
+  do:
+    verb: Examine
+    object: portrait gallery
+- name: confidence-reorder-point
+  only: perform
+  do:
+    verb: Examine
+    object: spare banners
+- name: the-dust-tells
+  only: perform
+  do:
+    verb: Examine
+    object: curtained window
+- name: pull-the-cord
+  only: perform
+  do:
+    verb: Open
+    object: curtained window
+- name: he-precedes-himself
+  only: perform
+  do:
+    verb: Smell
+    object: Mayor Piston
+- name: paper-through-channels
+  only: perform
+  do:
+    verb: Give
+    object: Mayor Piston
+    with: inventory.slot0
+  line: He waves it at the visitor's chair. Appointments are conducted seated.
+- name: half-a-step-flat
+  only: perform
+  do:
+    verb: Talk to
+    object: Mayor Piston
+    choose: 0
+  line: Retuned, he says. By request. The city prefers a softer key.
+- name: the-staplers
+  only: perform
+  do:
+    verb: Talk to
+    object: Mayor Piston
+    choose: 2
+  line: Rivet, he says, once sold this office its own staplers.
+- name: the-curtains-disagree
+  only: perform
+  do:
+    verb: Talk to
+    object: Mayor Piston
+    choose: 0
+  line: He enjoys the view, he says. Briefly. In private.
+- name: courtesy-wind
+  only: perform
+  do:
+    verb: Talk to
+    object: Mayor Piston
+    choose: 0
+  line: The Mayor does not receive maintenance during office hours.
+- name: aftermath
+  only: perform
+  do:
+    verb: Talk to
+    object: Caliper
+- name: official-twice
+  only: perform
+  do:
+    verb: Examine
+    object: inventory.slot0
+- name: the-empty-table
+  do:
+    verb: Examine
+    object: rustlers' table
+  expect:
+  - talking
+- name: the-code-pays
+  do:
+    verb: Open
+    object: back door
+  expect:
+  - talking
+  timeout: 60
+  hold: 1.5
+- name: walk-in
+  do:
+    verb: Open
+    object: back door
+  expect:
+  - pixel:
+      at:
+      - 70
+      - 80
+      is: den-lamplight
+  timeout: 60
+- name: the-management
+  cutscene: HideoutRoom.entry
+  expect:
+  - talking
+  timeout: 60
+- name: still-on-the-hook
+  do:
+    verb: Examine
+    object: key on a line
+  expect:
+  - talking
+- name: the-going-rate
+  do:
+    verb: Talk to
+    object: Captain Capstan
+  expect:
+  - talking
+  timeout: 60
+- name: who-winds-the-winders
+  choose: Who pays a ransom after the city stops?
+  expect:
+  - talking
+  hold: 1.5
+  timeout: 90
+- name: the-going-rate-again
+  do:
+    verb: Talk to
+    object: Captain Capstan
+  expect:
+  - talking
+  timeout: 60
+- name: in-writing
+  choose: Wind the Dynamo with me. On the books.
+  expect:
+  - talking
+  timeout: 120
+  hold: 2
+- name: the-emergency-exit
+  do:
+    verb: Open
+    object: steel door
+  expect:
+  - pixel:
+      at:
+      - 88
+      - 30
+      is: alley-sky
+  timeout: 60
+- name: oiled-rungs
+  detour:
+    verb: Examine
+    object: fire escape
+- name: little-pitchers
+  detour:
+    verb: Open
+    object: loft hatch
+- name: anchors-or-laundry
+  detour:
+    verb: Examine
+    object: brass cleat
+- name: front-doors-the-front
+  detour:
+    verb: Open
+    object: steel door
+- name: exhibit-a-dusted
+  detour:
+    verb: Examine
+    object: framed notice
+- name: the-chalk-tally
+  detour:
+    verb: Examine
+    object: door station
+- name: the-crew-photo
+  detour:
+    verb: Examine
+    object: trophy wall
+- name: a-stew-with-a-past
+  detour:
+    verb: Smell
+    object: pot-belly stove
+- name: four-chairs-scrape
+  mistake:
+    verb: Pick up
+    object: key on a line
+  line: It hangs at exactly cutlass height. The geometry is a contract clause.
+- name: the-receipts-drawer
+  mistake:
+    choose: The city needs that key back.
+  line: She points at a drawer. The drawer is labeled RECEIPTS, GRIEVANCE, MIXED.
+- name: the-framed-flop
+  mistake:
+    choose: City Hall will hear about this.
+  line: '''His last cease-and-desist is over the stove. Framed.'' It is. They dusted it.'
+- name: the-pass-flop
+  mistake:
+    choose: One backstage pass, barely used.
+  line: '''Tempting. The act, not the access.'' She''s heard about the act. Everyone has heard about the act.'
+- name: up-the-hill
+  cutscene: DynamoRoom.entry
+  expect:
+  - talking
+  timeout: 60
+- name: the-plaque
+  do:
+    verb: Examine
+    object: plaque
+  expect:
+  - talking
+- name: the-governor
+  do:
+    verb: Use
+    object: gate
+  expect:
+  - talking
+  timeout: 60
+- name: match-the-hum
+  choose: Match the hum.
+  expect:
+  - talking
+  - pixel:
+      at:
+      - 80
+      - 60
+      is: sky
+  timeout: 60
+- name: meet-old-crank
+  do:
+    verb: Talk to
+    object: Old Crank
+  expect:
+  - talking
+  timeout: 60
+  hold: 1.5
+- name: the-dynamo-up-close
+  do:
+    verb: Examine
+    object: the Great Dynamo
+  expect:
+  - talking
+- name: the-reveal
+  do:
+    verb: Talk to
+    object: Old Crank
+  choose: What did the Order leave you up here to do?
+  expect:
+  - talking
+  timeout: 60
+  hold: 2.0
+- name: the-cost
+  do:
+    verb: Talk to
+    object: Old Crank
+  choose: Thank you.
+  expect:
+  - talking
+  timeout: 120
+  hold: 2.5
+- name: m-crank-it-hard
+  mistake:
+    verb: Use
+    object: gate
+  line: I take the crank. The governor lurches, fights me, locks.
+- name: crank-it-hard-flop
+  mistake:
+    choose: Crank it hard.
+  line: I commit. The governor overspeeds, throws a weight, and bites down harder.
+- name: crank-it-gently-flop
+  mistake:
+    choose: Crank it gently.
+  line: I coax it. The pawl never catches. The gate waits for me to mean it.
+- name: shove-the-gate-flop
+  mistake:
+    choose: Just shove the gate.
+  line: I put a shoulder into it. The fence shares a second opinion. Same as the first.
+- name: d-the-fence
+  detour:
+    verb: Examine
+    object: fence
+- name: d-the-governor
+  detour:
+    verb: Examine
+    object: governor
+- name: d-the-overlook
+  detour:
+    verb: Examine
+    object: overlook
+- name: d-the-workbench
+  detour:
+    verb: Examine
+    object: workbench

@@ -436,6 +436,29 @@ class Performer:
         self.take.fail("boot", "room never faded in", frame)
         return False
 
+    def wait_for_idle(self, timeout=15.0, quiet=0.8):
+        """Block until the game is idle (no talking) for `quiet` continuous
+        seconds, or `timeout` elapses. Action clicks fired while a cutscene
+        or room transition is mid-flight get swallowed by the engine -- the
+        room never changes and the run stalls in the prior room. This is the
+        root cause of the Act 2-3 traversal flakiness; waiting for idle
+        before clicking makes transitions deterministic."""
+        deadline = time.monotonic() + timeout
+        quiet_since = None
+        while time.monotonic() < deadline:
+            frame = self.oracle._frame()
+            if frame is not None:
+                talking = len(self.oracle.talk_mask(frame)) >= 6
+                if not talking:
+                    if quiet_since is None:
+                        quiet_since = time.monotonic()
+                    elif time.monotonic() - quiet_since >= quiet:
+                        return True
+                else:
+                    quiet_since = None
+            time.sleep(POLL)
+        return False
+
     def run_shot(self, shot):
         name = shot["name"]
         only = shot.get("only")
@@ -448,6 +471,10 @@ class Performer:
         seg_base = self.count_segments()
 
         if "do" in shot:
+            # wait for the engine to be idle before clicking -- transitions
+            # and cutscenes swallow clicks fired mid-activity (the room never
+            # changes and the run stalls), the root of Act 2-3 flakiness.
+            self.wait_for_idle()
             d = shot["do"]
             if "verb" in d:
                 self.click_game(tuple(self.stage.data["verbs"][d["verb"]]))
