@@ -293,7 +293,26 @@ room DynamoRoom {
                 }
             }
             // --- the dialog tree: how do I crank it? ---
-            gateMenu();
+            // INLINED (was gateMenu()): a local-script call runs async, so the
+            // selectedSentence checks ran before the pick landed and fell
+            // through to the flop (the City Hall duel idiom -- inline it).
+            dlgStr[0] = "Crank it hard.";
+            Dialog::dialogAdd(dlgStr);
+            dlgStr = 0;
+            dlgStr[0] = "Crank it gently.";
+            Dialog::dialogAdd(dlgStr);
+            dlgStr = 0;
+            dlgStr[0] = "Match the hum.";
+            Dialog::dialogAdd(dlgStr);
+            dlgStr = 0;
+            dlgStr[0] = "Just shove the gate.";
+            Dialog::dialogAdd(dlgStr);
+            dlgStr = 0;
+            Dialog::dialogStart(0, 0);
+            do breakScript() while(selectedSentence < 0);
+            Dialog::dialogHide();
+            Dialog::dialogClear(1);
+            Dialog::dialogEnd();
             // WIN first in source (dub pairing): option 2, "Match the hum."
             if(selectedSentence == 2) {
                 gateWound = 1;            // flag before speech

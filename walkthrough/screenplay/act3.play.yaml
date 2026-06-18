@@ -1,0 +1,221 @@
+# Clanker City Chronicles -- Act 3, driven INTERACTIVELY end to end.
+# Boots straight into Act 3 (common.scc bootParam==4: City Hall, canonical
+# Act-3 inventory + flags) so the duel / parley / finale can be driven and
+# filmed without replaying Scenes 1-7. Room transitions are marked
+# `transition: true` so the driver waits for a real frame change off the
+# prior room (the deterministic-transition fix) instead of probing a
+# possibly-stale screenshot. Dialog indices verified against the room .scc
+# inline menus. The single inventory slot-click (the Dynamo dry run) uses
+# slot 3 = voltKey, which is reachable on inventory page 1.
+title: "Clanker City Chronicles — Act Three"
+game: "--debuglevel=1 --boot-param=4 chronicles"
+ready:
+  at:
+  - 160
+  - 125
+  is: dock-wood
+stage: docks.stage.json
+transcript: docks.transcript.json
+shots:
+
+# ---- City Hall: the Denial Duel (rounds win on picks 1, 1, 2).
+# The arrival cutscene plays (and is recorded) during boot's calibration
+# wait, so it needs no shot of its own. ----
+- name: the-confrontation
+  do:
+    verb: Talk to
+    object: Mayor Piston
+    choose: 1
+  expect:
+  - talking
+  timeout: 120
+- name: exhibit-b
+  do:
+    verb: Talk to
+    object: Mayor Piston
+    choose: 1
+  expect:
+  - talking
+  timeout: 120
+- name: say-nothing
+  do:
+    verb: Talk to
+    object: Mayor Piston
+    choose: 2
+  expect:
+  - talking
+  timeout: 150
+  hold: 2.0
+
+# ---- City Hall -> Midtown -> Alley -> Docks -> Tavern ----
+- name: out-to-the-street
+  do:
+    verb: Open
+    object: door to the street
+  transition: true
+  expect:
+  - pixel:
+      at:
+      - 180
+      - 30
+      is: sodium
+  timeout: 60
+- name: down-the-funicular
+  do:
+    verb: Use
+    object: funicular station
+  transition: true
+  expect:
+  - pixel:
+      at:
+      - 88
+      - 12
+      is: alley-sky
+  timeout: 60
+- name: alley-to-docks
+  do:
+    verb: Open
+    object: way to the docks
+  transition: true
+  expect:
+  - pixel:
+      at:
+      - 10
+      - 4
+      is: sky
+  timeout: 60
+- name: docks-to-tavern
+  do:
+    verb: Open
+    object: tavern door
+  transition: true
+  expect:
+  - pixel:
+      at:
+      - 88
+      - 9
+      is: magenta
+  timeout: 60
+
+# ---- Tavern back door: knock the code, then enter the hideout ----
+- name: the-code-pays
+  do:
+    verb: Open
+    object:
+    - 300
+    - 80
+  expect:
+  - talking
+  timeout: 60
+  hold: 1.5
+- name: walk-in
+  do:
+    verb: Open
+    object:
+    - 300
+    - 80
+  transition: true
+  expect:
+  - pixel:
+      at:
+      - 160
+      - 100
+      is: den-lamplight
+  timeout: 200
+
+# ---- Hideout: the parley (stage 1 win = pick 2, stage 2 win = pick 2) ----
+- name: the-going-rate
+  do:
+    verb: Talk to
+    object: Captain Capstan
+    choose: 2
+  expect:
+  - talking
+  timeout: 120
+- name: in-writing
+  do:
+    verb: Talk to
+    object: Captain Capstan
+    choose: 2
+  expect:
+  - talking
+  timeout: 150
+  hold: 2.0
+
+# ---- Hideout -> Alley -> Midtown -> up the hill to the Dynamo ----
+- name: out-the-steel-door
+  do:
+    verb: Open
+    object: steel door
+  transition: true
+  expect:
+  - pixel:
+      at:
+      - 88
+      - 12
+      is: alley-sky
+  timeout: 60
+- name: ride-back-up
+  do:
+    verb: Use
+    object: funicular gate
+  transition: true
+  expect:
+  - pixel:
+      at:
+      - 180
+      - 30
+      is: sodium
+  timeout: 60
+- name: up-the-hill
+  do:
+    verb: Open
+    object:
+    - 292
+    - 14
+  transition: true
+  timeout: 90
+
+# ---- Dynamo District: the gate, then Old Crank (the finale) ----
+- name: match-the-hum
+  do:
+    verb: Use
+    object: gate
+    choose: 2
+  expect:
+  - talking
+  timeout: 120
+- name: meet-old-crank
+  do:
+    verb: Talk to
+    object: Old Crank
+  expect:
+  - talking
+  timeout: 90
+  hold: 1.5
+- name: the-dry-run
+  do:
+    verb: Use
+    object: the Great Dynamo
+    with: inventory.slot3
+  expect:
+  - talking
+  timeout: 120
+- name: the-reveal
+  do:
+    verb: Talk to
+    object: Old Crank
+    choose: 1
+  expect:
+  - talking
+  timeout: 90
+  hold: 1.5
+- name: the-cost
+  do:
+    verb: Talk to
+    object: Old Crank
+    choose: 2
+  expect:
+  - talking
+  timeout: 180
+  hold: 3.0

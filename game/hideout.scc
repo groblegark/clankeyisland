@@ -455,7 +455,24 @@ room HideoutRoom {
 
             // ---- STAGE 2 (gated on arithmeticLanded) ----
             if(arithmeticLanded) {
-                stage2Menu();
+                // INLINED (was stage2Menu()): see the stage-1 note above.
+                dlgStr[0] = "I can get you bolts. Eventually.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "One backstage pass, barely used.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "Wind the Dynamo with me. On the books.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                dlgStr[0] = "Let me think.";
+                Dialog::dialogAdd(dlgStr);
+                dlgStr = 0;
+                Dialog::dialogStart(0, 0);
+                do breakScript() while(selectedSentence < 0);
+                Dialog::dialogHide();
+                Dialog::dialogClear(1);
+                Dialog::dialogEnd();
                 // WINNER first in source: option 2 (the contract)
                 if(selectedSentence == 2) {
                     keyRecovered = 1;       // flags before speech
@@ -513,7 +530,27 @@ room HideoutRoom {
             }
 
             // ---- STAGE 1 (pick the argument) ----
-            stage1Menu();
+            // INLINED (was stage1Menu()): a local-script call runs async, so
+            // the selectedSentence checks below ran before the pick landed
+            // and always fell through to the exit line (the City Hall duel
+            // idiom -- inline the menu so the selection is read synchronously).
+            dlgStr[0] = "The city needs that key back.";
+            Dialog::dialogAdd(dlgStr);
+            dlgStr = 0;
+            dlgStr[0] = "City Hall will hear about this.";
+            Dialog::dialogAdd(dlgStr);
+            dlgStr = 0;
+            dlgStr[0] = "Who pays a ransom after the city stops?";
+            Dialog::dialogAdd(dlgStr);
+            dlgStr = 0;
+            dlgStr[0] = "I'll think about it.";
+            Dialog::dialogAdd(dlgStr);
+            dlgStr = 0;
+            Dialog::dialogStart(0, 0);
+            do breakScript() while(selectedSentence < 0);
+            Dialog::dialogHide();
+            Dialog::dialogClear(1);
+            Dialog::dialogEnd();
             // WINNER first in source: option 2 (who winds the winders?)
             if(selectedSentence == 2) {
                 arithmeticLanded = 1;       // flag before speech

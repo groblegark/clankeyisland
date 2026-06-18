@@ -290,6 +290,9 @@ class Performer:
         self.take = take
         self.mode = mode
         self.oracle = Oracle(page, stage)
+        # how boot() decides the opening room has faded in; overridden from
+        # the screenplay's `ready` field for non-Docks starts (Act 3 warp)
+        self.boot_ready = self.oracle.room_ready
 
     # ---------------------------------------------------------- helpers
 
@@ -304,6 +307,9 @@ class Performer:
         # it before the click is processed (instant move+click loses the
         # race and degrades "Use X with Y" into a walk)
         px, py = self._page_xy(point)
+        if os.environ.get("DBG_CHOOSE"):
+            self.take.log("click", game=list(point), page=[round(px), round(py)],
+                          rect=list(self.oracle.rect))
         self.page.mouse.move(px, py)
         time.sleep(0.45)
         self.page.mouse.click(px, py)
@@ -425,15 +431,35 @@ class Performer:
             except Exception:
                 pass
             time.sleep(1.0)
-            ok, frame = self.watch(self.oracle.room_ready, timeout=45)
+            ok, frame = self.watch(self.boot_ready, timeout=45)
             if ok:
                 self.oracle.frozen = True
+                # Lock the rect against a panel-visible idle frame BEFORE any
+                # dialog. The Act 3 warp boots straight into a duel with no
+                # prior gameplay; without a calibrated rect the dialog-choice
+                # clicks map to the provisional full-height rect and land
+                # below the options (the round never resolves).
+                self.wait_for_idle(timeout=25, quiet=0.6)
+                cal_deadline = time.monotonic() + 15
+                while (time.monotonic() < cal_deadline
+                       and not self.oracle.calibrated):
+                    self.oracle._frame()
+                    time.sleep(POLL)
                 self.take.log("room_ready", attempt=attempt,
-                              rect=list(self.oracle.rect))
+                              rect=list(self.oracle.rect),
+                              calibrated=self.oracle.calibrated)
                 return True
             self.take.log("boot_retry", attempt=attempt)
             self.oracle.rect, self.oracle.frozen = None, False
+            self.oracle.calibrated = False
         self.take.fail("boot", "room never faded in", frame)
+        try:
+            fdir = os.path.join(self.take.out, "failures")
+            os.makedirs(fdir, exist_ok=True)
+            with open(os.path.join(fdir, "boot-raw.png"), "wb") as fh:
+                fh.write(self.page.screenshot())
+        except Exception:
+            pass
         return False
 
     def wait_for_idle(self, timeout=15.0, quiet=0.8):
@@ -459,6 +485,52 @@ class Performer:
             time.sleep(POLL)
         return False
 
+    @staticmethod
+    def frame_sig(frame):
+        """Coarse 16x10 RGB fingerprint of the room area, for detecting an
+        actual room change (vs. a stale pre-transition frame)."""
+        small = frame.resize((16, 10), Image.NEAREST)
+        return list(small.getdata())
+
+    @staticmethod
+    def sig_diff(a, b):
+        if a is None or b is None:
+            return 0
+        return sum(abs(pa[0] - pb[0]) + abs(pa[1] - pb[1]) + abs(pa[2] - pb[2])
+                   for pa, pb in zip(a, b))
+
+    def wait_for_transition(self, pre_sig, until, timeout, settle=1.0,
+                            min_change=6000):
+        """For a SILENT room transition: the destination is accepted only
+        after the frame has visibly CHANGED from the pre-click frame
+        (room actually swapped -- not a stale screenshot of the old room),
+        AND the destination pixel expectation holds, AND the screen is
+        quiet for `settle`. This is the deterministic-transition fix:
+        probing a single pixel on a possibly-stale frame is what made
+        Act 2-3 traversal race run-to-run. Returns (ok, frame)."""
+        deadline = time.monotonic() + timeout
+        ok_since = None
+        frame = None
+        changed = False
+        while time.monotonic() < deadline:
+            frame = self.oracle._frame()
+            if frame is None:
+                time.sleep(POLL)
+                continue
+            talking = len(self.oracle.talk_mask(frame)) >= 6
+            if not changed and self.sig_diff(pre_sig, self.frame_sig(frame)) \
+                    >= min_change:
+                changed = True
+            if changed and until(frame) and not talking:
+                if ok_since is None:
+                    ok_since = time.monotonic()
+                if time.monotonic() - ok_since >= settle:
+                    return True, frame
+            else:
+                ok_since = None
+            time.sleep(POLL)
+        return False, frame
+
     def run_shot(self, shot):
         name = shot["name"]
         only = shot.get("only")
@@ -470,11 +542,15 @@ class Performer:
         lines = self.shot_lines(shot)
         seg_base = self.count_segments()
 
+        pre_sig = None
         if "do" in shot:
             # wait for the engine to be idle before clicking -- transitions
             # and cutscenes swallow clicks fired mid-activity (the room never
             # changes and the run stalls), the root of Act 2-3 flakiness.
             self.wait_for_idle()
+            if shot.get("transition"):
+                fr = self.oracle._frame()
+                pre_sig = self.frame_sig(fr) if fr is not None else None
             d = shot["do"]
             if "verb" in d:
                 self.click_game(tuple(self.stage.data["verbs"][d["verb"]]))
@@ -500,13 +576,23 @@ class Performer:
             ok1, fr1 = self.watch(self.dialog_open,
                                 timeout=shot.get("timeout", 40),
                                 lines=lines)
+            self.take.log("dialog_open_result", shot=name, ok=ok1)
+            if fr1 is not None and os.environ.get("DBG_CHOOSE"):
+                fdir = os.path.join(self.take.out, "dbg")
+                os.makedirs(fdir, exist_ok=True)
+                fr1.resize((GAME_W * 3, GAME_H * 3), Image.NEAREST).save(
+                    os.path.join(fdir, f"{name}-menu.png"))
             if not ok1:
                 self.take.fail(name, "dialog list never appeared", fr1)
                 self.take.log("shot_end", shot=name, ok=False)
                 return False
             seg_carry = getattr(self, "_last_segs", 0)
             time.sleep(0.4)
-            self.click_game((80, 149 + 11 * shot["do"]["choose"]))
+            # click near the START of the option text (x=12 per dialog.scc
+            # setVerbXY); a larger x falls PAST short options like "Say
+            # nothing." and selects nothing (the verb hotspot is only the
+            # text extent).
+            self.click_game((20, 149 + 11 * shot["do"]["choose"]))
 
         if shot.get("cutscene") and self.mode == "validate":
             # let the first line land (proves the cutscene talks), then
@@ -518,9 +604,16 @@ class Performer:
         # settle must outlast inter-line gaps, or the next shot's clicks
         # land mid-cutscene and race the story flags
         settle = 1.6
-        ok, frame = self.watch(until, timeout=shot.get("timeout", 40),
-                               lines=lines, settle=settle,
-                               seg_start=seg_carry)
+        if shot.get("transition"):
+            # silent room change: require a real frame change off the
+            # pre-click room before accepting the destination pixel
+            ok, frame = self.wait_for_transition(
+                pre_sig, until, timeout=shot.get("timeout", 40),
+                settle=settle)
+        else:
+            ok, frame = self.watch(until, timeout=shot.get("timeout", 40),
+                                   lines=lines, settle=settle,
+                                   seg_start=seg_carry)
         if not ok:
             self.take.fail(name, "expectations not met before timeout", frame)
         if self.mode == "perform":
@@ -532,7 +625,7 @@ class Performer:
         if shot.get("cutscene"):
             return self.transcript["cutscenes"].get(shot["cutscene"], [])
         d = shot.get("do", {})
-        if "verb" in d:
+        if "verb" in d and isinstance(d.get("object"), str):
             case = VERB_CASE.get(d["verb"], d["verb"])
             if "with" in d and case == "Use":
                 # "Use X with Y" speaks from Y's UsedWith handler, not
@@ -643,6 +736,13 @@ def main():
                                  lambda: take.log("audio_start"))
 
         perf = Performer(page, stage, transcript, take, args.mode)
+        rspec = screenplay.get("ready")
+        if rspec == "talking":
+            perf.boot_ready = lambda f: len(perf.oracle.talk_mask(f)) >= 6
+        elif isinstance(rspec, dict):
+            _pt = stage.resolve(rspec["at"])
+            _pr = rspec["is"]
+            perf.boot_ready = lambda f: perf.oracle.probe(f, _pt, _pr)
         ok = perf.boot(target)
         if ok:
             for shot in screenplay["shots"]:

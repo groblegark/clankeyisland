@@ -13,6 +13,8 @@
 #include "theater.sch"
 #include "oilbar.sch"
 #include "cityhall.sch"
+#include "hideout.sch"
+#include "dynamo.sch"
 #include "midtown.sch"
 
 room MidtownRoom {
@@ -561,6 +563,7 @@ room MidtownRoom {
         h = 28;
         dir = NORTH;
         name = "the Great Dynamo";
+        class = { Openable };
 
         verb(int vrb,int objA,int objB) {
         case LookAt:
@@ -569,6 +572,19 @@ room MidtownRoom {
             egoSay("Every bot on this island runs on that hum. Including me. The hum is flat by half a step.");
             waitForMessage();
             egoSay("Half a step doesn't sound like much. Neither did the clunk.");
+            return;
+        case Open:
+        case Use:
+            // The hill road. It only opens once the Rustlers point me up it
+            // (HideoutRoom::keyRecovered -- Capstan's "ask the old crank up
+            // the hill"). Silent room transition (docs/NOTES.md); arrival
+            // flavor lives in DynamoRoom.entry.
+            if(HideoutRoom::keyRecovered) {
+                putActorAt(VAR_EGO, 16, 122, DynamoRoom);
+                startRoom(DynamoRoom);
+                return;
+            }
+            egoSay("Up the hill, behind the fence. Nothing for me up there until I've got something it wants.");
             return;
         case TalkTo:
             egoSay("Hang in there, big fella. Help is coming. Help is small and walks funny, but it's coming.");

@@ -16,6 +16,9 @@
 #include "cityhall.sch"
 #include "hideout.sch"
 #include "dynamo.sch"
+#include "alley.sch"
+#include "tavern.sch"
+#include "midtown.sch"
 
 
 room ResRoom {
@@ -620,6 +623,37 @@ room ResRoom {
             delay(2500);           // ~42s: Hideout, 7 narration lines (+margin)
             startRoom(DynamoRoom);
             delay(1600);           // ~27s: Dynamo, 4 narration lines (+margin)
+            return;
+        }
+
+        // ---- DEBUG: interactive Act 3 start (boot param 4) ----
+        // Warp to City Hall holding the canonical Act-3-entry inventory and
+        // flags, so the Act 3 interactive path (Denial Duel -> Hideout parley
+        // -> Dynamo finale) can be driven and FILMED without replaying Scenes
+        // 1-7 each run. Inventory is granted in REAL pickup order so voltKey
+        // lands at slot 3 -- the Dynamo dry-run's driver-reachable slot, same
+        // as a genuine playthrough. heardKnockCode + fareDone open the two
+        // transitions the path needs (tavern back door, funicular).
+        if(bootParam == 4) {
+            Verbs::setupVerbs();
+            Actors::setupActors();
+            pickupObject(InventoryItems::poster, InventoryItems);
+            pickupObject(InventoryItems::magnet, InventoryItems);
+            pickupObject(InventoryItems::backstagePass, InventoryItems);
+            pickupObject(InventoryItems::voltKey, InventoryItems);
+            pickupObject(InventoryItems::workOrder, InventoryItems);
+            heardKnockCode = 1;
+            AlleyRoom::fareDone = 1;
+            // the early rooms were already toured in Scenes 1-7; mark their
+            // intros done so re-entering them on the Act 3 path is SILENT
+            // (an unsuppressed Scene-1 docks cutscene swallows clicks and
+            // would wrongly re-narrate mid-Act-3).
+            DockRoom::doneArrival = 1;
+            AlleyRoom::visitedAlley = 1;
+            TavernRoom::visitedTavern = 1;
+            MidtownRoom::visitedMidtown = 1;
+            putActorAt(VAR_EGO, 24, 120, CityHallRoom);
+            startRoom(CityHallRoom);
             return;
         }
 
