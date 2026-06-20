@@ -194,10 +194,14 @@ RAG_FIFTH = {"C": n("G", 2), "F": n("C", 3), "G": n("D", 3)}
 
 # melody slots (8 swung-eighths per bar) — written to hit the missing
 # keys often, because a rag with holes in it is funnier than a rag
-RM = []
+# NOTE: must NOT be named `RM` — build_march below reuses that global name
+# for its own 16-bar melody, and since every build_*() reads the global at
+# call time, the march list would shadow this one and feed build_rag four
+# extra bars (past the nominal 12), driving end_of_track negative on save.
+RAG_RM = []
 def rag_phrase(bar, notes):
     for slot, pitch, ln in notes:
-        RM.append((bar, slot, pitch, ln))
+        RAG_RM.append((bar, slot, pitch, ln))
 
 rag_phrase(1,  [(0, n("E", 5), 1), (1, n("G", 5), 1), (2, n("C", 5), 1),
                 (3, n("E", 5), 1), (4, n("G", 5), 2), (6, n("A", 4), 2)])
@@ -254,7 +258,7 @@ def build_rag():
                 for p in RAG_CHORDS[chord]:
                     note(0, t, p, PPQ // 3, 58)
 
-    for bar, slot, pitch, ln in RM:
+    for bar, slot, pitch, ln in RAG_RM:
         t = slot_time(bar, slot)
         note(0, t, pitch, slot_len(slot, ln) - 30, 80)
 
